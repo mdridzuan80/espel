@@ -8,15 +8,10 @@
         </div>
         <div class="x_content">
             <form method="post" class="form-horizontal form-label-left">
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Pusat Tanggungjawab (PTJ)
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control" name="comJabatan">
-                        <?php foreach($jabatans->result() as $jabatan):?>
-                        <option value="<?=$jabatan->id?>"><?=$jabatan->nama?></option>
-                        <?php endforeach?>
-                      </select>
+                <div id="input-com-penganjur" class="form-group">
+                  <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penyelaras</label>
+                  <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
+                      <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
                   </div>
                 </div>
                 <div class="form-group">
@@ -24,7 +19,7 @@
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                       <select class="form-control" name="comJnsPeruntukan">
-                          <?php foreach($jnsperuntukans->result() as $jnsperuntukan):?>
+                          <?php foreach($jnsperuntukans as $jnsperuntukan):?>
                           <option value="<?=$jnsperuntukan->id?>"><?=$jnsperuntukan->nama?></option>
                           <?php endforeach?>
                       </select>

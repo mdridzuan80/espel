@@ -15,45 +15,45 @@ class Peruntukan extends MY_Controller
         return $this->renderView("peruntukan/show", $data);
     }
 
+    private function plugins()
+    {
+        return [
+            "css" => [
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css',
+                'assets/css/calendar.css',
+
+            ],
+            "js" => [
+                "assets/js/vendors/moment/moment.js",
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js',
+                'assets/js/peruntukan.js',
+            ],
+        ];
+    }
+
     public function initial()
     {
         if(!$this->exist("submit"))
         {
-            $this->load->model('jabatan_model', 'jabatan');
             $this->load->model('jnsperuntukan_model', 'jnsperuntukan');
 
-            $plugins=[
-    			"css" => [
-    				"assets/js/vendors/bootstrap-daterangepicker/daterangepicker.css",
-    				'assets/js/vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
-    			],
-    			"js" => [
-    				"assets/js/vendors/moment/moment.js",
-    				'assets/js/vendors/bootstrap-daterangepicker/daterangepicker.js',
-    				'assets/js/vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
-                    'assets/js/peruntukan.js',
+            $data['jnsperuntukans'] = $this->jnsperuntukan->get_all();
 
-    			],
-    		];
-
-            $data['jabatans'] = $this->jabatan->getAll();
-            $data['jnsperuntukans'] = $this->jnsperuntukan->getAll();
-
-            return $this->renderView("peruntukan/add_init", $data, $plugins);
+            return $this->renderView("peruntukan/add_init", $data, $this->plugins());
         }
         else
         {
             $this->load->model("peruntukan_model","peruntukan");
             $data = [
-                $this->input->post("comJnsPeruntukan"),
-                $this->input->post("comJabatan"),
-                date('Y-m-d',strtotime($this->input->post("txtTkhWaran"))),
-                $this->input->post("txtWaran"),
-                'Y',
-                $this->input->post("txtJumlah"),
-                $this->input->post("txtKeterangan"),
+                "jns_peruntukan_id" => $this->input->post("comJnsPeruntukan"),
+                "jabatan_id" => $this->input->post("comJabatan"),
+                "tarikh" => $this->input->inputToDate("txtTkhWaran"),
+                "no_waran" => $this->input->post("txtWaran"),
+                "stat_agih" => 'Y',
+                "jumlah" => $this->input->post("txtJumlah"),
+                "keterangan" => $this->input->post("txtKeterangan"),
             ];
-			if($this->peruntukan->simpan($data))
+			if($this->peruntukan->insert($data))
             {
                 $this->appsess->setFlashSession("success", true);
             }
