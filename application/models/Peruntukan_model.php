@@ -19,4 +19,24 @@ class Peruntukan_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function peruntukan_semasa($peruntukan)
+    {
+        $this->db->select("sum(a.jumlah) jumlah ");
+        $this->db->from($this->_table . " a");
+        $this->db->where("YEAR(a.tarikh)", date( 'Y',strtotime($peruntukan->tarikh) ) );
+        $this->db->where("a.jabatan_id", $peruntukan->jabatan_id);
+        $this->db->where("a.jns_peruntukan_id", $peruntukan->jns_peruntukan_id);
+        return $this->db->get()->row()->jumlah;
+    }
+
+    public function sen_transaksi($peruntukan)
+    {
+        $this->db->from($this->_table . " a");
+        $this->db->where("YEAR(a.tarikh)", date( 'Y',strtotime($peruntukan->tarikh) ) );
+        $this->db->where("a.jabatan_id", $peruntukan->jabatan_id);
+        $this->db->where("a.jns_peruntukan_id", $peruntukan->jns_peruntukan_id);
+        $this->db->order_by("a.tarikh");
+        return $this->db->get()->result();
+    }
 }

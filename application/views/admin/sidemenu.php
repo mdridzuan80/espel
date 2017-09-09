@@ -5,13 +5,19 @@
     <ul class="nav side-menu">
         <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
         <li><a href="<?=base_url("peruntukan")?>"><i class="fa fa-money"></i>Agihan Peruntukan</a></li>
-      <li><a><i class="fa fa-book"></i> Kamus Data <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a>Klasifikasi Kursus<span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_menu" style="">
-                    <li><a href="<?=base_url('kamus/program')?>">Jenis Program</a>
+        <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="<?=base_url('mockup/ptj/laporan/kursus')?>">Laporan Kursus</a></li>
+                <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>
+            </ul>
+        </li>
+        <li><a><i class="fa fa-book"></i> Kamus Data <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a>Klasifikasi Kursus<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="">
+                        <li><a href="<?=base_url('kamus/program')?>">Jenis Program</a>
                     </li>
-              </ul>
+                </ul>
             </li>
         </ul>
       </li>
