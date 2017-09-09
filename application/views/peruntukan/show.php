@@ -34,17 +34,16 @@
                     <th style="text-align:center">Operasi</th>
                   </tr>
                 </thead>
-
-
                 <tbody>
                     <?php foreach($list_peruntukan as $peruntukan):?>
                   <tr>
                     <td><?=$peruntukan->jabatan->nama?></td>
                     <td><?=$peruntukan->jns_peruntukan->nama?></td>
-                    <td>RM<?=number_format($peruntukan->jumlah,2,'.',',')?></td>
+                    <td>RM<?=number_format($objPeruntukan->peruntukan_semasa($peruntukan),2,'.',',')?></td>
                     <td align="center">
-                        <a href="<?=base_url("mockup/admin/peruntukan/transaksi")?>" type="button" class="btn btn-round btn-info btn-xs" data-toggle="tooltip" title="Transaksi Peruntukan"><i class="fa fa-file-o"></i></a>
-                        <a href="<?=base_url("mockup/admin/peruntukan/tolak")?>" type="button" class="btn btn-round btn-danger btn-xs" data-toggle="tooltip" title="Tolak Peruntukan"><i class="fa fa-minus"></i></a>
+                        <a href="<?=base_url("peruntukan/info/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-info btn-xs" title="Transaksi Peruntukan"><i class="fa fa-info"></i></a>
+                        <a href="<?=base_url("peruntukan/tambah/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-success btn-xs" title="Tambah Peruntukan"><i class="fa fa-plus"></i></a>
+                        <a href="<?=base_url("peruntukan/tolak/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-danger btn-xs" title="Tolak Peruntukan"><i class="fa fa-minus"></i></a>
                     </td>
                   </tr>
                   <?php endforeach?>
