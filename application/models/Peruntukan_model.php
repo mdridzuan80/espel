@@ -39,4 +39,15 @@ class Peruntukan_model extends MY_Model
         $this->db->order_by("a.tarikh");
         return $this->db->get()->result();
     }
+
+    public function dropdown_peruntukan($jabatanId, $tahun)
+    {
+        $this->db->select("b.id, b.nama");
+        $this->db->from($this->_table . " a");
+        $this->db->join("espel_dict_jns_peruntukan b", "a.jns_peruntukan_id=b.id");
+        $this->db->where("YEAR(a.tarikh)", $tahun );
+        $this->db->where("a.jabatan_id", $jabatanId);
+        $this->db->group_by(["b.id","b.nama"]);
+        return $this->db->get()->result();
+    }
 }

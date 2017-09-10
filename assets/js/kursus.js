@@ -30,6 +30,21 @@ $(document).ready(function() {
     })();
 
     (function(){
+        $("#txtTkhMulaPemb2").datetimepicker({
+            format: "DD-MM-YYYY h:mm A"
+        });
+        $("#txtTkhTamatPemb2").datetimepicker({
+            format: "DD-MM-YYYY h:mm A"
+        });
+        $("#txtTkhMulaPemb2").on("dp.hide", function (e) {
+            $('#txtTkhTamatPemb2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#txtTkhTamatPemb").on("dp.hide", function (e) {
+            $('#txtTkhMulaPemb2').data("DateTimePicker").maxDate(e.date);
+        });
+    })();
+
+    (function(){
         $("#txtTkhMulaKend").datetimepicker({
             format: "DD-MM-YYYY h:mm A"
         });
@@ -69,7 +84,7 @@ $(document).ready(function() {
         $(":checked").each(function() {
           data['chkKehadiran[]'].push($(this).val());
         });
-        
+
         $.ajax({
             data:data,
             method:'post',

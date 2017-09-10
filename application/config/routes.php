@@ -54,7 +54,7 @@ $route["login"] = "auth/login";
 $route["logout"] = "auth/logout";
 $route["lupa_katalaluan"] = "auth/lupa_password";
 
-$route["api/get_event"] = "welcome/get_event";
+$route["api/get_event/(:num)/(:num)/(:num)"] = "welcome/get_event/$1/$2/$3";
 
 $route['profil/(:any)'] = "profil/index/$1";
 $route['profil/(:any)/kump/add'] = "profil/kumpulan/$1";

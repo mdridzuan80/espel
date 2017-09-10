@@ -97,4 +97,89 @@ class Kursus_model extends MY_Model
             return $rst->row()->jumlah;
         return 0;
     }
+
+    public function takwim($ptj_jabatan_id, $takwim)
+    {
+        $sql = "SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_mula) = ?
+            AND MONTH(a.tkh_mula) = ?
+            UNION
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_tamat) = ?
+            AND MONTH(a.tkh_tamat) = ?
+            AND a.id NOT IN(SELECT id FROM espel_kursus
+                WHERE 1=1
+                AND ptj_jabatan_id_created = ?
+                AND YEAR(tkh_mula) = ?
+                AND MONTH(tkh_mula) = ?)";
+        $rst = $this->db->query($sql,[
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
+        );
+
+        if($rst->num_rows())
+        {
+            return $rst->result();
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    public function takwim_day($ptj_jabatan_id, $takwim)
+    {
+        $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_mula) = ?
+            AND MONTH(a.tkh_mula) = ?
+            AND DAY(a.tkh_mula) = ?
+            UNION
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_tamat) = ?
+            AND MONTH(a.tkh_tamat) = ?
+            AND DAY(a.tkh_tamat) = ?
+            AND a.id NOT IN(SELECT id FROM espel_kursus
+                WHERE 1=1
+                AND ptj_jabatan_id_created = ?
+                AND YEAR(tkh_mula) = ?
+                AND MONTH(tkh_mula) = ?
+                AND DAY(tkh_mula) = ?)
+            UNION
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = $ptj_jabatan_id
+            AND a.tkh_mula < '$tkh'
+            AND a.tkh_tamat > '$tkh') a
+            ORDER BY a.tkh_mula";
+
+        $rst = $this->db->query($sql,[
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari]
+        );
+
+        if($rst->num_rows())
+        {
+            return $rst->result_array();
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 }

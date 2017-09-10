@@ -215,6 +215,7 @@
     <script src="<?=base_url("assets/js/bootstrap.min.js")?>"></script>
 
     <script>
+    var base_url = "<?=base_url()?>";
     $(".easyui-combotree").css("width", $(".col-md-6").width()-5);
     </script>
     <!-- FastClick -->
@@ -241,5 +242,17 @@
     <!-- Custom Theme Scripts -->
     <script src="<?=base_url("assets/js/custom.min.js")?>"></script>
     <script src="<?=base_url("assets/js/espel.js")?>"></script>
-  </body>
+    <?php
+    if(isset($plugins) && count($plugins))
+    {
+        if(isset($plugins["embedjs"]))
+        {
+            foreach($plugins["embedjs"] as $plugin)
+            {
+                echo $plugin;
+            }
+        }
+    }
+    ?>
+    </body>
 </html>

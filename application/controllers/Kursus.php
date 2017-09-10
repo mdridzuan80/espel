@@ -59,8 +59,8 @@ class Kursus extends MY_Controller
         {cal_cell_content}<div class="date"><a href="{content}">{day}</a></div>{/cal_cell_content}
         {cal_cell_content_today}<div class="highlight"><a href="{content}">{day}</a></div>{/cal_cell_content_today}
 
-        {cal_cell_no_content}<div id="{day}" class="date">{day}</div><div id="{day}" class="event"></div>{/cal_cell_no_content}
-        {cal_cell_no_content_today}<div id="{day}" class="date">{day}</div><div id="{day}" class="event"></div>{/cal_cell_no_content_today}
+        {cal_cell_no_content}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content}
+        {cal_cell_no_content_today}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content_today}
 
         {cal_cell_blank}&nbsp;{/cal_cell_blank}
 
@@ -71,15 +71,43 @@ class Kursus extends MY_Controller
         {cal_cell_end_other}</li>{/cal_cell_end_other}
         {cal_row_end}</ul>{/cal_row_end}
 
-        {table_close}</div>{/table_close}
+        {table_close}</div></div>{/table_close}
         ';
 
         $this->load->library('calendar', $prefs);
 
         $data["objCal"] = $this->calendar;
+        $data["tahun"] = $this->uri->segment(3, date('Y'));
+        $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
         $plugins["js"][] = "assets/js/calendar.js";
+        $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
         return $this->renderView("kursus/takwim", $data, $plugins);
+    }
+
+    function takwim_senarai()
+    {
+        $prefs['show_next_prev'] = TRUE;
+        $prefs['template'] = '
+        {heading_row_start}<table><tr>{/heading_row_start}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_row_end}</tr></table><div style="display:none">{/heading_row_end}
+        {table_close}</div>{/table_close}';
+
+        $this->load->library('calendar', $prefs);
+
+        $this->load->model("kumpulan_profil_model","kumpulan_profil");
+        $this->load->model("kursus_model","kursus");
+
+        $data["objCal"] = $this->calendar;
+        $data["takwim"] = initObj([
+            "tahun" => $this->uri->segment(3, date('Y')),
+            "bulan" => $this->uri->segment(4, date('m'))
+        ]);
+        $data["sen_kursus"]=$this->kursus->takwim($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $data["takwim"]);
+        return $this->renderView("kursus/takwim_senarai", $data);
     }
 
     public function delete($id)
@@ -166,16 +194,19 @@ class Kursus extends MY_Controller
                 $this->load->model('program_model','program');
                 $this->load->model('aktiviti_model','aktiviti');
                 $this->load->model('profil_model','profil');
+                $this->load->model("peruntukan_model", "peruntukan");
+
+                $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
                 $data['sen_program'] = $this->program->dropdown("id","nama");
                 $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
                 $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
                 $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
                 $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
                 $data['sen_penyelia'] = $this->profil->where(
-                    [
-                        "jabatan_id" => $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id,
-                    ]
+                    ["jabatan_id" => $jabatan_id]
                 )->dropdown('nokp','nama');
+                $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+
                 return $this->renderView("kursus/jabatan/daftar",$data,$this->plugins());
             }
             else
@@ -199,6 +230,61 @@ class Kursus extends MY_Controller
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                     ];
+
+                    if($this->input->post("chkBorangA"))
+                        $data["stat_soal_selidik_a"] = 'Y';
+                    if($this->input->post("chkBorangB"))
+                        $data["stat_soal_selidik_b"] = 'Y';
+                }
+
+                if($this->input->post("hddProgram")==3 || $this->input->post("hddProgram")==4)
+                {
+                    $data = [
+                        'tajuk' => $this->input->post("txtTajuk"),
+                        'program_id' => $this->input->post("hddProgram"),
+                        'aktiviti_id' => $this->input->post("comAktiviti"),
+                        'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                        'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                        'tempat' => $this->input->post("txtTempat"),
+                        'anjuran' => 'D',
+                        'stat_jabatan' => "Y",
+                        'penganjur_id' => $this->input->post("comPenganjur"),
+                        'stat_terbuka'=>$this->input->post("comTerbuka"),
+                        'peruntukan_id'=>$this->input->post("comPeruntukan"),
+                        'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
+                        'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                    ];
+
+                    if($this->input->post("chkBorangA"))
+                        $data["stat_soal_selidik_a"] = 'Y';
+                    if($this->input->post("chkBorangB"))
+                        $data["stat_soal_selidik_b"] = 'Y';
+                }
+
+                if($this->input->post("hddProgram")==5)
+                {
+                    $data = [
+                        'tajuk' => $this->input->post("txtTajuk"),
+                        'program_id' => $this->input->post("hddProgram"),
+                        'aktiviti_id' => $this->input->post("comAktiviti"),
+                        'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                        'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                        'tempat' => $this->input->post("txtTempat"),
+                        'sumber'=>$this->input->post("txtSumber"),
+                        'penyelia_nokp'=>$this->input->post("comPenyelia"),
+                        'anjuran' => 'D',
+                        'stat_jabatan' => "Y",
+                        'penganjur_id' => $this->input->post("comPenganjur"),
+                        'stat_terbuka'=>$this->input->post("comTerbuka"),
+                        'peruntukan_id'=>$this->input->post("comPeruntukan"),
+                        'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
+                        'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                    ];
+
+                    if($this->input->post("chkBorangA"))
+                        $data["stat_soal_selidik_a"] = 'Y';
+                    if($this->input->post("chkBorangB"))
+                        $data["stat_soal_selidik_b"] = 'Y';
                 }
 
                 $this->load->model("kursus_model","kursus");
