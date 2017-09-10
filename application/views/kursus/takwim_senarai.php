@@ -48,8 +48,8 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                                 <td align="center">
-                                    <a href="<?=base_url('kursus/edit/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Kemaskini"><i class="fa fa-edit"></i></a>
-                                    <a href="<?=base_url('kursus/delete/' . $kursus->id)?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
+                                    <a href="<?=base_url('kursus/edit_jabatan/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Kemaskini">Edit</a>
+                                    <a href="<?=base_url('kursus/delete_jabatan/' . $kursus->id)?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')">Delete</a>
                                 </td>
                               </tr>
                               <?php endforeach?>
