@@ -9,6 +9,7 @@
             success: genCell(i)
         });
     }
+    
     function genCell(i){
         return function(data, textStatus, jqXHR ){
             var text = "";

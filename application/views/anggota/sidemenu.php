@@ -3,7 +3,7 @@
   <div class="menu_section">
     <h3>Menu Utama</h3>
     <ul class="nav side-menu">
-        <li><a href="<?=base_url("mockup/anggota/takwim")?>"><i class="fa fa-calendar"></i> Takwim Kursus</a></li>
+        <li><a href="<?=base_url("kursus/takwim_pengguna")?>"><i class="fa fa-calendar"></i> Takwim Kursus</a></li>
         <li><a href="<?=base_url("kursus/luar")?>"><i class="fa fa-file-text-o"></i> Daftar Kursus Luar</a></li>
         <li><a href="#"><i class="fa fa-smile-o"></i>Soal Selidik Kursus <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">

@@ -85,6 +85,85 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/takwim", $data, $plugins);
     }
 
+    public function takwim_pengguna()
+    {
+        $prefs['show_next_prev'] = TRUE;
+        $prefs['start_day'] = 'monday';
+        $prefs['month_type'] = 'long';
+        $prefs['day_type'] = 'long';
+        $prefs['template'] = '
+
+        {table_open}<div id="calendar-wrap">{/table_open}
+
+        {heading_row_start}<table><tr>{/heading_row_start}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_row_end}</tr></table><div id="calendar">{/heading_row_end}
+
+        {week_row_start}<ul class="weekdays">{/week_row_start}
+        {week_day_cell}<li>{week_day}</li>{/week_day_cell}
+        {week_row_end}</ul>{/week_row_end}
+
+        {cal_row_start}<ul class="days">{/cal_row_start}
+        {cal_cell_start}<li class="day">{/cal_cell_start}
+        {cal_cell_start_today}<li class="day highlight">{/cal_cell_start_today}
+        {cal_cell_start_other}<li class="day other-month">{/cal_cell_start_other}
+
+        {cal_cell_content}<div class="date"><a href="{content}">{day}</a></div>{/cal_cell_content}
+        {cal_cell_content_today}<div class="highlight"><a href="{content}">{day}</a></div>{/cal_cell_content_today}
+
+        {cal_cell_no_content}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content}
+        {cal_cell_no_content_today}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content_today}
+
+        {cal_cell_blank}&nbsp;{/cal_cell_blank}
+
+        {cal_cell_other}{day}{/cal_cel_other}
+
+        {cal_cell_end}</li>{/cal_cell_end}
+        {cal_cell_end_today}</li>{/cal_cell_end_today}
+        {cal_cell_end_other}</li>{/cal_cell_end_other}
+        {cal_row_end}</ul>{/cal_row_end}
+
+        {table_close}</div></div>{/table_close}
+        ';
+
+        $this->load->library('calendar', $prefs);
+
+        $data["objCal"] = $this->calendar;
+        $data["tahun"] = $this->uri->segment(3, date('Y'));
+        $data["bulan"] = $this->uri->segment(4, date('m'));
+        $plugins = $this->plugins();
+        $plugins["js"][] = "assets/js/calendar.js";
+        $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
+        return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
+    }
+
+    function takwim_pengguna_senarai()
+    {
+        $prefs['show_next_prev'] = TRUE;
+        $prefs['template'] = '
+        {heading_row_start}<table><tr>{/heading_row_start}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_row_end}</tr></table><div style="display:none">{/heading_row_end}
+        {table_close}</div>{/table_close}';
+
+        $this->load->library('calendar', $prefs);
+
+        $this->load->model("kumpulan_profil_model","kumpulan_profil");
+        $this->load->model("kursus_model","kursus");
+
+        $data["objCal"] = $this->calendar;
+        $data["takwim"] = initObj([
+            "tahun" => $this->uri->segment(3, date('Y')),
+            "bulan" => $this->uri->segment(4, date('m'))
+        ]);
+        $data["sen_kursus"]=$this->kursus->takwim($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $data["takwim"]);
+        return $this->renderView("kursus/takwim_pengguna_senarai", $data);
+    }
+
     function takwim_senarai()
     {
         $prefs['show_next_prev'] = TRUE;
