@@ -189,7 +189,7 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/takwim_senarai", $data);
     }
 
-    public function delete($id)
+/*    public function delete($id)
     {
         $this->load->model("kursus_model","kursus");
 
@@ -203,8 +203,8 @@ class Kursus extends MY_Controller
         }
         redirect('kursus');
     }
-
-    public function edit($id)
+*/
+/*    public function edit($id)
     {
         if(!$this->exist("submit"))
         {
@@ -243,7 +243,7 @@ class Kursus extends MY_Controller
             redirect('kursus');
         }
     }
-
+*/
     public function luar()
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
@@ -382,6 +382,33 @@ class Kursus extends MY_Controller
         {
             return $this->renderPermissionDeny();
         }
+    }
+
+    public function info_jabatan($id)
+    {
+        if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)
+            redirect("kursus/edit_jabatan/" . $id);
+
+        $this->load->model('program_model','program');
+        $this->load->model('aktiviti_model','aktiviti');
+        $this->load->model('profil_model','profil');
+        $this->load->model("peruntukan_model", "peruntukan");
+        $this->load->model('kursus_model','kursus');
+
+        $data['kursus'] = $this->kursus->get($id);
+
+        $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+        $data['sen_program'] = $this->program->dropdown("id","nama");
+        $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
+        $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
+        $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
+        $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
+        $data['sen_penyelia'] = $this->profil->where(
+            ["jabatan_id" => $jabatan_id]
+        )->dropdown('nokp','nama');
+        $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+
+        return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
     }
 
     public function edit_jabatan($id)

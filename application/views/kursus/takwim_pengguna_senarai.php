@@ -47,7 +47,7 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                                 <td align="center">
-                                    <a href="<?=base_url('kursus/mohon/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Mohon">Mohon</a>
+                                    <a href="<?=base_url('kursus/info_jabatan/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Mohon">Mohon</a>
                                 </td>
                               </tr>
                               <?php endforeach?>

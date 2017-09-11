@@ -49,8 +49,8 @@ header {
 }
 
 #calendar .days li {
-  height: 100px;
-  overflow: scroll;
+  height: 150px;
+  overflow: auto;
 }
 
 #calendar .days li:hover {

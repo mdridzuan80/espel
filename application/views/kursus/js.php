@@ -9,7 +9,7 @@
             success: genCell(i)
         });
     }
-    
+
     function genCell(i){
         return function(data, textStatus, jqXHR ){
             var text = "";
@@ -21,7 +21,7 @@
                     tkhMula = moment(kursus.tkh_mula);
                     tkhTamat = moment(kursus.tkh_tamat);
                     text = text + "<div class=\"event\"> \
-                            <div class=\"event-desc\"> " + kursus.tajuk + "\
+                            <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
                             </div> \
                             <div class=\"event-time\"> \
                                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \

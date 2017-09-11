@@ -60,14 +60,14 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Mula
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y',strtotime($kursus->tkh_mula)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y h:i A',strtotime($kursus->tkh_mula)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Akhir
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y',strtotime($kursus->tkh_tamat)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y h:i A',strtotime($kursus->tkh_tamat)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -164,14 +164,14 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Mula
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y',strtotime($kursus->tkh_mula)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y h:i A',strtotime($kursus->tkh_mula)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Akhir
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y',strtotime($kursus->tkh_tamat)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y h:i A',strtotime($kursus->tkh_tamat)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -253,14 +253,14 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Mula
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y',strtotime($kursus->tkh_mula)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y h:i A',strtotime($kursus->tkh_mula)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Akhir
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y',strtotime($kursus->tkh_tamat)))?>" >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y h:i A',strtotime($kursus->tkh_tamat)))?>" >
                     </div>
                   </div>
                   <div class="form-group">
