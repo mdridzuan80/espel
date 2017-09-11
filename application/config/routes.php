@@ -52,7 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route["login"] = "auth/login";
 $route["logout"] = "auth/logout";
-$route["lupa_katalaluan"] = "auth/lupa_password";
+$route["lupa_katalaluan"] = "auth/lupa_katalaluan";
+$route["reset/(:any)/(:any)"] = "auth/reset";
 
 $route["api/get_event/(:num)/(:num)/(:num)"] = "welcome/get_event/$1/$2/$3";
 

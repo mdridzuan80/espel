@@ -43,9 +43,13 @@ class AppAuth
         $this->CI->appsess->sessionDestroy();
     }
 
-    public function reset_password($username)
+    public function reset_password($username, $password)
     {
-
+        $this->CI->load->model("profil_model","profil");
+        $data["password"] = $this->hash_katalaluan($password);
+        if($this->CI->profil->update($username,$data))
+            return TRUE;
+        return FALSE;
     }
 
     public function isLogged()

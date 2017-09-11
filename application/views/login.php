@@ -67,9 +67,24 @@
         <div id="register" class="animate form registration_form">
           <section class="login_content">
               <img src="<?=base_url("assets/images/jknmelaka-logo-x.png")?>"/>
-            <form method="post" action="<?=base_url("reset_password")?>">
+            <form method="post" action="<?=base_url("lupa_katalaluan")?>">
               <h1>Reset Katalaluan</h1>
               <div>
+                  <?php if(appsess()->getFlashSession()):?>
+                  <?php if(appsess()->getFlashSession('success')):?>
+                  <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>INFO!</strong> Proses telah berjaya dilaksanakan.
+                  </div>
+                  <?php else:?>
+                  <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>RALAT!</strong> Proses tidak berjaya dilaksanakan.
+                  </div>
+                  <?php endif?>
+                  <?php endif?>
                 <input type="text" class="form-control" placeholder="Username" required="" name="txtUsername" />
               </div>
               <div>

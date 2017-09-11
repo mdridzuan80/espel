@@ -50,6 +50,14 @@ class Laporan extends MY_Controller
         }
     }
 
+    public function prestasi_kursus()
+    {
+        if(!$this->exist("submit"))
+        {
+            return $this->renderView("laporan/prestasi/param");
+        }
+    }
+
     public function jabatan()
     {
         $this->load->model("jabatan_model","jabatan");
