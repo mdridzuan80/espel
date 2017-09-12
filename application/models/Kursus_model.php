@@ -8,6 +8,15 @@ class Kursus_model extends MY_Model
             'model' => 'program_model',
             'primary_key'=>'program_id',
         ],
+        'aktiviti' => [
+            'model' => 'aktiviti_model',
+            'primary_key'=>'aktiviti_id',
+        ],
+        'penganjur' => [
+            'model' => 'jabatan_model',
+            'primary_key'=>'penganjur_id',
+        ],
+
     ];
 
     public function __construct()

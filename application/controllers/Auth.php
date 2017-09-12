@@ -47,9 +47,6 @@ class Auth extends MY_Controller
                 "body" => $this->load->view("layout/email/reset_katalaluan",["profil"=>$profil,"slug"=>$slug],TRUE),
             ];
 
-            //echo $mail["body"];
-            //die();
-            //
             if($this->appnotify->send($mail))
             {
                 $this->appsess->setFlashSession("success", TRUE);

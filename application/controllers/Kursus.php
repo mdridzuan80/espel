@@ -389,26 +389,65 @@ class Kursus extends MY_Controller
         if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)
             redirect("kursus/edit_jabatan/" . $id);
 
-        $this->load->model('program_model','program');
-        $this->load->model('aktiviti_model','aktiviti');
-        $this->load->model('profil_model','profil');
-        $this->load->model("peruntukan_model", "peruntukan");
-        $this->load->model('kursus_model','kursus');
+        if(!$this->exist("mohon"))
+        {
+            $this->load->model('program_model','program');
+            $this->load->model('aktiviti_model','aktiviti');
+            $this->load->model('profil_model','profil');
+            $this->load->model("peruntukan_model", "peruntukan");
+            $this->load->model('kursus_model','kursus');
 
-        $data['kursus'] = $this->kursus->get($id);
+            $data['kursus'] = $this->kursus->get($id);
 
-        $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
-        $data['sen_program'] = $this->program->dropdown("id","nama");
-        $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
-        $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
-        $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
-        $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
-        $data['sen_penyelia'] = $this->profil->where(
-            ["jabatan_id" => $jabatan_id]
-        )->dropdown('nokp','nama');
-        $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+            $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+            $data['sen_program'] = $this->program->dropdown("id","nama");
+            $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
+            $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
+            $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
+            $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
+            $data['sen_penyelia'] = $this->profil->where(
+                ["jabatan_id" => $jabatan_id]
+            )->dropdown('nokp','nama');
+            $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
 
-        return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
+            return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
+        }
+        else
+        {
+            $this->load->model("mohon_kursus_model", "mohon_kursus");
+
+            $data = [
+                "kursus_id" => $id,
+                "nokp" => $this->appsess->getSessionData("username"),
+                "tkh" => date("Y-m-d h:i")
+            ];
+
+            if($this->mohon_kursus->insert($data))
+            {
+                $this->load->model("kursus_model", "kursus");
+                $this->load->model("profil_model", "profil");
+                $this->load->library("appnotify");
+
+                $pemohon = $this->profil->with(["jawatan","gred"])->get_by("nokp",$this->appsess->getSessionData("username"));
+                $penyelia = $this->profil->with(["jawatan","gred"])->get_by("nokp",$pemohon->penyelia);
+                $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
+
+                $mail = [
+                    "to" => $penyelia->email,
+                    "subject" => "[espel] Permohonan Kursus",
+                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                ];
+
+                $this->appnotify->send($mail);
+
+                $this->appsess->setFlashSession("success", true);
+            }
+            else
+            {
+                $this->appsess->setFlashSession("success", false);
+            }
+            redirect('');
+        }
     }
 
     public function edit_jabatan($id)
