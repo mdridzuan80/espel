@@ -7,7 +7,12 @@
         <li><a href="<?=base_url("peruntukan")?>"><i class="fa fa-money"></i>Agihan Peruntukan</a></li>
         <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
-                <li><a href="<?=base_url('laporan/prestasi_kursus')?>">Laporan Kursus</a></li>
+                <li><a>Laporan Kursus <span class="fa fa-chevron-down"></a>
+                    <ul class="nav child_menu">
+                        <li><a href="<?=base_url('laporan/hadir_kursus')?>">Hadir Berkursus</a></li>
+                        <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>
+                    </ul>
+                </li>
                 <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>
             </ul>
         </li>

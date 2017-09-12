@@ -52,6 +52,15 @@ class Welcome extends MY_Controller {
         ->set_output(json_encode(buildTree($this->jabatan->as_array()->get_all())));
 	}
 
+	public function get_laporan_gred($id)
+	{
+		$this->load->model("gred_model","gred");
+
+		$this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($this->gred->get_many_by("kelas_id",$id)));
+	}
+
 	public function get_tree_jabatan_related()
 	{
 		$this->load->model("jabatan_model","jabatan");
