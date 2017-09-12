@@ -21,7 +21,7 @@
                 <div id="jabatan-penyelaras" class="form-group" style="display:none;">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatanPenyelaras" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
+                        <input id="comJabatanPenyelaras" name="comJabatanPenyelaras" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
                     </div>
                 </div>
                 <div class="ln_solid"></div>

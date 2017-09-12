@@ -289,6 +289,12 @@
               <tr>
                 <td class="wrapper">
                   <table border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                          <td><h1>Sistem Maklumat Kursus espel</h1></td>
+                      </tr>
+                      <tr>
+                          <td>&nbsp;</td>
+                      </tr>
                     <tr>
                       <td>
                         <p><b>Hi <?=$profil->nama?>,</b></p>

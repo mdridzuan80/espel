@@ -7,7 +7,7 @@
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
-            <table id="datatable" class="table table-striped table-bordered jambo_table">
+            <table class="table table-striped table-bordered jambo_table">
               <thead>
                 <tr class="headings">
                   <th>Bil</th>
@@ -29,7 +29,6 @@
                 <?php endforeach?>
                </tbody>
            </table>
-           <a href="<?=base_url("laporan/ringkasan")?>" class="btn btn-primary" type="reset">Back</a>
         </div>
       </div>
     </div>

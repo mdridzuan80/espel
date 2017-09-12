@@ -24,6 +24,35 @@ class Kursus_model extends MY_Model
         parent::__construct();
     }
 
+    public function get_all_kursus_hadir($nokp, $tahun)
+    {
+        $sql = "SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, espel_dict_jabatan b
+        WHERE 1=1
+        AND a.penganjur_id = b.id
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        and a.stat_hadir = 'L'
+        UNION
+        SELECT id, tajuk, penganjur, tkh_mula, tkh_tamat, hari
+        FROM espel_kursus
+        WHERE 1=1
+        AND penganjur_id = 0
+        AND YEAR(tkh_mula) = ?
+        AND nokp = ?
+        AND stat_hadir = 'L'
+        UNION
+        SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, espel_dict_jabatan b, espel_permohonan_kursus c
+        WHERE 1=1
+        AND a.penganjur_id = b.id
+        AND a.id = c.kursus_id
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        and c.stat_hadir = 'L'
+        ";
+        return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
+    }
     public function get_all_kursus_luar_pengesahan(array $jabatanID)
     {
         $this->db->select("a.id, b.nama,d.nama jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b");
@@ -54,18 +83,61 @@ class Kursus_model extends MY_Model
         return $rst->result();
     }
 
+    public function get_kursus_by_program($nokp, $programID, $tahun)
+    {
+        $sql = "SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
+        FROM espel_kursus a, espel_dict_jabatan b
+        WHERE 1=1
+        AND a.penganjur_id = b.id
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        AND a.program_id = ?
+        and a.stat_hadir = 'L'
+        UNION
+        SELECT id, tajuk, penganjur, tkh_mula, tkh_tamat, hari, tempat
+        FROM espel_kursus
+        WHERE 1=1
+        AND penganjur_id = 0
+        AND YEAR(tkh_mula) = ?
+        AND nokp = ?
+        AND program_id = ?
+        AND stat_hadir = 'L'
+        UNION
+        SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
+        FROM espel_kursus a, espel_dict_jabatan b, espel_permohonan_kursus c
+        WHERE 1=1
+        AND a.penganjur_id = b.id
+        AND a.id = c.kursus_id
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        AND a.program_id = ?
+        and c.stat_hadir = 'L'
+        ";
+        return $this->db->query($sql,[$tahun,$nokp,$programID,$tahun,$nokp,$programID,$tahun,$nokp,$programID])->result();
+    }
+
     public function getBilhari($nokp, $programID, $tahun)
     {
-        $sql = "SELECT a.program_id, a.nokp, sum(hari) jumlah
-            FROM (SELECT kursus_luar.program_id, kursus_luar.nokp, DATEDIFF(kursus_luar.tkh_tamat, kursus_luar.tkh_mula)+1 AS hari
-            FROM kursus_luar
+        $sql = "SELECT a.program_id, sum(hari) jumlah
+            FROM (SELECT program_id, nokp, hari
+            FROM espel_kursus
             WHERE 1=1
-            AND YEAR(kursus_luar.tkh_mula) = ?
-            AND kehadiran = 'L'
-            AND kursus_luar.program_id = ?
-            AND kursus_luar.nokp = ?) a
-            group by a.program_id, a.nokp";
-        $rst = $this->db->query($sql, [$tahun,$programID,$nokp]);
+            AND YEAR(tkh_mula) = ?
+            AND stat_hadir = 'L'
+            AND program_id = ?
+            AND nokp = ?
+            UNION
+            SELECT a.program_id, a.nokp, a.hari
+            FROM espel_kursus a, espel_permohonan_kursus c
+            WHERE 1=1
+            AND a.id = c.kursus_id
+            AND YEAR(a.tkh_mula) = ?
+            AND a.program_id = ?
+            AND a.nokp = ?
+            AND c.stat_hadir = 'L'
+            ) a
+            group by a.program_id";
+        $rst = $this->db->query($sql, [$tahun,$programID,$nokp,$tahun,$programID,$nokp]);
 
         if($rst->num_rows())
             return $rst->row()->jumlah;
@@ -191,4 +263,6 @@ class Kursus_model extends MY_Model
             return NULL;
         }
     }
+
+
 }

@@ -47,16 +47,16 @@
         display: block;
         Margin: 0 auto !important;
         /* makes it centered */
-        max-width: 580px;
+        /* max-width: 580px; */
         padding: 10px;
-        width: 580px; }
+    /* width: 580px; */ }
 
       /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
         box-sizing: border-box;
         display: block;
         Margin: 0 auto;
-        max-width: 580px;
+        /* max-width: 580px; */
         padding: 10px; }
 
       /* -------------------------------------
@@ -280,7 +280,6 @@
 	line-height: 24px;
 	margin: 30px auto;
 	text-align: left;
-	width: 800px;
 }
 
 .table_view th {
@@ -376,6 +375,12 @@
               <tr>
                 <td class="wrapper">
                   <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td><h1>Sistem Maklumat Kursus espel</h1></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
                     <tr>
                       <td>
                         <p><b>Hi <?=$penyelia->nama?>,</b></p>

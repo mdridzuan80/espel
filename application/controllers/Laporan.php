@@ -20,33 +20,41 @@ class Laporan extends MY_Controller
         }
         else
         {
-            $this->load->library('appcpd');
-            $this->load->model("program_model","program");
-            $this->load->model("kursus_model","kursus");
-            $this->load->model("profil_model","profil");
+            try {
+                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                $html2pdf->pdf->SetDisplayMode('fullpage');
+                $html2pdf->setTestTdInOnePage(false);
 
-            $data = [];
-            $tahun = $this->input->post("txtTahun");
+                ob_start();
+                $content = ob_get_clean();
 
-            foreach($this->program->getAll()->result_array() as $program)
-            {
-                $data['program'][$program["id"]]=$program;
-                if($program["id"]==1)
-                    $data['program'][$program["id"]]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program["id"], $tahun);
-                if($program["id"]==3 || $program["id"]==4)
-                    $data['program'][$program["id"]]["hari"]=$this->kursus->getBilhariPemb($this->appsess->getSessionData('username'), $program["id"], $tahun);
-                if($program["id"]==5)
-                    $data['program'][$program["id"]]["hari"]=$this->kursus->getBilhariKendiri($this->appsess->getSessionData('username'), $program["id"], $tahun);
+                $this->load->library('appcpd');
+                $this->load->model("program_model","program");
+                $this->load->model("kursus_model","kursus");
+                $this->load->model("profil_model","profil");
+
+                $data = [];
+                $tahun = $this->input->post("txtTahun");
+
+                foreach($this->program->get_all() as $program)
+                {
+                    $data['program'][$program->id]["nama"]=$program->nama;
+                    $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
+                }
+                $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
+                $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+                    ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
+                    ->setTkhTamat($tahun . "-12-31")
+                    ->setTkhMula($tahun . "-01-01")
+                    ->cumulativePoint();
+                $data["tahun"] = $tahun;
+
+                $html2pdf->writeHTML($this->load->view("laporan/ringkasan/pdf_ringkasan",$data,TRUE));
+                $html2pdf->output('ringkasan.pdf',"D");
+            } catch (Html2PdfException $e) {
+                $formatter = new ExceptionFormatter($e);
+                echo $formatter->getHtmlMessage();
             }
-            $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
-            $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
-                ->setHcp($this->profil->getProfile($this->appsess->getSessionData("username"))->row()->hcp)
-                ->setTkhTamat($tahun . "-12-31")
-                ->setTkhMula($tahun . "-01-01")
-                ->cumulativePoint();
-            $data["tahun"] = $tahun;
-
-            return $this->renderView("laporan/ringkasan/show",$data);
         }
     }
 
@@ -73,16 +81,34 @@ class Laporan extends MY_Controller
         else
         {
             try {
-                $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
                 $html2pdf->pdf->SetDisplayMode('fullpage');
                 $html2pdf->setTestTdInOnePage(false);
 
                 ob_start();
                 $content = ob_get_clean();
 
-                $html2pdf->writeHTML($this->load->view("laporan/bukulog/bukulog",'',TRUE));
+                $tahun = $this->input->post("txtTahun");
+                $data = [];
+
+                $this->load->model("profil_model", "profil");
+                $this->load->model("kursus_model","kursus");
+                $this->load->library('appcpd');
+                $this->load->model("program_model","program");
+
+
+                $data["profil"] = $this->profil->with(["jawatan","jabatan"])->get($this->appsess->getSessionData("username"));
+                $data["sen_latihan_dalam_negara"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),1,$tahun);
+                $data["sen_latihan_luar_negara"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),2,$tahun);
+                $data["sen_latihan_semuka"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),3,$tahun);
+                $data["sen_latihan_tidak_semuka"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),4,$tahun);
+                $data["sen_latihan_kendiri"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),5,$tahun);
+
+                //echo $this->load->view("laporan/bukulog/bukulog",$data,TRUE);
+                //die();
+                $html2pdf->writeHTML($this->load->view("laporan/bukulog/bukulog",$data,TRUE));
                 //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 3);
-                $html2pdf->output('bukulog.pdf');
+                $html2pdf->output('bukulog.pdf', "D");
             } catch (Html2PdfException $e) {
                 $formatter = new ExceptionFormatter($e);
                 echo $formatter->getHtmlMessage();
