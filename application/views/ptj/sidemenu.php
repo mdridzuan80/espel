@@ -6,7 +6,7 @@
       <li><a><i class="fa fa-laptop"></i> Pengurusan Kursus <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('kursus/takwim')?>">Perancangan Kursus</a></li>
-          <li><a href="<?=base_url('mockup/ptj/kursus/mohon')?>">Permohonan</a></li>
+          <li><a href="<?=base_url('mockup/ptj/kursus/mohon')?>">Senarai Permohonan</a></li>
           <li><a href="<?=base_url('kursus/pengesahan_kehadiran')?>">Pengesahan Kehadiran</a></li>
         </ul>
       </li>
