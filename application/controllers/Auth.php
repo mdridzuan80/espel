@@ -65,6 +65,45 @@ class Auth extends MY_Controller
         }
     }
 
+    public function reset_katalaluan()
+    {
+        $this->load->model("profil_model","profil");
+
+        if(!$this->exist("reset"))
+        {
+            $this->load->view('reset');
+        }
+        else
+        {
+            $user = $this->appsess->getSessionData("username");
+            $pass = $this->input->post("katalaluan");
+            $rePass = $this->input->post("reKatalaluan");
+
+            if($pass == $rePass)
+            {
+                $this->load->library("appauth");
+                if($this->appauth->reset_password($user,$pass))
+                {
+                    $this->appsess->setFlashSession("success", TRUE);
+                    $this->appauth->logout();
+                    redirect("login");
+                }
+                else
+                {
+                    $this->appsess->setFlashSession("success", FALSE);
+                    $this->appauth->logout();
+                    redirect("login");
+                }
+            }
+            else
+            {
+                $this->appsess->setFlashSession("success", FALSE);
+                $this->appauth->logout();
+                redirect("login");
+            }
+        }
+    }
+
     public function reset()
     {
         $this->load->model("profil_model","profil");

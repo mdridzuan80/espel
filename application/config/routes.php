@@ -52,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route["login"] = "auth/login";
 $route["logout"] = "auth/logout";
+$route["reset_katalaluan"] = "auth/reset_katalaluan";
 $route["lupa_katalaluan"] = "auth/lupa_katalaluan";
 $route["reset/(:any)/(:any)"] = "auth/reset";
 

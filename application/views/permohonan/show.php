@@ -14,33 +14,24 @@
                 <th>Anjuran</th>
                 <th>Tarikh</th>
                 <th>Tarikh Tutup</th>
-                <th>Tarikh Mohon</th>
-                <th style="text-align:center">Status</th>
+                <th>Jumlah Permohonan</th>
+                <th style="text-align:center">Operasi</th>
               </tr>
             </thead>
 
-
             <tbody>
+                <?php foreach($sen_permohonan as $permohonan):?>
               <tr>
-                <td>Kursus 1</td>
-                <td>Jabatan Kesihatan Negeri Melaka</td>
-                <td>3 Julai 2017</td>
-                <td>26 Jun 2017</td>
-                <td>26 Mei 2017</td>
+                <td><?=$permohonan->tajuk?></td>
+                <td><?=$permohonan->jabatan?></td>
+                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
+                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
+                <td><?=$permohonan->total?></td>
                 <td align="center">
-                    <span class="label label-warning">Permohonan Baru</span>
+                    <a href="<?=base_url('kursus/permohonan_calon_kursus/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Calon</a>
                 </td>
               </tr>
-              <tr>
-                <td>Kursus 2</td>
-                <td>Hospital Besar Melaka</td>
-                <td>10 Julai 2017</td>
-                <td>3 Julai 2017</td>
-                <td>26 Mei 2017</td>
-                <td align="center">
-                    <span class="label label-success">Permohonan Lulus</span>
-                </td>
-              </tr>
+          <?php endforeach?>
              </tbody>
           </table>
 

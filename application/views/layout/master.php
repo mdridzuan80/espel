@@ -118,7 +118,7 @@
                     <?php endforeach?>
                     <li class="divider"></li>
                     <?php endif?>
-                    <li><a href="<?=base_url('reset_katalaluan')?>">Reset katalaluan</a></li>
+                    <li><a href="<?=base_url("profil/".appsess()->getSessionData("username")."/reset_katalaluan")?>">Reset katalaluan</a></li>
                     <li><a href="<?=base_url('logout')?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>

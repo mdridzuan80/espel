@@ -20,7 +20,7 @@ class AppAuth
         return password_hash($password,PASSWORD_BCRYPT);
     }
 
-    public function login($username,$password)
+    public function login($username, $password)
     {
         $this->CI->load->model("profil_model","profil");
         $profil = $this->CI->profil->getProfil($username);

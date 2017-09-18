@@ -941,6 +941,15 @@ class Kursus extends MY_Controller
 		}
     }
 
+    public function permohonan_kursus()
+    {
+        $this->load->model("mohon_kursus_model", "mohon_kursus");
+        $this->load->model("kumpulan_profil_model","kumpulan_profil");
+
+        $data["sen_permohonan"] = $this->mohon_kursus->get_permohonan_jabatan($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id);
+        return $this->renderView("permohonan/show", $data);
+    }
+
     public function test_send_email()
     {
         $this->load->library('appnotify');

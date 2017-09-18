@@ -441,8 +441,6 @@
                           </tbody>
                         </table>
                         <p>Sekian, terima kasih.</p>
-                        <br/>
-                        <p>Pentadbir Sistem espel</p>
                       </td>
                     </tr>
                   </table>
@@ -457,8 +455,8 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Jabatan Kesihatan Negeri Melaka</span>
-                    <br> Sistem Maklumat Latihan Bersepadu espel.
+                    <span class="apple-link">Modul Pengurusan Latihan</span>
+                    <br>Jabatan Kesihatan Negeri Melaka
                   </td>
                 </tr>
               </table>

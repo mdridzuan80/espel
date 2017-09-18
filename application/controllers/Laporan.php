@@ -118,13 +118,17 @@ class Laporan extends MY_Controller
 
     public function hadir_kursus()
     {
-        if(!$this->exist("submit"))
+        if(!$this->exist("papar"))
         {
             $this->load->model("kelas_model", "kelas");
 
             $data["sen_kelas"] = $this->kelas->dropdown("id","nama");
             $plugins["embedjs"][] = $this->load->view("laporan/js.php",NULL,TRUE);
             return $this->renderView("laporan/hadiri_kursus", $data, $plugins);
+        }
+        else
+        {
+            
         }
     }
 

@@ -106,7 +106,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangA" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(A)
+                            <input name="chkBorangA" type="checkbox" value="Y" > Borang keberkesanan kursus oleh peserta
                           </label>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangB" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(B)
+                            <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
                     </div>
@@ -217,7 +217,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangA" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(A)
+                            <input name="chkBorangA" type="checkbox" value="Y" > Borang keberkesanan kursus oleh peserta
                           </label>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangB" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(B)
+                            <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
                     </div>
@@ -328,7 +328,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangA" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(A)
+                            <input name="chkBorangA" type="checkbox" value="Y" > Borang keberkesanan kursus oleh peserta
                           </label>
                         </div>
                     </div>
@@ -338,7 +338,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangB" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(B)
+                            <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
                     </div>
@@ -458,7 +458,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangA" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(A)
+                            <input name="chkBorangA" type="checkbox" value="Y" > Borang keberkesanan kursus oleh peserta
                           </label>
                         </div>
                     </div>
@@ -468,7 +468,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="checkbox">
                           <label>
-                            <input name="chkBorangB" type="checkbox" value="Y" > Soal Selidik KKM/P&amp;P/2013(B)
+                            <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
                     </div>

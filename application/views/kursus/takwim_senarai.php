@@ -5,7 +5,7 @@
                 <div class="x_title">
                     <h2>Takwim Kursus</h2>
                     <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
-                    <a href="<?=base_url("kursus/takwim_senarai/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar senarai">List</a>
+                    <a href="<?=base_url("kursus/takwim_senarai/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar senarai">Senarai</a>
                     <a href="<?=base_url("kursus/takwim/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Kalendar</a>
                     <a href="<?=base_url("kursus/takwim_senarai")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Semasa</a>
                     <div class="clearfix"></div>

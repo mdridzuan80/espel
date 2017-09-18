@@ -3,7 +3,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-          <h2>Soal Selidik Kursus KKM/P&amp;P/2013(A)</h2>
+          <h2>Borang Keberkesanan Kursus oleh Peserta</h2>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
