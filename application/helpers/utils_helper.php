@@ -169,6 +169,7 @@ function initObj(array $property = array())
 {
     return (new obj($property));
 }
+
 class obj {
     public function __construct(array $arguments = array()) {
         if (!empty($arguments)) {

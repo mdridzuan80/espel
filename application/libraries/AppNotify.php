@@ -63,13 +63,16 @@ class AppNotify
     private function mail_config($config)
     {
         //Server settings
-        $this->mail->SMTPDebug = 0;                                 // Enable verbose debug output
+        $this->mail->SMTPDebug = $config->debug;                             // Enable verbose debug output
         $this->mail->isSMTP();                                      // Set mailer to use SMTP
         $this->mail->Host = $config->host;  // Specify main and backup SMTP servers
-        $this->mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $this->mail->SMTPAuth = ($config->auth == 'T') ? TRUE : FALSE;                               // Enable SMTP authentication
         $this->mail->Username = $config->user;                 // SMTP username
-        $this->mail->Password = $config->pass;                           // SMTP password
-        $this->mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $this->mail->Password = $config->pass;                        // SMTP password
+
+        if($config->secure != 'NONE')
+            $this->mail->SMTPSecure = $config->secure;                            // Enable TLS encryption, `ssl` also accepted
+
         $this->mail->Port = $config->port;                                  // TCP port to connect to
         $this->mail->setFrom($config->from, $config->nama);
         $this->mail->addReplyTo($config->from, $config->nama);

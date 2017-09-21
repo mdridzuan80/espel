@@ -9,14 +9,25 @@ class Auth extends MY_Controller
 
     public function login()
     {
-        if($this->exist("login"))
+        if($this->exist('login'))
         {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
-            $this->appauth->login($username, $password);
-            return redirect('');
+
+            if($profil = $this->appauth->isExist($username))
+            {
+                if($profil->first_login == 'F')
+                {
+                    $this->appauth->login($username, $password);
+                    return redirect('');
+                }
+                else
+                {
+                    return $this->renderLoginView('reset');
+                }
+            }
         }
-        $this->renderLoginView("login");
+        return $this->renderLoginView('login');
     }
 
     public function logout()
@@ -32,119 +43,125 @@ class Auth extends MY_Controller
 
     public function lupa_katalaluan()
     {
-        $this->load->model("profil_model","profil");
+        $this->load->model('profil_model','profil');
 
-        $username = $this->input->post("txtUsername");
-        $profil = $this->profil->get_by("nokp", $username);
+        $username = $this->input->post('txtUsername');
+        $profil = $this->profil->get_by('nokp', $username);
+
         if($profil)
         {
-            $this->load->library("appnotify");
+            $this->load->library('appnotify');
             $slug = md5($username . $profil->email . date('Ymd'));
 
             $mail = [
-                "to" => $profil->email,
-                "subject" => "[espel] Reset Katalaluan",
-                "body" => $this->load->view("layout/email/reset_katalaluan",["profil"=>$profil,"slug"=>$slug],TRUE),
+                'to' => $profil->email,
+                'subject' => '[espel] Reset Katalaluan',
+                'body' => $this->load->view('layout/email/reset_katalaluan',['profil' => $profil, 'slug' => $slug], TRUE),
             ];
 
             if($this->appnotify->send($mail))
             {
-                $this->appsess->setFlashSession("success", TRUE);
-                redirect("login#signup");
+                $this->appsess->setFlashSession('success', TRUE);
+                redirect('login#signup');
             }
             else
             {
-                $this->appsess->setFlashSession("success", FALSE);
-                redirect("login#signup");
+                $this->appsess->setFlashSession('success', FALSE);
+                redirect('login#signup');
             }
         }
         else
         {
-            $this->appsess->setFlashSession("success", FALSE);
-            redirect("login#signup");
+            $this->appsess->setFlashSession('success', FALSE);
+            redirect('login#signup');
         }
     }
 
+    public function first_login()
+    {
+
+    }
+    
     public function reset_katalaluan()
     {
-        $this->load->model("profil_model","profil");
+        $this->load->model('profil_model', 'profil');
 
-        if(!$this->exist("reset"))
+        if(!$this->exist('reset'))
         {
             $this->load->view('reset');
         }
         else
         {
-            $user = $this->appsess->getSessionData("username");
-            $pass = $this->input->post("katalaluan");
-            $rePass = $this->input->post("reKatalaluan");
+            $user = $this->appsess->getSessionData('username');
+            $pass = $this->input->post('katalaluan');
+            $rePass = $this->input->post('reKatalaluan');
 
             if($pass == $rePass)
             {
-                $this->load->library("appauth");
+                $this->load->library('appauth');
                 if($this->appauth->reset_password($user,$pass))
                 {
-                    $this->appsess->setFlashSession("success", TRUE);
+                    $this->appsess->setFlashSession('success', TRUE);
                     $this->appauth->logout();
-                    redirect("login");
+                    redirect('login');
                 }
                 else
                 {
-                    $this->appsess->setFlashSession("success", FALSE);
+                    $this->appsess->setFlashSession('success', FALSE);
                     $this->appauth->logout();
-                    redirect("login");
+                    redirect('login');
                 }
             }
             else
             {
-                $this->appsess->setFlashSession("success", FALSE);
+                $this->appsess->setFlashSession('success', FALSE);
                 $this->appauth->logout();
-                redirect("login");
+                redirect('login');
             }
         }
     }
 
     public function reset()
     {
-        $this->load->model("profil_model","profil");
+        $this->load->model('profil_model','profil');
 
         $user_id = $this->uri->segment(2);
 		if(!$user_id) show_error('Invalid reset code.');
 		$hash = $this->uri->segment(3);
 		if(!$hash) show_error('Invalid reset code.');
 
-        $user = $this->profil->get_by("nokp",$user_id);
+        $user = $this->profil->get_by('nokp',$user_id);
         if(!$user) show_error('Invalid reset code.');
 		$slug = md5($user->nokp . $user->email . date('Ymd'));
 		if($hash != $slug) show_error('Invalid reset code.');
 
-        if(!$this->exist("reset"))
+        if(!$this->exist('reset'))
         {
             $this->load->view('reset');
         }
         else
         {
-            $pass = $this->input->post("katalaluan");
-            $rePass = $this->input->post("reKatalaluan");
+            $pass = $this->input->post('katalaluan');
+            $rePass = $this->input->post('reKatalaluan');
 
             if($pass == $rePass)
             {
-                $this->load->library("appauth");
+                $this->load->library('appauth');
                 if($this->appauth->reset_password($user->nokp,$pass))
                 {
-                    $this->appsess->setFlashSession("success", TRUE);
-                    redirect("login");
+                    $this->appsess->setFlashSession('success', TRUE);
+                    redirect('login');
                 }
                 else
                 {
-                    $this->appsess->setFlashSession("success", FALSE);
+                    $this->appsess->setFlashSession('success', FALSE);
                     redirect("login");
                 }
             }
             else
             {
-                $this->appsess->setFlashSession("success", FALSE);
-                redirect("login");
+                $this->appsess->setFlashSession('success', FALSE);
+                redirect('login');
             }
         }
     }

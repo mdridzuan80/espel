@@ -20,21 +20,31 @@ class AppAuth
         return password_hash($password,PASSWORD_BCRYPT);
     }
 
-    public function login($username, $password)
-    {
+    public function isExist($username) {
         $this->CI->load->model("profil_model","profil");
         $profil = $this->CI->profil->getProfil($username);
-        if($profil)
+
+        if(count($profil))
         {
-            if(password_verify($password,$profil->password))
-            {
-                $this->CI->load->model("kumpulan_profil_model","kumpulan_profil");
-                $this->CI->appsess->setSessionData('isLogged', TRUE);
-                $this->CI->appsess->setSessionData('username', $username);
-                $this->CI->appsess->setSessionData('kumpulan', $this->CI->kumpulan_profil->getDefaultKumpulan($username));
-                return $this->isLogged();
-            }
+            return $profil;
         }
+
+        return false;
+    }
+
+    public function login($username, $password) {
+        $this->CI->load->model("profil_model","profil");
+        $profil = $this->CI->profil->getProfil($username);
+
+        if(password_verify($password,$profil->password))
+        {
+            $this->CI->load->model("kumpulan_profil_model","kumpulan_profil");
+            $this->CI->appsess->setSessionData('isLogged', TRUE);
+            $this->CI->appsess->setSessionData('username', $username);
+            $this->CI->appsess->setSessionData('kumpulan', $this->CI->kumpulan_profil->getDefaultKumpulan($username));
+            return $this->isLogged();
+        }
+
         return FALSE;
     }
 
@@ -47,8 +57,12 @@ class AppAuth
     {
         $this->CI->load->model("profil_model","profil");
         $data["password"] = $this->hash_katalaluan($password);
+
         if($this->CI->profil->update($username,$data))
+        {
             return TRUE;
+        }
+        
         return FALSE;
     }
 

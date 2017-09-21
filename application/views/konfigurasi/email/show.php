@@ -31,7 +31,6 @@
                     <th>Nama</th>
                     <th>Host</th>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Port</th>
                     <th style="text-align:center">Operasi</th>
                   </tr>
@@ -44,7 +43,6 @@
                     <td><?=$mail->nama?></td>
                     <td><?=$mail->host?></td>
                     <td><?=$mail->user?></td>
-                    <td><?=$mail->pass?></td>
                     <td><?=$mail->port?></td>
                     <td align="center">
                         <a href="<?=base_url('konfigurasi/email/' . $mail->id . "/default")?>" class="btn btn-round btn-xs <?=($mail->status)?"btn-warning":"btn-default"?>" data-toggle="tooltip" title="Aktifkan"><i class="fa fa-star"></i></a>

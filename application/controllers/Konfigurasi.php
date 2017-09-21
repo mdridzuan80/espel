@@ -34,7 +34,13 @@ class Konfigurasi extends MY_Controller
         {
             if(!$this->exist("submit"))
             {
-                return $this->renderView("konfigurasi/email/add");
+                $plugins = [
+                    "js" => [
+                        'assets/js/konfigurasi.js',
+                    ],
+                ];
+
+                return $this->renderView('konfigurasi/email/add','',$plugins);
             }
             else
             {
@@ -43,10 +49,17 @@ class Konfigurasi extends MY_Controller
                     "nama" => $this->input->post("txtNama"),
                     "host" => $this->input->post("txtHost"),
                     "from" => $this->input->post("txtAlamat"),
-                    "user" => $this->input->post("txtUsername"),
-                    "pass" => $this->input->post("txtPassword"),
                     "port" => $this->input->post("txtPort"),
+                    "auth" => $this->input->post("comLogin"),
+                    "debug" => $this->input->post("txtDebug"),
+                    "secure" => $this->input->post("comSecurity"),
                 ];
+
+                if($this->input->post("comLogin")=='T')
+                {
+                    $data['user'] = $this->input->post('txtUsername');
+                    $data['pass'] = $this->input->post('txtPassword');
+                }
 
                 if($this->mail_conf->count_all())
                 {
@@ -88,9 +101,15 @@ class Konfigurasi extends MY_Controller
         {
             if(!$this->exist("submit"))
             {
+                $plugins = [
+                    "js" => [
+                        'assets/js/konfigurasi.js',
+                    ],
+                ];
+
                 $this->load->model("mailconf_model","mail_conf");
                 $data["mail_conf"] = $this->mail_conf->get($id);
-                return $this->renderView("konfigurasi/email/edit", $data);
+                return $this->renderView("konfigurasi/email/edit",$data,$plugins);
             }
             else
             {
@@ -99,10 +118,22 @@ class Konfigurasi extends MY_Controller
                     "nama" => $this->input->post("txtNama"),
                     "host" => $this->input->post("txtHost"),
                     "from" => $this->input->post("txtAlamat"),
-                    "user" => $this->input->post("txtUsername"),
-                    "pass" => $this->input->post("txtPassword"),
                     "port" => $this->input->post("txtPort"),
+                    "auth" => $this->input->post("comLogin"),
+                    "debug" => $this->input->post("txtDebug"),
+                    "secure" => $this->input->post("comSecurity"),
                 ];
+
+                if($this->input->post("comLogin")=='T')
+                {
+                    $data['user'] = $this->input->post('txtUsername');
+                    $data['pass'] = $this->input->post('txtPassword');
+                }
+                else
+                {
+                    $data['user'] = NULL;
+                    $data['pass'] = NULL;
+                }
 
                 if($this->input->post('chkAktif'))
                 {

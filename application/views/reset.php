@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
+    <title>Espel | Jabatan Kesihatan Negeri Melaka</title>
 
     <!-- Bootstrap -->
     <link href="<?=base_url("assets/css/bootstrap.min.css")?>" rel="stylesheet">
@@ -33,13 +33,16 @@
         <div class="animate form login_form">
           <section class="login_content">
               <img src="<?=base_url("assets/images/jknmelaka-logo-x.png")?>"/>
-            <form method="POST">
-              <h1>Reset Katalaluan</h1>
+            <form method="POST" action="<?=base_url('first_login') ?>">
+              <h1>Login Kali Pertama</h1>
               <div>
-                <input type="password" class="form-control" name="katalaluan" placeholder="katalaluan" required />
+                <input type="password" class="form-control" name="katalaluanAsal" placeholder="Katalaluan Asal" required />
               </div>
               <div>
-                <input type="password" class="form-control" name="reKatalaluan" placeholder="re-katalaluan" required />
+                <input type="password" class="form-control" name="katalaluan" placeholder="Katalaluan Baru" required />
+              </div>
+              <div>
+                <input type="password" class="form-control" name="reKatalaluan" placeholder="Re-Katalaluan Baru" required />
               </div>
 
               <div>
