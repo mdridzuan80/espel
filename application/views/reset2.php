@@ -33,18 +33,14 @@
         <div class="animate form login_form">
           <section class="login_content">
             <img src="<?=base_url("assets/images/jknmelaka-logo-x.png")?>"/>
-            <form method="POST" action="<?=base_url('first_login') ?>">
+            <form method="POST">
               <?php $csrf = [
                     'name' => $this->security->get_csrf_token_name(),
                     'hash' => $this->security->get_csrf_hash()
                     ];
               ?>
               <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
-              <input type="hidden" name="hddUsername" value="<?=$username?>" />
-              <h1>Login Kali Pertama</h1>
-              <div>
-                <input type="password" class="form-control" name="katalaluanAsal" placeholder="Katalaluan Asal" required />
-              </div>
+              <h1>Reset Katalaluan</h1>
               <div>
                 <input type="password" class="form-control" name="katalaluan" placeholder="Katalaluan Baru" required />
               </div>
@@ -53,7 +49,7 @@
               </div>
 
               <div>
-                <button class="btn btn-primary submit" name="reset">Login kali pertama</button>
+                <button class="btn btn-primary submit" name="reset">Reset</button>
               </div>
 
                 <div class="clearfix"></div>

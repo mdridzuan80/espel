@@ -23,7 +23,7 @@ class Auth extends MY_Controller
                 }
                 else
                 {
-                    return $this->renderLoginView('reset');
+                    return $this->renderLoginView('reset',['username' => $username]);
                 }
             }
         }
@@ -79,7 +79,29 @@ class Auth extends MY_Controller
 
     public function first_login()
     {
-
+        if($this->input->method(TRUE) == 'POST')
+        {
+            $username = $this->input->post('hddUsername');
+            $katalaluanAsal = $this->input->post('katalaluanAsal');
+            $katalaluanBaru = $this->input->post('katalaluan');
+            $reKatalaluan = $this->input->post('reKatalaluan');
+            
+            if($this->appauth->login($username, $katalaluanAsal) && ($katalaluanBaru == $reKatalaluan))
+            {
+                if($this->appauth->reset_password($username,$katalaluanBaru))
+                {
+                    return redirect('/');
+                }
+            }
+            else
+            {
+                return redirect('login');
+            }
+        }
+        else
+        {
+            return redirect('login');
+        }
     }
     
     public function reset_katalaluan()
@@ -137,7 +159,7 @@ class Auth extends MY_Controller
 
         if(!$this->exist('reset'))
         {
-            $this->load->view('reset');
+            $this->load->view('reset2');
         }
         else
         {

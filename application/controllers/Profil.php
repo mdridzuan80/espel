@@ -81,7 +81,7 @@ class Profil extends MY_Controller
 
 	public function reset_katalaluan($username)
 	{
-		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$nokp)
+		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$username)
 		{
 			if(!$this->exist("submit"))
 			{

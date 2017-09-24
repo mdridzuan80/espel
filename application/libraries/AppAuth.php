@@ -57,6 +57,7 @@ class AppAuth
     {
         $this->CI->load->model("profil_model","profil");
         $data["password"] = $this->hash_katalaluan($password);
+        $data["first_login"] = ($this->CI->profil->get($username)->first_login == 'T')? 'F':'T';
 
         if($this->CI->profil->update($username,$data))
         {
