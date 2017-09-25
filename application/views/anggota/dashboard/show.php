@@ -73,8 +73,8 @@
               <tr>
                 <td><?=$hadir->tajuk?></td>
                 <td><?=$hadir->jabatan?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
+                <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
+                <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
                 <td><?=$hadir->hari?></td>
               </tr>
           <?php endforeach?>

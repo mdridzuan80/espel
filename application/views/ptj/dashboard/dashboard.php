@@ -7,7 +7,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-          <table id="datatable" class="table table-striped table-bordered jambo_table">
+          <table class="datatable table table-striped table-bordered jambo_table">
             <thead>
               <tr class="headings">
                 <th>Nama Kursus</th>
