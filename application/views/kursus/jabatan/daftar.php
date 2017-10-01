@@ -26,6 +26,7 @@
     </div>
 </div>
 
+<!-- latihan -->
 <div class="row espel_latihan" style="display:none">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
@@ -75,10 +76,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuran">
+                            <option selected="selected" value="D" >Dalaman</option>
+                            <option value="L" >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
                   <div id="input-com-penganjur" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'">
+                    </div>
+                  </div>
+                  <div id="input-txt-penganjur" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">
@@ -186,10 +214,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
-                  <div id="input-com-penganjur" class="form-group">
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuranPemb">
+                            <option selected="selected" value="D" >Dalaman</option>
+                            <option value="L" >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div id="input-com-penganjur-pemb" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'">
+                    </div>
+                  </div>
+                  <div id="input-txt-penganjur-pemb" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">
@@ -297,10 +352,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
-                  <div id="input-com-penganjur" class="form-group">
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuranPemb2">
+                            <option selected="selected" value="D" >Dalaman</option>
+                            <option value="L" >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div id="input-com-penganjur-pemb2" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'">
+                    </div>
+                  </div>
+                  <div id="input-txt-penganjur-pemb2" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">
@@ -427,10 +509,37 @@
                         </select>
                     </div>
                   </div>
-                  <div id="input-com-penganjur" class="form-group">
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuranKend">
+                            <option selected="selected" value="D" >Dalaman</option>
+                            <option value="L" >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div id="input-com-penganjur-kend" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'">
+                    </div>
+                  </div>
+                  <div id="input-txt-penganjur-kend" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">

@@ -24,7 +24,7 @@
     <link href="<?=base_url("assets/js/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css")?>" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="assets/css/custom.min.css" rel="stylesheet">
+    <link href="<?=base_url('assets/css/custom.min.css')?>" rel="stylesheet">
 
     <!-- easyui -->
     <link href="<?=base_url("assets/css/easyui.css")?>" rel="stylesheet">

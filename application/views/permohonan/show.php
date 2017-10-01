@@ -1,43 +1,40 @@
 <div class="row">
-  <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Senarai Permohonan Kursus</h2>
-
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-          <table id="datatable" class="table table-striped table-bordered jambo_table">
-            <thead>
-              <tr class="headings">
-                <th>Nama Kursus</th>
-                <th>Anjuran</th>
-                <th>Tarikh</th>
-                <th>Tarikh Tutup</th>
-                <th>Jumlah Permohonan</th>
-                <th style="text-align:center">Operasi</th>
-              </tr>
-            </thead>
-
-            <tbody>
-                <?php foreach($sen_permohonan as $permohonan):?>
-              <tr>
-                <td><?=$permohonan->tajuk?></td>
-                <td><?=$permohonan->jabatan?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
-                <td><?=$permohonan->total?></td>
-                <td align="center">
-                    <a href="<?=base_url('kursus/permohonan_calon_kursus/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Calon</a>
-                </td>
-              </tr>
-          <?php endforeach?>
-             </tbody>
-          </table>
-
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <h2>Kursus yang ditawarkan</h2>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div style="float:right">
+                <form id="formTapis" class="form-inline">
+                  <div class="form-group">
+                    <label>Tapisan Rekod : </label>
+                    <select id="comBulan" class="form-control input-sm">
+                      <?php foreach(array_bulan() as $index => $desc) : ?>
+                      <option value="<?= $index ?>" <?= ($index==date('m')) ? 'selected' : '' ?>><?= ucfirst(key($desc)) ?></option>
+                      <?php endforeach ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select id="comTahun" class="form-control input-sm">
+                      <option>2017</option>
+                    </select>
+                  </div>
+                  <a id="cmdTapis" class="btn btn-primary btn-sm" style="margin:0">Tapis</a>
+                </form>
+              </div>
+            </div>
+          </div>
+            
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div id="sen_permohonan_ph"></div>
+        </div>
       </div>
     </div>
-  </div>
 </div>
 <br/>
 <br/>

@@ -156,6 +156,21 @@ $(document).ready(function() {
      });
  })();
 
+ (function () {
+     $("#comAnjuranPemb2").change(function (e) {
+         console.log($(this).val());
+         if ($(this).val() == 'L') {
+             $("#input-txt-penganjur-pemb2").show();
+             $("#input-com-penganjur-pemb2").hide();
+         }
+
+         if ($(this).val() == 'D') {
+             $("#input-txt-penganjur-pemb2").hide();
+             $("#input-com-penganjur-pemb2").show();
+         }
+     });
+ })();
+
  (function(){
      $("#comAnjuranKend").change(function(e){
          console.log($(this).val());
@@ -171,5 +186,33 @@ $(document).ready(function() {
             $("#input-com-penganjur-kend").show();
         }
      });
+ })();
+
+ (function (){
+     var current = new Date();
+     var dateObj = {
+         placeholder: $('#sen_permohonan_ph'),
+         tahun: current.getFullYear(),
+         bulan: current.getMonth()+1
+     };
+     getPermohonanKursus(dateObj);
+
+     $('#cmdTapis').click(function(e){
+        e.preventDefault();
+        dateObj.tahun = $('#comTahun').val();
+        dateObj.bulan = $('#comBulan').val();
+        getPermohonanKursus(dateObj);
+     });
+
+     function getPermohonanKursus(obj) {
+         $.ajax({
+             url: base_url + 'kursus/ajax_senarai_permohonan',
+             data: { tahun: obj.tahun, bulan: obj.bulan },
+             method: 'POST',
+             success: function (data, textStatus, jqXHR) {
+                 obj.placeholder.html(data);
+             }
+         });
+     }
  })();
 });

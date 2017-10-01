@@ -36,6 +36,43 @@ function buildTree(array $elements, $parentId = 0) {
     return $branch;
 }
 
+function buildTreeParentInc(array $elements, $parentId = 0, $parentIncId = 0) {
+    $branch = [];
+
+    if($parentIncId != 0)
+    {
+        foreach ($elements as $element)
+        {
+            if ($element['id'] == $parentIncId)
+            {
+                $children = buildTreeParentInc($elements, $element['id']);
+                $element["text"] = $element["nama"];
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+        }
+    }
+    else
+    {
+        foreach ($elements as $element)
+        {
+            if ($element['parent_jabatan_id'] == $parentId)
+            {
+                $children = buildTreeParentInc($elements, $element['id']);
+                $element["text"] = $element["nama"];
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+        }
+    }
+
+    return $branch;
+}
+
 function relatedJabatan(array $elements, $parentId = 0) {
     $branch = [];
 
@@ -168,6 +205,24 @@ function dd($var)
 function initObj(array $property = array())
 {
     return (new obj($property));
+}
+
+function array_bulan()
+{
+    return [
+        '1' => ['jan'=>'januari'],
+        '2' => ['feb'=>'februari'],
+        '3' => ['mac'=>'mac'],
+        '4' => ['apr'=>'april'],
+        '5' => ['mei'=>'mei'],
+        '6' => ['jun'=>'jun'],
+        '7' => ['jul'=>'julai'],
+        '7' => ['ogo'=>'ogos'],
+        '9' => ['sep'=>'september'],
+        '10' => ['okt'=>'oktober'],
+        '11' => ['nov'=>'november'],
+        '12' => ['dis'=>'disember'],
+    ];
 }
 
 class obj {

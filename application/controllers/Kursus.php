@@ -21,7 +21,6 @@ class Kursus extends MY_Controller
             "css" => [
                 'assets/js/vendors/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css',
                 'assets/css/calendar.css',
-
             ],
             "js" => [
                 "assets/js/vendors/moment/moment.js",
@@ -308,7 +307,17 @@ class Kursus extends MY_Controller
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'telefon' => $this->input->post("txtTelefon"),
+                        'email' => $this->input->post("txtEmail"),
                     ];
+                    if($this->input->post("comAnjuran")=="L")
+                    {
+                        $data["penganjur"] = $this->input->post("txtPenganjur");
+                    }
+                    if($this->input->post("comAnjuran")=="D")
+                    {
+                        $data["penganjur_id"] = $this->input->post("comPenganjur");
+                    }
 
                     if($this->input->post("chkBorangA"))
                         $data["stat_soal_selidik_a"] = 'Y';
@@ -332,7 +341,17 @@ class Kursus extends MY_Controller
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'telefon' => $this->input->post("txtTelefon"),
+                        'email' => $this->input->post("txtEmail"),
                     ];
+                    if($this->input->post("comAnjuran")=="L")
+                    {
+                        $data["penganjur"] = $this->input->post("txtPenganjur");
+                    }
+                    if($this->input->post("comAnjuran")=="D")
+                    {
+                        $data["penganjur_id"] = $this->input->post("comPenganjur");
+                    }
 
                     if($this->input->post("chkBorangA"))
                         $data["stat_soal_selidik_a"] = 'Y';
@@ -358,7 +377,17 @@ class Kursus extends MY_Controller
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'telefon' => $this->input->post("txtTelefon"),
+                        'email' => $this->input->post("txtEmail"),
                     ];
+                    if($this->input->post("comAnjuran")=="L")
+                    {
+                        $data["penganjur"] = $this->input->post("txtPenganjur");
+                    }
+                    if($this->input->post("comAnjuran")=="D")
+                    {
+                        $data["penganjur_id"] = $this->input->post("comPenganjur");
+                    }
 
                     if($this->input->post("chkBorangA"))
                         $data["stat_soal_selidik_a"] = 'Y';
@@ -943,16 +972,55 @@ class Kursus extends MY_Controller
 
     public function permohonan_kursus()
     {
-        $this->load->model("mohon_kursus_model", "mohon_kursus");
+        $this->load->model('kursus_model','kursus');
         $this->load->model("kumpulan_profil_model","kumpulan_profil");
 
-        $data["sen_permohonan"] = $this->mohon_kursus->get_permohonan_jabatan($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id);
-        return $this->renderView("permohonan/show", $data);
+        return $this->renderView("permohonan/show",'',$this->plugins());
+    }
+
+    public function percalonan($kursus_id)
+    {
+        $this->load->model('kursus_model','kursus');
+
+        $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id); 
+        $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
+
+        return $this->renderView('calon/show', $data, $plugins);
+    }
+
+    public function ajax_get_calon_terpilih()
+    {   
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+
+        $filter = initObj([
+			'jabatan_id' => $this->input->post('jabatanID'),
+            'kumpulan' => $this->input->post('kumpulan'),
+            'gred' => $this->input->post('gred'),
+            'hari' => $this->input->post('hari'),
+        ]);
+
+        $data['sen_calon'] = $this->mohon_kursus->get_calon($filter);
+        return $this->load->view('calon/senarai', $data);
+
     }
 
     public function test_send_email()
     {
         $this->load->library('appnotify');
         $this->appnotify->send(['to'=>'mdridzuan@melaka.gov.my','subject'=>'espel - notification test', 'body'=>'Anda telah berjaya menghantar email ini']);
+    }
+
+    public function ajax_senarai_permohonan()
+    {
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+        $takwim = initObj([
+			"tahun" => $this->input->post('tahun'),
+			"bulan" => $this->input->post('bulan'),
+        ]);
+
+        $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
+        return $this->load->view('permohonan/senarai',$data);
     }
 }

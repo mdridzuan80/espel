@@ -65,10 +65,9 @@ class Welcome extends MY_Controller {
 	{
 		$this->load->model("jabatan_model","jabatan");
 		$this->load->model('kumpulan_profil_model','kumpulan_profil');
-
+		$id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode(buildTree($this->jabatan->as_array()->get_all(), $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id
-		)));
+		->set_output(json_encode(buildTreeParentInc($this->jabatan->as_array()->get_all(),$id,$id)));
 	}
 }
