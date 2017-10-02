@@ -16,9 +16,19 @@ $(document).ready(function() {
 
         createCalon(curview, filter);
 
-        $('#cmdTapis').click(function (e) {
+        $('#cmdShowTapis').click(function (e) {
             e.preventDefault();
-            $('#filter').toggle();
+            $('#filter').toggle('fast');
+        });
+
+        $('#cmdDoTapis').click(function(e){
+            e.preventDefault();
+            filter.jabatanID = $('#comJabatan').val();
+            filter.kumpulan = $('#comKelas').val(),
+            filter.gred = $('#comGred').val(),
+            filter.hari = $('#comHari').val()
+            console.log(filter);
+            createCalon(curview, filter);
         });
 
         $('#cmdSenarai').click(function (e) {
@@ -73,7 +83,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         method: 'post',
-                        url: base_url + 'kursus/ajax_get_calon_terpilih',
+                        url: base_url + 'kursus/ajax_get_pencalonan/' + curview.kursus_id,
                         data: filter,
                         success: function (data, textStatus, jqXHR) {
                             $('#sen_calon').html(data);

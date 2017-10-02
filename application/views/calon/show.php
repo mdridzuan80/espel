@@ -53,7 +53,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div style="float:right">
                                 <input id="kursus_id" type="hidden" value="<?=$kursus->id?>">
-                                <a id="cmdTapis" class="btn btn-primary btn-sm" style="margin:0"><i class="fa fa-filter"></i></a>
+                                <a id="cmdShowTapis" class="btn btn-primary btn-sm" style="margin:0"><i class="fa fa-filter"></i></a>
                                 <a id="cmdSenarai" class="btn btn-primary btn-sm" style="margin:0"></a>
                             </div>
                             <div class="clearfix"></div>
@@ -68,7 +68,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related_pengurusan")?>',method:'get'">
+                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$jabatan_id?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -93,28 +93,27 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Bilangan Hari</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control">
+                        <select class="form-control" id="comHari">
                         <option selected="selected" value="0">Pilihan</option>
-                          <option>Tidak pernah hadir</option>
-                          <option>Lebih atau sama dengan 1 hari</option>
-                          <option>Lebih atau sama dengan 2 hari</option>
-                          <option>Lebih atau sama dengan 3 hari</option>
-                          <option>Lebih atau sama dengan 4 hari</option>
-                          <option>Lebih atau sama dengan 5 hari</option>
-                          <option>Lebih atau sama dengan 6 hari</option>
-                          <option>Lebih atau sama dengan 7 hari</option>
+                          <option value="1">Tidak pernah hadir</option>
+                          <option value="2">Lebih atau sama dengan 1 hari</option>
+                          <option value="3">Lebih atau sama dengan 2 hari</option>
+                          <option value="4">Lebih atau sama dengan 3 hari</option>
+                          <option value="4">Lebih atau sama dengan 4 hari</option>
+                          <option value="5">Lebih atau sama dengan 5 hari</option>
+                          <option value="6" >Lebih atau sama dengan 6 hari</option>
+                          <option value="7">Lebih atau sama dengan 7 hari</option>
                         </select>
                     </div>
                   </div>
-                  <div class="ln_solid"></div>
-                  <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <button target="_blank" class="btn btn-success" name="papar">Papar</button>
-                        <button class="btn btn-primary" type="reset">Reset</button>
+                        <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Tapis</button>
+                        <button class="btn btn-primary btn-sm" type="reset">Reset</button>
                     </div>
-                  </div>
                 </form>
+                <br/>
                 </div>
+                
                 <div id="sen_calon"></div>
             </div>
         </div>

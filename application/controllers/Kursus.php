@@ -980,11 +980,13 @@ class Kursus extends MY_Controller
 
     public function pencalonan($kursus_id)
     {
+        $this->load->model('profil_model','profil');
         $this->load->model('kursus_model','kursus');
         $this->load->model('kelas_model','kelas');
 
         $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id); 
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
+        $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
         $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
 
         return $this->renderView('calon/show', $data, $plugins);
@@ -1004,6 +1006,23 @@ class Kursus extends MY_Controller
         $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id, $filter);
         
         return $this->load->view('calon/senarai', $data);
+
+    }
+
+    public function ajax_get_pencalonan($kursus_id)
+    {   
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+
+        $filter = initObj([
+			'jabatan_id' => $this->input->post('jabatanID'),
+            'kumpulan' => $this->input->post('kumpulan'),
+            'gred' => $this->input->post('gred'),
+            'hari' => $this->input->post('hari'),
+        ]);
+
+        $data['sen_calon'] = $this->mohon_kursus->get_pencalonan($kursus_id, $filter);
+        
+        return $this->load->view('calon/senarai_calon', $data);
 
     }
 
