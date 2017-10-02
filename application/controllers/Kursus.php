@@ -978,17 +978,19 @@ class Kursus extends MY_Controller
         return $this->renderView("permohonan/show",'',$this->plugins());
     }
 
-    public function percalonan($kursus_id)
+    public function pencalonan($kursus_id)
     {
         $this->load->model('kursus_model','kursus');
+        $this->load->model('kelas_model','kelas');
 
         $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id); 
+        $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
         $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
 
         return $this->renderView('calon/show', $data, $plugins);
     }
 
-    public function ajax_get_calon_terpilih()
+    public function ajax_get_calon_terpilih($kursus_id)
     {   
         $this->load->model('mohon_kursus_model','mohon_kursus');
 
@@ -999,7 +1001,8 @@ class Kursus extends MY_Controller
             'hari' => $this->input->post('hari'),
         ]);
 
-        $data['sen_calon'] = $this->mohon_kursus->get_calon($filter);
+        $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id, $filter);
+        
         return $this->load->view('calon/senarai', $data);
 
     }

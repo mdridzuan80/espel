@@ -40,6 +40,7 @@
                 </td>
               </tr>
           <?php endforeach?>
+          
           <?php endif ?>
              </tbody>
           </table>

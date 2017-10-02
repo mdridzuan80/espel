@@ -2,11 +2,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2><i class="fa fa-bars"></i> Maklumat Kursus</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                </ul>
+                <h2><i class="fa fa-info"></i> Maklumat Kursus</h2>
                 <div class="clearfix"></div>
             </div>            
 
@@ -72,7 +68,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="1">
+                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related_pengurusan")?>',method:'get'">
                     </div>
                   </div>
                   <div class="form-group">

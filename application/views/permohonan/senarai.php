@@ -18,7 +18,7 @@
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
                 <td align="center">
-                    <a href="<?=base_url('kursus/percalonan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pencalonan</a>
+                    <a href="<?=base_url('kursus/pencalonan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pencalonan</a>
                 </td>
               </tr>
           <?php endforeach?>

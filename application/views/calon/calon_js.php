@@ -3,7 +3,7 @@ $(document).ready(function() {
     (function () {
         var curview = {
             curtable: 1,
-            curtitle: 'Senarai Calon yang dipilih',
+            curtitle: 'Senarai Peserta',
             curbutton: 'Senarai Pencalonan',
             kursus_id: $('#kursus_id').val()
         };
@@ -38,14 +38,14 @@ $(document).ready(function() {
 
             if(curview.curtable == 1)
             {
-                curview.curtitle = 'Senarai Calon yang dipilih';
+                curview.curtitle = 'Senarai Peserta';
                 curview.curbutton = 'Senarai Pencalonan';
             }
 
             if(curview.curtable == 2)
             {
-                curview.curtitle = 'Senarai Nama Pencalonan';
-                curview.curbutton = 'Senarai Calon';
+                curview.curtitle = 'Senarai Pilihan Pencalonan';
+                curview.curbutton = 'Senarai Peserta';
             }
 
             createCalon(curview, filter);
@@ -59,7 +59,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         method: 'post',
-                        url: base_url + 'kursus/ajax_get_calon_terpilih',
+                        url: base_url + 'kursus/ajax_get_calon_terpilih/' + curview.kursus_id,
                         data: filter,
                         success: function (data, textStatus, jqXHR) {
                             $('#sen_calon').html(data);
@@ -82,6 +82,21 @@ $(document).ready(function() {
                 break;
             }
         }
+
+        $("#comKelas").change(function(){
+            $.ajax({
+                url:"<?=base_url("api/get_laporan_gred/")?>" + $(this).val(),
+                success: function(gred,textStatus,jqXHR)
+                {
+                    $('#comGred').html('<option value="0">pilih semua</option>');
+                    for(var i=0;i<gred.length;i++)
+                    {
+                        var option=$('<option></option>').attr("value",gred[i]['id']).text(gred[i]['kod']);
+                        $('#comGred').append(option);
+                    }
+                }
+            });
+        });
     })();
 });
 </script>

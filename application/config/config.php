@@ -453,7 +453,7 @@ $config['csrf_token_name'] = 'csrf_espel';
 $config['csrf_cookie_name'] = 'csrf_espel_cookie';
 $config['csrf_expire'] = 900;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array('kursus/ajax_senarai_permohonan','kursus/ajax_get_calon_terpilih');
+$config['csrf_exclude_uris'] = ['kursus/ajax_senarai_permohonan','kursus/ajax_get_calon_terpilih/[0-9]+'];
 
 /*
 |--------------------------------------------------------------------------

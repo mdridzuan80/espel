@@ -27,7 +27,7 @@ class Mohon_kursus_model extends MY_Model
         return $this->db->get()->result();
     }
 
-    public function get_calon($filter)
+    public function get_calon($Kursus_id, $filter)
     {
         $this->db->select('a.id, b.nama, d.kod as gred, e.nama as kumpulan, c.nama as jabatan, a.stat_mohon');
         $this->db->from($this->_table . ' a');
@@ -36,6 +36,7 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('espel_dict_gred d', 'b.gred_id = d.id');
         $this->db->join('espel_dict_kelas e', 'd.kelas_id = e.id');
         $this->db->join('espel_dict_jawatan f', 'b.jawatan_id = f.id');
+        $this->db->where('a.kursus_id',$Kursus_id);
         
         if($filter->jabatan_id)
         {
