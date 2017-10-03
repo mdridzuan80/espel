@@ -456,7 +456,8 @@ $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = [
 	'kursus/ajax_senarai_permohonan',
 	'kursus/ajax_get_calon_terpilih/[0-9]+',
-	'kursus/ajax_get_pencalonan/[0-9]+'
+	'kursus/ajax_get_pencalonan/[0-9]+',
+	'kursus/ajax_set_pencalonan/[0-9]+'
 ];
 
 /*

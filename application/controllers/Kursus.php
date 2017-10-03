@@ -41,9 +41,9 @@ class Kursus extends MY_Controller
         {table_open}<div id="calendar-wrap">{/table_open}
 
         {heading_row_start}<table><tr>{/heading_row_start}
-        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right btn-sm" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
         {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
-        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
         {heading_row_end}</tr></table><div id="calendar">{/heading_row_end}
 
         {week_row_start}<ul class="weekdays">{/week_row_start}
@@ -95,9 +95,9 @@ class Kursus extends MY_Controller
         {table_open}<div id="calendar-wrap">{/table_open}
 
         {heading_row_start}<table><tr>{/heading_row_start}
-        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right btn-sm" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
         {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
-        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
         {heading_row_end}</tr></table><div id="calendar">{/heading_row_end}
 
         {week_row_start}<ul class="weekdays">{/week_row_start}
@@ -143,9 +143,9 @@ class Kursus extends MY_Controller
         $prefs['show_next_prev'] = TRUE;
         $prefs['template'] = '
         {heading_row_start}<table><tr>{/heading_row_start}
-        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right btn-sm" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
         {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
-        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
         {heading_row_end}</tr></table><div style="display:none">{/heading_row_end}
         {table_close}</div>{/table_close}';
 
@@ -168,9 +168,9 @@ class Kursus extends MY_Controller
         $prefs['show_next_prev'] = TRUE;
         $prefs['template'] = '
         {heading_row_start}<table><tr>{/heading_row_start}
-        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right btn-sm" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
         {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
-        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
         {heading_row_end}</tr></table><div style="display:none">{/heading_row_end}
         {table_close}</div>{/table_close}';
 
@@ -984,7 +984,7 @@ class Kursus extends MY_Controller
         $this->load->model('kursus_model','kursus');
         $this->load->model('kelas_model','kelas');
 
-        $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id); 
+        $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id);
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
         $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
         $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
@@ -993,7 +993,7 @@ class Kursus extends MY_Controller
     }
 
     public function ajax_get_calon_terpilih($kursus_id)
-    {   
+    {
         $this->load->model('mohon_kursus_model','mohon_kursus');
 
         $filter = initObj([
@@ -1004,13 +1004,13 @@ class Kursus extends MY_Controller
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id, $filter);
-        
+
         return $this->load->view('calon/senarai', $data);
 
     }
 
     public function ajax_get_pencalonan($kursus_id)
-    {   
+    {
         $this->load->model('mohon_kursus_model','mohon_kursus');
 
         $filter = initObj([
@@ -1021,8 +1021,32 @@ class Kursus extends MY_Controller
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_pencalonan($kursus_id, $filter);
-        
+
         return $this->load->view('calon/senarai_calon', $data);
+
+    }
+
+    public function ajax_set_pencalonan($kursus_id)
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        foreach($this->input->post('chkKehadiran') as $kehadiran)
+        {
+            if($kehadiran)
+            {
+                $data['nokp'] = $kehadiran;
+                $data['kursus_id'] = $kursus_id;
+                $data['tkh'] = date('Y-m-d h:i');
+                $data['stat_mohon'] = 'L';
+
+                if(!$this->mohon_kursus->insert($data))
+                {
+                    return show_error('Data tidak berjaya disimpan');
+                }
+
+            }
+        }
+
+        return $this->output->set_status_header(200, 'Proses selesai');
 
     }
 
@@ -1035,6 +1059,7 @@ class Kursus extends MY_Controller
     public function ajax_senarai_permohonan()
     {
         $this->load->model('kursus_model','kursus');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
         $takwim = initObj([
@@ -1042,7 +1067,17 @@ class Kursus extends MY_Controller
 			"bulan" => $this->input->post('bulan'),
         ]);
 
+        $data['objMohonKursus'] = $this->mohon_kursus;
         $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
         return $this->load->view('permohonan/senarai',$data);
+    }
+
+    public function pelaksanaan($kursus_id)
+    {
+        $this->load->model('kursus_model','kursus');
+
+        $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id);
+
+        return $this->renderView('kursus/pelaksanaan/show', $data);
     }
 }

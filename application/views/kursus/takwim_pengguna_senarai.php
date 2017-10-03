@@ -47,7 +47,9 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                                 <td align="center">
-                                    <a href="<?=base_url('kursus/info_jabatan/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Mohon">Mohon</a>
+                                    <?php if(strtotime($kursus->tkh_mula) > strtotime(date('Y-m-d'))) : ?>
+                                    <a href="<?=base_url('kursus/info_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Mohon">Mohon</a>
+                                    <?php endif ?>
                                 </td>
                               </tr>
                               <?php endforeach?>

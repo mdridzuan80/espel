@@ -95,7 +95,9 @@ header {
     background: #fcfadb;
 }
 
-
+#calendar .pass {
+    background: #ddd;
+}
 /* ============================
                 Mobile Responsiveness
    ============================*/

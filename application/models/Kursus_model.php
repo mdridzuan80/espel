@@ -266,7 +266,7 @@ class Kursus_model extends MY_Model
 
     public function sen_takwim_mohon($ptj_jabatan_id, $takwim)
     {
-        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, c.nama as penganjur
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, c.nama as penganjur, a.stat_laksana
             FROM espel_kursus a, espel_dict_program b, espel_dict_jabatan c
             WHERE 1=1
             AND a.program_id = b.id
@@ -275,7 +275,7 @@ class Kursus_model extends MY_Model
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             UNION
-            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.penganjur
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.penganjur, a.stat_laksana
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id

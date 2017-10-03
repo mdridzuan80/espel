@@ -12,6 +12,7 @@
 
     function genCell(i){
         return function(data, textStatus, jqXHR ){
+            var now = moment();
             var text = "";
             var tkhMula;
             var tkhTamat;
@@ -20,13 +21,26 @@
                 data.forEach(function(kursus){
                     tkhMula = moment(kursus.tkh_mula);
                     tkhTamat = moment(kursus.tkh_tamat);
-                    text = text + "<div class=\"event\"> \
-                            <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
-                            </div> \
-                            <div class=\"event-time\"> \
-                                " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-                            </div> \
-                        </div>";
+                    if(!tkhMula.isBefore(now))
+                    {
+                        text = text + "<div class=\"event\"> \
+                                <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
+                                </div> \
+                                <div class=\"event-time\"> \
+                                    " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+                                </div> \
+                            </div>";
+                    }
+                    else
+                    {
+                        text = text + "<div class=\"event pass\"> \
+                                <div class=\"event-desc\">" + kursus.tajuk + " \
+                                </div> \
+                                <div class=\"event-time\"> \
+                                    " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+                                </div> \
+                            </div>";
+                    }
                 });
                 $("#cell-"+i).parent().append(text);
             }

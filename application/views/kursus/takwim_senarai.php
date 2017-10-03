@@ -4,10 +4,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Takwim Kursus</h2>
-                    <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
-                    <a href="<?=base_url("kursus/takwim_senarai/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar senarai">Senarai</a>
-                    <a href="<?=base_url("kursus/takwim/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Kalendar</a>
-                    <a href="<?=base_url("kursus/takwim_senarai")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Semasa</a>
+                    <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
+                    <a href="<?=base_url("kursus/takwim_senarai/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar senarai">Senarai</a>
+                    <a href="<?=base_url("kursus/takwim/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Kalendar</a>
+                    <a href="<?=base_url("kursus/takwim_senarai")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Semasa</a>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -48,8 +48,8 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                                 <td align="center">
-                                    <a href="<?=base_url('kursus/edit_jabatan/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Kemaskini">Edit</a>
-                                    <a href="<?=base_url('kursus/delete_jabatan/' . $kursus->id)?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')">Delete</a>
+                                    <a href="<?=base_url('kursus/edit_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Kemaskini">Edit</a>
+                                    <a href="<?=base_url('kursus/delete_jabatan/' . $kursus->id)?>" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')">Delete</a>
                                 </td>
                               </tr>
                               <?php endforeach?>

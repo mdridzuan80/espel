@@ -93,7 +93,7 @@ $(document).ready(function() {
                 location.reload(true);
             },
             error: function(jqXHR,textStatus,errorThrown){
-
+                alert(errorThrown);
             }
         });
     });

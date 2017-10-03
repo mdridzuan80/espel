@@ -4,11 +4,11 @@ $(document).ready(function() {
         var curview = {
             curtable: 1,
             curtitle: 'Senarai Peserta',
-            curbutton: 'Senarai Pencalonan',
+            curbutton: 'Senarai Pencalonan >>',
             kursus_id: $('#kursus_id').val()
         };
         var filter = {
-            jabatanID: null,
+            jabatanID: <?=$this->profil->get($this->appsess->getSessionData('username'))->jabatan_id?>,
             kumpulan: null,
             gred: null,
             hari: null
@@ -23,11 +23,12 @@ $(document).ready(function() {
 
         $('#cmdDoTapis').click(function(e){
             e.preventDefault();
+
             filter.jabatanID = $('#comJabatan').val();
             filter.kumpulan = $('#comKelas').val(),
             filter.gred = $('#comGred').val(),
             filter.hari = $('#comHari').val()
-            console.log(filter);
+
             createCalon(curview, filter);
         });
 
@@ -38,24 +39,18 @@ $(document).ready(function() {
                 $('#filter').toggle();
             }
 
-            filter = {
-                jabatanID: null,
-                kumpulan: null,
-                gred: null,
-                hari: null
-            };
             curview.curtable = (curview.curtable == 1 ? 2 : 1);
 
             if(curview.curtable == 1)
             {
                 curview.curtitle = 'Senarai Peserta';
-                curview.curbutton = 'Senarai Pencalonan';
+                curview.curbutton = 'Senarai Pencalonan >>';
             }
 
             if(curview.curtable == 2)
             {
                 curview.curtitle = 'Senarai Pilihan Pencalonan';
-                curview.curbutton = 'Senarai Peserta';
+                curview.curbutton = '<< Senarai Peserta';
             }
 
             createCalon(curview, filter);
@@ -73,6 +68,19 @@ $(document).ready(function() {
                         data: filter,
                         success: function (data, textStatus, jqXHR) {
                             $('#sen_calon').html(data);
+                            $('#peserta').dataTable({
+                                dom: "Bfrtip",
+                                buttons: [
+                                    {
+                                        extend: "csv",
+                                        className: "btn-sm"
+                                    },
+                                    {
+                                        extend: "excel",
+                                        className: "btn-sm"
+                                    }
+                                ]
+                            });
                         }
                     });
                 break;
@@ -87,6 +95,47 @@ $(document).ready(function() {
                         data: filter,
                         success: function (data, textStatus, jqXHR) {
                             $('#sen_calon').html(data);
+
+                            $('#pencalonan').dataTable({
+                                dom: "Bfrtip",
+                                buttons: [
+                                    {
+                                        extend: "csv",
+                                        className: "btn-sm"
+                                    },
+                                    {
+                                        extend: "excel",
+                                        className: "btn-sm"
+                                    },
+                                    {
+                                        text: 'Tambah Sebagai Peserta',
+                                        action: function ( e, dt, node, config ) {
+                                            e.preventDefault();
+                                            var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': curview.kursus_id};
+                                            $(":checked").each(function() {
+                                              data['chkKehadiran[]'].push($(this).val());
+                                            });
+
+                                            $.ajax({
+                                                data:data,
+                                                method:'post',
+                                                url: base_url + 'kursus/ajax_set_pencalonan/' + curview.kursus_id,
+                                                success: function(){
+                                                    location.reload(true);
+                                                },
+                                                error: function(jqXHR,textStatus,errorThrown){
+                                                    alert(errorThrown);
+                                                }
+                                            });
+                                        },
+                                        className: "btn-sm btn-success"
+                                    }
+                                ]
+                            });
+
+                            $('#chkAll').click(function () {
+                                $('input:checkbox').prop('checked', this.checked);
+                            });
                         }
                     });
                 break;

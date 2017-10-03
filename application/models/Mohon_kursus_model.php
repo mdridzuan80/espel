@@ -37,7 +37,7 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('espel_dict_kelas e', 'd.kelas_id = e.id');
         $this->db->join('espel_dict_jawatan f', 'b.jawatan_id = f.id');
         $this->db->where('a.kursus_id',$Kursus_id);
-        
+
         if($filter->jabatan_id)
         {
             $this->db->where('b.jabatan_id',$filter->jabatan_id);
@@ -58,24 +58,25 @@ class Mohon_kursus_model extends MY_Model
         return $rst->result();
     }
 
-    public function get_pencalonan($Kursus_id, $filter)
+    public function get_pencalonan($kursus_id, $filter)
     {
-        $sql = 'select * from (SELECT a.nokp, a.nama, b.nama jabatan, a.jabatan_id, a.gred_id, c.kelas_id, 0 hari
+        $sql = 'select * from (SELECT a.nokp, a.nama, b.nama jabatan, a.jabatan_id, a.gred_id, c.kelas_id, 0 as hari
                 FROM espel_profil a, espel_dict_jabatan b, espel_dict_gred c
                 WHERE 1=1
                 AND a.jabatan_id = b.id
                 AND a.gred_id = c.id
-                AND a.nokp NOT IN (SELECT nokp FROM espel_kursus WHERE YEAR(tkh_mula) = ' . date('Y') . ' AND stat_hadir = \'L\')
+                AND a.nokp NOT IN (SELECT nokp FROM espel_kursus WHERE YEAR(tkh_mula) = ' . date('Y') . ' AND stat_hadir = \'L\' AND nokp is not null)
                 UNION
-                SELECT a.nokp, a.nama, c.nama jabatan, a.jabatan_id, a.gred_id, d.kelas_id, sum(b.hari)
+                SELECT a.nokp, a.nama, c.nama jabatan, a.jabatan_id, a.gred_id, d.kelas_id, sum(b.hari) as hari
                 FROM espel_profil a, espel_kursus b, espel_dict_jabatan c, espel_dict_gred d
                 WHERE 1=1
                 AND a.nokp = b.nokp
                 AND a.jabatan_id = c.id
                 AND a.gred_id = d.id
                 AND YEAR(b.tkh_mula) = ' . date('Y') . ' AND b.stat_hadir = \'L\'
-                GROUP BY a.nokp, a.nama, c.nama, a.jabatan_id, a.gred_id, d.kelas_id) as a where 1=1';
-        
+                GROUP BY a.nokp, a.nama, c.nama, a.jabatan_id, a.gred_id, d.kelas_id) as a WHERE 1=1
+                AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = ' . $kursus_id .')';
+
         if($filter->jabatan_id)
         {
             $sql .= ' and a.jabatan_id = ' . $filter->jabatan_id;
@@ -101,11 +102,11 @@ class Mohon_kursus_model extends MY_Model
             {
                 $sql .= ' and a.hari >= ' . $filter->hari;
             }
-            
+
         }
 
         $rst = $this->db->query($sql);
-        
+
         return $rst->result();
     }
 }

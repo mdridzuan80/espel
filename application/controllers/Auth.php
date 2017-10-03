@@ -38,7 +38,7 @@ class Auth extends MY_Controller
 
     public function hash($password)
     {
-        echo password_hash($password,PASSWORD_BCRYPT);
+        return password_hash($password,PASSWORD_BCRYPT);
     }
 
     public function lupa_katalaluan()
@@ -186,5 +186,55 @@ class Auth extends MY_Controller
                 redirect('login');
             }
         }
+    }
+
+    public function import_profil()
+    {
+        $this->load->model('hrmis_profil_model','hrmis_profil');
+        $this->load->model('hrmis_carta_model','hrmis_carta');
+        $this->load->model('profil_model','profil');
+
+        $sen_hrmis = $this->hrmis_profil->get_data();
+
+        $i = 1;
+        $ani = "-";
+
+        foreach($sen_hrmis as $hrmis)
+        {
+            switch($ani)
+            {
+                case "-":
+                    $ani = "\\";
+                break;
+                case "\\":
+                    $ani = "|";
+                break;
+                case "|":
+                    $ani = "/";
+                break;
+                case "/":
+                    $ani = "-";
+                break;
+            }
+
+            $unit = explode(',', $hrmis->unit);
+            $data = [
+                'nama' => $hrmis->nama,
+                'nokp' => $hrmis->nokp,
+                'password' => $this->hash($hrmis->nokp),
+                'jabatan_id' => $this->hrmis_carta->get_by('title',$unit[0])->buid,
+                'skim_id' => $hrmis->skim_id,
+                'gred' => $hrmis->gred,
+                'kumpulan_id' => $hrmis->kelas_id,
+                'nokp_ppp' => $hrmis->nokp_ppp,
+                'email_ppp' => $hrmis->email_ppp,
+                'nokp_ppk' => $hrmis->nokp_ppk,
+                'email_ppk' => $hrmis->email_ppk
+            ];
+            $this->profil->insert($data);
+
+            echo "\033[5D";      // Move 5 characters backward
+            echo str_pad($ani . ' ' . $i++, 10, ' ', STR_PAD_LEFT) . " %";
+        }        
     }
 }

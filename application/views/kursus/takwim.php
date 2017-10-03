@@ -4,10 +4,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Takwim Kursus</h2>
-                    <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
-                    <a href="<?=base_url("kursus/takwim_senarai/$tahun/$bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar senarai">Senarai</a>
-                    <a href="<?=base_url("kursus/takwim/$tahun/$bulan")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Kalendar</a>
-                    <a href="<?=base_url("kursus/takwim")?>" class="btn btn-primary pull-right" role="button" title="Papar kalendar">Semasa</a>
+                    <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
+                    <a href="<?=base_url("kursus/takwim_senarai/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar senarai">Senarai</a>
+                    <a href="<?=base_url("kursus/takwim/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Kalendar</a>
+                    <a href="<?=base_url("kursus/takwim")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Semasa</a>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

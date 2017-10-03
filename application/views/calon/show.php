@@ -4,7 +4,7 @@
             <div class="x_title">
                 <h2><i class="fa fa-info"></i> Maklumat Kursus</h2>
                 <div class="clearfix"></div>
-            </div>            
+            </div>
 
             <div class="x_content">
                 <div id="row">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 <div class="clearfix"></div>
-            </div>            
+            </div>
 
             <div class="x_content">
                 <div id="filter" style="display:none">
@@ -68,13 +68,13 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$jabatan_id?>" >
+                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$jabatan_id?>" >
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Kumpulan Perkhidmatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" id="comKelas" name="comKelas">
+                        <select class="form-control input-sm" id="comKelas" name="comKelas">
                           <option selected="selected" value="0">Pilihan Semua</option>
                           <?php foreach($sen_kelas as $key=>$val):?>
                           <option value="<?=$key?>"><?=$val?></option>
@@ -85,7 +85,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Gred</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" id="comGred" name="comGred">
+                        <select class="form-control input-sm" id="comGred" name="comGred">
                         <option selected="selected" value="0">Pilihan Semua</option>
                         </select>
                     </div>
@@ -93,7 +93,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Bilangan Hari</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" id="comHari">
+                        <select class="form-control input-sm" id="comHari">
                         <option selected="selected" value="0">Pilihan</option>
                           <option value="1">Tidak pernah hadir</option>
                           <option value="2">Lebih atau sama dengan 1 hari</option>
@@ -113,7 +113,7 @@
                 </form>
                 <br/>
                 </div>
-                
+
                 <div id="sen_calon"></div>
             </div>
         </div>

@@ -1,4 +1,5 @@
-          <table id="datatable" class="table table-striped table-bordered jambo_table">
+        <?php if(count($sen_calon)) : ?>
+          <table id="peserta" class="table table-striped table-bordered jambo_table">
             <thead>
               <tr class="headings">
                 <th>Nama</th>
@@ -11,7 +12,7 @@
             </thead>
 
             <tbody>
-              <?php if(count($sen_calon)) : ?>
+
                 <?php foreach($sen_calon as $calon):?>
               <tr>
                 <td><?=$calon->nama?></td>
@@ -40,7 +41,10 @@
                 </td>
               </tr>
           <?php endforeach?>
-          
-          <?php endif ?>
+      <?php else: ?>
+          <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                  Tiada Peserta!
+                </div>
+      <?php endif ?>
              </tbody>
           </table>
