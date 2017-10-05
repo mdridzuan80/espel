@@ -6,22 +6,14 @@ class Profil_model extends MY_Model
     protected $primary_key = "nokp";
 
     protected $belongs_to = [
-        'jawatan' => [
-            'model' => 'jawatan_model',
-            'primary_key'=>'jawatan_id',
-        ],
-        'gred' => [
-            'model' => 'gred_model',
-            'primary_key'=>'gred_id',
-        ],
-        'jabatan' => [
-            'model' => 'jabatan_model',
-            'primary_key'=>'jabatan_id',
+        'carta_l' => [
+            'model' => 'hrmis_carta_model',
+            'primary_key'=>'buid',
         ],
     ];
 
     protected $has_many = [
-        'kumpulan_profil' => [
+        'peranan_l' => [
             'model' => 'kumpulan_profil_model',
             'primary_key'=>'profil_nokp',
         ],
@@ -34,18 +26,33 @@ class Profil_model extends MY_Model
 
     public function getProfil($username)
     {
-        $rst = $this->with("jawatan")
-            ->with("gred")
-            ->with("jabatan")
-            ->with("kumpulan_profil")
-            ->get_by(["nokp"=>$username,"status"=>'Y']);
-
         $this->load->model("kumpulan_model", "kumpulan");
 
-        foreach($rst->kumpulan_profil as $key => $val)
-        {
-            $rst->kumpulan_profil[$key]->kumpulan = $this->kumpulan->get($val->kumpulan_id);
-        }
-        return $rst;
+        $profil = $this->get_by(["nokp"=>$username,"status"=>'Y']);
+
+        return $profil;
+    }
+
+    public function all_profil($limit, $start)
+    {
+        $sql = 'SELECT
+            espel_profil.nokp,
+            espel_profil.nama,
+            espel_profil.gred_id,
+            espel_profil.`status`,
+            hrmis_skim.keterangan AS skim,
+            hrmis_kumpulan.keterangan AS kumpulan,
+            hrmis_carta_organisasi.title AS jabatan
+            FROM
+            espel_profil
+            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
+            WHERE
+            espel_profil.`status` = \'Y\' AND
+            espel_profil.nokp <> \'admin\'
+            LIMIT ' . $start . ', ' . $limit;
+        
+        return $this->db->query($sql)->result();
     }
 }

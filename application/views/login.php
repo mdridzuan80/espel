@@ -42,14 +42,14 @@
                 <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
               <h1>E-SPeL JKNM</h1>
               <div>
-                <input type="text" class="form-control" name="username" placeholder="Username" required />
+                <input type="text" class="form-control input-sm" name="username" placeholder="Username" required />
               </div>
               <div>
-                <input type="password" class="form-control" name="password" placeholder="Password" required />
+                <input type="password" class="form-control input-sm" name="password" placeholder="Password" required />
               </div>
 
               <div>
-                <button class="btn btn-default submit" name="login">Log in</button>
+                <button class="btn btn-default submit input-sm" name="login">Log in</button>
               </div>
 
               <div class="clearfix"></div>

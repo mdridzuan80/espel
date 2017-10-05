@@ -14,7 +14,14 @@ class Profil extends MY_Controller
 		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$nokp)
 		{
 			$this->load->model('profil_model','profil');
-	        $data["profil"] = $this->profil->getProfil($nokp);
+			$this->load->model('hrmis_skim_model','skim');
+			$this->load->model('hrmis_carta_model','jabatan');
+
+			$data["profil"] = $this->profil->getProfil($nokp);
+			$data["skim"] = $this->skim;
+			$data["jabatan"] = $this->jabatan;
+
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Melihat Profil']);
 	        return $this->renderView("profil/show",$data);
 		}
 		else
@@ -85,6 +92,7 @@ class Profil extends MY_Controller
 		{
 			if(!$this->exist("submit"))
 			{
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menu reset katalaluan']);
 				return $this->renderView("pengguna/reset_katalaluan");
 			}
 			else
@@ -101,18 +109,20 @@ class Profil extends MY_Controller
 					if($this->profil->update($username,$data))
 					{
 						$this->appsess->setFlashSession("success", true);
-						return redirect("pengguna");
+						$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Berjaya reset katalaluan']);
+						return redirect("profil/admin/reset_katalaluan");
 					}
 					else
 					{
 						$this->appsess->setFlashSession("success", false);
-						return redirect("profil/reset_katalaluan/" . $username);
+						$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Gagal reset katalaluan']);
+						return redirect("profil/admin/reset_katalaluan");
 					}
 				}
 				else
 				{
 					$this->appsess->setFlashSession("success", false);
-					return redirect("profil/reset_katalaluan/" . $username);
+					return redirect("profil/admin/reset_katalaluan");
 				}
 			}
 		}

@@ -234,7 +234,7 @@ function pass_encode($password)
     return password_hash($password,PASSWORD_BCRYPT);
 }
 
-class obj {
+class Obj {
     public function __construct(array $arguments = array()) {
         if (!empty($arguments)) {
             foreach ($arguments as $property => $argument) {

@@ -15,12 +15,24 @@ class Pengguna extends MY_Controller
     public function index(){
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']))
         {
+            $this->load->helper("url");
+            $this->load->library("pagination");
             $this->load->model('profil_model','profil');
-            $data["profiles"] = $this->profil
-                ->with("jawatan")
-                ->with("gred")
-                ->with("jabatan")
-                ->get_many_by(["status"=>"Y","nokp<>"=>"admin"]);
+
+            $config = array();
+            $config["base_url"] = base_url() . "pengguna/index/";
+            $config["total_rows"] = $this->profil->count_by(['status'=>'Y','nokp<>'=>'admin']);
+            $config["per_page"] = 20;
+            $config["uri_segment"] = 3;
+
+            $this->pagination->initialize($config);
+
+            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+            $data["profiles"] = $this->profil->all_profil($config["per_page"],$page);
+            $data["links"] = $this->pagination->create_links();
+
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
             return $this->renderView("pengguna/show",$data);
         }
         else

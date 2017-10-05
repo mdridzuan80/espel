@@ -4,9 +4,6 @@
       <div class="x_panel">
         <div class="x_title">
             <h2>Profil <span style="text-transform: capitalize;"><?=$profil->nama?></span></h2>
-            <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
-            <!--<a href="<?=base_url("mockup/admin/pengguna/add")?>" class="btn btn-info pull-right" role="button">Tambah Pengguna</a>-->
-            <?php endif?>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -29,8 +26,6 @@
               <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Profil</a>
                 </li>
-                <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Kumpulan</a>
-                </li>
               </ul>
               <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -40,10 +35,12 @@
                       <h4><?=$profil->nokp?></h4>
                       <ul class="list-unstyled user_data">
                           <li>
-                            <i class="fa fa-briefcase user-profile-icon"></i> <?=$profil->jawatan->perihal?>, Gred <?=$profil->gred->kod?>
+                            <?php $skim_keterangan = $skim->get_by('kod',$profil->skim_id); ?>
+                            <i class="fa fa-briefcase user-profile-icon"></i> <?= ($skim_keterangan) ? $skim_keterangan->keterangan : '-' ?>, Gred <?= $profil->gred_id ?>
                           </li>
                           <li>
-                            <i class="fa fa-map-marker user-profile-icon"></i> <?=$profil->jabatan->nama?>
+                            <?php $jabatan_keterangan = $jabatan->get_by('buid',$profil->jabatan_id); ?>
+                            <i class="fa fa-map-marker user-profile-icon"></i> <?= ($jabatan_keterangan) ? $jabatan_keterangan->title : '-' ?>
                           </li>
                         <li>
                           <i class="fa fa-users user-profile-icon"></i>
@@ -127,42 +124,6 @@
                         </div>
                       </div>
                     </div>
-                </div>
-
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                    <div class="x_title">
-                      <h2>Senarai Kumpulan</h2>
-                        <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
-                        <a href="<?=base_url("profil/" . $profil->nokp . "/kump/add")?>" class="btn btn-primary pull-right" role="button">Tambah Kumpulan</a>
-                        <?php endif?>
-                      <div class="clearfix"></div>
-                    </div>
-                    <table id="datatable" class="table table-striped table-bordered jambo_table">
-                      <thead>
-                        <tr class="headings">
-                            <th>Kumpulan</th>
-                            <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
-                            <th style="text-align:center">Operasi</th>
-                            <?php endif?>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          <?php foreach($profil->kumpulan_profil as $kumpulan):?>
-                        <tr>
-                            <?php
-                            $jabatan = jabatan()->get($kumpulan->jabatan_id);
-                            if($jabatan){ $jabatan = "(" . $jabatan->nama . ")";}
-                            ?>
-                          <td><?=$kumpulan->kumpulan->nama . " " . $jabatan?></td>
-                          <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
-                          <td align="center">
-                              <a href="<?=base_url("profil/" . $profil->nokp . "/kump/" . $kumpulan->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" data-toggle="tooltip" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
-                          </td>
-                          <?php endif?>
-                        </tr>
-                        <?php endforeach?>
-                       </tbody>
-                    </table>
                 </div>
               </div>
             </div>

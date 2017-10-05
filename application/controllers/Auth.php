@@ -16,15 +16,16 @@ class Auth extends MY_Controller
 
             if($profil = $this->appauth->isExist($username))
             {
-                if($profil->first_login == 'F')
+                if($this->appauth->login($username, $password))
                 {
-                    $this->appauth->login($username, $password);
-                    return redirect('');
+                    $this->applog->write(['nokp'=>$username,'event'=>'Berjaya log-in']);
+                    if($profil->first_login == 'T')
+                    {
+                        $this->applog->write(['nokp'=>$username,'event'=>'Pertama kali log-in']);
+                        return $this->renderLoginView('reset',['username' => $username]);
+                    }
                 }
-                else
-                {
-                    return $this->renderLoginView('reset',['username' => $username]);
-                }
+                return redirect('');
             }
         }
         return $this->renderLoginView('login');
@@ -32,6 +33,7 @@ class Auth extends MY_Controller
 
     public function logout()
     {
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Berjaya log-out']);        
         $this->appauth->logout();
         return redirect();
     }

@@ -22,6 +22,7 @@ class AppAuth
 
     public function isExist($username) {
         $this->CI->load->model("profil_model","profil");
+        
         $profil = $this->CI->profil->getProfil($username);
 
         if(count($profil))
@@ -45,6 +46,7 @@ class AppAuth
             return $this->isLogged();
         }
 
+        $this->CI->applog->write(['nokp'=>$username,'event'=>'Gagal cubaan log-in']);
         return FALSE;
     }
 

@@ -23,12 +23,12 @@
             <?php endif?>
             <?php endif?>
             <?php if(count($profiles)):?>
-              <table class="table table-striped table-bordered jambo_table datatable">
+              <table class="table table-striped table-bordered jambo_table">
                 <thead>
                   <tr class="headings">
                     <th>Nama</th>
                     <th>No. KP</th>
-                    <th>Jawatan</th>
+                    <th>Skim</th>
                     <th>Gred</th>
                     <th>Jabatan</th>
                     <th style="text-align:center">Operasi</th>
@@ -39,9 +39,9 @@
                   <tr>
                     <td><?=$profile->nama?></td>
                     <td><?=$profile->nokp?></td>
-                    <td><?=$profile->jawatan->perihal?></td>
-                    <td><?=$profile->gred->kod?></td>
-                    <td><?=$profile->jabatan->nama?></td>
+                    <td><?=$profile->skim?></td>
+                    <td><?=$profile->gred_id?></td>
+                    <td><?=$profile->jabatan?></td>
                     <td align="center">
                         <a href="<?=base_url("profil/" . $profile->nokp)?>" type="button" class="btn btn-round btn-default btn-xs" data-toggle="tooltip" title="Lihat pengguna"><i class="fa fa-file-o"></i></a>
                         <a href="<?=base_url("profil/" . $profile->nokp . "/reset_katalaluan")?>" type="button" class="btn btn-round btn-default btn-xs" data-toggle="tooltip" title="Reset pengguna"><i class="fa fa-key"></i></a>
@@ -50,6 +50,7 @@
                   <?php endforeach?>
                  </tbody>
               </table>
+              <?= $links ?>
           <?php else:?>
           <div class="alert alert-warning " role="warning">
             <strong>INFO!</strong> Tiada rekod
