@@ -36,6 +36,12 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
+                  <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
@@ -123,6 +129,12 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
+                  <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
@@ -210,6 +222,12 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
+                  <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk

@@ -23,6 +23,12 @@
             <?php endif?>
             <?php endif?>
             <form method="post" class="form-horizontal form-label-left">
+            <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
             <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
             <label>Keperluan Borang Soal Selidik :</label>
             <div class="form-group">

@@ -7,6 +7,21 @@
             </div>
 
             <div class="x_content">
+                <?php if(appsess()->getFlashSession()):?>
+                <?php if(appsess()->getFlashSession('success')):?>
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>INFO!</strong> Proses telah berjaya dilaksanakan.
+                </div>
+                <?php else:?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>RALAT!</strong> Proses tidak berjaya dilaksanakan.
+                </div>
+                <?php endif?>
+                <?php endif?>
                 <div id="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
                         <table class="table table-bordered">
@@ -36,7 +51,7 @@
                       </tbody>
                     </table>
                     <?php if(!$kursus->peruntukan_id) : ?>
-                    <button type="button" class="btn btn-success" name="submit">Selesai</button>
+                    <button type="button" class="btn btn-success" name="submit">Laksana</button>
                     <?php endif ?>
                     </div>
                 </div>
@@ -67,8 +82,8 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control input-sm" id="comStat" name="comStat">
-                                <option value="F">Tanggungan</option>
-                                <option value="T">Selesai</option>
+                                <option value="T">Tanggungan</option>
+                                <option value="S">Selesai</option>
                             </select>
                         </div>
                     </div>
@@ -76,41 +91,41 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nama">No. LO<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO">
+                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO" value="<?=(isset($belanja->no_lo)) ? $belanja->no_lo : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Host">Tarikh LO<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO">
+                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO" value="<?=(isset($belanja->tkh_lo)) ? date('d-m-Y',strtotime($belanja->tkh_lo)) : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Jumlah<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah">
+                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah" value="<?=(isset($belanja->jumlah)) ? $belanja->jumlah : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">No. Resit<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoResit" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit">
+                            <input type="text" id="txtNoResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit" value="<?=(isset($belanja->no_resit)) ? $belanja->no_resit : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">Tarikh Resit<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtTkhResit" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhResit">
+                            <input type="text" id="txtTkhResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhResit" value="<?=(isset($belanja->tkh_resit)) ? date('d-m-Y',strtotime($belanja->tkh_resit)) : ''?>">
                         </div>
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="button" class="btn btn-primary" name="submit">Simpan</button>
+                            <button type="submit" class="btn btn-primary" name="submit">Laksana</button>
                         </div>
                     </div>
                 </form>

@@ -104,10 +104,21 @@ class Laporan extends MY_Controller
                 $data["sen_latihan_tidak_semuka"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),4,$tahun);
                 $data["sen_latihan_kendiri"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),5,$tahun);
 
-                //echo $this->load->view("laporan/bukulog/bukulog",$data,TRUE);
-                //die();
+                foreach($this->program->get_all() as $program)
+                {
+                    $data['program'][$program->id]["nama"]=$program->nama;
+                    $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
+                }
+                
+                $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
+                $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+                    ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
+                    ->setTkhTamat($tahun . "-12-31")
+                    ->setTkhMula($tahun . "-01-01")
+                    ->cumulativePoint();
+                $data["tahun"] = $tahun;
+
                 $html2pdf->writeHTML($this->load->view("laporan/bukulog/bukulog",$data,TRUE));
-                //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 3);
                 $html2pdf->output('bukulog.pdf', "D");
             } catch (Html2PdfException $e) {
                 $formatter = new ExceptionFormatter($e);
@@ -128,7 +139,7 @@ class Laporan extends MY_Controller
         }
         else
         {
-            
+
         }
     }
 

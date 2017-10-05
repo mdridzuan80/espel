@@ -384,7 +384,7 @@
                     <tr>
                       <td>
                         <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$penyelia->nama?>,</b></p>
-                        <p>Salah seorang anggota di bawah jagaan anda, ada membuat permohonan bagi menghadiri kursus seperti di bawah:</p>
+                        <p>Salah seorang anggota di bawah jagaan anda telah terpilih untuk mengikuti kursus seperti di bawah:</p>
                         <table border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>

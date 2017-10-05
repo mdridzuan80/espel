@@ -225,6 +225,15 @@ function array_bulan()
     ];
 }
 
+/*
+* Function hash
+* Return string
+*/
+function pass_encode($password)
+{
+    return password_hash($password,PASSWORD_BCRYPT);
+}
+
 class obj {
     public function __construct(array $arguments = array()) {
         if (!empty($arguments)) {

@@ -59,6 +59,15 @@ $(document).ready(function() {
         });
     })();
 
+    (function(){
+        $("#txtTkhLO").datetimepicker({
+            format: "DD-MM-YYYY"
+        });
+        $("#txtTkhResit").datetimepicker({
+            format: "DD-MM-YYYY"
+        });
+    })();
+
     $('.espel_program').change(function(e){
         e.preventDefault();
         var nilai = $(this).val();
@@ -207,6 +216,34 @@ $(document).ready(function() {
      function getPermohonanKursus(obj) {
          $.ajax({
              url: base_url + 'kursus/ajax_senarai_permohonan',
+             data: { tahun: obj.tahun, bulan: obj.bulan },
+             method: 'POST',
+             success: function (data, textStatus, jqXHR) {
+                 obj.placeholder.html(data);
+             }
+         });
+     }
+ })();
+
+ (function (){
+     var current = new Date();
+     var dateObj = {
+         placeholder: $('#sen_kursus_anjuran'),
+         tahun: current.getFullYear(),
+         bulan: current.getMonth()+1
+     };
+     getPermohonanKursus(dateObj);
+
+     $('#cmdTapis').click(function(e){
+        e.preventDefault();
+        dateObj.tahun = $('#comTahun').val();
+        dateObj.bulan = $('#comBulan').val();
+        getPermohonanKursus(dateObj);
+     });
+
+     function getPermohonanKursus(obj) {
+         $.ajax({
+             url: base_url + 'kursus/ajax_senarai_anjuran_sah',
              data: { tahun: obj.tahun, bulan: obj.bulan },
              method: 'POST',
              success: function (data, textStatus, jqXHR) {

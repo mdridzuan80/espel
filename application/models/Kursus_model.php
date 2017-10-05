@@ -304,4 +304,48 @@ class Kursus_model extends MY_Model
             return NULL;
         }
     }
+
+    public function sen_pengesahan_anjuaran($ptj_jabatan_id, $takwim)
+    {
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, c.nama as penganjur, a.stat_laksana
+            FROM espel_kursus a, espel_dict_program b, espel_dict_jabatan c
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.penganjur_id = c.id
+            AND a.stat_laksana = 'L'
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_mula) = ?
+            AND MONTH(a.tkh_mula) = ?
+            UNION
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.penganjur, a.stat_laksana
+            FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.stat_laksana = 'L'
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_tamat) = ?
+            AND MONTH(a.tkh_tamat) = ?
+            AND a.id NOT IN(SELECT a.id FROM espel_kursus a, espel_dict_jabatan b
+                WHERE 1=1
+                AND a.penganjur_id = b.id
+                AND a.stat_laksana = 'L'
+                AND a.ptj_jabatan_id_created = ?
+                AND YEAR(a.tkh_mula) = ?
+                AND MONTH(a.tkh_mula) = ?)) as a ORDER BY a.tkh_mula";
+
+        $rst = $this->db->query($sql,[
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
+        );
+
+        if($rst->num_rows())
+        {
+            return $rst->result();
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 }

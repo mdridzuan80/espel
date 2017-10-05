@@ -383,28 +383,8 @@
                     </tr>
                     <tr>
                       <td>
-                        <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$penyelia->nama?>,</b></p>
-                        <p>Salah seorang anggota di bawah jagaan anda, ada membuat permohonan bagi menghadiri kursus seperti di bawah:</p>
-                        <table border="0" cellpadding="0" cellspacing="0">
-                          <tbody>
-                            <tr>
-                              <td align="left">
-                                <table border="0" cellpadding="0" cellspacing="0" class="table_view">
-                                  <tbody>
-                                      <tr>
-                                        <td colspan="2"><b>Maklumat Pemohon</b></td>
-                                      </tr>
-                                    <tr>
-                                      <td><b>Nama</b></td>
-                                      <td><?=$pemohon->nama . "(" . $pemohon->nokp .")"?></td>
-                                    </tr>
-                                    <tr>
-                                      <td><b>Jawatan</b></td>
-                                      <td><?=$pemohon->jawatan->perihal?></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-
+                        <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$pemohon->nama?>,</b></p>
+                        <p>Tahniah! Anda telah terpilih untuk mengikuti kursus seperti di bawah:</p>
                                 <table border="0" cellpadding="0" cellspacing="0" class="table_view">
                                   <tbody>
                                       <tr>

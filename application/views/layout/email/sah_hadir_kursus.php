@@ -384,7 +384,7 @@
                     <tr>
                       <td>
                         <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$penyelia->nama?>,</b></p>
-                        <p>Salah seorang anggota di bawah jagaan anda, ada membuat permohonan bagi menghadiri kursus seperti di bawah:</p>
+                        <p>Salah seorang anggota di bawah jagaan anda, disahkan hadir kursus seperti di bawah:</p>
                         <table border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>
@@ -432,7 +432,7 @@
                                     </tr>
                                     <tr>
                                       <td><b>Penganjur</b></td>
-                                      <td><?=$kursus->penganjur->nama?></td>
+                                      <td><?=(isset($kursus->penganjur->nama)) ? $kursus->penganjur->nama : $kursus->penganjur ?></td>
                                     </tr>
                                   </tbody>
                                 </table>

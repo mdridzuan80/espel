@@ -23,39 +23,14 @@
             <?php endif?>
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
               <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Kursus yang dianjurkan</a>
+                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Kursus anjuran dalaman</a>
                 </li>
                 <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Kursus anjuran luar</a>
                 </li>
               </ul>
               <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                    <table class="datatable table table-striped table-bordered jambo_table">
-                      <thead>
-                        <tr class="headings">
-                          <th>Tajuk</th>
-                          <th>Program</th>
-                          <th>Mula</th>
-                          <th>Jumlah Permohonan</th>
-                          <th style="text-align:center">Operasi</th>
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-                        <tr>
-                          <td>Kursus 2</td>
-                          <td>Latihan - Dalam Negara</td>
-                          <td>5 Ogos 2017</td>
-                          <td>2</td>
-                          <td align="center">
-                              <div class="btn-group">
-                                  <a href="<?=base_url('mockup/ptj/kursus/pengesahan/peserta')?>" class="btn btn-round btn-default btn-xs" data-toggle="tooltip" title="Lihat Peserta"><i class="fa fa-file-o"></i></a>
-                              </div>
-                          </td>
-                        </tr>
-                       </tbody>
-                    </table>
+                    <div id="sen_kursus_anjuran"></div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                     <?php if(count($sen_kursus)):?>
