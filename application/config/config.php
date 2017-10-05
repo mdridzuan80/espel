@@ -458,7 +458,9 @@ $config['csrf_exclude_uris'] = [
 	'kursus/ajax_senarai_anjuran_sah',
 	'kursus/ajax_get_calon_terpilih/[0-9]+',
 	'kursus/ajax_get_pencalonan/[0-9]+',
-	'kursus/ajax_set_pencalonan/[0-9]+'
+	'kursus/ajax_set_pencalonan/[0-9]+',
+	'pengguna/data_grid/[0-9]+',
+	'pengguna/data_grid'
 ];
 
 /*

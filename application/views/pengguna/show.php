@@ -4,6 +4,7 @@
       <div class="x_panel">
         <div class="x_title">
           <h2>Senarai Pengguna</h2>
+          <button id="cmdFilter" class="btn btn-default btn-sm pull-right"><i class="fa fa-filter"></i></button>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -22,42 +23,62 @@
             </div>
             <?php endif?>
             <?php endif?>
-            <?php if(count($profiles)):?>
-              <table class="table table-striped table-bordered jambo_table">
-                <thead>
-                  <tr class="headings">
-                    <th>Nama</th>
-                    <th>No. KP</th>
-                    <th>Skim</th>
-                    <th>Gred</th>
-                    <th>Jabatan</th>
-                    <th style="text-align:center">Operasi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($profiles as $profile):?>
-                  <tr>
-                    <td><?=$profile->nama?></td>
-                    <td><?=$profile->nokp?></td>
-                    <td><?=$profile->skim?></td>
-                    <td><?=$profile->gred_id?></td>
-                    <td><?=$profile->jabatan?></td>
-                    <td align="center">
-                        <a href="<?=base_url("profil/" . $profile->nokp)?>" type="button" class="btn btn-round btn-default btn-xs" data-toggle="tooltip" title="Lihat pengguna"><i class="fa fa-file-o"></i></a>
-                        <a href="<?=base_url("profil/" . $profile->nokp . "/reset_katalaluan")?>" type="button" class="btn btn-round btn-default btn-xs" data-toggle="tooltip" title="Reset pengguna"><i class="fa fa-key"></i></a>
-                    </td>
-                  </tr>
-                  <?php endforeach?>
-                 </tbody>
-              </table>
-              <?= $links ?>
-          <?php else:?>
-          <div class="alert alert-warning " role="warning">
-            <strong>INFO!</strong> Tiada rekod
-          </div>
-          <?php endif?>
-                </div>
+
+            <div id="frmFilter">
+              <form method="post" class="form-horizontal form-label-left">
+              <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="comNama" name="comNama" class="form-control col-md-7 col-xs-12 input-sm" value="" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Kumpulan Gred</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control input-sm" id="comKelas" name="comKelas">
+                          <option selected="selected" value="0">Pilih Semua</option>
+                          <?php foreach($sen_kumpulan as $kumpulan):?>
+                          <option value="<?=$kumpulan->kod?>"><?=$kumpulan->keterangan?></option>
+                          <?php endforeach?>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Skim Perkhidmatan</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control input-sm" id="comSkim" name="comSkim">
+                        <option selected="selected" value="0">Pilih Semua</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Gred</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control input-sm" id="comGred" name="comGred">
+                        <option selected="selected" value="0">Pilih Semua</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                      <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Tapis</button>
+                      <button class="btn btn-primary btn-sm" type="reset">Reset</button>
+                  </div>
+                </form>
             </div>
+
+            <div id="datagrid"></div>
         </div>
     </div>
 </div>

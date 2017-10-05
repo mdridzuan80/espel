@@ -33,8 +33,12 @@ class Profil_model extends MY_Model
         return $profil;
     }
 
-    public function all_profil($limit, $start)
+    public function all_profil($limit, $start, $filter)
     {
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
+
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
+
         $sql = 'SELECT
             espel_profil.nokp,
             espel_profil.nama,
@@ -50,9 +54,63 @@ class Profil_model extends MY_Model
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
             WHERE
             espel_profil.`status` = \'Y\' AND
-            espel_profil.nokp <> \'admin\'
-            LIMIT ' . $start . ', ' . $limit;
+            espel_profil.nokp <> \'admin\'';
+
+            if($filter['nama'])
+                $sql .= ' AND espel_profil.nama like \'' . $filter['nama'] . '\'';
+
+            if($filter['jabatan_id'] and $filter['sub_jabatan'])
+            {
+                $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", relatedJabatan($all_jabatan,$filter['jabatan_id'])) . ')';
+            }
+            else
+            {
+                $sql .= ' AND espel_profil.jabatan_id in (' . $filter['jabatan_id'] . ')';
+            }
+
+            if($filter['kump_id'])
+                $sql .= ' AND espel_profil.kelas_id like \'' . $filter['kelas_id'] . '\'';
+
+            if($filter['skim_id'])
+                $sql .= ' AND espel_profil.skim_id like \'' . $filter['skim_id'] . '\'';
+
+            if($filter['gred_id'])
+                $sql .= ' AND espel_profil.gred_id like \'' . $filter['gred_id'] . '\'';
+
+            $sql .= ' LIMIT ' . $start . ', ' . $limit;
         
         return $this->db->query($sql)->result();
+    }
+
+    public function sen_gred($kump)
+    {
+        $data = [];
+        $sql = "select distinct gred_id from espel_profil where skim_id = ?";
+        $sen_gred = $this->db->query($sql,[$kump])->result();
+
+        foreach($sen_gred as $gred)
+        {
+            $data[]=['id' => $gred->gred_id,'kod' => $gred->gred_id];
+        }
+
+        return $data;
+    }
+
+    public function sen_skim($kump)
+    {
+        $data = [];
+        $sql = "select distinct b.kod, b.keterangan
+            from espel_profil a, hrmis_skim b
+            where 1=1
+            and a.skim_id = b.kod
+            and a.kelas_id = ?";
+        $sen_skim = $this->db->query($sql,[$kump])->result();
+
+        foreach($sen_skim as $skim)
+        {
+            $data[]=['id' => $skim->kod,'kod' => $skim->keterangan];
+        }
+
+        return $data;
     }
 }

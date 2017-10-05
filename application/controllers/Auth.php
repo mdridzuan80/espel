@@ -19,14 +19,19 @@ class Auth extends MY_Controller
                 if($this->appauth->login($username, $password))
                 {
                     $this->applog->write(['nokp'=>$username,'event'=>'Berjaya log-in']);
+
                     if($profil->first_login == 'T')
                     {
                         $this->applog->write(['nokp'=>$username,'event'=>'Pertama kali log-in']);
                         return $this->renderLoginView('reset',['username' => $username]);
                     }
+                    $this->appsess->setFlashSession("success", false);
+                    return redirect('');
                 }
-                return redirect('');
+                $this->appsess->setFlashSession("success", false);
             }
+            $this->appsess->setFlashSession("success", false);
+            return redirect('login');
         }
         return $this->renderLoginView('login');
     }

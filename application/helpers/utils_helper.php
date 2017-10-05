@@ -20,13 +20,14 @@ function jabatan()
     return $CI->jabatan;
 }
 
-function buildTree(array $elements, $parentId = 0) {
+function buildTree(array $elements, $parentId = 6650) {
     $branch = [];
 
     foreach ($elements as $element) {
-        if ($element['parent_jabatan_id'] == $parentId) {
-            $children = buildTree($elements, $element['id']);
-            $element["text"] = $element["nama"];
+        if ($element['parent_buid'] == $parentId) {
+            $children = buildTree($elements, $element['buid']);
+            $element['id'] = $element['buid'];
+            $element["text"] = $element["title"];
             if ($children) {
                 $element['children'] = $children;
             }
@@ -77,9 +78,9 @@ function relatedJabatan(array $elements, $parentId = 0) {
     $branch = [];
 
     foreach ($elements as $element) {
-        if ($element['parent_jabatan_id'] == $parentId) {
-            $branch[] = $element['id'];
-            $c = relatedJabatan($elements, $element['id']);
+        if ($element['parent_buid'] == $parentId) {
+            $branch[] = $element['buid'];
+            $c = relatedJabatan($elements, $element['buid']);
             if($c)
             {
                 $branch[] = $c;

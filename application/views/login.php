@@ -53,7 +53,15 @@
               </div>
 
               <div class="clearfix"></div>
-
+              <?php if(appsess()->getFlashSession()):?>
+                <?php if(!appsess()->getFlashSession('success')):?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>RALAT!</strong> Kombinasi id pengguna dan katalaluan tidak sah!
+                </div>
+                <?php endif?>
+              <?php endif?>
             <div class="separator">
                 <p class="change_link">
                   <a href="#signup" class="to_register">Lupa katalauan</a>

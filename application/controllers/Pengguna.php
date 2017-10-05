@@ -15,30 +15,58 @@ class Pengguna extends MY_Controller
     public function index(){
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']))
         {
-            $this->load->helper("url");
-            $this->load->library("pagination");
-            $this->load->model('profil_model','profil');
-
-            $config = array();
-            $config["base_url"] = base_url() . "pengguna/index/";
-            $config["total_rows"] = $this->profil->count_by(['status'=>'Y','nokp<>'=>'admin']);
-            $config["per_page"] = 20;
-            $config["uri_segment"] = 3;
-
-            $this->pagination->initialize($config);
-
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-            $data["profiles"] = $this->profil->all_profil($config["per_page"],$page);
-            $data["links"] = $this->pagination->create_links();
 
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
-            return $this->renderView("pengguna/show",$data);
+            return $this->renderView("pengguna/show",'',['embedjs'=>[$this->load->view('scripts/carian_js','',true)]]);
         }
         else
         {
             $this->renderPermissionDeny();
         }
+    }
+
+    public function data_grid()
+    {
+        $this->load->helper("url");
+        $this->load->library("pagination");
+        $this->load->model('profil_model','profil');
+        $this->load->model('hrmis_kumpulan_model','hrmis_kumpulan');
+
+        $config = array();
+        $config["base_url"] = base_url() . "pengguna/data_grid/";
+        $config["total_rows"] = $this->profil->count_by(['status'=>'Y','nokp<>'=>'admin']);
+        $config["per_page"] = 10;
+        $config["uri_segment"] = 3;
+
+        //config for bootstrap pagination class integration
+        $config['full_tag_open'] = '<ul class="pagination" style="margin:0">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data["profiles"] = $this->profil->all_profil($config["per_page"],$page, $this->input->post());
+        $data["sen_kumpulan"] = $this->hrmis_kumpulan->get_all();
+        $data["links"] = $this->pagination->create_links();
+
+        return $this->load->view("pengguna/datagrid",$data);
     }
 
     public function show()

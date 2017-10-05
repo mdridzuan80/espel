@@ -3,32 +3,32 @@ class Cron extends CI_Controller
 {
     public function createTree()
     {
-        $this->load->model('jabatan_model', 'jabatan');
+        $this->load->model('hrmis_carta_model', 'jabatan');
 
         $data = $this->jabatan->get_all();
         
         $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($this->build_tree($data,0,0,1)));
+        $this->output->set_output(json_encode($this->build_tree($data,6650,0,2)));
     }
 
     function build_tree($arrs, $parent_id=0, $level=0, $until=FALSE) {
         $a = [];
         foreach ($arrs as $arr) {
-            if ($arr->parent_jabatan_id == $parent_id) {
-                $b['text'] = $arr->nama;
+            if ($arr->parent_buid == $parent_id) {
+                $b['text'] = $arr->title;
                 
                 if($until !== FALSE)
                 {
                     if($level < $until)
                     {
-                        $c = $this->build_tree($arrs, $arr->id, $level+1,$until);
+                        $c = $this->build_tree($arrs, $arr->buid, $level+1,$until);
                         if($c)
                             $b['children'] = $c;
                     }
                 }
                 else
                 {
-                    $c = $this->build_tree($arrs, $arr->id, $level+1,$until);
+                    $c = $this->build_tree($arrs, $arr->buid, $level+1,$until);
                     if($c)
                         $b['children'] = $c;
                 }

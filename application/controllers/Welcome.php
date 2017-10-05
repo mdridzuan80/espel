@@ -46,19 +46,28 @@ class Welcome extends MY_Controller {
 
 	public function get_tree_jabatan()
 	{
-		$this->load->model("jabatan_model","jabatan");
+		$this->load->model("hrmis_carta_model","jabatan");
 		$this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode(buildTree($this->jabatan->as_array()->get_all())));
+        ->set_output(json_encode(buildTree($this->jabatan->senarai_carta())));
 	}
 
-	public function get_laporan_gred($id)
+	public function get_laporan_gred($kod)
 	{
-		$this->load->model("gred_model","gred");
+		$this->load->model("profil_model","profil");
 
 		$this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->gred->get_many_by("kelas_id",$id)));
+        ->set_output(json_encode($this->profil->sen_gred($kod)));
+	}
+
+	public function get_laporan_skim($kod)
+	{
+		$this->load->model("profil_model","profil");
+
+		$this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($this->profil->sen_skim($kod)));
 	}
 
 	public function get_tree_jabatan_related()
