@@ -15,9 +15,12 @@ class Pengguna extends MY_Controller
     public function index(){
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']))
         {
+            $this->load->model('profil_model', 'profil');
 
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+            
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
-            return $this->renderView("pengguna/show",'',['embedjs'=>[$this->load->view('scripts/carian_js','',true)]]);
+            return $this->renderView("pengguna/show",$data,['embedjs'=>[$this->load->view('scripts/carian_js','',true)]]);
         }
         else
         {
@@ -34,8 +37,12 @@ class Pengguna extends MY_Controller
 
         $config = array();
         $config["base_url"] = base_url() . "pengguna/data_grid/";
-        $config["total_rows"] = $this->profil->count_by(['status'=>'Y','nokp<>'=>'admin']);
-        $config["per_page"] = 10;
+        $config["per_page"] = 15;
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $profile = $this->profil->all_profil($config["per_page"],$page, $this->input->post());
+
+        $config["total_rows"] = $profile['count'];
         $config["uri_segment"] = 3;
 
         //config for bootstrap pagination class integration
@@ -60,11 +67,12 @@ class Pengguna extends MY_Controller
 
         $this->pagination->initialize($config);
 
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data["profiles"] = $this->profil->all_profil($config["per_page"],$page, $this->input->post());
+        $data["profiles"] = $profile['data'];
         $data["sen_kumpulan"] = $this->hrmis_kumpulan->get_all();
         $data["links"] = $this->pagination->create_links();
+        $data['total'] = $profile['count'];
+        $data['mula'] = $this->uri->segment(3, 0) + 1;
+        $data['hingga'] = $config["per_page"] + $this->uri->segment(3, 0) ;
 
         return $this->load->view("pengguna/datagrid",$data);
     }

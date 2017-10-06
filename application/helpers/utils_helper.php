@@ -90,6 +90,22 @@ function relatedJabatan(array $elements, $parentId = 0) {
     return $branch;
 }
 
+function flattenArray($a)
+{
+    $na = array();
+
+	foreach($a as $i)
+    {
+        if(is_array($i))
+        {
+            if($na) $na = array_merge($na,flattenarray($i));
+            else $na = flattenarray($i);
+        }
+        else $na[] = $i;
+    }
+    return $na;
+}
+
 function kiraanHari($mula,$tamat)
 {
     $hari=0;

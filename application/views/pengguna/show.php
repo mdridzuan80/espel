@@ -33,15 +33,22 @@
                 ?>
                 <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                 <div class="form-group">
+                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" >
+                        <input id="txtNama" name="txtNama" class="form-control col-md-7 col-xs-12 input-sm" value="" >
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
+
+                   <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nokp</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comNama" name="comNama" class="form-control col-md-7 col-xs-12 input-sm" value="" >
+                        <input id="txtNoKP" name="txtNoKP" class="form-control col-md-7 col-xs-12 input-sm" value="" >
+                    </div>
+                  </div>
+                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="6792" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -50,7 +57,7 @@
                         <select class="form-control input-sm" id="comKelas" name="comKelas">
                           <option selected="selected" value="0">Pilih Semua</option>
                           <?php foreach($sen_kumpulan as $kumpulan):?>
-                          <option value="<?=$kumpulan->kod?>"><?=$kumpulan->keterangan?></option>
+                          <option value="<?=$kumpulan['id']?>"><?=$kumpulan['kod']?></option>
                           <?php endforeach?>
                         </select>
                     </div>

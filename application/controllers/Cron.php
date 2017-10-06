@@ -39,6 +39,14 @@ class Cron extends CI_Controller
         return $a;
     }
 
+    public function huhu()
+    {
+        $this->load->model('hrmis_carta_model','hrmis_carta');
+        $all = $this->hrmis_carta->as_array()->get_all();
+
+        print_r(flattenarray(relatedJabatan($all,6792)));
+    }
+
     public function import_hrmis()
     {
         $this->load->model('profil_2_model', 'profil');

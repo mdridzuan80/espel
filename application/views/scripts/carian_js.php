@@ -4,13 +4,14 @@
         page: 0,
         filter: {
             nama: '',
+            nokp: '',
             jabatan_id: 6792,
             sub_jabatan: 1,
             kump_id: 0,
             skim_id: 0,
             gred_id: 0
         },
-        url:base_url+'pengguna/data_grid/0'
+        url: base_url+'pengguna/data_grid/0'
    };
 
     $('#frmFilter').hide();
@@ -59,6 +60,7 @@
             data: params.filter,
             success: function(data,textStatus,jqXHR){
                 $('#datagrid').html(data);
+                console.log(data);
                 $('ul.pagination li a').click(function(e){
                     e.preventDefault();
                     params.url = $(this).attr('href');
@@ -68,8 +70,18 @@
         });
     }
 
-    $('#cmdFilter').click(function(e){
-        alert('Filtered');
+    $('#cmdDoTapis').click(function(e){
+        e.preventDefault();
+
+        options.filter.nama = $('#txtNama').val();
+        options.filter.nokp = $('#txtNoKP').val();
+        options.filter.jabatan_id = $('#comJabatan').val();
+        options.filter.kump_id = $('#comKelas').val();
+        options.filter.skim_id = $('#comSkim').val();
+        options.filter.gred_id = $('#comGred').val();
+        options.url = base_url+'pengguna/data_grid/0';
+        console.log(options);
+        load_datagrid(options);
     });
 })();
 </script>
