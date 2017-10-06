@@ -61,7 +61,7 @@ $route["api/get_event/(:num)/(:num)/(:num)"] = "welcome/get_event/$1/$2/$3";
 $route["api/get_laporan_gred/(:any)"] = "welcome/get_laporan_gred/$1";
 $route["api/get_laporan_skim/(:any)"] = "welcome/get_laporan_skim/$1";
 
-$route['profil/(:any)'] = "profil/index/$1";$route['profil/(:any)'] = "profil/index/$1";
+$route['profil/(:any)'] = "profil/index/$1";
 $route['profil/(:any)/kump'] = "profil/kumpulan/$1";
 $route['profil/(:any)/kump/add'] = "profil/kumpulan/$1";
 $route['profil/(:any)/kump/(:num)/hapus'] = "profil/kumpulan_hapus/$1/$2";

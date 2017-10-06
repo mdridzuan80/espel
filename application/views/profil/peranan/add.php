@@ -8,6 +8,12 @@
         </div>
         <div class="x_content">
             <form method="post" class="form-horizontal form-label-left">
+                <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Peranan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -32,6 +38,44 @@
                     </div>
                 </div>
             </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Maklumat Peranan Semasa (<?= $profil->nama ?>)</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-striped table-bordered jambo_table">
+                <thead>
+                    <tr class="headings">
+                        <th>Kumpulan</th>
+                        <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
+                        <th style="text-align:center">Operasi</th>
+                        <?php endif?>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($sen_subscribe as $subscribe):?>
+                <tr>
+                <td><?=$subscribe->nama . " " . $subscribe->title?></td>
+                <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
+                <td align="center">
+                <a href="<?=base_url("profil/" . $profil->nokp . "/kump/" . $subscribe->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" data-toggle="tooltip" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
+                </td>
+                <?php endif?>
+                </tr>
+                <?php endforeach?>
+                </tbody>
+            </table>
+
         </div>
       </div>
     </div>

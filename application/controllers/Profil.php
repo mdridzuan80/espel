@@ -34,9 +34,18 @@ class Profil extends MY_Controller
 	{
 		if(!$this->exist("submit"))
 		{
+			$this->load->model('profil_model','profil');
 			$this->load->model("kumpulan_model","kumpulan");
 			$this->load->model("jabatan_model","jabatan");
+			$this->load->model('kumpulan_profil_model', 'kumpulan_profil');
+			
 			$data["senPeranan"] = $this->kumpulan->get_all();
+			$profil = $this->profil->get_by('nokp',$username);
+			$data["profil"] = $profil;
+
+			$data["sen_subscribe"] = $this->kumpulan_profil->subscribe_peranan($username);
+
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengakses maklumat peranan ' . $profil->nama]);
 			return $this->renderView("profil/peranan/add", $data);
 		}
 		else
@@ -54,6 +63,11 @@ class Profil extends MY_Controller
 
 			if($this->kumpulan_profil->insert($data))
 			{
+				$this->load->model('profil_model','profil');
+
+				$profil = $this->profil->get_by('nokp',$username);
+
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menambah maklumat peranan bagi ' . $profil->nama] . ' ' . $data['kumpulan_id'] );
 				$this->appsess->setFlashSession("success", true);
 			}
 			else
@@ -62,7 +76,7 @@ class Profil extends MY_Controller
 			}
 		}
 
-		return redirect('profil/' . $username);
+		return redirect('profil/' . $username . '/kump');
 	}
 
 	public function kumpulan_hapus($username, $kumpPenggunaID)
@@ -71,6 +85,11 @@ class Profil extends MY_Controller
 
 		if($this->kumpulan_profil->delete($kumpPenggunaID))
 		{
+			$this->load->model('profil_model','profil');
+
+			$profil = $this->profil->get_by('nokp',$username);
+
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengakses maklumat peranan ' . $profil->nama]);
 			$this->appsess->setFlashSession("success", true);
 		}
 		else

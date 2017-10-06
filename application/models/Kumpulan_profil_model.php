@@ -10,6 +10,23 @@ class Kumpulan_profil_model extends MY_Model
         parent::__construct();
     }
 
+    public function subscribe_peranan($nokp)
+    {
+        $sql = 'SELECT
+            espel_kumpulan_profil.id,
+            espel_kumpulan_profil.profil_nokp,
+            espel_kumpulan.kod,
+            espel_kumpulan.nama,
+            hrmis_carta_organisasi.title
+            FROM
+            espel_kumpulan_profil
+            INNER JOIN espel_kumpulan ON espel_kumpulan_profil.kumpulan_id = espel_kumpulan.id
+            LEFT JOIN hrmis_carta_organisasi ON espel_kumpulan_profil.jabatan_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND espel_kumpulan_profil.profil_nokp = ?';
+
+        return $this->db->query($sql,[$nokp])->result();
+    }
     public function getDefaultKumpulan($username)
     {
         $this->_database->select("b.id,b.kod");
