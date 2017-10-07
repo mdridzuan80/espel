@@ -9,6 +9,21 @@ class Profil extends MY_Controller
 		$this->isLogged();
 	}
 
+	private function plugins()
+    {
+        return [
+            "css" => [
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css',
+                'assets/css/calendar.css',
+            ],
+            "js" => [
+                "assets/js/vendors/moment/moment.js",
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js',
+                'assets/js/kursus.js',
+            ],
+        ];
+    }
+
 	public function index($nokp)
 	{
 		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$nokp)
@@ -149,5 +164,60 @@ class Profil extends MY_Controller
 		{
 			return $this->renderPermissionDeny();
 		}
+	}
+
+	public function kecuali($nokp)
+    {
+		$this->load->model('kecuali_model', 'kecuali');
+
+		if(!$this->exist("submit"))
+		{
+			$data['sen_kecuali'] = $this->kecuali->get_many_by('nokp',$nokp);
+
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses profil ' . $nokp . ' pengecualian kelayakan kursus.']);
+			$plugins = $this->plugins();
+			$plugins['embedjs']=[$this->load->view('profil/kecuali/js','',true)];
+			return $this->renderView("profil/kecuali/show",$data,$plugins);
+		}
+		else
+		{
+			$data = [
+				'nokp' => $nokp,
+				'mula' => $this->input->inputToDate("txtTkhMulaKecuali"),
+				'tamat' => $this->input->inputToDate("txtTkhTamatKecuali"),
+				'catatan' => $this->input->post('txtCatatan')
+			];
+
+			if($this->kecuali->insert($data))
+			{
+				$this->appsess->setFlashSession("success", true);
+				$sql = $this->db->last_query();
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menambah maklumat pengecualian kelayakan kursus', 'sql'=>$sql]);
+			}
+			else
+			{
+				$this->appsess->setFlashSession("success", false);
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Gagal menambah maklumat pengecualian kelayakan kursus']);
+			}
+
+			return redirect('profil/' . $nokp . '/kecuali');
+		}
+	}
+	
+	public function kecuali_hapus($username, $kecualiId)
+	{
+		$this->load->model("kecuali_model","kecuali");
+
+		if($this->kecuali->delete($kecualiId))
+		{
+			$sql = $this->db->last_query();
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menghapus maklumat pengecualian kursus', 'sql'=>$sql]);
+			$this->appsess->setFlashSession("success", true);
+		}
+		else
+		{
+			$this->appsess->setFlashSession("success", false);
+		}
+		return redirect('profil/' . $username . '/kecuali');
 	}
 }

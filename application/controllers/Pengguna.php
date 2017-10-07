@@ -142,4 +142,9 @@ class Pengguna extends MY_Controller
 
         return redirect('super/pengguna/profil/' . $penggunaId);
     }
+
+    public function exportExcel()
+    {
+
+    }
 }

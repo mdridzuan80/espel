@@ -5,6 +5,9 @@
         <div class="x_title">
           <h2>Senarai Pengguna</h2>
           <button id="cmdFilter" class="btn btn-default btn-sm pull-right"><i class="fa fa-filter"></i></button>
+          <button id="cmdPdf" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-pdf-o"></i></button>
+          <button id="cmdMsWord" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-word-o"></i></button>
+          <button id="cmdExcell" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-excel-o"></i></button>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
