@@ -7,7 +7,7 @@
       <li><a><i class="fa fa-gear"></i> Konfigurasi <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('konfigurasi/email')?>">E-Mail</a></li>
-          <li><a href="<?=base_url('mockup/super/konfigurasi/email')?>">Backup</a></li>
+          <li><a href="<?=base_url('backup')?>">Backup</a></li>
         </ul>
       </li>
       <!-- <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
