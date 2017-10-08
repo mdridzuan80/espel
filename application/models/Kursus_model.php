@@ -218,7 +218,8 @@ class Kursus_model extends MY_Model
     public function takwim_day($ptj_jabatan_id, $takwim)
     {
         $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
-        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
+            FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?

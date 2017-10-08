@@ -20,3 +20,4 @@ application/vendor
 composer.lock
 log.txt
 application/core/MYY_Exceptions.php
+assets/uploads

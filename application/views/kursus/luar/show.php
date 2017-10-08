@@ -33,6 +33,7 @@
                       <th>Mula</th>
                       <th>Tamat</th>
                       <th>Pengesahan</th>
+                      <th>Dokumen Sokongan</th>
                       <th style="text-align:center">Operasi</th>
                     </tr>
                   </thead>
@@ -54,6 +55,10 @@
                         <span class="label label-danger">Tidak disahkan</span>
                         <?php endif?>
                       </td>
+                      <td>
+                      <?php if($kursus->dokumen_path) : ?>
+                      <a class="btn btn-info btn-sm" target="_blank" href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>">Papar dokumen</a></td>
+                      <?php endif ?>
                       <td align="center">
                           <?php if($kursus->stat_hadir == 'M'):?>
                           <a href="<?=base_url('kursus/edit_luar/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" data-toggle="tooltip" title="Kemaskini"><i class="fa fa-edit"></i></a>

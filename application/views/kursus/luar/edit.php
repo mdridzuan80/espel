@@ -36,7 +36,13 @@
       </div>
       <div class="x_content">
           <div class="x_content">
-              <form method="post" class="form-horizontal form-label-left">
+            <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
@@ -98,6 +104,12 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
+                    <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="file" name="userfile">
+                    </div>
+                  </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -125,7 +137,13 @@
       </div>
       <div class="x_content">
           <div class="x_content">
-              <form method="post" class="form-horizontal form-label-left">
+              <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
@@ -202,6 +220,12 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
+                    <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="file" name="userfile">
+                    </div>
+                  </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -229,7 +253,13 @@
       </div>
       <div class="x_content">
           <div class="x_content">
-              <form method="post" class="form-horizontal form-label-left">
+              <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                      ];
+                  ?>
+                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
@@ -308,6 +338,12 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
+                    <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="file" name="userfile">
                     </div>
                   </div>
                   <div class="ln_solid"></div>

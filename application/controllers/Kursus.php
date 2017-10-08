@@ -133,7 +133,6 @@ class Kursus extends MY_Controller
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
-        $plugins["js"][] = "assets/js/calendar.js";
         $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
     }
@@ -700,6 +699,27 @@ class Kursus extends MY_Controller
                 }
 
                 $this->load->model("kursus_model","kursus");
+
+                if (!empty($_FILES['userfile']['name']))
+                {
+                    $config['upload_path'] = './assets/uploads/';
+                    $config['encrypt_name'] = TRUE;
+                    $config['allowed_types'] = ['pdf'];
+
+                    $this->load->library('upload', $config);
+
+                    if ( ! $this->upload->do_upload('userfile'))
+                    {
+                            $error = array('error' => $this->upload->display_errors());
+                    }
+                    else
+                    {
+                        $dataUpload = array('upload_data' => $this->upload->data());
+
+                        $data['dokumen_path'] = $dataUpload['upload_data']['file_name'];
+                    }
+                }
+                
                 if($this->kursus->insert($data))
                 {
                     $this->appsess->setFlashSession("success", true);
@@ -708,6 +728,7 @@ class Kursus extends MY_Controller
                 {
                     $this->appsess->setFlashSession("success", false);
                 }
+
                 redirect('kursus/luar');
             }
         }
@@ -828,6 +849,26 @@ class Kursus extends MY_Controller
                         {
                             $data["penganjur"] = NULL;
                             $data["penganjur_id"] = $this->input->post("comPenganjur");
+                        }
+                    }
+
+                    if (!empty($_FILES['userfile']['name']))
+                    {
+                        $config['upload_path'] = './assets/uploads/';
+                        $config['encrypt_name'] = TRUE;
+                        $config['allowed_types'] = ['pdf'];
+
+                        $this->load->library('upload', $config);
+
+                        if ( ! $this->upload->do_upload('userfile'))
+                        {
+                                $error = array('error' => $this->upload->display_errors());
+                        }
+                        else
+                        {
+                            
+                            $dataUpload = array('upload_data' => $this->upload->data());
+                            $data['dokumen_path'] = $dataUpload['upload_data']['file_name'];
                         }
                     }
 
