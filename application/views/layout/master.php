@@ -121,6 +121,9 @@
                     <!-- <li><a href="javascript:;">Help</a></li> -->
                     <?php if(count($availPeranan)):?>
                     <li class="divider"></li>
+                    <?php if(appsess()->getSessionData('kumpulan') != appauth::PENGGUNA) : ?>
+                      <li><a href="<?=base_url('profil/tukar_peranan/' . appauth::PENGGUNA)?>">Pengguna</a></li>
+                    <?php endif ?>
                     <?php foreach($availPeranan as $peranan):?>
                     <li><a href="<?=base_url('profil/tukar_peranan/' . $peranan->kumpulan->kod)?>"><?=$peranan->kumpulan->nama?></a></li>
                     <?php endforeach?>

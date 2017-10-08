@@ -80,9 +80,10 @@ class Profil extends MY_Controller
 			{
 				$this->load->model('profil_model','profil');
 
+				$sql = $this->db->last_query();
 				$profil = $this->profil->get_by('nokp',$username);
 
-				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menambah maklumat peranan bagi ' . $profil->nama] . ' ' . $data['kumpulan_id'] );
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menambah maklumat peranan bagi ' . $profil->nama, 'sql'=>$sql]);
 				$this->appsess->setFlashSession("success", true);
 			}
 			else
@@ -101,17 +102,18 @@ class Profil extends MY_Controller
 		if($this->kumpulan_profil->delete($kumpPenggunaID))
 		{
 			$this->load->model('profil_model','profil');
+			$sql = $this->db->last_query();	
 
 			$profil = $this->profil->get_by('nokp',$username);
 
-			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengakses maklumat peranan ' . $profil->nama]);
+			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus maklumat peranan ' . $profil->nama, 'sql'=>$sql]);
 			$this->appsess->setFlashSession("success", true);
 		}
 		else
 		{
 			$this->appsess->setFlashSession("success", false);
 		}
-		return redirect('profil/' . $username);
+		return redirect('profil/' . $username . '/kump');
 	}
 
 	public function tukar_peranan($peranan)

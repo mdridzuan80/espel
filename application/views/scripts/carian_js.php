@@ -9,7 +9,8 @@
             sub_jabatan: 1,
             kump_id: 0,
             skim_id: 0,
-            gred_id: 0
+            gred_id: 0,
+            status: 'Y'
         },
         url: base_url+'pengguna/data_grid/0'
    };
@@ -79,7 +80,9 @@
         options.filter.kump_id = $('#comKelas').val();
         options.filter.skim_id = $('#comSkim').val();
         options.filter.gred_id = $('#comGred').val();
+        options.filter.status = $('#comStatus').val();
         options.url = base_url+'pengguna/data_grid/0';
+        
         console.log(options);
         load_datagrid(options);
     });

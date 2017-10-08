@@ -53,7 +53,6 @@ class Profil_model extends MY_Model
             INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
             WHERE
-            espel_profil.`status` = \'Y\' AND
             espel_profil.nokp <> \'admin\'';
 
             if($filter['nama'])
@@ -81,6 +80,8 @@ class Profil_model extends MY_Model
 
             if($filter['gred_id'])
                 $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
+            
+            $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
 
             $sql .= ' ORDER BY espel_profil.nama';
 

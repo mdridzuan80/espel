@@ -68,6 +68,7 @@ $route['profil/(:any)/kump/(:num)/hapus'] = "profil/kumpulan_hapus/$1/$2";
 $route['profil/(:any)/reset_katalaluan'] = "profil/reset_katalaluan/$1";
 $route['profil/(:any)/kecuali'] = "profil/kecuali/$1";
 $route['profil/(:any)/kecuali/(:num)/hapus'] = "profil/kecuali_hapus/$1/$2";
+$route['profil/(:any)/status'] = "pengguna/status/$1";
 
 $route['konfigurasi/email'] = "konfigurasi/email_show";
 $route['konfigurasi/email/add'] = "konfigurasi/email_add";

@@ -5,9 +5,9 @@
         <div class="x_title">
           <h2>Senarai Pengguna</h2>
           <button id="cmdFilter" class="btn btn-default btn-sm pull-right"><i class="fa fa-filter"></i></button>
-          <button id="cmdPdf" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-pdf-o"></i></button>
+          <!-- <button id="cmdPdf" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-pdf-o"></i></button>
           <button id="cmdMsWord" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-word-o"></i></button>
-          <button id="cmdExcell" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-excel-o"></i></button>
+          <button id="cmdExcell" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-excel-o"></i></button> -->
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -78,6 +78,15 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control input-sm" id="comGred" name="comGred">
                         <option selected="selected" value="0">Pilih Semua</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control input-sm" id="comStatus" name="comStatus">
+                        <option selected="selected" value="Y">Aktif</option>
+                        <option value="T">Tidak Aktif</option>
                         </select>
                     </div>
                   </div>

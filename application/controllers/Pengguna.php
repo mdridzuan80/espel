@@ -41,7 +41,7 @@ class Pengguna extends MY_Controller
 
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $profile = $this->profil->all_profil($config["per_page"],$page, $this->input->post());
-
+        
         $config["total_rows"] = $profile['count'];
         $config["uri_segment"] = 3;
 
@@ -143,8 +143,24 @@ class Pengguna extends MY_Controller
         return redirect('super/pengguna/profil/' . $penggunaId);
     }
 
-    public function exportExcel()
+    public function status($nokp)
     {
+        $this->load->model('profil_model', 'profil');
+        
+        $profil = $this->profil->get_by('nokp',$nokp);
 
+        $data['status'] = ($profil->status == 'Y') ? 'T' : 'Y';
+
+        if($this->profil->update_by(['nokp'=>$nokp],$data))
+        {
+            $sql = $this->db->last_query();
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Nyah aktif profil', 'sql' => $sql]);
+            $this->appsess->setFlashSession("success", true);
+        }
+        else
+        {
+            $this->appsess->setFlashSession("success", false);
+        }
+        return redirect('pengguna');
     }
 }

@@ -38,7 +38,8 @@ class Auth extends MY_Controller
 
     public function logout()
     {
-        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Berjaya log-out']);        
+        if($this->appsess->getSessionData('username'))
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Berjaya log-out']);        
         $this->appauth->logout();
         return redirect();
     }
