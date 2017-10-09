@@ -25,10 +25,10 @@ class Kursus_model extends MY_Model
 
     public function get_all_kursus_hadir($nokp, $tahun)
     {
-        $sql = "SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, espel_dict_jabatan b
+        $sql = "SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b
         WHERE 1=1
-        AND a.penganjur_id = b.id
+        AND a.penganjur_id = b.buid
         AND YEAR(a.tkh_mula) = ?
         AND a.nokp = ?
         and a.stat_hadir = 'L'
@@ -41,10 +41,10 @@ class Kursus_model extends MY_Model
         AND nokp = ?
         AND stat_hadir = 'L'
         UNION
-        SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, espel_dict_jabatan b, espel_permohonan_kursus c
+        SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c
         WHERE 1=1
-        AND a.penganjur_id = b.id
+        AND a.penganjur_id = b.buid
         AND a.id = c.kursus_id
         AND YEAR(a.tkh_mula) = ?
         AND a.nokp = ?
@@ -84,10 +84,10 @@ class Kursus_model extends MY_Model
 
     public function get_kursus_by_program($nokp, $programID, $tahun)
     {
-        $sql = "SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
-        FROM espel_kursus a, espel_dict_jabatan b
+        $sql = "SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
+        FROM espel_kursus a, hrmis_carta_organisasi b
         WHERE 1=1
-        AND a.penganjur_id = b.id
+        AND a.penganjur_id = b.buid
         AND YEAR(a.tkh_mula) = ?
         AND a.nokp = ?
         AND a.program_id = ?
@@ -102,10 +102,10 @@ class Kursus_model extends MY_Model
         AND program_id = ?
         AND stat_hadir = 'L'
         UNION
-        SELECT a.id, a.tajuk, b.nama jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
-        FROM espel_kursus a, espel_dict_jabatan b, espel_permohonan_kursus c
+        SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari, a.tempat
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c
         WHERE 1=1
-        AND a.penganjur_id = b.id
+        AND a.penganjur_id = b.buid
         AND a.id = c.kursus_id
         AND YEAR(a.tkh_mula) = ?
         AND a.nokp = ?
@@ -221,6 +221,7 @@ class Kursus_model extends MY_Model
         $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
+            and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
@@ -229,6 +230,7 @@ class Kursus_model extends MY_Model
             UNION
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
+            and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_tamat) = ?
@@ -236,6 +238,7 @@ class Kursus_model extends MY_Model
             AND DAY(a.tkh_tamat) = ?
             AND a.id NOT IN(SELECT id FROM espel_kursus
                 WHERE 1=1
+                and stat_terbuka = 'T'
                 AND ptj_jabatan_id_created = ?
                 AND YEAR(tkh_mula) = ?
                 AND MONTH(tkh_mula) = ?
@@ -243,6 +246,7 @@ class Kursus_model extends MY_Model
             UNION
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
+            and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = $ptj_jabatan_id
             AND a.tkh_mula < '$tkh'

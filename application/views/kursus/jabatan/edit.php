@@ -83,6 +83,18 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Terbuka</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
@@ -196,6 +208,18 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Terbuka</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
@@ -306,6 +330,18 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">
@@ -438,6 +474,18 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
                     </div>
                   </div>
                   <div class="form-group">

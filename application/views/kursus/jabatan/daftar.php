@@ -155,6 +155,15 @@
                         </div>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option selected="selected" value="G" >Generic</option>
+                            <option value="L" >Functional</option>
+                        </select>
+                    </div>
+                  </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -299,6 +308,15 @@
                         </div>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option selected="selected" value="G" >Generic</option>
+                            <option value="L" >Functional</option>
+                        </select>
+                    </div>
+                  </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -441,6 +459,15 @@
                             <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option selected="selected" value="G" >Generic</option>
+                            <option value="L" >Functional</option>
+                        </select>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -604,6 +631,15 @@
                             <input name="chkBorangB" type="checkbox" value="Y" > Borang keberkesanan kursus oleh penyelia
                           </label>
                         </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option selected="selected" value="G" >Generic</option>
+                            <option value="L" >Functional</option>
+                        </select>
                     </div>
                   </div>
                   <div class="ln_solid"></div>

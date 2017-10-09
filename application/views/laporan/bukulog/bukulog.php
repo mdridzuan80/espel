@@ -84,15 +84,15 @@ table.biasa td, table.listing td {
                     </tr>
                     <tr>
                         <td style="width:30%;text-align: left;">JAWATAN / GRED</td>
-                        <td style="width:50%;text-align: left;">: <?=$profil->jawatan->perihal?></td>
+                        <td style="width:50%;text-align: left;">: <?=$profil->gred_id?></td>
                     </tr>
                     <tr>
-                        <td style="width:30%;text-align: left;">SKIM PERKHIDMATAN</td>
-                        <td style="width:50%;text-align: left;">: </td>
+                        <td style="width:30%;text-align: left;">SKIM GRED</td>
+                        <td style="width:50%;text-align: left;">: <?= $mskim->skim->get_by('kod',$profil->skim_id)->keterangan ?></td>
                     </tr>
                     <tr>
                         <td style="width:20%;text-align: left;">TEMPAT BERTUGAS</td>
-                        <td style="width:50%;text-align: left;">: <?=strtoupper($profil->jabatan->nama)?></td>
+                        <td style="width:50%;text-align: left;">: <?= $mjabatan->jabatan->get_by('buid',$profil->jabatan_id)->title ?></td>
                     </tr>
                 </table>
             </td>
@@ -142,7 +142,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Bilangan Hari:</td>
-        <td colspan="3"><?=round($latihan->hari)?></td>
+        <td colspan="3"><?=$latihan->hari?></td>
       </tr>
       <tr>
         <td style="width: 5%">Tempat:</td>
@@ -224,7 +224,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Bilangan Hari:</td>
-        <td colspan="3"><?=round($latihan->hari)?></td>
+        <td colspan="3"><?=$latihan->hari?></td>
       </tr>
       <tr>
         <td style="width: 5%">Tempat:</td>
@@ -305,7 +305,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Bilangan Hari:</td>
-        <td colspan="3"><?=ceil($latihan->hari)?></td>
+        <td colspan="3"><?=$latihan->hari?></td>
       </tr>
       <tr>
         <td style="width: 5%">Tempat:</td>
@@ -386,7 +386,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Bilangan Hari:</td>
-        <td colspan="3"><?=ceil($latihan->hari)?></td>
+        <td colspan="3"><?=$latihan->hari?></td>
       </tr>
       <tr>
         <td style="width: 5%">Tempat:</td>
@@ -467,7 +467,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Bilangan Hari:</td>
-        <td colspan="3"><?=ceil($latihan->hari)?></td>
+        <td colspan="3"><?=$latihan->hari?></td>
       </tr>
       <tr>
         <td style="width: 5%">Tempat:</td>

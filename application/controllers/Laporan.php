@@ -32,6 +32,7 @@ class Laporan extends MY_Controller
                 $this->load->model("program_model","program");
                 $this->load->model("kursus_model","kursus");
                 $this->load->model("profil_model","profil");
+                $this->load-model('hrmis_carta_model', 'jabatan');
 
                 $data = [];
                 $tahun = $this->input->post("txtTahun");
@@ -41,6 +42,7 @@ class Laporan extends MY_Controller
                     $data['program'][$program->id]["nama"]=$program->nama;
                     $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
                 }
+
                 $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
                 $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
                     ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
@@ -50,6 +52,8 @@ class Laporan extends MY_Controller
                 $data["tahun"] = $tahun;
 
                 $html2pdf->writeHTML($this->load->view("laporan/ringkasan/pdf_ringkasan",$data,TRUE));
+                
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
                 $html2pdf->output('ringkasan.pdf',"D");
             } catch (Html2PdfException $e) {
                 $formatter = new ExceptionFormatter($e);
@@ -95,7 +99,8 @@ class Laporan extends MY_Controller
                 $this->load->model("kursus_model","kursus");
                 $this->load->library('appcpd');
                 $this->load->model("program_model","program");
-
+                $this->load->model('hrmis_skim_model', 'skim');
+                $this->load->model('hrmis_carta_model', 'jabatan');   
 
                 $data["profil"] = $this->profil->with(["jawatan","jabatan"])->get($this->appsess->getSessionData("username"));
                 $data["sen_latihan_dalam_negara"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),1,$tahun);
@@ -117,8 +122,11 @@ class Laporan extends MY_Controller
                     ->setTkhMula($tahun . "-01-01")
                     ->cumulativePoint();
                 $data["tahun"] = $tahun;
+                $data['mskim'] = $this->skim;
+                $data['mjabatan'] = $this->jabatan;
 
                 $html2pdf->writeHTML($this->load->view("laporan/bukulog/bukulog",$data,TRUE));
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
                 $html2pdf->output('bukulog.pdf', "D");
             } catch (Html2PdfException $e) {
                 $formatter = new ExceptionFormatter($e);

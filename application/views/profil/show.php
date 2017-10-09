@@ -44,7 +44,13 @@
                           </li>
                         <li>
                           <i class="fa fa-users user-profile-icon"></i>
-                          <?=$profil->email?>
+                          <?php $ppp = $mprofil->profil->get_by('nokp', $profil->nokp_ppp); ?>
+                          <?= $ppp->nama ?> (<?= $ppp->nokp ?>)
+                        </li>
+                        <li>
+                          <i class="fa fa-users user-profile-icon"></i>
+                          <?php $ppk = $mprofil->profil->get_by('nokp', $profil->nokp_ppk); ?>
+                          <?= $ppk->nama ?> (<?= $ppk->nokp ?>)
                         </li>
                         <li>
                           <i class="fa fa-bookmark user-profile-icon"></i>
@@ -63,62 +69,25 @@
                           <div class="dashboard-widget-content">
 
                             <ul class="list-unstyled timeline widget">
+                              <?php foreach($sen_log as $logs) :?>
                               <li>
                                 <div class="block">
                                   <div class="block_content">
                                     <h2 class="title">
-                                                      <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                                      <a><?= $logs->event ?></a>
                                                   </h2>
                                     <div class="byline">
-                                      <span>13 hours ago</span> by <a>Jane Smith</a>
+                                      <span><?= $logs->date ?></span> by <a><?= $logs->nokp ?></a>
                                     </div>
-                                    <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                                    <?php if($logs->sql) : ?>
+                                    <p class="excerpt">
+                                      <?= $logs->sql ?>
                                     </p>
+                                    <?php endif ?>
                                   </div>
                                 </div>
                               </li>
-                              <li>
-                                <div class="block">
-                                  <div class="block_content">
-                                    <h2 class="title">
-                                                      <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                                  </h2>
-                                    <div class="byline">
-                                      <span>13 hours ago</span> by <a>Jane Smith</a>
-                                    </div>
-                                    <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
-                                    </p>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="block">
-                                  <div class="block_content">
-                                    <h2 class="title">
-                                                      <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                                  </h2>
-                                    <div class="byline">
-                                      <span>13 hours ago</span> by <a>Jane Smith</a>
-                                    </div>
-                                    <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
-                                    </p>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="block">
-                                  <div class="block_content">
-                                    <h2 class="title">
-                                                      <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                                  </h2>
-                                    <div class="byline">
-                                      <span>13 hours ago</span> by <a>Jane Smith</a>
-                                    </div>
-                                    <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
-                                    </p>
-                                  </div>
-                                </div>
-                              </li>
+                              <?php endforeach ?>
                             </ul>
                           </div>
                         </div>

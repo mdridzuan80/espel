@@ -31,10 +31,13 @@ class Profil extends MY_Controller
 			$this->load->model('profil_model','profil');
 			$this->load->model('hrmis_skim_model','skim');
 			$this->load->model('hrmis_carta_model','jabatan');
+			$this->load->model('log_model', 'logging');
 
 			$data["profil"] = $this->profil->getProfil($nokp);
 			$data["skim"] = $this->skim;
 			$data["jabatan"] = $this->jabatan;
+			$data['mprofil'] = $this->profil;
+			$data['sen_log'] = $this->logging->latest_log($nokp);
 
 			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Melihat Profil']);
 	        return $this->renderView("profil/show",$data);

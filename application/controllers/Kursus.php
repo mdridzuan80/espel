@@ -37,7 +37,6 @@ class Kursus extends MY_Controller
         $prefs['month_type'] = 'long';
         $prefs['day_type'] = 'long';
         $prefs['template'] = '
-
         {table_open}<div id="calendar-wrap">{/table_open}
 
         {heading_row_start}<table><tr>{/heading_row_start}
@@ -79,7 +78,6 @@ class Kursus extends MY_Controller
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
-        $plugins["js"][] = "assets/js/calendar.js";
         $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
 
         return $this->renderView("kursus/takwim", $data, $plugins);
@@ -259,6 +257,8 @@ class Kursus extends MY_Controller
                     "stat_jabatan" => "T",
                 ]
             );
+            
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu Daftar kursus luar']);
             return $this->renderView("kursus/luar/show", $data);
         }
 		else
@@ -313,6 +313,7 @@ class Kursus extends MY_Controller
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
+                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -347,6 +348,7 @@ class Kursus extends MY_Controller
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
+                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -383,6 +385,7 @@ class Kursus extends MY_Controller
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
+                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -531,6 +534,9 @@ class Kursus extends MY_Controller
                     'peruntukan_id'=>$this->input->post("comPeruntukan"),
                     'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                     'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                    'telefon' => $this->input->post("txtTelefon"),
+                    'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("comJenis"),
                 ];
 
                 if($this->input->post("chkBorangA"))
@@ -555,6 +561,9 @@ class Kursus extends MY_Controller
                     'peruntukan_id'=>$this->input->post("comPeruntukan"),
                     'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                     'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                    'telefon' => $this->input->post("txtTelefon"),
+                    'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("comJenis"),
                 ];
 
                 if($this->input->post("chkBorangA"))
@@ -581,6 +590,9 @@ class Kursus extends MY_Controller
                     'peruntukan_id'=>$this->input->post("comPeruntukan"),
                     'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
                     'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                    'telefon' => $this->input->post("txtTelefon"),
+                    'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("comJenis"),
                 ];
 
                 if($this->input->post("chkBorangA"))

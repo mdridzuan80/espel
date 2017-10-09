@@ -8,7 +8,9 @@
         <li><a href="#"><i class="fa fa-smile-o"></i>Soal Selidik Kursus <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
               <li><a href="<?=base_url("selidik/boranga")?>">KKM/P&P/2013(A) <?php if($bil_boranga) : ?><span class="badge bg-green"><?=$bil_boranga?></span><?php endif ?></a></li>
+              <?php if($soalSelidikB) : ?>
               <li><a href="<?=base_url("selidik/borangb")?>">KKM/P&P/2013(B)</a></li>
+              <?php endif ?>
             </ul>
         </li>
         <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
