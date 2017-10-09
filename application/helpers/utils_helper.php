@@ -198,19 +198,19 @@ function flatten_array(array $array)
 function get_penyelaras_related_jabatan($username)
 {
     $CI =& get_instance();
-    $CI->load->model("jabatan_model","jabatan");
+    $CI->load->model("hrmis_carta_model","jabatan");
     $CI->load->model("kumpulan_profil_model", "kumpulan_profil");
     $jab_id = $CI->kumpulan_profil->get_by([
-        "profil_nokp" => $username,
-        "kumpulan_id" => 3,
+        'profil_nokp' => $username,
+        'kumpulan_id' => 3,
     ])->jabatan_id;
+    
     $flatted = flatten_array(
-        relatedJabatan(
-            $CI->jabatan->as_array()->get_all(),
-            $jab_id
-        )
+        relatedJabatan($CI->jabatan->as_array()->get_all(),$jab_id)
     );
+    
     array_push($flatted,$jab_id);
+   
     return $flatted;
 }
 

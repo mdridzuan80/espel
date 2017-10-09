@@ -54,11 +54,11 @@ class Kursus_model extends MY_Model
     }
     public function get_all_kursus_luar_pengesahan(array $jabatanID)
     {
-        $this->db->select("a.id, b.nama,d.nama jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b");
+        $this->db->select("a.id, b.nama,d.title jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.dokumen_path");
         $this->db->from("espel_kursus a");
         $this->db->join("espel_profil b","a.nokp = b.nokp");
         $this->db->join("espel_dict_program c","a.program_id = c.id");
-        $this->db->join("espel_dict_jabatan d","b.jabatan_id = d.id");
+        $this->db->join("hrmis_carta_organisasi d","b.jabatan_id = d.buid");
         $this->db->where("a.stat_hadir", "M");
         $this->db->where_in("b.jabatan_id", $jabatanID);
         $rst = $this->db->get();
@@ -68,11 +68,11 @@ class Kursus_model extends MY_Model
 
     public function get_all_kursus_boranga($nokp)
     {
-        $this->db->select("a.id, b.nama,d.nama jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b");
+        $this->db->select("a.id, b.nama,d.title jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b");
         $this->db->from("espel_kursus a");
         $this->db->join("espel_profil b","a.nokp = b.nokp");
         $this->db->join("espel_dict_program c","a.program_id = c.id");
-        $this->db->join("espel_dict_jabatan d","b.jabatan_id = d.id");
+        $this->db->join("hrmis_carta_organisasi d","b.jabatan_id = d.buid");
         $this->db->where("year(a.tkh_mula)",date("Y"));
         $this->db->where("a.stat_soal_selidik_a", "Y");
         $this->db->where("a.stat_hadir", "L");

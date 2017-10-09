@@ -7,7 +7,7 @@
         <li><a href="<?=base_url("kursus/luar")?>"><i class="fa fa-file-text-o"></i> Daftar Kursus</a></li>
         <li><a href="#"><i class="fa fa-smile-o"></i>Soal Selidik Kursus <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
-              <li><a href="<?=base_url("selidik/boranga")?>">KKM/P&P/2013(A) <span class="badge bg-green"><?=$bil_boranga?></span></a></li>
+              <li><a href="<?=base_url("selidik/boranga")?>">KKM/P&P/2013(A) <?php if($bil_boranga) : ?><span class="badge bg-green"><?=$bil_boranga?></span><?php endif ?></a></li>
               <li><a href="<?=base_url("selidik/borangb")?>">KKM/P&P/2013(B)</a></li>
             </ul>
         </li>

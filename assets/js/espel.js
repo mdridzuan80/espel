@@ -11,19 +11,7 @@
             }
         }
     };
-    $('.datatable').dataTable({
-        dom: "Bfrtip",
-        buttons: [
-            {
-                extend: "csv",
-                className: "btn-sm"
-            },
-            {
-                extend: "excel",
-                className: "btn-sm"
-            },
-        ]
-    });
+    $('.datatable').dataTable();
 
     $("#comPeranan").change(function(){
         if($(this).val() == 3){
