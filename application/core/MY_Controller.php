@@ -50,6 +50,12 @@ class MY_Controller extends CI_Controller {
                 $sidemenu = SELF::ADMIN_SIDEMENU;
             break;
             case AppAuth::PENYELARAS:
+                $this->load->model('peruntukan_model','peruntukan');
+                $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+                $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+
+                $layout['has_peruntukan'] = in_array($jabatan_id,$this->peruntukan->jabatan_has_peruntukan(date('Y')));
                 $sidemenu = SELF::PTJ_SIDEMENU;
             break;
             case AppAuth::PENGGUNA:

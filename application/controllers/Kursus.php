@@ -1552,4 +1552,40 @@ class Kursus extends MY_Controller
         }
         return redirect('kursus/pelaksanaan/'. $kursus_id);
     }
+
+    public function sah_calon($kursus_id)
+    {
+        $this->load->model('profil_model','profil');
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('kelas_model','kelas');
+        $this->load->model('hrmis_carta_model','jabatan');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+
+        $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
+        $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
+        $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
+        $data['objJabatan'] = $this->jabatan;
+        $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id,[]);
+
+        return $this->renderView('calon/show_sah', $data,['embedjs'=>[$this->load->view('calon/calon_sah_js','',TRUE)]]);
+    }
+
+    public function kehadiran_peserta()
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+
+        foreach($this->input->post('chkKehadiran') as $kehadiran)
+        {
+            $data[] = $kehadiran;
+        }
+
+        if($this->mohon_kursus->update_many($data,['stat_hadir'=>$this->input->post('stat_hadir')]))
+        {
+            $this->appsess->setFlashSession("success", true);
+        }
+        else
+        {
+            $this->appsess->setFlashSession("success", false);
+        }
+    }
 }

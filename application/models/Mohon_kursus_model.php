@@ -29,7 +29,7 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_calon($Kursus_id, $filter)
     {
-        $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role');
+        $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
         $this->db->from($this->_table . ' a');
         $this->db->join('espel_profil b', 'a.nokp = b.nokp');
         $this->db->join('hrmis_carta_organisasi c', 'b.jabatan_id = c.buid');
@@ -37,17 +37,17 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod');
         $this->db->where('a.kursus_id',$Kursus_id);
 
-        if($filter->jabatan_id)
+        if(isset($filter->jabatan_id) && $filter->jabatan_id)
         {
             $this->db->where('b.jabatan_id',$filter->jabatan_id);
         }
 
-        if($filter->kumpulan)
+        if(isset($filter->kumpulan) && $filter->kumpulan)
         {
-            $this->db->where('e.kelas_id',$filter->kumpulan);
+            $this->db->where('b.kelas_id',$filter->kumpulan);
         }
 
-        if($filter->gred)
+        if(isset($filter->gred) && $filter->gred)
         {
             $this->db->where('b.gred_id',$filter->gred);
         }
@@ -74,22 +74,22 @@ class Mohon_kursus_model extends MY_Model
                 GROUP BY a.nokp, a.nama, c.title, a.jabatan_id, a.gred_id, a.skim_id) as a WHERE 1=1
                 AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = ' . $kursus_id .')';
 
-        if($filter->jabatan_id)
+        if(isset($filter->jabatan_id) && $filter->jabatan_id)
         {
             $sql .= ' and a.jabatan_id = ' . $filter->jabatan_id;
         }
 
-        if($filter->kumpulan)
+        if(isset($filter->kumpulan) && $filter->kumpulan)
         {
             $sql .= ' and a.skim_id = ' . $filter->kumpulan;
         }
 
-        if($filter->gred)
+        if(isset($filter->gred) && $filter->gred)
         {
             $sql .= ' and a.gred_id = ' . $filter->gred;
         }
 
-        if($filter->hari)
+        if(isset($filter->hari) && $filter->hari)
         {
             if($filter->hari == 1)
             {

@@ -81,7 +81,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Status<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control input-sm" id="comStat" name="comStat">
+                            <select class="form-control input-sm" id="comStat" name="comStat" required>
                                 <option value="T">Tanggungan</option>
                                 <option value="S">Selesai</option>
                             </select>
@@ -91,32 +91,32 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nama">No. LO<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO" value="<?=(isset($belanja->no_lo)) ? $belanja->no_lo : ''?>">
+                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO" value="<?=(isset($belanja->no_lo)) ? $belanja->no_lo : ''?>" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Host">Tarikh LO<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO" value="<?=(isset($belanja->tkh_lo)) ? date('d-m-Y',strtotime($belanja->tkh_lo)) : ''?>">
+                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO" value="<?=(isset($belanja->tkh_lo)) ? date('d-m-Y',strtotime($belanja->tkh_lo)) : ''?>" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Jumlah<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah" value="<?=(isset($belanja->jumlah)) ? $belanja->jumlah : ''?>">
+                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah" value="<?=(isset($belanja->jumlah)) ? $belanja->jumlah : ''?>" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">No. Resit<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">No. Resit
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit" value="<?=(isset($belanja->no_resit)) ? $belanja->no_resit : ''?>">
+                            <input type="text" id="txtNoResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit" value="<?=(isset($belanja->no_resit)) ? $belanja->no_resit : ''?>" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">Tarikh Resit<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">Tarikh Resit
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" id="txtTkhResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhResit" value="<?=(isset($belanja->tkh_resit)) ? date('d-m-Y',strtotime($belanja->tkh_resit)) : ''?>">
