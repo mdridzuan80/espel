@@ -5,7 +5,7 @@
     for(var i=1;i<=31;i++)
     {
         $.ajax({
-            url: base_url + "api/get_event_all/" + tahun + "/" + bulan + "/" + i ,
+            url: base_url + "api/get_event/" + tahun + "/" + bulan + "/" + i ,
             success: genCell(i)
         });
     }

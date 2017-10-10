@@ -8,6 +8,12 @@
         </div>
         <div class="x_content">
             <form method="post" class="form-horizontal form-label-left">
+                <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                 <div id="input-com-penganjur" class="form-group">
                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penyelaras</label>
                   <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">

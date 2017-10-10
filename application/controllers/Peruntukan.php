@@ -11,8 +11,12 @@ class Peruntukan extends MY_Controller
     public function index()
     {
         $this->load->model('peruntukan_model', 'peruntukan');
-        $data['list_peruntukan'] = $this->peruntukan->with(["jabatan","jns_peruntukan"])->get_many_by(["stat_initial"=>'Y',"YEAR(tarikh)"=>date('Y')]);
+        $this->load->model('hrmis_carta_model','jabatan');
+        
+        $data['list_peruntukan'] = $this->peruntukan->with(['jns_peruntukan'])->get_many_by(["stat_initial"=>'Y',"YEAR(tarikh)"=>date('Y')]);
         $data["objPeruntukan"] = $this->peruntukan;
+        $data["objJabatan"] = $this->jabatan;
+
         return $this->renderView("peruntukan/show", $data);
     }
 

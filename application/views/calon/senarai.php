@@ -36,8 +36,13 @@
                   ?>
                 </td>
                 <td align="center">
-                  <a href="<?=base_url('kursus/percalonan/' . $calon->id)?>" class="btn btn-primary btn-xs" title="Info">Lulus</a>
-                  <a href="<?=base_url('kursus/percalonan/' . $calon->id)?>" class="btn btn-primary btn-xs" title="Info">Tolak</a>
+                  <?php if($calon->stat_mohon == 'M') : ?>
+                    <a href="<?=base_url('kursus/terima_pencalonan/' . $calon->id)?>" class="btn btn-round btn-default btn-xs" title="Terima"><i class="fa fa-check" aria-hidden="true"></i></a>
+                    <a href="<?=base_url('kursus/tolak_pencalonan/' . $calon->id)?>" class="btn btn-round btn-default btn-xs" title="Tolak"><i class="fa fa-close" aria-hidden="true"></i></a>
+                  <?php endif ?>
+                  <?php if(appsess()->getSessionData('kumpulan') == $calon->role) : ?>
+                  <a href="<?=base_url('kursus/hapus_pencalonan/' . $calon->id)?>" class="btn btn-round btn-default btn-xs" title="Hapus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <?php endif ?>
                 </td>
               </tr>
           <?php endforeach?>

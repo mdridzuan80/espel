@@ -37,13 +37,13 @@
                 <tbody>
                     <?php foreach($list_peruntukan as $peruntukan):?>
                   <tr>
-                    <td><?=$peruntukan->jabatan->nama?></td>
+                    <td><?= $objJabatan->jabatan->get_by('buid',$peruntukan->jabatan_id)->title ?></td>
                     <td><?=$peruntukan->jns_peruntukan->nama?></td>
                     <td>RM<?=number_format($objPeruntukan->peruntukan_semasa($peruntukan),2,'.',',')?></td>
                     <td align="center">
-                        <a href="<?=base_url("peruntukan/info/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-info btn-xs" title="Transaksi Peruntukan"><i class="fa fa-info"></i></a>
-                        <a href="<?=base_url("peruntukan/tambah/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-success btn-xs" title="Tambah Peruntukan"><i class="fa fa-plus"></i></a>
-                        <a href="<?=base_url("peruntukan/tolak/" . $peruntukan->id)?>" type="button" class="btn btn-round btn-danger btn-xs" title="Tolak Peruntukan"><i class="fa fa-minus"></i></a>
+                        <a href="<?=base_url("peruntukan/info/" . $peruntukan->id)?>" class="btn btn-round btn-default btn-xs" title="Transaksi Peruntukan"><i class="fa fa-file-o"></i></a>
+                        <a href="<?=base_url("peruntukan/tambah/" . $peruntukan->id)?>" class="btn btn-round btn-default btn-xs" title="Tambah Peruntukan"><i class="fa fa-plus"></i></a>
+                        <a href="<?=base_url("peruntukan/tolak/" . $peruntukan->id)?>" class="btn btn-round btn-default btn-xs" title="Tolak Peruntukan"><i class="fa fa-minus"></i></a>
                     </td>
                   </tr>
                   <?php endforeach?>

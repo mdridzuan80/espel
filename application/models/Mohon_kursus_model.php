@@ -29,13 +29,12 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_calon($Kursus_id, $filter)
     {
-        $this->db->select('a.id, b.nama, d.kod as gred, e.nama as kumpulan, c.nama as jabatan, a.stat_mohon');
+        $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role');
         $this->db->from($this->_table . ' a');
         $this->db->join('espel_profil b', 'a.nokp = b.nokp');
-        $this->db->join('espel_dict_jabatan c', 'b.jabatan_id = c.id');
-        $this->db->join('espel_dict_gred d', 'b.gred_id = d.id');
-        $this->db->join('espel_dict_kelas e', 'd.kelas_id = e.id');
-        $this->db->join('espel_dict_jawatan f', 'b.jawatan_id = f.id');
+        $this->db->join('hrmis_carta_organisasi c', 'b.jabatan_id = c.buid');
+        $this->db->join('hrmis_kumpulan e', 'b.kelas_id = e.kod');
+        $this->db->join('hrmis_skim f', 'b.skim_id = f.kod');
         $this->db->where('a.kursus_id',$Kursus_id);
 
         if($filter->jabatan_id)
@@ -60,21 +59,19 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_pencalonan($kursus_id, $filter)
     {
-        $sql = 'select * from (SELECT a.nokp, a.nama, b.nama jabatan, a.jabatan_id, a.gred_id, c.kelas_id, 0 as hari
-                FROM espel_profil a, espel_dict_jabatan b, espel_dict_gred c
+        $sql = 'select * from (SELECT a.nokp, a.nama, b.title jabatan, a.jabatan_id, a.gred_id, a.skim_id, 0 as hari
+                FROM espel_profil a, hrmis_carta_organisasi b
                 WHERE 1=1
-                AND a.jabatan_id = b.id
-                AND a.gred_id = c.id
+                AND a.jabatan_id = b.buid
                 AND a.nokp NOT IN (SELECT nokp FROM espel_kursus WHERE YEAR(tkh_mula) = ' . date('Y') . ' AND stat_hadir = \'L\' AND nokp is not null)
                 UNION
-                SELECT a.nokp, a.nama, c.nama jabatan, a.jabatan_id, a.gred_id, d.kelas_id, sum(b.hari) as hari
-                FROM espel_profil a, espel_kursus b, espel_dict_jabatan c, espel_dict_gred d
+                SELECT a.nokp, a.nama, c.title jabatan, a.jabatan_id, a.gred_id, a.skim_id, sum(b.hari) as hari
+                FROM espel_profil a, espel_kursus b, hrmis_carta_organisasi c
                 WHERE 1=1
                 AND a.nokp = b.nokp
-                AND a.jabatan_id = c.id
-                AND a.gred_id = d.id
+                AND a.jabatan_id = c.buid
                 AND YEAR(b.tkh_mula) = ' . date('Y') . ' AND b.stat_hadir = \'L\'
-                GROUP BY a.nokp, a.nama, c.nama, a.jabatan_id, a.gred_id, d.kelas_id) as a WHERE 1=1
+                GROUP BY a.nokp, a.nama, c.title, a.jabatan_id, a.gred_id, a.skim_id) as a WHERE 1=1
                 AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = ' . $kursus_id .')';
 
         if($filter->jabatan_id)
@@ -84,7 +81,7 @@ class Mohon_kursus_model extends MY_Model
 
         if($filter->kumpulan)
         {
-            $sql .= ' and a.kelas_id = ' . $filter->kumpulan;
+            $sql .= ' and a.skim_id = ' . $filter->kumpulan;
         }
 
         if($filter->gred)

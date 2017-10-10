@@ -50,4 +50,28 @@ class Peruntukan_model extends MY_Model
         $this->db->group_by(["b.id","b.nama"]);
         return $this->db->get()->result();
     }
+
+    public function jabatan_has_peruntukan($tahun)
+    {
+        $data = [];
+        $sql = 'SELECT distinct
+            hrmis_carta_organisasi.buid
+            FROM
+            hrmis_carta_organisasi
+            INNER JOIN espel_peruntukan ON espel_peruntukan.jabatan_id = hrmis_carta_organisasi.buid
+            WHERE
+            year(espel_peruntukan.tarikh) = ?
+            ';
+        $rst = $this->db->query($sql,[$tahun]);
+
+        if($rst->num_rows())
+        {
+            foreach($rst->result() as $row)
+            {
+                $data[] = $row->buid;
+            }
+        }
+
+        return $data;
+    }
 }

@@ -58,6 +58,7 @@ $route["lupa_katalaluan"] = "auth/lupa_katalaluan";
 $route["reset/(:any)/(:any)"] = "auth/reset";
 
 $route["api/get_event/(:num)/(:num)/(:num)"] = "welcome/get_event/$1/$2/$3"; 
+$route["api/get_event_all/(:num)/(:num)/(:num)"] = "welcome/get_event_all/$1/$2/$3";
 $route["api/get_laporan_gred/(:any)"] = "welcome/get_laporan_gred/$1";
 $route["api/get_laporan_skim/(:any)"] = "welcome/get_laporan_skim/$1";
 

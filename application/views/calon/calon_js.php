@@ -68,19 +68,7 @@ $(document).ready(function() {
                         data: filter,
                         success: function (data, textStatus, jqXHR) {
                             $('#sen_calon').html(data);
-                            $('#peserta').dataTable({
-                                dom: "Bfrtip",
-                                buttons: [
-                                    {
-                                        extend: "csv",
-                                        className: "btn-sm"
-                                    },
-                                    {
-                                        extend: "excel",
-                                        className: "btn-sm"
-                                    }
-                                ]
-                            });
+                            $('#peserta').dataTable();
                         }
                     });
                 break;
@@ -99,14 +87,6 @@ $(document).ready(function() {
                             $('#pencalonan').dataTable({
                                 dom: "Bfrtip",
                                 buttons: [
-                                    {
-                                        extend: "csv",
-                                        className: "btn-sm"
-                                    },
-                                    {
-                                        extend: "excel",
-                                        className: "btn-sm"
-                                    },
                                     {
                                         text: 'Tambah Sebagai Peserta',
                                         action: function ( e, dt, node, config ) {

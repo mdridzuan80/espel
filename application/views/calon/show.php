@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                           <th scope="row">Penganjur</th>
-                          <td colspan="3"><?=($kursus->anjuran == 'D') ? $kursus->penganjur->nama : $kursus->penganjur ?></td>
+                          <td colspan="3"><?=($kursus->anjuran == 'D') ? $objJabatan->jabatan->get_by('buid', $kursus->penganjur_id)->title : $kursus->penganjur ?></td>
                         </tr>
                       </tbody>
                     </table>
@@ -63,6 +63,21 @@
             </div>
 
             <div class="x_content">
+                <?php if(appsess()->getFlashSession()):?>
+                <?php if(appsess()->getFlashSession('success')):?>
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>INFO!</strong> Proses telah berjaya dilaksanakan.
+                </div>
+                <?php else:?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>RALAT!</strong> Proses telah berjaya dilaksanakan. Tetapi email tidak dapat dihantar.
+                </div>
+                <?php endif?>
+                <?php endif?>
                 <div id="filter" style="display:none">
                     <form method="post" class="form-horizontal form-label-left">
                   <div class="form-group">

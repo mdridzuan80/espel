@@ -132,7 +132,7 @@ class Kursus extends MY_Controller
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
-        $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
+        $plugins["embedjs"][] = $this->load->view("kursus/pengguna_js.php",NULL,TRUE);
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses takwim kursus (Pengguna)']);
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
@@ -277,8 +277,10 @@ class Kursus extends MY_Controller
                 $this->load->model('aktiviti_model','aktiviti');
                 $this->load->model('profil_model','profil');
                 $this->load->model("peruntukan_model", "peruntukan");
+                $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
-                $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+                //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+		        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
                 $data['sen_program'] = $this->program->dropdown("id","nama");
                 $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
                 $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
@@ -304,7 +306,7 @@ class Kursus extends MY_Controller
                         'tkh_mula'=>$this->input->inputToDate("txtTkhMula"),
                         'tkh_tamat'=>$this->input->inputToDate("txtTkhTamat"),
                         'tempat' => $this->input->post("txtTempat"),
-                        'anjuran' => 'D',
+                        'anjuran' => $this->input->post('comAnjuran'),
                         'stat_jabatan' => 'Y',
                         'penganjur_id' => $this->input->post("comPenganjur"),
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
@@ -339,7 +341,7 @@ class Kursus extends MY_Controller
                         'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
                         'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                         'tempat' => $this->input->post("txtTempat"),
-                        'anjuran' => 'D',
+                        'anjuran' => $this->input->post('comAnjuran'),
                         'stat_jabatan' => "Y",
                         'penganjur_id' => $this->input->post("comPenganjur"),
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
@@ -376,7 +378,7 @@ class Kursus extends MY_Controller
                         'tempat' => $this->input->post("txtTempat"),
                         'sumber'=>$this->input->post("txtSumber"),
                         'penyelia_nokp'=>$this->input->post("comPenyelia"),
-                        'anjuran' => 'D',
+                        'anjuran' => $this->input->post('comAnjuran'),
                         'stat_jabatan' => "Y",
                         'penganjur_id' => $this->input->post("comPenganjur"),
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
@@ -432,10 +434,13 @@ class Kursus extends MY_Controller
             $this->load->model('profil_model','profil');
             $this->load->model("peruntukan_model", "peruntukan");
             $this->load->model('kursus_model','kursus');
+            $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
             $data['kursus'] = $this->kursus->get($id);
 
-            $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+
+            //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+            $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
             $data['sen_program'] = $this->program->dropdown("id","nama");
             $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
             $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
@@ -455,7 +460,8 @@ class Kursus extends MY_Controller
             $data = [
                 "kursus_id" => $id,
                 "nokp" => $this->appsess->getSessionData("username"),
-                "tkh" => date("Y-m-d h:i")
+                "tkh" => date("Y-m-d h:i"),
+                'role' => $this->appsess->getSessionData('kumpulan')
             ];
 
             if($this->mohon_kursus->insert($data))
@@ -464,12 +470,12 @@ class Kursus extends MY_Controller
                 $this->load->model("profil_model", "profil");
                 $this->load->library("appnotify");
 
-                $pemohon = $this->profil->with(["jawatan","gred"])->get_by("nokp",$this->appsess->getSessionData("username"));
-                $penyelia = $this->profil->with(["jawatan","gred"])->get_by("nokp",$pemohon->penyelia);
+                $pemohon = $this->profil->get_by("nokp",$this->appsess->getSessionData("username"));
+                $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                 $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
 
                 $mail = [
-                    "to" => $penyelia->email,
+                    "to" => $penyelia->email_ppp,
                     "subject" => "[espel] Permohonan Kursus",
                     "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
                 ];
@@ -497,10 +503,13 @@ class Kursus extends MY_Controller
                 $this->load->model('profil_model','profil');
                 $this->load->model("peruntukan_model", "peruntukan");
                 $this->load->model('kursus_model','kursus');
+                $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
                 $data['kursus'] = $this->kursus->get($id);
 
-                $jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+
+                //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+		        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
                 $data['sen_program'] = $this->program->dropdown("id","nama");
                 $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
                 $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
@@ -513,102 +522,131 @@ class Kursus extends MY_Controller
 
                 return $this->renderView("kursus/jabatan/edit",$data,$this->plugins());
             }
-        }
-        else
-        {
-            $this->load->model('kumpulan_profil_model','kumpulan_profil');
-
-            if($this->input->post("hddProgram")==1 || $this->input->post("hddProgram")==2)
-            {
-                $data = [
-                    'tajuk'=>$this->input->post("txtTajuk"),
-                    'program_id'=>$this->input->post("hddProgram"),
-                    'aktiviti_id'=>$this->input->post("comAktiviti"),
-                    'tkh_mula'=>$this->input->inputToDate("txtTkhMula"),
-                    'tkh_tamat'=>$this->input->inputToDate("txtTkhTamat"),
-                    'tempat' => $this->input->post("txtTempat"),
-                    'anjuran' => 'D',
-                    'stat_jabatan' => 'Y',
-                    'penganjur_id' => $this->input->post("comPenganjur"),
-                    'stat_terbuka'=>$this->input->post("comTerbuka"),
-                    'peruntukan_id'=>$this->input->post("comPeruntukan"),
-                    'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                    'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
-                    'telefon' => $this->input->post("txtTelefon"),
-                    'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("comJenis"),
-                ];
-
-                if($this->input->post("chkBorangA"))
-                    $data["stat_soal_selidik_a"] = 'Y';
-                if($this->input->post("chkBorangB"))
-                    $data["stat_soal_selidik_b"] = 'Y';
-            }
-
-            if($this->input->post("hddProgram")==3 || $this->input->post("hddProgram")==4)
-            {
-                $data = [
-                    'tajuk' => $this->input->post("txtTajuk"),
-                    'program_id' => $this->input->post("hddProgram"),
-                    'aktiviti_id' => $this->input->post("comAktiviti"),
-                    'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                    'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
-                    'tempat' => $this->input->post("txtTempat"),
-                    'anjuran' => 'D',
-                    'stat_jabatan' => "Y",
-                    'penganjur_id' => $this->input->post("comPenganjur"),
-                    'stat_terbuka'=>$this->input->post("comTerbuka"),
-                    'peruntukan_id'=>$this->input->post("comPeruntukan"),
-                    'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                    'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
-                    'telefon' => $this->input->post("txtTelefon"),
-                    'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("comJenis"),
-                ];
-
-                if($this->input->post("chkBorangA"))
-                    $data["stat_soal_selidik_a"] = 'Y';
-                if($this->input->post("chkBorangB"))
-                    $data["stat_soal_selidik_b"] = 'Y';
-            }
-
-            if($this->input->post("hddProgram")==5)
-            {
-                $data = [
-                    'tajuk' => $this->input->post("txtTajuk"),
-                    'program_id' => $this->input->post("hddProgram"),
-                    'aktiviti_id' => $this->input->post("comAktiviti"),
-                    'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                    'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
-                    'tempat' => $this->input->post("txtTempat"),
-                    'sumber'=>$this->input->post("txtSumber"),
-                    'penyelia_nokp'=>$this->input->post("comPenyelia"),
-                    'anjuran' => 'D',
-                    'stat_jabatan' => "Y",
-                    'penganjur_id' => $this->input->post("comPenganjur"),
-                    'stat_terbuka'=>$this->input->post("comTerbuka"),
-                    'peruntukan_id'=>$this->input->post("comPeruntukan"),
-                    'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                    'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
-                    'telefon' => $this->input->post("txtTelefon"),
-                    'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("comJenis"),
-                ];
-
-                if($this->input->post("chkBorangA"))
-                    $data["stat_soal_selidik_a"] = 'Y';
-                if($this->input->post("chkBorangB"))
-                    $data["stat_soal_selidik_b"] = 'Y';
-            }
-
-            $this->load->model("kursus_model","kursus");
-            if($this->kursus->update($id, $data))
-            {
-                $this->appsess->setFlashSession("success", true);
-            }
             else
             {
-                $this->appsess->setFlashSession("success", false);
+                
+                $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+                if($this->input->post("hddProgram")==1 || $this->input->post("hddProgram")==2)
+                {
+                    $data = [
+                            'tajuk'=>$this->input->post("txtTajuk"),
+                            'program_id'=>$this->input->post("hddProgram"),
+                            'aktiviti_id'=>$this->input->post("comAktiviti"),
+                            'tkh_mula'=>$this->input->inputToDate("txtTkhMula"),
+                            'tkh_tamat'=>$this->input->inputToDate("txtTkhTamat"),
+                            'tempat' => $this->input->post("txtTempat"),
+                            'anjuran' => $this->input->post('comAnjuran'),
+                            'stat_jabatan' => 'Y',
+                            'penganjur_id' => $this->input->post("comPenganjur"),
+                            'stat_terbuka'=>$this->input->post("comTerbuka"),
+                            'peruntukan_id'=>$this->input->post("comPeruntukan"),
+                            'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
+                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'telefon' => $this->input->post("txtTelefon"),
+                            'email' => $this->input->post("txtEmail"),
+                            'jenis' => $this->input->post("comJenis"),
+                        ];
+                        if($this->input->post("comAnjuran")=="L")
+                        {
+                            $data["penganjur"] = $this->input->post("txtPenganjur");
+                        }
+                        if($this->input->post("comAnjuran")=="D")
+                        {
+                            $data["penganjur_id"] = $this->input->post("comPenganjur");
+                        }
+
+                        if($this->input->post("chkBorangA"))
+                            $data["stat_soal_selidik_a"] = 'Y';
+                        if($this->input->post("chkBorangB"))
+                            $data["stat_soal_selidik_b"] = 'Y';
+                }
+
+                if($this->input->post("hddProgram")==3 || $this->input->post("hddProgram")==4)
+                {
+                    $data = [
+                            'tajuk' => $this->input->post("txtTajuk"),
+                            'program_id' => $this->input->post("hddProgram"),
+                            'aktiviti_id' => $this->input->post("comAktiviti"),
+                            'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                            'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                            'tempat' => $this->input->post("txtTempat"),
+                            'anjuran' => $this->input->post('comAnjuran'),
+                            'stat_jabatan' => "Y",
+                            'penganjur_id' => $this->input->post("comPenganjur"),
+                            'stat_terbuka'=>$this->input->post("comTerbuka"),
+                            'peruntukan_id'=>$this->input->post("comPeruntukan"),
+                            'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
+                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'telefon' => $this->input->post("txtTelefon"),
+                            'email' => $this->input->post("txtEmail"),
+                            'jenis' => $this->input->post("comJenis"),
+                        ];
+                        if($this->input->post("comAnjuran")=="L")
+                        {
+                            $data["penganjur"] = $this->input->post("txtPenganjur");
+                        }
+                        if($this->input->post("comAnjuran")=="D")
+                        {
+                            $data["penganjur_id"] = $this->input->post("comPenganjur");
+                        }
+
+                        if($this->input->post("chkBorangA"))
+                            $data["stat_soal_selidik_a"] = 'Y';
+                        if($this->input->post("chkBorangB"))
+                            $data["stat_soal_selidik_b"] = 'Y';
+                }
+
+                if($this->input->post("hddProgram")==5)
+                {
+                    $data = [
+                            'tajuk' => $this->input->post("txtTajuk"),
+                            'program_id' => $this->input->post("hddProgram"),
+                            'aktiviti_id' => $this->input->post("comAktiviti"),
+                            'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                            'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                            'tempat' => $this->input->post("txtTempat"),
+                            'sumber'=>$this->input->post("txtSumber"),
+                            'penyelia_nokp'=>$this->input->post("comPenyelia"),
+                            'anjuran' => $this->input->post('comAnjuran'),
+                            'stat_jabatan' => "Y",
+                            'penganjur_id' => $this->input->post("comPenganjur"),
+                            'stat_terbuka'=>$this->input->post("comTerbuka"),
+                            'peruntukan_id'=>$this->input->post("comPeruntukan"),
+                            'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
+                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'telefon' => $this->input->post("txtTelefon"),
+                            'email' => $this->input->post("txtEmail"),
+                            'jenis' => $this->input->post("comJenis"),
+                        ];
+                        if($this->input->post("comAnjuran")=="L")
+                        {
+                            $data["penganjur"] = $this->input->post("txtPenganjur");
+                        }
+                        if($this->input->post("comAnjuran")=="D")
+                        {
+                            $data["penganjur_id"] = $this->input->post("comPenganjur");
+                        }
+
+                        if($this->input->post("chkBorangA"))
+                            $data["stat_soal_selidik_a"] = 'Y';
+                        if($this->input->post("chkBorangB"))
+                            $data["stat_soal_selidik_b"] = 'Y';
+                }
+
+                $this->load->model("kursus_model","kursus");
+
+                if($this->kursus->update($id, $data))
+                {
+                    
+                    $this->appsess->setFlashSession("success", true);
+                }
+                else
+                {
+                    $this->appsess->setFlashSession("success", false);
+                }
+
+                return redirect('kursus/edit_jabatan/' . $id);
             }
         }
     }
@@ -1213,15 +1251,101 @@ class Kursus extends MY_Controller
         $this->load->model('profil_model','profil');
         $this->load->model('kursus_model','kursus');
         $this->load->model('kelas_model','kelas');
+        $this->load->model('hrmis_carta_model','jabatan');
 
-        $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id);
+        $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
         $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
+        $data['objJabatan'] = $this->jabatan;
+        
         $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
 
         return $this->renderView('calon/show', $data, $plugins);
     }
 
+    public function terima_pencalonan($id)
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('profil_model','profil');
+
+        $permohonan = $this->mohon_kursus->get($id);
+        $kursus = $this->kursus->get($permohonan->kursus_id);
+        $pemohon = $this->profil->get_by('nokp',$permohonan->nokp);
+
+
+        if($this->mohon_kursus->update($id,['stat_mohon'=>'L']))
+        {
+            if($pemohon->email)
+            {
+                $this->load->library('appnotify');
+
+                $mail = [
+                    "to" => $pemohon->email ,
+                    "subject" => "[espel][Makluman] Terpilih untuk mengikuti kursus",
+                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_pilih",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
+                ];
+                $this->appnotify->send($mail);
+                $this->appsess->setFlashSession("success", true);
+            }
+            else
+            {
+                $this->appsess->setFlashSession("success", false);
+            }
+        }
+
+        return redirect('kursus/pencalonan/' . $permohonan->kursus_id);
+    }
+
+    public function tolak_pencalonan($id)
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('profil_model','profil');
+
+        $permohonan = $this->mohon_kursus->get($id);
+        $kursus = $this->kursus->get($permohonan->kursus_id);
+        $pemohon = $this->profil->get_by('nokp',$permohonan->nokp);
+
+
+        if($this->mohon_kursus->update($id,['stat_mohon'=>'T']))
+        {
+            if($pemohon->email)
+            {
+                $this->load->library('appnotify');
+
+                $mail = [
+                    "to" => $pemohon->email,
+                    "subject" => "[espel][Makluman] Permohonan kursus anda ditolak",
+                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_tolak",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
+                ];
+                $this->appnotify->send($mail);
+                $this->appsess->setFlashSession("success", true);
+            }
+            else
+            {
+                 $this->appsess->setFlashSession("success", false);
+            }
+        }
+
+        return redirect('kursus/pencalonan/' . $permohonan->kursus_id);
+
+    }
+
+    public function hapus_pencalonan($id)
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+
+        $permohonan = $this->mohon_kursus->get($id);
+
+        if($this->mohon_kursus->delete($id))
+        {
+            $this->appsess->setFlashSession("success", true);
+        }
+
+        return redirect('kursus/pencalonan/' . $permohonan->kursus_id);
+
+    }
     public function ajax_get_calon_terpilih($kursus_id)
     {
         $this->load->model('mohon_kursus_model','mohon_kursus');
@@ -1267,6 +1391,7 @@ class Kursus extends MY_Controller
                 $data['kursus_id'] = $kursus_id;
                 $data['tkh'] = date('Y-m-d h:i');
                 $data['stat_mohon'] = 'L';
+                $data['role'] = $this->appsess->getSessionData('kumpulan');
 
                 if(!$this->mohon_kursus->insert($data))
                 {
@@ -1324,6 +1449,7 @@ class Kursus extends MY_Controller
         $this->load->model('kursus_model','kursus');
         $this->load->model('mohon_kursus_model','mohon_kursus');
         $this->load->model('profil_model','profil');
+        $this->load->model('hrmis_carta_model','jabatan');
 
         $count = $this->belanja->count_by('kursus_id',$kursus_id);
 
@@ -1331,7 +1457,9 @@ class Kursus extends MY_Controller
         {
             $this->load->model('kursus_model','kursus');
 
-            $data['kursus'] = $this->kursus->with(['penganjur','program'])->get($kursus_id);
+            $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
+            $data['objJabatan'] = $this->jabatan;
+
             if($count)
             {
                 $data['belanja'] = $this->belanja->get_by('kursus_id',$kursus_id);

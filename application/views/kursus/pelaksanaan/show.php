@@ -46,7 +46,7 @@
                         </tr>
                         <tr>
                           <th scope="row">Penganjur</th>
-                          <td colspan="3"><?=($kursus->anjuran == 'D') ? $kursus->penganjur->nama : $kursus->penganjur ?></td>
+                          <td colspan="3"><?=($kursus->anjuran == 'D') ? $objJabatan->jabatan->get_by('buid', $kursus->penganjur_id)->title : $kursus->penganjur ?></td>
                         </tr>
                       </tbody>
                     </table>

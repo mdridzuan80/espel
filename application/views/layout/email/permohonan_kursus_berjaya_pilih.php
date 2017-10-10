@@ -47,16 +47,16 @@
         display: block;
         Margin: 0 auto !important;
         /* makes it centered */
-        max-width: 580px;
+        /* max-width: 580px; */
         padding: 10px;
-        width: 580px; }
+    /* width: 580px; */ }
 
       /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
         box-sizing: border-box;
         display: block;
         Margin: 0 auto;
-        max-width: 580px;
+        /* max-width: 580px; */
         padding: 10px; }
 
       /* -------------------------------------
@@ -272,6 +272,92 @@
           background-color: #34495e !important;
           border-color: #34495e !important; } }
 
+          .table_view {
+	background: #f5f5f5;
+	border-collapse: separate;
+	box-shadow: inset 0 1px 0 #fff;
+	font-size: 12px;
+	line-height: 24px;
+	margin: 30px auto;
+	text-align: left;
+}
+
+.table_view th {
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+	border-left: 1px solid #555;
+	border-right: 1px solid #777;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0 1px 0 #999;
+	color: #fff;
+  font-weight: bold;
+	padding: 10px 15px;
+	position: relative;
+	text-shadow: 0 1px 0 #000;
+}
+
+.table_view th:after {
+	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
+	content: '';
+	display: block;
+	height: 25%;
+	left: 0;
+	margin: 1px 0 0 0;
+	position: absolute;
+	top: 25%;
+	width: 100%;
+}
+
+.table_view th:first-child {
+	border-left: 1px solid #777;
+	box-shadow: inset 1px 1px 0 #999;
+}
+
+.table_view th:last-child {
+	box-shadow: inset -1px 1px 0 #999;
+}
+
+.table_view td {
+	border-right: 1px solid #fff;
+	border-left: 1px solid #e8e8e8;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #e8e8e8;
+	padding: 10px 15px;
+	position: relative;
+	transition: all 300ms;
+}
+
+.table_view td:first-child {
+	box-shadow: inset 1px 0 0 #fff;
+}
+
+.table_view td:last-child {
+	border-right: 1px solid #e8e8e8;
+	box-shadow: inset -1px 0 0 #fff;
+}
+
+.table_view tr {
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png);
+}
+
+.table_view tr:nth-child(odd) td {
+	background: #f1f1f1 url(https://jackrugile.com/images/misc/noise-diagonal.png);
+}
+
+.table_view tr:last-of-type td {
+	box-shadow: inset 0 -1px 0 #fff;
+}
+
+.table_view tr:last-of-type td:first-child {
+	box-shadow: inset 1px -1px 0 #fff;
+}
+
+.table_view tr:last-of-type td:last-child {
+	box-shadow: inset -1px -1px 0 #fff;
+}
+
+
+
     </style>
   </head>
   <body class="">
@@ -289,24 +375,48 @@
               <tr>
                 <td class="wrapper">
                   <table border="0" cellpadding="0" cellspacing="0">
-                      <tr>
-                          <td><h1>Sistem Pengurusan Latihan eSPeL</h1></td>
-                      </tr>
-                      <tr>
-                          <td>&nbsp;</td>
-                      </tr>
+                    <tr>
+                        <td><h1>Sistem Maklumat Kursus espel</h1></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
                     <tr>
                       <td>
-                        <p><b>Hi <?=$profil->nama?>,</b></p>
-                        <p>Anda ada membuat permohonan untuk reset semula katalaluan anda. Sila klik butang di bawah untuk reset katalaluan.</p>
-                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$pemohon->nama . " (" . $pemohon->nokp .")"?>,</b></p>
+                        <p>Tahniah, anda telah terpilih untuk mengikuti kursus di bawah:</p>
+                        <table border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>
                               <td align="left">
-                                <table border="0" cellpadding="0" cellspacing="0">
+                                <table border="0" cellpadding="0" cellspacing="0" class="table_view">
                                   <tbody>
+                                      <tr>
+                                        <td colspan="2"><b>Tentatif Program</b></td>
+                                      </tr>
                                     <tr>
-                                      <td> <a href="<?=base_url("reset/". $profil->nokp . "/" . $slug) ?>" target="_blank">Reset Katalaluan</a> </td>
+                                      <td width="1px"><b>Tajuk</b></td>
+                                      <td><?=$kursus->tajuk?></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Program</b></td>
+                                      <td><?=$kursus->program->nama?></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Mula</b></td>
+                                      <td><?=date("d M Y H:i A",strtotime($kursus->tkh_mula))?></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Tamat</b></td>
+                                      <td><?=date("d M Y H:i A",strtotime($kursus->tkh_tamat))?></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Lokasi</b></td>
+                                      <td><?=$kursus->tempat?></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Penganjur</b></td>
+                                      <td><?=$kursus->penganjur->nama?></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -314,10 +424,9 @@
                             </tr>
                           </tbody>
                         </table>
-                        <p>Jika anda tidak membuat permohonan, sila abaikan email ini. Permohonan ini hanya terpakai untuk <b>tempoh 1 jam</a> sahaja.</p>
+                        <p>Makluman, jadual sebenar akan menyusul kemudian.</p>
+                        <p>Sekiranya terdapat sebarang pertanyaan, sila hubungi urusetia kursus.</p>
                         <p>Sekian, terima kasih.</p>
-                        <br/>
-                        <p>Pentadbir Sistem espel</p>
                       </td>
                     </tr>
                   </table>
@@ -332,8 +441,8 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Jabatan Kesihatan Negeri Melaka</span>
-                    <br> Sistem Maklumat Latihan Bersepadu espel.
+                    <span class="apple-link">Modul Pengurusan Latihan</span>
+                    <br>Jabatan Kesihatan Negeri Melaka
                   </td>
                 </tr>
               </table>

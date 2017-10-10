@@ -37,7 +37,13 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
-                  <input type="hidden" class="hddProgram" name="hddProgram" />
+                <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?= $kursus->program_id ?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>
@@ -76,22 +82,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat" value="<?=set_value('txtTempat', $kursus->tempat)?>" >
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuran">
+                            <option value="D" <?=set_select('comAnjuran', 'D', 'D'==$kursus->anjuran)?> >Dalaman</option>
+                            <option value="L" <?=set_select('comAnjuran', 'L', 'L'==$kursus->anjuran)?> >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
                   <div id="input-com-penganjur" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div id="input-txt-penganjur" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?= $kursus->penganjur ?>">
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>">
                     </div>
                   </div>
                   <div class="form-group">
@@ -100,6 +121,15 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
+                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -162,7 +192,13 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
-                  <input type="hidden" class="hddProgram" name="hddProgram" />
+                    <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?= $kursus->program_id ?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>
@@ -201,22 +237,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat" value="<?=set_value('txtTempat', $kursus->tempat)?>">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuran">
+                            <option value="D" <?=set_select('comAnjuran', 'D', 'D'==$kursus->anjuran)?> >Dalaman</option>
+                            <option value="L" <?=set_select('comAnjuran', 'L', 'L'==$kursus->anjuran)?> >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
                   <div id="input-com-penganjur" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div id="input-txt-penganjur" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?= $kursus->penganjur ?>">
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -225,6 +276,24 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?>  >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
+                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
+                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -287,7 +356,13 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
-                  <input type="hidden" class="hddProgram" name="hddProgram" />
+                    <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?= $kursus->program_id ?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>
@@ -326,22 +401,37 @@
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat" value="<?=set_value('txtTempat', $kursus->tempat)?>">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuran">
+                            <option value="D" <?=set_select('comAnjuran', 'D', 'D'==$kursus->anjuran)?> >Dalaman</option>
+                            <option value="L" <?=set_select('comAnjuran', 'L', 'L'==$kursus->anjuran)?> >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
                   <div id="input-com-penganjur" class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div id="input-txt-penganjur" class="form-group" style="display:none;">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?= $kursus->penganjur ?>">
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -350,6 +440,15 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
+                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -412,7 +511,13 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
-                  <input type="hidden" class="hddProgram" name="hddProgram" />
+                    <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?= $kursus->program_id ?>" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>
@@ -470,22 +575,37 @@
                         </select>
                     </div>
                   </div>
-                  <div id="input-com-penganjur" class="form-group">
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comAnjuran" id="comAnjuran">
+                            <option value="D" <?=set_select('comAnjuran', 'D', 'D'==$kursus->anjuran)?> >Dalaman</option>
+                            <option value="L" <?=set_select('comAnjuran', 'L', 'L'==$kursus->anjuran)?> >Luaran</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div id="input-com-penganjur" class="form-group" <?= ($kursus->anjuran=='D') ? '' : 'style="display:none;"' ?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <div id="input-txt-penganjur" class="form-group" <?= ($kursus->anjuran=='L') ? '' : 'style="display:none;"' ?> >
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?= $kursus->penganjur ?>">
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $Kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat">
+                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -494,6 +614,15 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" name="comJenis" id="comJenis">
+                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
+                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>

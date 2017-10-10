@@ -44,10 +44,11 @@ function buildTreeParentInc(array $elements, $parentId = 0, $parentIncId = 0) {
     {
         foreach ($elements as $element)
         {
-            if ($element['id'] == $parentIncId)
+            if ($element['buid'] == $parentIncId)
             {
-                $children = buildTreeParentInc($elements, $element['id']);
-                $element["text"] = $element["nama"];
+                $children = buildTreeParentInc($elements, $element['buid']);
+                $element['id'] = $element['buid'];
+                $element["text"] = $element["title"];
                 if ($children) {
                     $element['children'] = $children;
                 }
@@ -59,10 +60,11 @@ function buildTreeParentInc(array $elements, $parentId = 0, $parentIncId = 0) {
     {
         foreach ($elements as $element)
         {
-            if ($element['parent_jabatan_id'] == $parentId)
+            if ($element['parent_buid'] == $parentId)
             {
-                $children = buildTreeParentInc($elements, $element['id']);
-                $element["text"] = $element["nama"];
+                $children = buildTreeParentInc($elements, $element['buid']);
+                $element['id'] = $element['buid'];
+                $element["text"] = $element["title"];
                 if ($children) {
                     $element['children'] = $children;
                 }
@@ -88,6 +90,21 @@ function relatedJabatan(array $elements, $parentId = 0) {
         }
     }
     return $branch;
+}
+
+function get_parent_peruntukan($buid, $elements, $buid_peruntukan)
+{
+    foreach($elements as $element)
+    {
+        if(isset($buid_peruntukan[$buid]))
+        {
+            return $buid;
+        }
+        else
+        {
+            return get_parent_peruntukan($element['parent_buid'], $elements, $buid_peruntukan);
+        }
+    }
 }
 
 function flattenArray($a)
@@ -121,7 +138,6 @@ function kiraanHari($mula,$tamat)
     }
     return abs($hari);
 }
-
 #---------------------------------------------------------------------------------------
 # FUNCTION: datediff($interval, $datefrom, $dateto, $using_timestamps = false)
 # DATE CREATED: Mar 31, 2005
