@@ -98,7 +98,7 @@
                 <td><?=$calon->jabatan?></td>
                 <td align="center">
                     <?php if($calon->stat_hadir) : ?>
-                        <?= (($calon->stat_hadir == 'Y') ? 'HADIR' : 'TIDAK HADIR') ?>
+                        <?= (($calon->stat_hadir == 'L') ? 'HADIR' : 'TIDAK HADIR') ?>
                     <?php else : ?>
                     <input type="checkbox" name="chkKehadiran[]" id="chkPeserta" value="<?= $calon->id ?>">
                     <?php endif ?>
