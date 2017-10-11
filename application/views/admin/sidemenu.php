@@ -9,8 +9,8 @@
             <ul class="nav child_menu">
                 <li><a>Laporan Kursus <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
-                        <li><a href="<?=base_url('laporan/hadir_kursus')?>">Hadir Berkursus</a></li>
-                        <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>
+                      <li><a href="<?=base_url('laporan/prestasi_kursus_individu')?>">Laporan Senarai Prestasi Individu</a></li>
+                      <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
                     </ul>
                 </li>
                 <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>

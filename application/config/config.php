@@ -462,7 +462,8 @@ $config['csrf_exclude_uris'] = [
 	'pengguna/data_grid/[0-9]+',
 	'pengguna/data_grid',
 	'kursus/kehadiran_peserta',
-	'laporan/prestasi_kursus_keseluruhan'
+	'laporan/prestasi_kursus_keseluruhan',
+	'laporan/prestasi_kursus_individu',
 ];
 
 /*

@@ -147,11 +147,56 @@ class Laporan extends MY_Controller
     {
         if(!$this->exist("submit"))
         {
-            return $this->renderView("laporan/prestasi/param");
+            $this->load->model('profil_model', 'profil');
+
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+
+            return $this->renderView("laporan/prestasi/param/param", $data, ['embedjs'=>[$this->load->view('scripts/carian_js','',true)]]);
         }
         else
         {
-            
+            try {
+                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                $html2pdf->pdf->SetDisplayMode('fullpage');
+                $html2pdf->setTestTdInOnePage(false);
+
+                ob_start();
+                $content = ob_get_clean();
+
+                $this->load->model('mohon_kursus_model','mohon_kursus');
+                $this->load->model("hrmis_carta_model","jabatan");
+
+                $tahun = $this->input->post("txtTahun");
+                
+                $jab_id = $this->input->post("comJabatan");
+
+                $flatted = flatten_array(
+                    relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+                );
+                
+                array_push($flatted,$jab_id);
+                
+                $filter = new obj([
+                    'tahun' => $tahun,
+                    'jabatan_id' => $flatted,
+                    'kelas_id' => $this->input->post("comKelas"),
+                    'skim_id' => $this->input->post("comSkim"),
+                    'gred_id' => $this->input->post("comGred"),
+                    'hari' => $this->input->post("comHari"),
+                ]);
+
+                $data['tahun'] = $tahun;
+
+                $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
+
+                $html2pdf->writeHTML($this->load->view("laporan/prestasi/senarai_individu",$data,TRUE));
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
+
+                $html2pdf->output('senarai_prestasi_anggota.pdf', "D");
+            } catch (Html2PdfException $e) {
+                $formatter = new ExceptionFormatter($e);
+                echo $formatter->getHtmlMessage();
+            }
         }
     }
 

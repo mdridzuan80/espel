@@ -113,4 +113,63 @@ class Mohon_kursus_model extends MY_Model
 
         return $rst->result();
     }
+
+    public function sen_prestasi($filter)
+    {
+        $sql = 'select * from (SELECT a.nokp, a.nama, b.title jabatan, hk.keterangan kumpulan, hs.keterangan skim, a.jabatan_id, a.kelas_id, a.skim_id, a.gred_id, 0 as hari
+                FROM espel_profil a, hrmis_carta_organisasi b, hrmis_kumpulan hk, hrmis_skim hs
+                WHERE 1=1
+                AND a.jabatan_id = b.buid
+                AND a.kelas_id = hk.kod
+                AND a.skim_id = hs.kod
+                AND a.nokp NOT IN (SELECT nokp FROM espel_kursus WHERE YEAR(tkh_mula) = ' . $filter->tahun . ' AND stat_hadir = \'L\' AND nokp is not null)
+                UNION
+                SELECT a.nokp, a.nama, c.title jabatan, hk.keterangan kumpulan, hs.keterangan skim, a.jabatan_id, a.kelas_id, a.skim_id, a.gred_id, sum(b.hari) as hari
+                FROM espel_profil a, espel_kursus b, hrmis_carta_organisasi c, hrmis_kumpulan hk, hrmis_skim hs
+                WHERE 1=1
+                AND a.nokp = b.nokp
+                AND a.jabatan_id = c.buid
+                AND a.kelas_id = hk.kod
+                AND a.skim_id = hs.kod
+                AND YEAR(b.tkh_mula) = ' . $filter->tahun . ' AND b.stat_hadir = \'L\'
+                GROUP BY a.nokp, a.nama, c.title, hk.keterangan, hs.keterangan, a.jabatan_id, a.kelas_id, a.skim_id, a.gred_id) as a WHERE 1=1';
+
+        if(isset($filter->jabatan_id) && $filter->jabatan_id)
+        {
+            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        }
+
+        if(isset($filter->kelas_id) && $filter->kelas_id)
+        {
+            $sql .= ' and a.kelas_id = \'' . $filter->kelas_id . '\'';
+        }
+
+        if(isset($filter->skim_id) && $filter->skim_id)
+        {
+            $sql .= ' and a.skim_id = ' . $filter->skim_id;
+        }
+
+        if(isset($filter->gred_id) && $filter->gred_id)
+        {
+            $sql .= ' and a.gred_id = ' . $filter->gred_id;
+        }
+
+        if(isset($filter->hari) && $filter->hari)
+        {
+            if($filter->hari == 1)
+            {
+                $sql .= ' and a.hari < ' . $filter->hari;
+            }
+            else
+            {
+                $sql .= ' and a.hari >= ' . $filter->hari;
+            }
+        }
+
+        $sql .= " ORDER BY a.nama";
+
+        $rst = $this->db->query($sql);
+
+        return $rst->result();
+    }
 }

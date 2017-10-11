@@ -99,7 +99,16 @@ class Welcome extends MY_Controller {
 	{
 		$this->load->model("hrmis_carta_model","jabatan");
 		$this->load->model('kumpulan_profil_model','kumpulan_profil');
-		$id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+
+		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['ADMIN']))
+		{
+			$id = 6792;
+		}
+		else
+		{
+			$id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+		}
+		
 		$this->output
 		->set_content_type('application/json')
 		->set_output(json_encode(buildTreeParentInc($this->jabatan->as_array()->get_all(),$id,$id)));

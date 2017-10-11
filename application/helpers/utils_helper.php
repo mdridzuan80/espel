@@ -20,7 +20,7 @@ function jabatan()
     return $CI->jabatan;
 }
 
-function buildTree(array $elements, $parentId = 6650) {
+function buildTree(array $elements, $parentId = 6792) {
     $branch = [];
 
     foreach ($elements as $element) {
@@ -37,7 +37,7 @@ function buildTree(array $elements, $parentId = 6650) {
     return $branch;
 }
 
-function buildTreeParentInc(array $elements, $parentId = 0, $parentIncId = 0) {
+function buildTreeParentInc(array $elements, $parentId = 6792, $parentIncId = 0) {
     $branch = [];
 
     if($parentIncId != 0)
@@ -76,7 +76,7 @@ function buildTreeParentInc(array $elements, $parentId = 0, $parentIncId = 0) {
     return $branch;
 }
 
-function relatedJabatan(array $elements, $parentId = 0) {
+function relatedJabatan(array $elements, $parentId = 6792) {
     $branch = [];
 
     foreach ($elements as $element) {
