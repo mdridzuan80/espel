@@ -50,10 +50,21 @@
                         </tr>
                       </tbody>
                     </table>
-                    <?php if(!$kursus->peruntukan_id) : ?>
-                    <button type="button" class="btn btn-success" name="submit">Laksana</button>
-                    <?php endif ?>
+                    
                     </div>
+                    <?php if($kursus->stat_laksana == 'R') : ?>
+                    <?php if(!$kursus->peruntukan_id) : ?>
+                    <form method="post">
+                    <?php $csrf = [
+                        'name' => $this->security->get_csrf_token_name(),
+                        'hash' => $this->security->get_csrf_hash()
+                        ];
+                    ?>
+                    <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                    <button type="submit" class="btn btn-success" name="submit">Laksana</button>
+                    </form>
+                    <?php endif ?>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -112,7 +123,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Port">No. Resit
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit" value="<?=(isset($belanja->no_resit)) ? $belanja->no_resit : ''?>" required>
+                            <input type="text" id="txtNoResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoResit" value="<?=(isset($belanja->no_resit)) ? $belanja->no_resit : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -125,7 +136,11 @@
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <?php if($kursus->stat_laksana == 'R') : ?>
                             <button type="submit" class="btn btn-primary" name="submit">Laksana</button>
+                            <?php else : ?>
+                            <button type="submit" class="btn btn-primary" name="submit">Kemaskini</button>
+                            <?php endif ?>
                         </div>
                     </div>
                 </form>

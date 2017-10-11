@@ -29,6 +29,9 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_calon($Kursus_id, $filter)
     {
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+
         $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
         $this->db->from($this->_table . ' a');
         $this->db->join('espel_profil b', 'a.nokp = b.nokp');
@@ -37,9 +40,13 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod');
         $this->db->where('a.kursus_id',$Kursus_id);
 
+
         if(isset($filter->jabatan_id) && $filter->jabatan_id)
         {
-            $this->db->where('b.jabatan_id',$filter->jabatan_id);
+            if($filter->jabatan_id != $jabatan_id)
+            {
+                $this->db->where('b.jabatan_id',$filter->jabatan_id);
+            }
         }
 
         if(isset($filter->kumpulan) && $filter->kumpulan)

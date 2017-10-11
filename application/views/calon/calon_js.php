@@ -8,7 +8,7 @@ $(document).ready(function() {
             kursus_id: $('#kursus_id').val()
         };
         var filter = {
-            jabatanID: <?=$this->profil->get($this->appsess->getSessionData('username'))->jabatan_id?>,
+            jabatanID: <?= $jabatan_id ?>,
             kumpulan: null,
             gred: null,
             hari: null

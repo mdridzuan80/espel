@@ -31,13 +31,7 @@ class Welcome extends MY_Controller {
 			(
 				$this->kursus->takwim_day
 				(
-					$this->kumpulan_profil->get_by
-					(
-						[
-							"profil_nokp"=>$this->appsess->getSessionData("username"),
-							"kumpulan_id"=>3
-						]
-					)->jabatan_id,
+					0,
 					$takwim
 				)
 			)

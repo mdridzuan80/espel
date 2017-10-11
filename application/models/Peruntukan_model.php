@@ -74,4 +74,60 @@ class Peruntukan_model extends MY_Model
 
         return $data;
     }
+
+    public function prestasi($tahun, $jabatan_id)
+    {
+        $sql = "SELECT
+            espel_peruntukan.id,
+            espel_dict_jns_peruntukan.id as jns_peruntukan_id,
+            espel_dict_jns_peruntukan.nama,
+            hrmis_carta_organisasi.title,
+            Sum(espel_peruntukan.jumlah) as jumlah,
+            espel_peruntukan.keterangan
+            FROM
+            espel_peruntukan
+            INNER JOIN hrmis_carta_organisasi ON espel_peruntukan.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN espel_dict_jns_peruntukan ON espel_peruntukan.jns_peruntukan_id = espel_dict_jns_peruntukan.id
+            WHERE
+            year(espel_peruntukan.tarikh) = ?
+            AND
+            espel_peruntukan.jabatan_id = ?
+            GROUP BY
+            espel_peruntukan.id,
+            hrmis_carta_organisasi.title,
+            espel_dict_jns_peruntukan.nama,
+            espel_peruntukan.keterangan";
+
+        return $this->db->query($sql,[$tahun,$jabatan_id])->result();
+    }
+
+    public function belanja($jns_peruntukan_id, $jabatan_id, $tahun)
+    {
+         $sql = "SELECT
+            sum(espel_belanja.jumlah) as jumlah,
+            espel_kursus.peruntukan_id,
+            espel_kursus.ptj_jabatan_id_created,
+            espel_kursus.stat_laksana
+            FROM
+            espel_kursus
+            INNER JOIN espel_belanja ON espel_belanja.kursus_id = espel_kursus.id
+            WHERE espel_kursus.stat_laksana = 'L'
+            AND year(espel_belanja.tkh_lo) = $tahun
+            AND espel_kursus.ptj_jabatan_id_created IN ($jabatan_id)
+            AND espel_kursus.peruntukan_id = $jns_peruntukan_id
+            GROUP BY espel_kursus.peruntukan_id,
+            espel_kursus.ptj_jabatan_id_created,
+            espel_kursus.stat_laksana";
+        
+        $rst = $this->db->query($sql);
+
+        if($rst->num_rows())
+        {
+            return $this->db->query($sql)->row()->jumlah;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }

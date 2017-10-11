@@ -461,7 +461,8 @@ $config['csrf_exclude_uris'] = [
 	'kursus/ajax_set_pencalonan/[0-9]+',
 	'pengguna/data_grid/[0-9]+',
 	'pengguna/data_grid',
-	'kursus/kehadiran_peserta'
+	'kursus/kehadiran_peserta',
+	'laporan/prestasi_kursus_keseluruhan'
 ];
 
 /*

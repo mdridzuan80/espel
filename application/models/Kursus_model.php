@@ -224,7 +224,6 @@ class Kursus_model extends MY_Model
             WHERE 1=1
             and a.stat_terbuka = 'Y'
             AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             AND DAY(a.tkh_mula) = ?
@@ -234,14 +233,12 @@ class Kursus_model extends MY_Model
             WHERE 1=1
             and a.stat_terbuka = 'Y'
             AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_tamat) = ?
             AND MONTH(a.tkh_tamat) = ?
             AND DAY(a.tkh_tamat) = ?
             AND a.id NOT IN(SELECT id FROM espel_kursus
                 WHERE 1=1
                 and stat_terbuka = 'Y'
-                AND ptj_jabatan_id_created = ?
                 AND YEAR(tkh_mula) = ?
                 AND MONTH(tkh_mula) = ?
                 AND DAY(tkh_mula) = ?)
@@ -250,17 +247,17 @@ class Kursus_model extends MY_Model
             WHERE 1=1
             and a.stat_terbuka = 'Y'
             AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = $ptj_jabatan_id
             AND a.tkh_mula < '$tkh'
             AND a.tkh_tamat > '$tkh'
+
             union
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b, espel_permohonan_kursus c
             WHERE 1=1
+            AND c.nokp = '" . $this->appsess->getSessionData('username') . "'
             and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND c.kursus_id = a.id
-            AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             AND DAY(a.tkh_mula) = ?
@@ -268,18 +265,18 @@ class Kursus_model extends MY_Model
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b, espel_permohonan_kursus c
             WHERE 1=1
+            AND c.nokp = '" . $this->appsess->getSessionData('username') . "'
             and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND c.kursus_id = a.id
-            AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_tamat) = ?
             AND MONTH(a.tkh_tamat) = ?
             AND DAY(a.tkh_tamat) = ?
             AND a.id NOT IN(SELECT a.id FROM espel_kursus a, espel_permohonan_kursus b
                 WHERE 1=1
+                AND b.nokp = '" . $this->appsess->getSessionData('username') . "'
                 AND b.kursus_id = a.id
                 and a.stat_terbuka = 'T'
-                AND a.ptj_jabatan_id_created = ?
                 AND YEAR(a.tkh_mula) = ?
                 AND MONTH(a.tkh_mula) = ?
                 AND DAY(a.tkh_mula) = ?)
@@ -287,22 +284,22 @@ class Kursus_model extends MY_Model
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b, espel_permohonan_kursus c
             WHERE 1=1
+            AND c.nokp = '" . $this->appsess->getSessionData('username') . "'
             and a.stat_terbuka = 'T'
             AND a.program_id = b.id
             AND c.kursus_id = a.id
-            AND a.ptj_jabatan_id_created = $ptj_jabatan_id
             AND a.tkh_mula < '$tkh'
             AND a.tkh_tamat > '$tkh'
             ) a
             ORDER BY a.tkh_mula";
 
         $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari
+            $takwim->tahun,$takwim->bulan,$takwim->hari,
+            $takwim->tahun,$takwim->bulan,$takwim->hari,
+            $takwim->tahun,$takwim->bulan,$takwim->hari,
+            $takwim->tahun,$takwim->bulan,$takwim->hari,
+            $takwim->tahun,$takwim->bulan,$takwim->hari,
+            $takwim->tahun,$takwim->bulan,$takwim->hari
         ]
         );
 
@@ -449,5 +446,55 @@ class Kursus_model extends MY_Model
         {
             return NULL;
         }
+    }
+
+    public function bil_prestasi_kelas($tahun, $bil_hari, $kelas_id)
+    {
+        $sql = "select a.nokp, a.kelas_id, sum(a.hari) as bil_hari from (SELECT a.nokp, c.kelas_id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_profil c
+        WHERE 1=1
+        AND a.penganjur_id = b.buid
+				AND a.nokp = c.nokp
+        AND YEAR(a.tkh_mula) = $tahun
+        and a.stat_hadir = 'L'
+        UNION
+        SELECT a.nokp, c.kelas_id, a.tajuk, a.penganjur, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, espel_profil c
+        WHERE 1=1
+				AND a.nokp = c.nokp
+        AND penganjur_id = 0
+        AND YEAR(tkh_mula) = $tahun
+        AND stat_hadir = 'L'
+        UNION
+        SELECT d.nokp, d.kelas_id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, espel_profil d
+        WHERE 1=1
+        AND a.penganjur_id = b.buid
+        AND a.id = c.kursus_id
+				AND c.nokp = d.nokp
+        AND YEAR(a.tkh_mula) = $tahun
+        and c.stat_hadir = 'L') as a
+        where a.kelas_id = '$kelas_id'
+        group by a.nokp, a.kelas_id";
+
+        if($bil_hari == 0)
+        {
+            $sql .= " HAVING sum(a.hari) = 0";
+        }
+        elseif($bil_hari <= 7)
+        {
+            $mula = $bil_hari;
+            $tamat = $bil_hari + 1;
+
+            $sql .= " HAVING sum(a.hari) >= $mula AND sum(a.hari) < $tamat";
+        }
+        else
+        {
+            $sql .= " HAVING sum(a.hari) >= 8";
+        }
+
+        $rst = $this->db->query($sql);
+
+        return $rst->num_rows();
     }
 }

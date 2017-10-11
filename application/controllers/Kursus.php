@@ -247,8 +247,6 @@ class Kursus extends MY_Controller
 */
     public function luar()
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
-        {
             $this->load->model("kursus_model","kursus");
             $data["sen_kursus"] = $this->kursus->with(["program"])->get_many_by(
                 [
@@ -260,11 +258,6 @@ class Kursus extends MY_Controller
             
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu Daftar kursus luar']);
             return $this->renderView("kursus/luar/show", $data);
-        }
-		else
-		{
-			return $this->renderPermissionDeny();
-		}
     }
 
     public function daftar_jabatan()
@@ -435,11 +428,10 @@ class Kursus extends MY_Controller
             $this->load->model("peruntukan_model", "peruntukan");
             $this->load->model('kursus_model','kursus');
             $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('mohon_kursus_model','mohon_kursus');
 
             $data['kursus'] = $this->kursus->get($id);
 
-
-            //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
             $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
             $data['sen_program'] = $this->program->dropdown("id","nama");
             $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
@@ -450,6 +442,77 @@ class Kursus extends MY_Controller
                 ["jabatan_id" => $jabatan_id]
             )->dropdown('nokp','nama');
             $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+            $data['has_mohon'] = $this->mohon_kursus->count_by('nokp',$this->appsess->getSessionData('username'));
+
+            return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
+        }
+        else
+        {
+            $this->load->model("mohon_kursus_model", "mohon_kursus");
+
+            $data = [
+                "kursus_id" => $id,
+                "nokp" => $this->appsess->getSessionData("username"),
+                "tkh" => date("Y-m-d h:i"),
+                'role' => $this->appsess->getSessionData('kumpulan')
+            ];
+
+            if($this->mohon_kursus->insert($data))
+            {
+                $this->load->model("kursus_model", "kursus");
+                $this->load->model("profil_model", "profil");
+                $this->load->library("appnotify");
+
+                $pemohon = $this->profil->get_by("nokp",$this->appsess->getSessionData("username"));
+                $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
+                $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
+
+                $mail = [
+                    "to" => $penyelia->email_ppp,
+                    "subject" => "[espel] Permohonan Kursus",
+                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                ];
+
+                $this->appnotify->send($mail);
+
+                $this->appsess->setFlashSession("success", true);
+            }
+            else
+            {
+                $this->appsess->setFlashSession("success", false);
+            }
+            redirect('');
+        }
+    }
+
+    public function info_kursus($id)
+    {
+        if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)
+            redirect("kursus/edit_jabatan/" . $id);
+
+        if(!$this->exist("mohon"))
+        {
+            $this->load->model('program_model','program');
+            $this->load->model('aktiviti_model','aktiviti');
+            $this->load->model('profil_model','profil');
+            $this->load->model("peruntukan_model", "peruntukan");
+            $this->load->model('kursus_model','kursus');
+            $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('mohon_kursus_model','mohon_kursus');
+
+            $data['kursus'] = $this->kursus->get($id);
+
+            //$jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+            $data['sen_program'] = $this->program->dropdown("id","nama");
+            $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
+            $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
+            $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
+            $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
+            /* $data['sen_penyelia'] = $this->profil->where(
+                ["jabatan_id" => $jabatan_id]
+            )->dropdown('nokp','nama'); */
+            $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+            $data['has_mohon'] = $this->mohon_kursus->count_by('nokp',$this->appsess->getSessionData('username'));
 
             return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
         }
@@ -1252,13 +1315,16 @@ class Kursus extends MY_Controller
         $this->load->model('kursus_model','kursus');
         $this->load->model('kelas_model','kelas');
         $this->load->model('hrmis_carta_model','jabatan');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        
+        $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+        $plugins['embedjs'][] = $this->load->view('calon/calon_js',$js,TRUE);
 
         $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
-        $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
+        $data['jabatan_id'] = $js['jabatan_id'];
         $data['objJabatan'] = $this->jabatan;
-        
-        $plugins['embedjs'][] = $this->load->view('calon/calon_js','',TRUE);
+
 
         return $this->renderView('calon/show', $data, $plugins);
     }
@@ -1451,7 +1517,7 @@ class Kursus extends MY_Controller
         $this->load->model('profil_model','profil');
         $this->load->model('hrmis_carta_model','jabatan');
 
-        $count = $this->belanja->count_by('kursus_id',$kursus_id);
+        $has_belanja = $this->belanja->count_by('kursus_id',$kursus_id);
 
         if(!$this->exist("submit"))
         {
@@ -1460,7 +1526,7 @@ class Kursus extends MY_Controller
             $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
             $data['objJabatan'] = $this->jabatan;
 
-            if($count)
+            if($has_belanja)
             {
                 $data['belanja'] = $this->belanja->get_by('kursus_id',$kursus_id);
             }
@@ -1468,22 +1534,9 @@ class Kursus extends MY_Controller
         }
         else
         {
-            if($count)
+            if(!$count) // tiada bajet
             {
-                $data = [
-                    'stat_byr' => $this->input->post("comStat"),
-                    'no_lo' => $this->input->post('txtNoLO'),
-                    'tkh_lo' => $this->input->inputToDate("txtTkhLO"),
-                    'no_resit' => $this->input->post('txtNoResit'),
-                    'jumlah' => $this->input->post("txtJumlah"),
-                ];
-
-                if($this->input->post('txtTkhResit'))
-                {
-                    $data['tkh_resit'] = $this->input->inputToDate("txtTkhResit");
-                }
-
-                if($this->belanja->update_by(['kursus_id'=>$kursus_id],$data))
+                if( $this->kursus->update($kursus_id,['stat_laksana'=>'L']))
                 {
                     $this->appsess->setFlashSession("success", true);
                 }
@@ -1493,8 +1546,9 @@ class Kursus extends MY_Controller
                 }
 
             }
-            else
+            else // ada bajet
             {
+                $kursus = $this->kursus->with(['program'])->get($kursus_id);
                 $data = [
                     'kursus_id' => $kursus_id,
                     'stat_byr' => $this->input->post("comStat"),
@@ -1511,33 +1565,43 @@ class Kursus extends MY_Controller
 
                 if($this->belanja->insert($data))
                 {
-                    $this->kursus->update($kursus_id,['stat_laksana'=>'L']);
-
-                    // hantar email
-                    $sen_peserta = $this->mohon_kursus->get_many_by(['kursus_id'=>$kursus_id]);
-
-                    if(count($sen_peserta))
+                    if($kursus->stat_laksana == 'R')
                     {
-                        $this->load->library('appnotify');
-                        foreach($sen_peserta as $peserta)
+                        $this->kursus->update($kursus_id,['stat_laksana'=>'L']);
+
+                        // hantar email
+                        $sen_peserta = $this->mohon_kursus->get_many_by(['kursus_id'=>$kursus_id]);
+
+                        if(count($sen_peserta))
                         {
-                            $pemohon = $this->profil->with(["jawatan","gred"])->get_by("nokp",$peserta->nokp);
-                            $penyelia = $this->profil->with(["jawatan","gred"])->get_by("nokp",$pemohon->penyelia);
-                            $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($kursus_id);
+                            $this->load->library('appnotify');
+                            foreach($sen_peserta as $peserta)
+                            {
+                                $pemohon = $this->profil->get_by("nokp",$peserta->nokp);
+                                $penyelia = $this->profil->get_by("nokp",$pemohon->penyelia);
+                                $kursus = $this->kursus->with(["program","aktiviti"])->get($kursus_id);
 
-                            $mail = [
-                                "to" => isset($penyelia->email) ? $penyelia->email : 'md.ridzuan80@gmail.com' ,
-                                "subject" => "[espel][Makluman] Terpilih untuk mengikuti kursus",
-                                "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
-                            ];
-                            $this->appnotify->send($mail);
+                                $this->appnotify->send($mail);
 
-                            $mail = [
-                                "to" => $pemohon->email,
-                                "subject" => "[espel][Makluman] Terpilih untuk mengikuti kursus",
-                                "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus],TRUE),
-                            ];
-                            $this->appnotify->send($mail);
+                                if($penyelia->email)
+                                {
+                                    $mail = [
+                                        "to" => $penyelia->email,
+                                        "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
+                                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                                    ];
+                                }
+
+                                if($pemohon->email)
+                                {
+                                    $mail = [
+                                        "to" => $pemohon->email,
+                                        "subject" => "[espel][Makluman] Anda Terpilih untuk mengikuti kursus",
+                                        "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus],TRUE),
+                                    ];
+                                }
+                                $this->appnotify->send($mail);
+                            }
                         }
                     }
 

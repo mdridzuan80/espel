@@ -62,14 +62,6 @@ class Laporan extends MY_Controller
         }
     }
 
-    public function prestasi_kursus()
-    {
-        if(!$this->exist("submit"))
-        {
-            return $this->renderView("laporan/prestasi/param");
-        }
-    }
-
     public function jabatan()
     {
         $this->load->model("jabatan_model","jabatan");
@@ -149,6 +141,59 @@ class Laporan extends MY_Controller
         {
 
         }
+    }
+
+    public function prestasi_kursus_individu()
+    {
+        if(!$this->exist("submit"))
+        {
+            return $this->renderView("laporan/prestasi/param");
+        }
+        else
+        {
+            
+        }
+    }
+
+    public function prestasi_kursus_keseluruhan()
+    {
+        if(!$this->exist("submit"))
+        {
+            return $this->renderView("laporan/prestasi/param/prestasi_keseluruhan");
+        }
+        else
+        {
+            try {
+                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                $html2pdf->pdf->SetDisplayMode('fullpage');
+                $html2pdf->setTestTdInOnePage(false);
+
+                ob_start();
+                $content = ob_get_clean();
+
+                $tahun = $this->input->post("txtTahun");
+                $data['tahun'] = $tahun;
+
+                $this->load->model('profil_model','profil');
+                $this->load->model('kursus_model','kursus');
+
+                $data['sen_kelas'] = $this->profil->statistik_kelas();
+                $data['objKursus'] = $this->kursus;
+
+                $html2pdf->writeHTML($this->load->view("laporan/prestasi/prestasi_keseluruhan",$data,TRUE));
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
+
+                $html2pdf->output('prestasi_keseluruhan.pdf', "D");
+            } catch (Html2PdfException $e) {
+                $formatter = new ExceptionFormatter($e);
+                echo $formatter->getHtmlMessage();
+            }
+        }
+    }
+
+    public function prestasi_kewangan()
+    {
+        return $this->renderView("laporan/prestasi/kewangan");
     }
 
     public function pdf()

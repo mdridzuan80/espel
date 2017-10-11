@@ -142,4 +142,21 @@ class Profil_model extends MY_Model
 
         return $data;
     }
+
+    public function statistik_kelas()
+    {
+        $sql = "SELECT
+        Count(espel_profil.id) as bil,
+        hrmis_kumpulan.keterangan,
+        hrmis_kumpulan.kod
+        FROM
+        espel_profil
+        INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+        GROUP BY
+        hrmis_kumpulan.keterangan,
+        hrmis_kumpulan.kod
+        order by 1";
+
+        return $this->db->query($sql)->result();
+    }
 }

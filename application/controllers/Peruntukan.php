@@ -74,10 +74,13 @@ class Peruntukan extends MY_Controller
     public function info($id)
     {
         $this->load->model('peruntukan_model', 'peruntukan');
+        $this->load->model('hrmis_carta_model', 'jabatan');
 
+        $data['objJabatan'] = $this->jabatan;
         $data["objPeruntukan"] = $this->peruntukan;
-        $data["info_peruntukan"] = $this->peruntukan->with(["jabatan","jns_peruntukan"])->get($id);
+        $data["info_peruntukan"] = $this->peruntukan->with(["jns_peruntukan"])->get($id);
         $data["sen_transaksi"] = $this->peruntukan->sen_transaksi($data["info_peruntukan"]);
+
         return $this->renderView("peruntukan/info_peruntukan", $data, $this->plugins());
     }
 
@@ -86,9 +89,13 @@ class Peruntukan extends MY_Controller
         if(!$this->exist("submit"))
         {
             $this->load->model('peruntukan_model', 'peruntukan');
+            $this->load->model('jnsperuntukan_model', 'jnsperuntukan');
+            $this->load->model('hrmis_carta_model', 'jabatan');
 
+            $data['objJabatan'] = $this->jabatan;
             $data["objPeruntukan"] = $this->peruntukan;
-            $data["info_peruntukan"] = $this->peruntukan->with(["jabatan","jns_peruntukan"])->get($id);
+            $data["info_peruntukan"] = $this->peruntukan->with(["jns_peruntukan"])->get($id);
+
             $data['jnsperuntukans'] = $this->jnsperuntukan->get_all();
             return $this->renderView("peruntukan/add_peruntukan", $data, $this->plugins());
         }
@@ -124,7 +131,9 @@ class Peruntukan extends MY_Controller
         {
             $this->load->model('peruntukan_model', 'peruntukan');
             $this->load->model('jnsperuntukan_model', 'jnsperuntukan');
+            $this->load->model('hrmis_carta_model', 'jabatan');
 
+            $data['objJabatan'] = $this->jabatan;
             $data["objPeruntukan"] = $this->peruntukan;
             $data["info_peruntukan"] = $this->peruntukan->with(["jabatan","jns_peruntukan"])->get($id);
             $data['jnsperuntukans'] = $this->jnsperuntukan->get_all();
@@ -159,9 +168,14 @@ class Peruntukan extends MY_Controller
     public function prestasi()
     {
         $this->load->model("profil_model", "profil");
+        $this->load->model("kumpulan_profil_model", "kumpulan_profil");
         $this->load->model("peruntukan_model", "peruntukan");
+        
+        $rekod_peruntukan = [];
 
+        $data['objPeruntukan'] = $this->peruntukan;
+        $data['peruntukan_semasa'] = $this->peruntukan->prestasi(date('Y'),$this->kumpulan_profil->get_by(['profil_nokp'=>$this->appsess->getSessionData('username'),'kumpulan_id'=>3])->jabatan_id);
 
-        return $this->renderView("peruntukan/prestasi/show");
+        return $this->renderView("peruntukan/prestasi/show",$data);
     }
 }

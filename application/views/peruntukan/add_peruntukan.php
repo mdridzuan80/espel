@@ -10,7 +10,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tarikh waran">Jabatan Penyelaras</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" class="form-control col-md-7 col-xs-12" readonly="readonly" value="<?=$info_peruntukan->jabatan->nama?>">
+                                <input type="text" class="form-control col-md-7 col-xs-12" readonly="readonly" value="<?=$objJabatan->jabatan->get_by('buid',$info_peruntukan->jabatan_id)->title ?>">
                             </div>
                         </div>
                         <div class="form-group">
