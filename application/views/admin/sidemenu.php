@@ -13,7 +13,7 @@
                       <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
                     </ul>
                 </li>
-                <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Laporan Kewangan</a></li>
+                <li><a href="<?=base_url('laporan/prestasi_kewangan')?>">Laporan Kewangan</a></li>
             </ul>
         </li>
         <li><a><i class="fa fa-book"></i> Kamus Data <span class="fa fa-chevron-down"></span></a>

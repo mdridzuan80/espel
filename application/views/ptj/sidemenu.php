@@ -11,11 +11,11 @@
         </ul>
       </li>
       <?php if($has_peruntukan) : ?>
-     <!--  <li><a><i class="fa fa-money"></i>Peruntukan <span class="fa fa-chevron-down"></span></a>
+     <li><a><i class="fa fa-money"></i>Peruntukan <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="<?=base_url('peruntukan/prestasi')?>"></i>Prestasi Peruntukan</a></li>
           </ul>
-      </li> -->
+      </li>
       <?php endif ?>
       <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">

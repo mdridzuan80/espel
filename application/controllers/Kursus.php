@@ -512,7 +512,7 @@ class Kursus extends MY_Controller
                 ["jabatan_id" => $jabatan_id]
             )->dropdown('nokp','nama'); */
             $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
-            $data['has_mohon'] = $this->mohon_kursus->count_by('nokp',$this->appsess->getSessionData('username'));
+            $data['has_mohon'] = $this->mohon_kursus->count_by(['nokp' => $this->appsess->getSessionData('username'), 'id' => $id]);
 
             return $this->renderView("kursus/jabatan/info",$data,$this->plugins());
         }
@@ -701,7 +701,6 @@ class Kursus extends MY_Controller
 
                 if($this->kursus->update($id, $data))
                 {
-                    
                     $this->appsess->setFlashSession("success", true);
                 }
                 else

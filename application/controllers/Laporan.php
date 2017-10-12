@@ -224,7 +224,7 @@ class Laporan extends MY_Controller
 
                 $data['sen_kelas'] = $this->profil->statistik_kelas();
                 $data['objKursus'] = $this->kursus;
-
+                
                 $html2pdf->writeHTML($this->load->view("laporan/prestasi/prestasi_keseluruhan",$data,TRUE));
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
 
@@ -238,7 +238,40 @@ class Laporan extends MY_Controller
 
     public function prestasi_kewangan()
     {
-        return $this->renderView("laporan/prestasi/kewangan");
+        if(!$this->exist("submit"))
+        {
+            return $this->renderView("laporan/prestasi/param/kewangan");
+        }
+        else
+        {
+            try {
+                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                $html2pdf->pdf->SetDisplayMode('fullpage');
+                $html2pdf->setTestTdInOnePage(false);
+
+                ob_start();
+                $content = ob_get_clean();
+
+                $tahun = $this->input->post("txtTahun");
+                $data['tahun'] = $tahun;
+
+                $this->load->model('profil_model','profil');
+                $this->load->model('kursus_model','kursus');
+
+                $data['sen_kelas'] = $this->profil->statistik_kelas();
+                $data['objKursus'] = $this->kursus;
+
+                $html2pdf->writeHTML($this->load->view("laporan/prestasi/prestasi_kewangan",$data,TRUE));
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
+                
+                //dd($this->load->view("laporan/prestasi/prestasi_kewangan",$data,TRUE));
+
+                $html2pdf->output('prestasi_kewangan.pdf', "D");
+            } catch (Html2PdfException $e) {
+                $formatter = new ExceptionFormatter($e);
+                echo $formatter->getHtmlMessage();
+            }
+        }
     }
 
     public function pdf()

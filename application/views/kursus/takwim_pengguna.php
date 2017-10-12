@@ -6,7 +6,6 @@
                     <h2>Takwim Kursus</h2>
                     <a href="<?=base_url("kursus/takwim_pengguna_senarai/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar senarai">Senarai</a>
                     <a href="<?=base_url("kursus/takwim_pengguna/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Kalendar</a>
-                    <a href="<?=base_url("kursus/takwim_pengguna")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Semasa</a>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

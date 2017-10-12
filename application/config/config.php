@@ -464,6 +464,7 @@ $config['csrf_exclude_uris'] = [
 	'kursus/kehadiran_peserta',
 	'laporan/prestasi_kursus_keseluruhan',
 	'laporan/prestasi_kursus_individu',
+	'laporan/prestasi_kewangan',
 ];
 
 /*
