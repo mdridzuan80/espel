@@ -9,7 +9,7 @@
   <div class="clearfix"></div>
 
   <div class="row">
-    <div class="col-md-7 col-sm-8 col-xs-7">
+    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
           <h2>Bahagian A : Maklumat Diri</h2>
@@ -19,7 +19,7 @@
           </ul>
           <div class="clearfix"></div>
         </div>
-        <div class="x_content" style="display:none">
+        <div class="x_content">
             <br />
             <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
@@ -27,35 +27,40 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nama
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="Md Ridzuan bin Mohammad Latiah" disabled>
+                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $profil->nama ?>" disabled>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">No. Kad Pengenalan
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="801109-01-5565" disabled>
+                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $profil->nokp ?>" disabled>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Jawatan
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="Penolong Pegawai Tadbir" disabled>
+                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $objSkim->hrmis_skim->get_by('kod',$profil->skim_id)->keterangan ?>" disabled>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Gred
                 </label>
+                <?php
+                $str = $profil->gred_id;
+                preg_match_all('!\d+!', $str, $matches);
+                print_r($matches);
+                ?>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="N32" disabled>
+                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $profil->gred_id ?>" disabled>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Jabatan / Bahagian
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="Jabatan Kesihatan Negeri Melaka" disabled>
+                  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $objCarta->hrmis_carta->get_by('buid',$profil->jabatan_id)->title ?>" disabled>
                 </div>
               </div>
               <div class="form-group">
@@ -129,26 +134,9 @@
         </div>
       </div>
     </div>
-    <div class="col-md-5 col-sm-5 col-xs-5">
-      <div class="x_panel">
-        <div class="x_content">
-            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-              <div class="form-group">
-                <div class="col-md-12 col-sm-6 col-xs-12">
-                  <button class="btn btn-primary" type="button">Batal</button>
-                  <button class="btn btn-primary" type="reset">Reset</button>
-                  <a href="<?=base_url('mockup/anggota/dashboard')?>" class="btn btn-success">Hantar</a>
-                </div>
-              </div>
-            </form>
-
-        </div>
-      </div>
-    </div>
-
   </div>
   <div class="row">
-    <div class="col-md-7 col-sm-7 col-xs-7">
+    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
           <h2>Bahagian B : Reaksi</h2>
@@ -158,7 +146,7 @@
           </ul>
           <div class="clearfix"></div>
         </div>
-        <div class="x_content" style="display:none;">
+        <div class="x_content">
             <p>
                 Sila nyatakan sejauh mana anda setuju dengan setiap pertanyaan dengan membulatkan SATU NOMBOR daripada skala 1 hingga 4 seperti di bawah :-
             </p>
@@ -382,7 +370,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-7 col-sm-8 col-xs-7">
+    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
           <h2>Bahagian C : Pembelajaran</h2>
@@ -392,7 +380,7 @@
           </ul>
           <div class="clearfix"></div>
         </div>
-        <div class="x_content" style="display:none">
+        <div class="x_content" >
             <p>
                 Sila nyatakan sejauh mana anda setuju dengan kenyataan dan bulatkan SATU NOMBOR daripada skala 1 hingga 4 seperti di bawah :-
             </p>
@@ -722,7 +710,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-7 col-sm-7 col-xs-7">
+    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
           <h2>Bahagian D : Ulasan</h2>
@@ -732,7 +720,7 @@
           </ul>
           <div class="clearfix"></div>
         </div>
-        <div class="x_content" style="display:none">
+        <div class="x_content">
             <p>
                 Sila beri ulasan terhadap kursus yang dihadiri
             </p>
@@ -764,6 +752,25 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_content">
+          <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+            <div class="form-group">
+              <div class="col-md-12 col-sm-6 col-xs-12">
+                <button class="btn btn-primary" type="button">Batal</button>
+                <button class="btn btn-primary" type="reset">Reset</button>
+                <a href="<?=base_url('mockup/anggota/dashboard')?>" class="btn btn-success">Hantar</a>
+              </div>
+            </div>
+          </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
   <br/>
   <br/>
   <br/>

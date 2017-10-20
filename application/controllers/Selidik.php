@@ -24,7 +24,15 @@ class Selidik extends MY_Controller {
 	{
 		if(!$this->exist("submit"))
 		{
-			return $this->renderView("selidik/boranga/add");
+			$this->load->model('profil_model','profil');
+			$this->load->model('hrmis_skim_model','hrmis_skim');
+			$this->load->model('hrmis_carta_model','hrmis_carta');
+
+			$data['profil'] = $this->profil->get($this->appsess->getSessionData('username'));
+			$data['objSkim'] = $this->hrmis_skim;
+			$data['objCarta'] = $this->hrmis_carta;
+			
+			return $this->renderView("selidik/boranga/add",$data);
 		}
 		else
 		{
