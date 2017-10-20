@@ -5,26 +5,27 @@
     for(var i=1;i<=31;i++)
     {
         $.ajax({
-            url: base_url + "api/get_event/" + tahun + "/" + bulan + "/" + i ,
+            url: base_url + "api/get_event_pengguna/" + tahun + "/" + bulan + "/" + i ,
             success: genCell(i)
         });
     }
 
     function genCell(i){
-        return function(data, textStatus, jqXHR ){
+        return function(sen_kursus, textStatus, jqXHR ){
             var now = moment();
             var text = "";
             var tkhMula;
             var tkhTamat;
 
-            if(data){
-                data.forEach(function(kursus){
+            if(sen_kursus){
+                sen_kursus.forEach(function(kursus){
                     tkhMula = moment(kursus.tkh_mula);
                     tkhTamat = moment(kursus.tkh_tamat);
-                    if(!tkhMula.isBefore(now))
+
+                    if(!tkhMula.isBefore(now) && !kursus.nokp)
                     {
                         text = text + "<div class=\"event\"> \
-                                <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_kursus/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
+                                <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_kursus_pengguna/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
                                 </div> \
                                 <div class=\"event-time\"> \
                                     " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \

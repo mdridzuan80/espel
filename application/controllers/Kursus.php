@@ -555,6 +555,73 @@ class Kursus extends MY_Controller
         }
     }
 
+    public function info_kursus_pengguna($id)
+    {
+        if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)
+            redirect("kursus/edit_jabatan/" . $id);
+
+        if(!$this->exist("mohon"))
+        {
+            $this->load->model('program_model','program');
+            $this->load->model('aktiviti_model','aktiviti');
+            $this->load->model('profil_model','profil');
+            $this->load->model("peruntukan_model", "peruntukan");
+            $this->load->model('kursus_model','kursus');
+            $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('mohon_kursus_model','mohon_kursus');
+
+            $data['kursus'] = $this->kursus->get($id);
+
+            $data['sen_program'] = $this->program->dropdown("id","nama");
+            $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
+            $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
+            $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
+            $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
+            $data['sen_peruntukan'] = $this->peruntukan->dropdown_pengguna_peruntukan(date('Y'));
+            //dd($data['sen_peruntukan']);
+            $data['has_mohon'] = $this->mohon_kursus->count_by(['nokp' => $this->appsess->getSessionData('username'), 'id' => $id]);
+
+            return $this->renderView("kursus/pengguna/info",$data,$this->plugins());
+        }
+        else
+        {
+            $this->load->model("mohon_kursus_model", "mohon_kursus");
+
+            $data = [
+                "kursus_id" => $id,
+                "nokp" => $this->appsess->getSessionData("username"),
+                "tkh" => date("Y-m-d h:i"),
+                'role' => $this->appsess->getSessionData('kumpulan')
+            ];
+
+            if($this->mohon_kursus->insert($data))
+            {
+                $this->load->model("kursus_model", "kursus");
+                $this->load->model("profil_model", "profil");
+                $this->load->library("appnotify");
+
+                $pemohon = $this->profil->get_by("nokp",$this->appsess->getSessionData("username"));
+                $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
+                $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
+
+                $mail = [
+                    "to" => $penyelia->email_ppp,
+                    "subject" => "[espel] Permohonan Kursus",
+                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                ];
+
+                $this->appnotify->send($mail);
+
+                $this->appsess->setFlashSession("success", true);
+            }
+            else
+            {
+                $this->appsess->setFlashSession("success", false);
+            }
+            redirect('');
+        }
+    }
+
     public function edit_jabatan($id)
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))

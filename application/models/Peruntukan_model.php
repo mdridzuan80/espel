@@ -130,4 +130,19 @@ class Peruntukan_model extends MY_Model
             return 0;
         }
     }
+
+    public function dropdown_pengguna_peruntukan($tahun)
+    {
+        $sql = 'SELECT
+            espel_peruntukan.id,
+            espel_dict_jns_peruntukan.nama,
+            espel_dict_jns_peruntukan.keterangan,
+            year(tarikh) AS tahun
+            FROM
+            espel_peruntukan
+            INNER JOIN espel_dict_jns_peruntukan ON espel_peruntukan.jns_peruntukan_id = espel_dict_jns_peruntukan.id
+            where 1=1
+            and year(tarikh) = ?';
+        return $this->db->query($sql,[$tahun])->result();
+    }
 }

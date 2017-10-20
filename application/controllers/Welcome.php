@@ -23,8 +23,7 @@ class Welcome extends MY_Controller {
 			"hari" => $hari,
 		]);
 
-		$this->output
-        ->set_content_type('application/json')
+		$this->output->set_content_type('application/json')
         ->set_output
 		(
 			json_encode
@@ -34,6 +33,24 @@ class Welcome extends MY_Controller {
 					0,
 					$takwim
 				)
+			)
+		);
+	}
+
+	public function get_event_pengguna($tahun,$bulan,$hari)
+	{
+		$this->load->model("kursus_model","kursus");
+		$this->load->model("kumpulan_profil_model","kumpulan_profil");
+		$takwim = initObj([
+			"tahun" => $tahun,
+			"bulan" => $bulan,
+			"hari" => $hari,
+		]);
+
+		$this->output->set_content_type('application/json')
+        ->set_output(
+			json_encode(
+				$this->kursus->takwim_day_pengguna(0,$takwim)
 			)
 		);
 	}
