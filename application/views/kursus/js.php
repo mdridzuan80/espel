@@ -21,8 +21,8 @@
                 data.forEach(function(kursus){
                     tkhMula = moment(kursus.tkh_mula);
                     tkhTamat = moment(kursus.tkh_tamat);
-                    if(!tkhMula.isBefore(now))
-                    {
+                    //if(!tkhMula.isBefore(now))
+                    //{
                         text = text + "<div class=\"event\"> \
                                 <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + kursus.id + " \"> " + kursus.tajuk + "</a>\
                                 </div> \
@@ -30,7 +30,7 @@
                                     " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
                                 </div> \
                             </div>";
-                    }
+                    /* }
                     else
                     {
                         text = text + "<div class=\"event pass\"> \
@@ -40,7 +40,7 @@
                                     " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
                                 </div> \
                             </div>";
-                    }
+                    } */
                 });
                 $("#cell-"+i).parent().append(text);
             }

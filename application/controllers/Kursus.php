@@ -159,7 +159,7 @@ class Kursus extends MY_Controller
             "tahun" => $this->uri->segment(3, date('Y')),
             "bulan" => $this->uri->segment(4, date('m'))
         ]);
-        $data["sen_kursus"]=$this->kursus->takwim($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $data["takwim"]);
+        $data["sen_kursus"]=$this->kursus->takwim_senarai_pengguna($data["takwim"]);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses senarai kursus  (Pengguna)']);
         return $this->renderView("kursus/takwim_pengguna_senarai", $data);
