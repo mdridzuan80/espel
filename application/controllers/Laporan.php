@@ -291,4 +291,71 @@ class Laporan extends MY_Controller
             echo $formatter->getHtmlMessage();
         }
     }
+
+    // laporan senarai hadir oleh pengguna
+    public function pengguna_hadir_kursus()
+    {
+        return $this->renderView("laporan/pengguna/kursus_hadir/param",'',['embedjs'=>[$this->load->view('laporan/pengguna/kursus_hadir/js','',true)]]);
+    }
+
+    public function ajax_papar_pengguna_hadir_kursus()
+    {
+        $this->load->model("kursus_model", "kursus");
+
+        $tahun = $this->input->post('tahun');
+        
+        $data['tahun'] = $tahun;
+        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
+
+        return $this->load->view('laporan/pengguna/kursus_hadir/result',$data);
+    }
+
+    public function ajax_papar_pengguna_hadir_export()
+    {
+        $tahun = $this->input->post('tahun');
+        $jenis = $this->input->post('jenis');
+
+        $this->load->model("kursus_model", "kursus");
+        $this->load->model("profil_model", "profil");
+
+        $tahun = $this->input->post('tahun');
+        
+        $data['tahun'] = $tahun;
+        $data['profil'] = $this->profil->get($this->appsess->getSessionData('username'));
+        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
+
+        switch($jenis)
+        {
+            case 1 :
+                try {
+                    $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+
+                    ob_start();
+                    $content = ob_get_clean();
+
+                    $html2pdf->writeHTML($this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE));
+                    $html2pdf->output('about.pdf');
+                } catch (Html2PdfException $e) {
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
+                }
+            break;
+
+            case 2 :
+                $this->output->set_header('Content-type: application/vnd.ms-excel');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.xls');
+                $content = $this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE);
+                echo $content;
+            break;
+
+            case 3 :
+                $this->output->set_header('Content-type: application/vnd.ms-word');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.doc');
+                $content = $this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE);
+                echo $content;
+            break;
+        }
+    }
+    // end: laporan senarai hadir oleh pengguna
 }

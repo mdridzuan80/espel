@@ -222,6 +222,8 @@
 
     <!-- jQuery -->
     <script src="<?=base_url("assets/js/jquery.min.js")?>"></script>
+    <script src="<?=base_url("assets/js/jquery-ajax-native.js")?>"></script>
+    
     <!-- Bootstrap -->
     <script src="<?=base_url("assets/js/bootstrap.min.js")?>"></script>
 

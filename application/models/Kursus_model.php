@@ -25,7 +25,7 @@ class Kursus_model extends MY_Model
 
     public function get_all_kursus_hadir($nokp, $tahun)
     {
-        $sql = "SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        $sql = "select * from (SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
         FROM espel_kursus a, hrmis_carta_organisasi b
         WHERE 1=1
         AND a.penganjur_id = b.buid
@@ -48,7 +48,7 @@ class Kursus_model extends MY_Model
         AND a.id = c.kursus_id
         AND YEAR(a.tkh_mula) = ?
         AND a.nokp = ?
-        and c.stat_hadir = 'L'
+        and c.stat_hadir = 'L') a where 1=1 order by tkh_mula
         ";
         return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
     }

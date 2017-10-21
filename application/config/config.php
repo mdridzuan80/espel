@@ -465,6 +465,8 @@ $config['csrf_exclude_uris'] = [
 	'laporan/prestasi_kursus_keseluruhan',
 	'laporan/prestasi_kursus_individu',
 	'laporan/prestasi_kewangan',
+	'laporan/ajax_papar_pengguna_hadir_kursus',
+	'laporan/ajax_papar_pengguna_hadir_export',
 ];
 
 /*
