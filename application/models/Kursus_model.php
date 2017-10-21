@@ -73,10 +73,12 @@ class Kursus_model extends MY_Model
         $this->db->join("espel_profil b","a.nokp = b.nokp");
         $this->db->join("espel_dict_program c","a.program_id = c.id");
         $this->db->join("hrmis_carta_organisasi d","b.jabatan_id = d.buid");
+        $this->db->join('espel_boranga e', 'e.kursus_id = a.id', 'left');
         $this->db->where("year(a.tkh_mula)",date("Y"));
         $this->db->where("a.stat_soal_selidik_a", "Y");
         $this->db->where("a.stat_hadir", "L");
         $this->db->where_in("b.nokp", $nokp);
+        $this->db->where('e.id =', NULL);
         $rst = $this->db->get();
 
         return $rst->result();
