@@ -469,6 +469,8 @@ $config['csrf_exclude_uris'] = [
 	'laporan/ajax_papar_pengguna_hadir_export',
 	'laporan/ajax_papar_ringkasan',
 	'laporn/ajax_papar_ringkasan_export',
+	'laporan/ajax_papar_bukulog',
+	'laporan/ajax_papar_bukulog_export',
 ];
 
 /*
