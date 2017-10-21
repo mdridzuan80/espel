@@ -16,8 +16,8 @@
         <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="<?=base_url("laporan/pengguna_hadir_kursus")?>">Kursus yang dihadiri</a></li>
-            <li><a href="<?=base_url("laporan/bukulog")?>">Ringkasan</a></li>
-            <!--<li><a href="<?=base_url("laporan/ringkasan")?>">Ringkasan</a></li>-->
+            <li><a href="<?=base_url("laporan/bukulog")?>">Format Buku Log</a></li>
+            <li><a href="<?=base_url("laporan/ringkasan")?>">Ringkasan</a></li>
           </ul>
         </li>
 

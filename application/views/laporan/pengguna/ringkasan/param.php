@@ -24,8 +24,7 @@
               <div class="ln_solid"></div>
               <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                  <button type="submit" class="btn btn-success" name="submit">Papar</button>
-                  <button class="btn btn-primary" type="reset">Reset</button>
+                  <button type="button" class="btn btn-success btn-papar btn-sm" name="button">Papar</button>
                 </div>
               </div>
             </form>
@@ -34,3 +33,5 @@
     </div>
   </div>
 </div>
+
+  <div id=rptPapar></div>

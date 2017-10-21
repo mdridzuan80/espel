@@ -14,53 +14,108 @@ class Laporan extends MY_Controller
 
     public function ringkasan()
     {
-        if(!$this->exist("submit"))
+        $plugins = ['embedjs'=>[$this->load->view('laporan/pengguna/ringkasan/js','',true)]];
+        return $this->renderView("laporan/pengguna/ringkasan/param",'',$plugins);
+    }
+
+    public function ajax_papar_ringkasan()
+    {
+        $this->load->library('appcpd');
+        $this->load->model("program_model","program");
+        $this->load->model("kursus_model","kursus");
+        $this->load->model("profil_model","profil");
+        $this->load->model('hrmis_carta_model', 'jabatan');
+
+        $data = [];
+        $tahun = $this->input->post("tahun");
+
+        foreach($this->program->get_all() as $program)
         {
-            return $this->renderView("laporan/ringkasan/param");
+            $data['program'][$program->id]["nama"]=$program->nama;
+            $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
         }
-        else
+
+        $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
+        $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+            ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
+            ->setTkhTamat($tahun . "-12-31")
+            ->setTkhMula($tahun . "-01-01")
+            ->cumulativePoint();
+        $data["tahun"] = $tahun;
+
+        return $this->load->view('laporan/pengguna/ringkasan/result',$data);
+
+    }
+
+    public function ajax_papar_ringkasan_export()
+    {
+        $tahun = $this->input->post('tahun');
+        $jenis = $this->input->post('jenis');
+
+        $this->load->library('appcpd');
+        $this->load->model("kursus_model", "kursus");
+        $this->load->model("profil_model", "profil");
+        $this->load->model("program_model","program");
+        $this->load->model('hrmis_carta_model', 'jabatan');
+
+        $tahun = $this->input->post('tahun');
+        $data = [];        
+        $data['tahun'] = $tahun;
+        $data['profil'] = $this->profil->get($this->appsess->getSessionData('username'));
+
+        foreach($this->program->get_all() as $program)
         {
-            try {
-                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
-                $html2pdf->pdf->SetDisplayMode('fullpage');
-                $html2pdf->setTestTdInOnePage(false);
+            $data['program'][$program->id]["nama"]=$program->nama;
+            $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
+        }
 
-                ob_start();
-                $content = ob_get_clean();
+        $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
+        $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+            ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
+            ->setTkhTamat($tahun . "-12-31")
+            ->setTkhMula($tahun . "-01-01")
+            ->cumulativePoint();
+        $data["tahun"] = $tahun;
 
-                $this->load->library('appcpd');
-                $this->load->model("program_model","program");
-                $this->load->model("kursus_model","kursus");
-                $this->load->model("profil_model","profil");
-                $this->load-model('hrmis_carta_model', 'jabatan');
+        switch($jenis)
+        {
+            case 1 :
+                try {
+                    $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+                    $html2pdf->setTestTdInOnePage(false);
 
-                $data = [];
-                $tahun = $this->input->post("txtTahun");
+                    ob_start();
+                    $content = ob_get_clean();
 
-                foreach($this->program->get_all() as $program)
-                {
-                    $data['program'][$program->id]["nama"]=$program->nama;
-                    $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
+                    $html2pdf->writeHTML($this->load->view("laporan/pengguna/ringkasan/pdf",$data,TRUE));
+                    
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export PDF laporan ringkasan']);
+                    $html2pdf->output('ringkasan.pdf');
+                } catch (Html2PdfException $e) {
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
                 }
+            break;
 
-                $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
-                $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
-                    ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
-                    ->setTkhTamat($tahun . "-12-31")
-                    ->setTkhMula($tahun . "-01-01")
-                    ->cumulativePoint();
-                $data["tahun"] = $tahun;
+            case 2 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan ringkasan']);
+                $this->output->set_header('Content-type: application/vnd.ms-excel');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.xls');
+                $content = $this->load->view("laporan/pengguna/ringkasan/pdf",$data,TRUE);
+                echo $content;
+            break;
 
-                $html2pdf->writeHTML($this->load->view("laporan/ringkasan/pdf_ringkasan",$data,TRUE));
-                
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
-                $html2pdf->output('ringkasan.pdf',"D");
-            } catch (Html2PdfException $e) {
-                $formatter = new ExceptionFormatter($e);
-                echo $formatter->getHtmlMessage();
-            }
+            case 3 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Word laporan ringkasan']);
+                $this->output->set_header('Content-type: application/vnd.ms-word');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.doc');
+                $content = $this->load->view("laporan/pengguna/ringkasan/pdf",$data,TRUE);
+                echo $content;
+            break;
         }
     }
+
 
     public function jabatan()
     {
@@ -295,7 +350,9 @@ class Laporan extends MY_Controller
     // laporan senarai hadir oleh pengguna
     public function pengguna_hadir_kursus()
     {
-        return $this->renderView("laporan/pengguna/kursus_hadir/param",'',['embedjs'=>[$this->load->view('laporan/pengguna/kursus_hadir/js','',true)]]);
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan Senarai Latihan yang dihadiri']);
+        $plugins = ['embedjs'=>[$this->load->view('laporan/pengguna/kursus_hadir/js','',true)]];
+        return $this->renderView("laporan/pengguna/kursus_hadir/param",'',$plugins);
     }
 
     public function ajax_papar_pengguna_hadir_kursus()
@@ -307,6 +364,7 @@ class Laporan extends MY_Controller
         $data['tahun'] = $tahun;
         $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
 
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Papar laporan Senarai Latihan yang dihadiri']);
         return $this->load->view('laporan/pengguna/kursus_hadir/result',$data);
     }
 
@@ -334,6 +392,7 @@ class Laporan extends MY_Controller
                     ob_start();
                     $content = ob_get_clean();
 
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export PDF laporan Senarai Latihan yang dihadiri']);
                     $html2pdf->writeHTML($this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE));
                     $html2pdf->output('about.pdf');
                 } catch (Html2PdfException $e) {
@@ -346,6 +405,7 @@ class Laporan extends MY_Controller
                 $this->output->set_header('Content-type: application/vnd.ms-excel');
                 $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.xls');
                 $content = $this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE);
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan Senarai Latihan yang dihadiri']);
                 echo $content;
             break;
 
@@ -353,6 +413,7 @@ class Laporan extends MY_Controller
                 $this->output->set_header('Content-type: application/vnd.ms-word');
                 $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.doc');
                 $content = $this->load->view("laporan/pengguna/kursus_hadir/pdf",$data,TRUE);
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Word laporan Senarai Latihan yang dihadiri']);
                 echo $content;
             break;
         }

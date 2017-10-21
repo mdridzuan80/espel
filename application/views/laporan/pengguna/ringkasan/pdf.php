@@ -46,7 +46,7 @@ table.biasa td, table.listing td {
                      <td style="text-align: right;    width: 50%"></td>
              </tr>
        <tr>
-           <td style="text-align: left;    width: 50%">Sistem Maklumat Kursus (eSPEL)</td>
+           <td style="text-align: left;    width: 50%">Sistem Pengurusan Latihan (eSPEL)</td>
            <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
        </tr>
        </table>
@@ -54,7 +54,14 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h3>REKOD PENGESAHAN<br/>KEHADIRAN PROGRAM LATIHAN</h3></td>
+            <td style="width: 100%; text-align:center;"><h3>LAPORAN RINGKASAN<br/>KEHADIRAN PROGRAM LATIHAN</h3></td>
+        </tr>
+    </table>
+    <br/>
+    <table>
+        <tr>
+            <td>Nama</td>
+            <td>: <?=$profil->nama ?></td>
         </tr>
     </table>
     <br/>
