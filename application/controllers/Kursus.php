@@ -1187,7 +1187,35 @@ class Kursus extends MY_Controller
                             "subject" => "[espel][Makluman] Pengesahan Kehadiran Kursus",
                             "body" => $this->load->view("layout/email/sah_hadir_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE),
                         ];
-                        $this->appnotify->send($mail);
+                        
+                        //jabatan profil
+                        $this->load->model('hrmis_carta_model','jabatan');
+                        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        
+                        $elements = $this->jabatan->senarai_penyelaras();
+                        $jabatan_penyelaras = get_parent_penyelaras($elements, $pemohon->jabatan_id);
+
+                        $sen_penyelaras = $this->kumpulan_profil->get_by('jabatan_id', $jabatan_penyelaras);
+
+                        $kursus = $this->kursus->get($row);
+                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE);
+
+                        foreach($sen_penyelaras as $penyelaras)
+                        {
+                            if($this->profil->get($penyelaras->nokp)->email)
+                            {
+                                $this->load->library('appnotify');
+
+                                $mail = [
+                                    "to" => $pemohon->email ,
+                                    "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
+                                    "body" => $mesej,
+                                ];
+                                $this->appnotify->send($mail);
+                            }
+
+                        }
+
                     }
                     else
                     {
@@ -1354,13 +1382,52 @@ class Kursus extends MY_Controller
                     $data[] = $kehadiran;
                 }
 
-                if($this->kursus->update_many($data,['stat_hadir'=>$this->input->post('hadir')]))
+                foreach($data as $row)
                 {
-                    $this->appsess->setFlashSession("success", true);
-                }
-                else
-                {
-                    $this->appsess->setFlashSession("success", false);
+                    if($this->kursus->update($row,['stat_hadir'=>$this->input->post('hadir')]))
+                    {
+                        //jabatan profil
+                        $this->load->model('profil');
+                        $this->load->model('hrmis_carta_model','jabatan');
+                        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+                        $this->load->model('hrmis_skim_model', 'mjawatan');
+                        $this->load->model('hrmis_carta_model', 'mjabatan');
+                        
+                        $elements = $this->jabatan->senarai_penyelaras();
+                        $jabatan = $this->profil->get($this->kursus->get($row)->nokp)->jabatan_id;
+                        $jabatan_penyelaras = get_parent_penyelaras($elements, $jabatan);
+
+                        $sen_penyelaras = $this->kumpulan_profil->get_by('jabatan_id', $jabatan_penyelaras);
+
+                        $mJawatan = $this->mjawatan;
+                        $mJabatan = $this->mjabatan;
+
+                        $kursus = $this->kursus->get($row);
+                        $pemohon = $this->profil->get_by('nokp',$kursus->nokp);
+                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE);
+
+                        foreach($sen_penyelaras as $penyelaras)
+                        {
+                            if($this->profil->get($penyelaras->nokp)->email)
+                            {
+                                $this->load->library('appnotify');
+
+                                $mail = [
+                                    "to" => $pemohon->email ,
+                                    "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
+                                    "body" => $mesej,
+                                ];
+                                $this->appnotify->send($mail);
+                            }
+
+                        }
+
+                        $this->appsess->setFlashSession("success", true);
+                    }
+                    else
+                    {
+                        $this->appsess->setFlashSession("success", false);
+                    }
                 }
             }
         }

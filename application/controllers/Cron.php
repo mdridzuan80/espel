@@ -54,8 +54,6 @@ class Cron extends CI_Controller
 
         $elements = $this->peruntukan->get_peruntukan_related();
 
-        //dd($elements);
-
         $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
         
         print_r($peruntukan);
