@@ -57,7 +57,8 @@ class Profil extends MY_Controller
 			$this->load->model("jabatan_model","jabatan");
 			$this->load->model('kumpulan_profil_model', 'kumpulan_profil');
 			
-			$data["senPeranan"] = $this->kumpulan->get_all();
+			
+			$data["senPeranan"] = $this->kumpulan->sen_kumpulan_patut($this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
 			$profil = $this->profil->get_by('nokp',$username);
 			$data["profil"] = $profil;
 

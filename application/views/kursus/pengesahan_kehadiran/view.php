@@ -62,8 +62,7 @@
             <div class="ln_solid"></div>
             <div class="form-group">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <button type="submit" class="btn btn-success" name="submit">Submit</button>
-                    <a href="<?=base_url("kursus/pengesahan_kehadiran")?>" class="btn btn-primary" type="reset">Batal</a>
+                    <button type="submit" class="btn btn-success" name="submit">Pengesahan</button>
                 </div>
             </div>
             <?php endif ?>
@@ -162,8 +161,7 @@
                   <div class="ln_solid"></div>
                   <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                          <button type="submit" class="btn btn-success" name="submit">Submit</button>
-                          <a href="<?=base_url("kursus/pengesahan_kehadiran")?>" class="btn btn-primary" type="reset">Batal</a>
+                          <button type="submit" class="btn btn-success" name="submit">Kemaskini</button>
                       </div>
                   </div>
                   <?php endif ?>

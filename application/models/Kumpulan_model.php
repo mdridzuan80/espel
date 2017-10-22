@@ -15,4 +15,10 @@ class Kumpulan_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function sen_kumpulan_patut($kump)
+    {
+        $sql = "select * from espel_kumpulan where id >= ?";
+        return $this->db->query($sql,[$kump])->result();
+    }
 }

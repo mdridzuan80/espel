@@ -5,7 +5,7 @@
         filter: {
             nama: '',
             nokp: '',
-            jabatan_id: 6792,
+            jabatan_id: <?= $jab_ptj->jabatan_id?>,
             sub_jabatan: 1,
             kump_id: 0,
             skim_id: 0,
