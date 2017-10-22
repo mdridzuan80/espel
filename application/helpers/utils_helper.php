@@ -107,6 +107,48 @@ function get_parent_peruntukan($buid, $elements, $buid_peruntukan)
     }
 }
 
+function get_parent_penyelaras($elements, $buid)
+{
+    foreach($elements as $element)
+    {
+        if($buid == $element['buid'])
+        {
+            if(!$element['penyelaras'])
+            {
+                return get_parent_penyelaras($elements, $element['parent_buid']);
+            }
+            else
+            {
+                return $element['buid'];
+            }
+        }
+    }
+}
+
+function get_peruntukan_parent($elements, $buid, $tahun)
+{
+    $peruntukan = [];
+    foreach($elements as $element)
+    {
+        if($buid == $element['buid'])
+        {
+            if(!$element['peruntukan'])
+            {
+
+                $peruntukan[] = get_peruntukan_parent($elements, $element['parent_buid'], $tahun);
+            }
+            else
+            {
+                if($element['tahun'] == $tahun)
+                {
+                    $peruntukan[] = $element['peruntukan'];
+                }
+            }
+        }
+    }
+    return $peruntukan;
+}
+
 function flattenArray($a)
 {
     $na = array();

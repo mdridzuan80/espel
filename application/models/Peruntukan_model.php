@@ -145,4 +145,11 @@ class Peruntukan_model extends MY_Model
             and year(tarikh) = ?';
         return $this->db->query($sql,[$tahun])->result();
     }
+
+    public function get_peruntukan_related()
+    {
+        $sql = 'select distinct a.buid, a.parent_buid, b.id as peruntukan, year(b.tarikh) as tahun from hrmis_carta_organisasi a
+            left join espel_peruntukan b on a.buid = b.jabatan_id';
+        return $this->db->query($sql)->result_array();
+    }
 }

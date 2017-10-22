@@ -41,7 +41,24 @@ class Cron extends CI_Controller
 
     public function parent_jabatan()
     {
+        $this->load->model('hrmis_carta_model','jabatan');
         
+        $elements = $this->jabatan->senarai_penyelaras();
+        
+        return get_parent_penyelaras($elements, 10531);
+    }
+
+    public function parent_jabatan_peruntukan()
+    {
+        $this->load->model('peruntukan_model','peruntukan');
+
+        $elements = $this->peruntukan->get_peruntukan_related();
+
+        //dd($elements);
+
+        $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
+        
+        print_r($peruntukan);
     }
 
     public function huhu()
