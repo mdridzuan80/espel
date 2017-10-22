@@ -159,4 +159,17 @@ class Profil_model extends MY_Model
 
         return $this->db->query($sql)->result();
     }
+
+    public function sen_pyd($username)
+    {
+        $data=[];
+        $sql = "select nokp from espel_profil where 1=1 and nokp_ppp = ?";
+        $rst = $this->db->query($sql,[$username])->result();
+
+        foreach($rst as $row)
+        {
+            $data[] = $row->nokp;
+        }
+        return $data;
+    }
 }

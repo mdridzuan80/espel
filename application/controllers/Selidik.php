@@ -74,4 +74,62 @@ class Selidik extends MY_Controller {
 			return $this->renderView('selidik/boranga/terimakasih');
 		}
 	}
+
+	public function borangb()
+	{
+		$this->load->model('profil_model','profil');
+		$this->load->model('borangb_model','borangb');
+
+		$data["sen_borangb"] = $this->borangb->senarai_boranga_related(implode(',',$this->profil->sen_pyd($this->appsess->getSessionData('username'))));
+
+		return $this->renderView("selidik/borangb/show", $data);
+	}
+
+	public function borangb_jawab($boranga_id)
+	{
+		if(!$this->exist("submit"))
+		{
+			$this->load->model('boranga_model','boranga');
+			$this->load->model('profil_model','profil');
+			$this->load->model('kursus_model','kursus');
+			$this->load->model('hrmis_skim_model','hrmis_skim');
+			$this->load->model('hrmis_carta_model','hrmis_carta');
+
+			$rekodBorangA = $this->boranga->get($boranga_id);
+			$data['kursus'] = $this->kursus->get($rekodBorangA->kursus_id);
+			$data['profil'] = $this->profil->get($rekodBorangA->nokp);
+			$data['objSkim'] = $this->hrmis_skim;
+			$data['objCarta'] = $this->hrmis_carta;
+			
+			return $this->renderView("selidik/borangb/add",$data);
+		}
+		else
+		{
+			$this->load->model('borangb_model','borangb');
+
+			$data = [
+				'boranga_id' => $boranga_id,
+				'nokp' => $this->appsess->getSessionData('username'),
+				'kat_kursus' => $this->input->post('comKategoriKursus'),
+				'tarikh' => date('Y-m-d H:i:s'),
+				'b1' => $this->input->post('b1'),
+				'b2' => $this->input->post('b2'),
+				'b3' => $this->input->post('b3'),
+				'b4' => $this->input->post('b4'),
+				'b5' => $this->input->post('b5'),
+				'b6' => $this->input->post('b6'),
+				'c1' => $this->input->post('c1'),
+				'c2' =>$this->input->post('c2'),
+				'c3' => $this->input->post('c3'),
+				'c4' => $this->input->post('c4'),
+				'c5' => $this->input->post('c5'),
+				'c6' => $this->input->post('c6'),
+				'c7' => $this->input->post('c7'),
+				'ulasan' => $this->input->post('txtCadangan'),
+			];
+
+			$this->borangb->insert($data);
+			return $this->renderView('selidik/borangb/terimakasih');
+		}
+	}
 }

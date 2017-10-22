@@ -9,7 +9,7 @@
             <ul class="nav child_menu">
               <li><a href="<?=base_url("selidik/boranga")?>">KKM/P&P/2013(A) <?php if($bil_boranga) : ?><span class="badge bg-green"><?=$bil_boranga?></span><?php endif ?></a></li>
               <?php if($soalSelidikB) : ?>
-              <li><a href="<?=base_url("selidik/borangb")?>">KKM/P&P/2013(B)</a></li>
+              <li><a href="<?=base_url("selidik/borangb")?>">KKM/P&P/2013(B) <?php if($bil_borangb) : ?><span class="badge bg-green"><?=$bil_borangb?></span><?php endif ?></a></li>
               <?php endif ?>
             </ul>
         </li>

@@ -62,11 +62,14 @@ class MY_Controller extends CI_Controller {
                 $this->load->model("kursus_model", "kursus");
                 $this->load->model("mohon_kursus_model", "mohon_kursus");
                 $this->load->model('profil_model','profil');
+                $this->load->model('borangb_model','borangb');
 
                 $layout["sen_permohonan"] = $this->mohon_kursus->get_permohonan($this->appsess->getSessionData('username'));
                 $layout["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'),date('Y'));
                 $layout["bil_boranga"] = count($this->kursus->get_all_kursus_boranga($this->appsess->getSessionData('username')));
-                $layout["soalSelidikB"] = count($this->profil->get_by('nokp', $this->appsess->getSessionData('username')));
+                $layout["soalSelidikB"] = count( count($this->profil->get_by('nokp_ppp',$this->appsess->getSessionData('username'))));
+                $layout["bil_borangb"] = count($this->borangb->senarai_boranga_related(implode(',',$this->profil->sen_pyd($this->appsess->getSessionData('username')))));
+
                 $sidemenu = SELF::MEMBER_SIDEMENU;
             break;
         }
