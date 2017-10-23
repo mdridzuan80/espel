@@ -718,4 +718,28 @@ class Kursus_model extends MY_Model
         
         return $this->db->query($sql,[$nokp])->result();
     }
+
+    public function rancang($related_jabatan_id, $tahun, $peruntukan_id)
+    {
+        $sql= "SELECT
+                *
+                FROM
+                espel_kursus
+                WHERE espel_kursus.stat_laksana = 'R'
+                AND peruntukan_id = $peruntukan_id
+                AND ptj_jabatan_id_created in($related_jabatan_id)";
+        return $this->db->query($sql);
+    }
+
+    public function laksana($related_jabatan_id, $tahun, $peruntukan_id)
+    {
+        $sql= "SELECT
+                *
+                FROM
+                espel_kursus
+                WHERE espel_kursus.stat_laksana = 'L'
+                AND peruntukan_id = $peruntukan_id
+                AND ptj_jabatan_id_created in($related_jabatan_id)";
+        return $this->db->query($sql);
+    }
 }

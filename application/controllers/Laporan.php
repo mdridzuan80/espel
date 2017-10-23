@@ -641,13 +641,16 @@ class Laporan extends MY_Controller
     {
         $this->load->model('profil_model','profil');
         $this->load->model('kursus_model','kursus');
+        $this->load->model("kumpulan_profil_model", "kumpulan_profil");
+        $this->load->model("peruntukan_model", "peruntukan");
 
         $tahun = $this->input->post("tahun");
         $data['tahun'] = $tahun;
-
-
-        $data['sen_kelas'] = $this->profil->statistik_kelas();
+        
+        $data['objPeruntukan'] = $this->peruntukan;
         $data['objKursus'] = $this->kursus;
+        $data['peruntukan_semasa'] = $this->peruntukan->prestasi(date('Y'),$this->kumpulan_profil->get_by(['profil_nokp'=>$this->appsess->getSessionData('username'),'kumpulan_id'=>3])->jabatan_id);
+
 
         return $this->load->view('laporan/ptj/prestasi_kewangan/result',$data);
     }

@@ -171,8 +171,6 @@ class Peruntukan extends MY_Controller
         $this->load->model("kumpulan_profil_model", "kumpulan_profil");
         $this->load->model("peruntukan_model", "peruntukan");
         
-        $rekod_peruntukan = [];
-
         $data['objPeruntukan'] = $this->peruntukan;
         $data['peruntukan_semasa'] = $this->peruntukan->prestasi(date('Y'),$this->kumpulan_profil->get_by(['profil_nokp'=>$this->appsess->getSessionData('username'),'kumpulan_id'=>3])->jabatan_id);
 

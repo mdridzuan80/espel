@@ -22,6 +22,7 @@
                     <th>Jenis Peruntukan</th>
                     <th>Peruntukan (RM)</th>
                     <th>Belanja (RM)</th>
+                    <th>Tanggungan (RM)</th>
                     <th>Baki (RM)</th>
                   </tr>
                 </thead>
@@ -29,9 +30,11 @@
                   <?php foreach($peruntukan_semasa as $peruntukan) : ?>
                   <tr>
                     <td><?= $peruntukan->nama ?></td>
-                    <td>RM<?= $peruntukan->jumlah ?></td>
+                    <td>RM <?= $peruntukan->jumlah ?></td>
                     <?php $belanja = $objPeruntukan->peruntukan->belanja($peruntukan->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
-                    <td>RM<?= $belanja ?></td>
+                    <td>RM <?= $belanja ?></td>
+                    <?php $tanggungan = $objPeruntukan->peruntukan->tanggungan($peruntukan->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
+                    <td>RM <?= $tanggungan ?></td>
                     <td>RM <?= $peruntukan->jumlah - $belanja ?></td>
                   </tr>
                   <?php endforeach ?>

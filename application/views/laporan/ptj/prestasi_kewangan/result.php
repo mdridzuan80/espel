@@ -13,6 +13,7 @@
               <thead>
                 <tr>
                   <th style="width:10%;" rowspan="3">Bahagian / Jabatan</th>
+                  <th style="width:10%;" rowspan="3">Jenis Peruntukan</th>
                   <th style="width:90%;" colspan="10">Prestasi</th>
                 </tr>
                 <tr>
@@ -32,19 +33,24 @@
                 </tr>
               </thead>
               <tbody>
+                <?php foreach($peruntukan_semasa as $semasa) : ?>
                 <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
+                <td><?= $semasa->title ?></td>
+                <td><?= $semasa->nama ?></td>
+                <td>RM <?= $semasa->jumlah ?></td>
+                <td><?= $objKursus->kursus->rancang(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
+                <td><?= $objKursus->kursus->laksana(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
                 <td>5</td>
                 <td>6</td>
                 <td>7</td>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
+                <?php $belanja = $objPeruntukan->peruntukan->belanja($semasa->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
+                <td>RM <?= $belanja ?></td>
+                <td><?= ($belanja/$semasa->jumlah)*100 ?></td>
+                <?php $tanggungan = $objPeruntukan->peruntukan->tanggungan($semasa->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
+                <td>RM <?= $tanggungan ?></td>
+                <td>RM <?= $semasa->jumlah - $belanja ?></td>
                 </tr>
+                <?php endforeach ?>
               </tbody>
           </table>
         </div>

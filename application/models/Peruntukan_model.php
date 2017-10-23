@@ -112,6 +112,38 @@ class Peruntukan_model extends MY_Model
             espel_kursus
             INNER JOIN espel_belanja ON espel_belanja.kursus_id = espel_kursus.id
             WHERE espel_kursus.stat_laksana = 'L'
+            AND espel_belanja.stat_byr = 'S'
+            AND year(espel_belanja.tkh_lo) = $tahun
+            AND espel_kursus.ptj_jabatan_id_created IN ($jabatan_id)
+            AND espel_kursus.peruntukan_id = $jns_peruntukan_id
+            GROUP BY espel_kursus.peruntukan_id,
+            espel_kursus.ptj_jabatan_id_created,
+            espel_kursus.stat_laksana";
+        
+        $rst = $this->db->query($sql);
+
+        if($rst->num_rows())
+        {
+            return $this->db->query($sql)->row()->jumlah;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public function tanggungan($jns_peruntukan_id, $jabatan_id, $tahun)
+    {
+         $sql = "SELECT
+            sum(espel_belanja.jumlah) as jumlah,
+            espel_kursus.peruntukan_id,
+            espel_kursus.ptj_jabatan_id_created,
+            espel_kursus.stat_laksana
+            FROM
+            espel_kursus
+            INNER JOIN espel_belanja ON espel_belanja.kursus_id = espel_kursus.id
+            WHERE espel_kursus.stat_laksana = 'L'
+            AND espel_belanja.stat_byr = 'T'
             AND year(espel_belanja.tkh_lo) = $tahun
             AND espel_kursus.ptj_jabatan_id_created IN ($jabatan_id)
             AND espel_kursus.peruntukan_id = $jns_peruntukan_id
