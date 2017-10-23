@@ -146,12 +146,12 @@ class Mohon_kursus_model extends MY_Model
 
         if(isset($filter->skim_id) && $filter->skim_id)
         {
-            $sql .= ' and a.skim_id = ' . $filter->skim_id;
+            $sql .= ' and a.skim_id = \'' . $filter->skim_id . '\'';
         }
 
         if(isset($filter->gred_id) && $filter->gred_id)
         {
-            $sql .= ' and a.gred_id = ' . $filter->gred_id;
+            $sql .= ' and a.gred_id = \'' . $filter->gred_id . '\'';
         }
 
         if(isset($filter->hari) && $filter->hari)

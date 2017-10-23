@@ -1,12 +1,3 @@
-<div class="">
-  <div class="page-title">
-    <div class="title_left">
-      <h3>Laporan</h3>
-    </div>
-  </div>
-
-  <div class="clearfix"></div>
-
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
@@ -73,8 +64,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                      <button type="submit" class="btn btn-success btn-sm" name="submit">Papar PDF</button>
-                      <button class="btn btn-primary btn-sm" type="reset">Reset</button>
+                    <button type="button" class="btn btn-success btn-papar btn-sm" name="button">Papar</button>
                   </div>
                 </form>
             </div>
@@ -82,4 +72,5 @@
       </div>
     </div>
   </div>
-</div>
+
+<div id=rptPapar></div>

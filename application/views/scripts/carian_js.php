@@ -83,7 +83,6 @@
         options.filter.status = $('#comStatus').val();
         options.url = base_url+'pengguna/data_grid/0';
         
-        console.log(options);
         load_datagrid(options);
     });
 })();
