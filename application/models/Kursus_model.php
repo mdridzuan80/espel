@@ -213,14 +213,14 @@ class Kursus_model extends MY_Model
 
     public function takwim($ptj_jabatan_id, $takwim)
     {
-        $sql = "SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+        $sql = "SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.stat_laksana FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             UNION
-            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.stat_laksana FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
@@ -740,6 +740,21 @@ class Kursus_model extends MY_Model
                 WHERE espel_kursus.stat_laksana = 'L'
                 AND peruntukan_id = $peruntukan_id
                 AND ptj_jabatan_id_created in($related_jabatan_id)";
+        return $this->db->query($sql);
+    }
+
+    public function sen_peruntukan_kelas_profil($related_jabatan_id, $tahun, $peruntukan_id, $kelas_id)
+    {
+        $sql = "select a.id, year(b.tkh_mula) as tahun, c.nokp from espel_peruntukan a
+            join espel_kursus b on b.peruntukan_id = a.id
+            join espel_permohonan_kursus c on b.id = c.kursus_id
+            join espel_profil d on c.nokp = d.nokp
+            where b.stat_laksana = 'L'
+            and c.stat_hadir = 'Y'
+            and b.peruntukan_id = $peruntukan_id
+            and d.kelas_id = '$kelas_id'
+            and year(b.tkh_mula) = $tahun
+            AND ptj_jabatan_id_created in($related_jabatan_id)";
         return $this->db->query($sql);
     }
 }

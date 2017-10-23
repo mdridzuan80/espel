@@ -41,13 +41,13 @@ $(function(){
             },
             method: 'post',
             data: {tahun: tahun, jenis: jenis},
-            url: base_url + 'laporan/ajax_prestasi_kursus_keseluruhan_export',
+            url: base_url + 'laporan/ajax_prestasi_kewangan_export',
             success: function(blob){
                 var ext = {1: '.pdf', 2: '.xls', 3: '.doc'};
                 console.log(blob.size);
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
-                link.download="prestasi_kursus" + ext[jenis];
+                link.download="prestasi_kewangan" + ext[jenis];
                 link.click();
             }
         });

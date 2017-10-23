@@ -651,9 +651,65 @@ class Laporan extends MY_Controller
         $data['objKursus'] = $this->kursus;
         $data['peruntukan_semasa'] = $this->peruntukan->prestasi(date('Y'),$this->kumpulan_profil->get_by(['profil_nokp'=>$this->appsess->getSessionData('username'),'kumpulan_id'=>3])->jabatan_id);
 
-
         return $this->load->view('laporan/ptj/prestasi_kewangan/result',$data);
     }
+
+    public function ajax_prestasi_kewangan_export()
+    {
+        $tahun = $this->input->post('tahun');
+        $jenis = $this->input->post('jenis');
+
+        $this->load->model('profil_model','profil');
+        $this->load->model('kursus_model','kursus');
+        $this->load->model("kumpulan_profil_model", "kumpulan_profil");
+        $this->load->model("peruntukan_model", "peruntukan");
+
+        $tahun = $this->input->post("tahun");
+        $data['tahun'] = $tahun;
+        
+        $data['objPeruntukan'] = $this->peruntukan;
+        $data['objKursus'] = $this->kursus;
+        $data['peruntukan_semasa'] = $this->peruntukan->prestasi(date('Y'),$this->kumpulan_profil->get_by(['profil_nokp'=>$this->appsess->getSessionData('username'),'kumpulan_id'=>3])->jabatan_id);
+
+        switch($jenis)
+        {
+            case 1 :
+                try {
+                    $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+                    $html2pdf->setTestTdInOnePage(false);
+
+                    ob_start();
+                    $content = ob_get_clean();
+
+                    $html2pdf->writeHTML($this->load->view("laporan/ptj/prestasi_kewangan/pdf",$data,TRUE));
+                    
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export PDF laporan prestasi kursus']);
+                    $html2pdf->output('ringkasan.pdf');
+                } catch (Html2PdfException $e) {
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
+                }
+            break;
+
+            case 2 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan prestasi kursus']);
+                $this->output->set_header('Content-type: application/vnd.ms-excel');
+                $this->output->set_header('Content-Disposition: attachment; filename=prestasi_kursus.xls');
+                $content = $this->load->view("laporan/ptj/prestasi_kewangan/pdf",$data,TRUE);
+                echo $content;
+            break;
+
+            case 3 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Word laporan prestasi kursus']);
+                $this->output->set_header('Content-type: application/vnd.ms-word');
+                $this->output->set_header('Content-Disposition: attachment; filename=prestasi_kursus.doc');
+                $content = $this->load->view("laporan/ptj/prestasi_kewangan/pdf",$data,TRUE);
+                echo $content;
+            break;
+        }
+    }
+    // end laporan prestasi kewangan
 
     public function pdf()
     {

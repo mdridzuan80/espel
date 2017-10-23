@@ -38,7 +38,7 @@ table.biasa td, table.listing td {
 }
 </style>
 
-<page>
+<page style="font-size: 7px">
     <page_footer style="font-size: 9px">
        <table style="width: 100%;">
              <tr>
@@ -53,10 +53,10 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;">LAPORAN PRESTASI PERBELANJAAN <?= $tahun ?></td>
+            <td style="width: 100%; text-align:center; font-size: 12px">LAPORAN PRESTASI PERBELANJAAN <?= $tahun ?></td>
         </tr>
         <tr>
-            <td style="width: 100%; text-align:center;">JENIS PERUNTUKAN</td>
+            <td style="width: 100%; text-align:center; font-size: 12px">JENIS PERUNTUKAN</td>
         </tr>
         <tr>
             <td style="width: 100%; text-align:center;"></td>
@@ -66,39 +66,47 @@ table.biasa td, table.listing td {
     <table class="biasa">
       <thead>
         <tr>
-          <th style="width:10%;" rowspan="3">Bahagian / Jabatan</th>
-          <th style="width:90%;" colspan="10">Prestasi</th>
+            <th style="width:1%;" rowspan="3">Bahagian /<br> Jabatan</th>
+            <th style="width:1%;" rowspan="3">Jenis<br>Peruntukan</th>
+            <th style="width:70%;" colspan="10">Prestasi</th>
         </tr>
         <tr>
-            <th style="width:9%;" rowspan="2">Jumlah Peruntukan</th>
-            <th style="width:9%;" rowspan="2">Bil. Kursus Dirancang</th>
-            <th style="width:9%;" rowspan="2">Bil. Kursus Dianjurkan</th>
-            <th style="width:27%;" colspan="3">Bil. Pegawai Hadir Kursus</th>
-            <th style="width:9%;" rowspan="2">Perbelanjaan (RM)</th>
-            <th style="width:9%;" rowspan="2">Perbelanjaan (%)</th>
-            <th style="width:9%;" rowspan="2">Tanggungan</th>
-            <th style="width:9%;" rowspan="2">Baki Peruntukan</th>
+            <th style="width:7%;" rowspan="2">Jumlah<br>Peruntukan</th>
+            <th style="width:7%;" rowspan="2">Bil. Kursus<br>Dirancang</th>
+            <th style="width:7%;" rowspan="2">Bil. Kursus<br>Dianjurkan</th>
+            <th style="width:21%;" colspan="3">Bil. Pegawai<br>Hadir Kursus</th>
+            <th style="width:7%;" rowspan="2">Perbelanjaan (RM)</th>
+            <th style="width:7%;" rowspan="2">Perbelanjaan (%)</th>
+            <th style="width:7%;" rowspan="2">Tanggungan</th>
+            <th style="width:7%;" rowspan="2">Baki<br>Peruntukan</th>
         </tr>
         <tr>
-            <th style="width:9%;">Sokongan</th>
-            <th style="width:9%;">P & P</th>
-            <th style="width:9%;">Jumlah Keseluruhan</th>
+            <th style="width:7%;">Sokongan</th>
+            <th style="width:4%;">P & P</th>
+            <th style="width:7%;">Jumlah<br>Keseluruhan</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
+        <?php foreach($peruntukan_semasa as $semasa) : ?>
         <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td>8</td>
-        <td>9</td>
-        <td>10</td>
-        <td>11</td>
+        <td style="width:1%;"><?= $semasa->title ?></td>
+        <td style="width:1%;"><?= $semasa->nama ?></td>
+        <td style="width:7%;">RM <?= $semasa->jumlah ?></td>
+        <td style="width:7%;"><?= $objKursus->kursus->rancang(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
+        <td style="width:7%;"><?= $objKursus->kursus->laksana(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
+        <?php $sok = $objKursus->kursus->sen_peruntukan_kelas_profil(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id, 'SOK')->num_rows() ?>
+        <td style="width:7%;"><?= $sok ?></td>
+        <?php $pp = $objKursus->kursus->sen_peruntukan_kelas_profil(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id, 'PP')->num_rows() ?>
+        <td style="width:4%;"><?= $pp ?></td>
+        <td style="width:7%;"><?= $sok + $pp ?></td>
+        <?php $belanja = $objPeruntukan->peruntukan->belanja($semasa->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
+        <td style="width:7%;">RM <?= $belanja ?></td>
+        <td style="width:7%;"><?= ($belanja/$semasa->jumlah)*100 ?></td>
+        <?php $tanggungan = $objPeruntukan->peruntukan->tanggungan($semasa->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
+        <td style="width:7%;">RM <?= $tanggungan ?></td>
+        <td style="width:7%;">RM <?= $semasa->jumlah - $belanja ?></td>
         </tr>
-       </tbody>
-   </table>
+        <?php endforeach ?>
+        </tbody>
+    </table>
 </page>

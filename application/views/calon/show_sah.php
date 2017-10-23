@@ -82,6 +82,7 @@
                 <th>Gred</th>
                 <th>Kumpulan</th>
                 <th>Jabatan</th>
+                <th>Status Kehadiran</th>
                 <th style="text-align:center">
                     <input type="checkbox" name="chkAll" id="chkAll">
                 </th>
@@ -96,12 +97,15 @@
                 <td><?=$calon->gred?></td>
                 <td><?=$calon->kumpulan?></td>
                 <td><?=$calon->jabatan?></td>
-                <td align="center">
+                <td>
                     <?php if($calon->stat_hadir) : ?>
-                        <?= (($calon->stat_hadir == 'L') ? 'HADIR' : 'TIDAK HADIR') ?>
+                        <?= (($calon->stat_hadir == 'Y') ? 'HADIR' : 'TIDAK HADIR') ?>
                     <?php else : ?>
-                    <input type="checkbox" name="chkKehadiran[]" id="chkPeserta" value="<?= $calon->id ?>">
+                        BELUM DISAHKAN
                     <?php endif ?>
+                </td>
+                <td align="center">
+                    <input type="checkbox" name="chkKehadiran[]" id="chkPeserta" value="<?= $calon->id ?>">
                 </td>
               </tr>
           <?php endforeach?>

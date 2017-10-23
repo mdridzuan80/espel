@@ -40,9 +40,11 @@
                 <td>RM <?= $semasa->jumlah ?></td>
                 <td><?= $objKursus->kursus->rancang(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
                 <td><?= $objKursus->kursus->laksana(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id)->num_rows() ?></td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
+                <?php $sok = $objKursus->kursus->sen_peruntukan_kelas_profil(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id, 'SOK')->num_rows() ?>
+                <td><?= $sok ?></td>
+                <?php $pp = $objKursus->kursus->sen_peruntukan_kelas_profil(implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y'),$semasa->jns_peruntukan_id, 'PP')->num_rows() ?>
+                <td><?= $pp ?></td>
+                <td><?= $sok + $pp ?></td>
                 <?php $belanja = $objPeruntukan->peruntukan->belanja($semasa->jns_peruntukan_id, implode (",", flattenArray(get_penyelaras_related_jabatan($this->appsess->getSessionData('username')))),date('Y')) ?>
                 <td>RM <?= $belanja ?></td>
                 <td><?= ($belanja/$semasa->jumlah)*100 ?></td>
