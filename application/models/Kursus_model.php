@@ -52,6 +52,37 @@ class Kursus_model extends MY_Model
         ";
         return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
     }
+
+    public function get_all_kursus_patut_hadir($nokp, $tahun)
+    {
+        $sql = "select * from (SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b
+        WHERE 1=1
+        AND a.penganjur_id = b.buid
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        and a.stat_hadir = 'L'
+        UNION
+        SELECT id, tajuk, penganjur, tkh_mula, tkh_tamat, hari
+        FROM espel_kursus
+        WHERE 1=1
+        AND penganjur_id = 0
+        AND YEAR(tkh_mula) = ?
+        AND nokp = ?
+        AND stat_hadir = 'L'
+        UNION
+        SELECT a.id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c
+        WHERE 1=1
+        AND a.penganjur_id = b.buid
+        AND a.id = c.kursus_id
+        AND YEAR(a.tkh_mula) = ?
+        AND a.nokp = ?
+        and c.stat_hadir = 'L') a where 1=1 order by tkh_mula
+        ";
+        return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
+    }
+
     public function get_all_kursus_luar_pengesahan(array $jabatanID)
     {
         $this->db->select("a.id, b.nama,d.title jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.dokumen_path");
@@ -670,5 +701,21 @@ class Kursus_model extends MY_Model
         $rst = $this->db->query($sql);
 
         return $rst->num_rows();
+    }
+
+    public function sen_kursus_dicalonkan($nokp)
+    {
+        $sql = 'SELECT a.id, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari, a.penganjur as penganjur_luar, b.title as penganjur_dalam, a.anjuran, a.surat
+            FROM espel_kursus a
+            INNER JOIN espel_permohonan_kursus c on a.id = c.kursus_id
+            LEFT JOIN hrmis_carta_organisasi b on a.penganjur_id = b.buid
+            WHERE 1=1
+            AND YEAR(a.tkh_mula) = 2017
+            AND c.nokp = ?
+            AND c.stat_mohon = \'L\'
+            AND a.stat_laksana = \'L\'
+            AND c.stat_hadir is null';
+        
+        return $this->db->query($sql,[$nokp])->result();
     }
 }

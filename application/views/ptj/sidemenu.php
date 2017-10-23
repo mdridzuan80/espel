@@ -17,17 +17,17 @@
           </ul>
       </li>
       <?php endif ?>
+      <li><a><i class="fa fa-smile-o"></i> Borang Soal Selidik <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="<?=base_url('mockup/ptj/laporan/kursus')?>">Analisa Borang A</a></li>
+          <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Analisa Borang B</a></li>
+        </ul>
+      </li>
       <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('laporan/prestasi_kursus_individu')?>">Laporan Senarai Prestasi Individu</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kewangan')?>">Laporan Prestasi Kewangan</a></li>
-        </ul>
-      </li>
-      <li><a><i class="fa fa-bar-chart"></i> Borang Soal Selidik <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="<?=base_url('mockup/ptj/laporan/kursus')?>">Analisa Borang A</a></li>
-          <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Analisa Borang B</a></li>
         </ul>
       </li>
       <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>

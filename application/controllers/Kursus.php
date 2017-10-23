@@ -578,8 +578,7 @@ class Kursus extends MY_Controller
             $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
             $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
             $data['sen_peruntukan'] = $this->peruntukan->dropdown_pengguna_peruntukan(date('Y'));
-            //dd($data['sen_peruntukan']);
-            $data['has_mohon'] = $this->mohon_kursus->count_by(['nokp' => $this->appsess->getSessionData('username'), 'id' => $id]);
+            $data['has_mohon'] = $this->mohon_kursus->count_by(['nokp' => $this->appsess->getSessionData('username'), 'kursus_id' => $id]);
 
             return $this->renderView("kursus/pengguna/info",$data,$this->plugins());
         }
@@ -1650,13 +1649,15 @@ class Kursus extends MY_Controller
         $this->load->model('profil_model','profil');
         $this->load->model('hrmis_carta_model','jabatan');
 
+        $profil_kursus = $this->kursus->with(['program'])->get($kursus_id);
+
         $has_belanja = $this->belanja->count_by('kursus_id',$kursus_id);
 
         if(!$this->exist("submit"))
         {
             $this->load->model('kursus_model','kursus');
 
-            $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
+            $data['kursus'] = $profil_kursus;
             $data['objJabatan'] = $this->jabatan;
 
             if($has_belanja)
@@ -1667,41 +1668,26 @@ class Kursus extends MY_Controller
         }
         else
         {
-            if(!$count) // tiada bajet
+            if(!$profil_kursus->peruntukan_id) // tiada bajet
             {
-                if( $this->kursus->update($kursus_id,['stat_laksana'=>'L']))
+                $config['upload_path'] = './assets/uploads/';
+                $config['encrypt_name'] = TRUE;
+                $config['allowed_types'] = ['pdf'];
+
+                $this->load->library('upload', $config);
+
+                if ( ! $this->upload->do_upload('userfile'))
                 {
-                    $this->appsess->setFlashSession("success", true);
+                        $error = array('error' => $this->upload->display_errors());
                 }
                 else
                 {
-                    $this->appsess->setFlashSession("success", false);
-                }
+                    $dataUpload = array('upload_data' => $this->upload->data());
 
-            }
-            else // ada bajet
-            {
-                $kursus = $this->kursus->with(['program'])->get($kursus_id);
-                $data = [
-                    'kursus_id' => $kursus_id,
-                    'stat_byr' => $this->input->post("comStat"),
-                    'no_lo' => $this->input->post('txtNoLO'),
-                    'tkh_lo' => $this->input->inputToDate("txtTkhLO"),
-                    'no_resit' => $this->input->post('txtNoResit'),
-                    'jumlah' => $this->input->post("txtJumlah"),
-                ];
+                    $dokumen_path = $dataUpload['upload_data']['file_name'];
 
-                if($this->input->post('txtTkhResit'))
-                {
-                    $data['tkh_resit'] = $this->input->inputToDate("txtTkhResit");
-                }
-
-                if($this->belanja->insert($data))
-                {
-                    if($kursus->stat_laksana == 'R')
+                    if( $this->kursus->update($kursus_id,['stat_laksana'=>'L', 'surat'=>$dokumen_path]))
                     {
-                        $this->kursus->update($kursus_id,['stat_laksana'=>'L']);
-
                         // hantar email
                         $sen_peserta = $this->mohon_kursus->get_many_by(['kursus_id'=>$kursus_id]);
 
@@ -1711,7 +1697,7 @@ class Kursus extends MY_Controller
                             foreach($sen_peserta as $peserta)
                             {
                                 $pemohon = $this->profil->get_by("nokp",$peserta->nokp);
-                                $penyelia = $this->profil->get_by("nokp",$pemohon->penyelia);
+                                $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                                 $kursus = $this->kursus->with(["program","aktiviti"])->get($kursus_id);
 
                                 $this->appnotify->send($mail);
@@ -1736,14 +1722,159 @@ class Kursus extends MY_Controller
                                 $this->appnotify->send($mail);
                             }
                         }
+                        $this->appsess->setFlashSession("success", true);
+                    }
+                    else
+                    {
+                        $this->appsess->setFlashSession("success", false);
+                    }
+                }
+            }
+            else // ada bajet
+            {
+                if($kursus->stat_laksana == 'R')
+                {
+                    $kursus = $this->kursus->with(['program'])->get($kursus_id);
+                    $data = [
+                        'kursus_id' => $kursus_id,
+                        'stat_byr' => $this->input->post("comStat"),
+                        'no_lo' => $this->input->post('txtNoLO'),
+                        'tkh_lo' => $this->input->inputToDate("txtTkhLO"),
+                        'no_resit' => $this->input->post('txtNoResit'),
+                        'jumlah' => $this->input->post("txtJumlah"),
+                    ];
+
+                    if($this->input->post('txtTkhResit'))
+                    {
+                        $data['tkh_resit'] = $this->input->inputToDate("txtTkhResit");
                     }
 
-                    $this->appsess->setFlashSession("success", true);
+                    if($this->belanja->insert($data))
+                    {
+                        if($kursus->stat_laksana == 'R')
+                        {
+                            $config['upload_path'] = './assets/uploads/';
+                            $config['encrypt_name'] = TRUE;
+                            $config['allowed_types'] = ['pdf'];
 
+                            $this->load->library('upload', $config);
+
+                            if ( ! $this->upload->do_upload('userfile'))
+                            {
+                                    $error = array('error' => $this->upload->display_errors());
+                                    dd($this->upload->display_errors());
+                            }
+                            else
+                            {
+                                $dataUpload = array('upload_data' => $this->upload->data());
+
+                                $dokumen_path = $dataUpload['upload_data']['file_name'];
+
+                                if( $this->kursus->update($kursus_id,['stat_laksana'=>'L', 'surat'=>$dokumen_path]))
+                                {
+                                    // hantar email
+                                    $sen_peserta = $this->mohon_kursus->get_many_by(['kursus_id'=>$kursus_id]);
+
+                                    if(count($sen_peserta))
+                                    {
+                                        $this->load->library('appnotify');
+                                        foreach($sen_peserta as $peserta)
+                                        {
+                                            $pemohon = $this->profil->get_by("nokp",$peserta->nokp);
+                                            $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
+                                            $kursus = $this->kursus->with(["program","aktiviti"])->get($kursus_id);
+
+                                            $this->appnotify->send($mail);
+
+                                            if($penyelia->email)
+                                            {
+                                                $mail = [
+                                                    "to" => $penyelia->email,
+                                                    "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
+                                                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                                                ];
+                                            }
+
+                                            if($pemohon->email)
+                                            {
+                                                $mail = [
+                                                    "to" => $pemohon->email,
+                                                    "subject" => "[espel][Makluman] Anda Terpilih untuk mengikuti kursus",
+                                                    "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus],TRUE),
+                                                ];
+                                            }
+                                            $this->appnotify->send($mail);
+                                        }
+                                    }
+                                    $this->appsess->setFlashSession("success", true);
+                                }
+                                else
+                                {
+                                    $this->appsess->setFlashSession("success", false);
+                                }
+                            }
+                        }
+                        $this->appsess->setFlashSession("success", true);
+                    }
+                    else
+                    {
+                        $this->appsess->setFlashSession("success", false);
+                    }
                 }
                 else
                 {
-                    $this->appsess->setFlashSession("success", false);
+                    $belanja = $this->belanja->get_by('kursus_id',$kursus_id);
+                    $data = [
+                        'kursus_id' => $kursus_id,
+                        'stat_byr' => $this->input->post("comStat"),
+                        'no_lo' => $this->input->post('txtNoLO'),
+                        'tkh_lo' => $this->input->inputToDate("txtTkhLO"),
+                        'no_resit' => $this->input->post('txtNoResit'),
+                        'jumlah' => $this->input->post("txtJumlah"),
+                    ];
+
+                    if($this->input->post('txtTkhResit'))
+                    {
+                        $data['tkh_resit'] = $this->input->inputToDate("txtTkhResit");
+                    }
+
+                    if($this->belanja->update($belanja->id,$data))
+                    {
+                        if (!empty($_FILES['userfile']['name']))
+                        {
+                            $config['upload_path'] = './assets/uploads/';
+                            $config['encrypt_name'] = TRUE;
+                            $config['allowed_types'] = ['pdf'];
+
+                            $this->load->library('upload', $config);
+
+                            if ( ! $this->upload->do_upload('userfile'))
+                            {
+                                    $error = array('error' => $this->upload->display_errors());
+                                    dd($this->upload->display_errors());
+                            }
+                            else
+                            {
+                                $dataUpload = array('upload_data' => $this->upload->data());
+
+                                $dokumen_path = $dataUpload['upload_data']['file_name'];
+
+                                if( $this->kursus->update($kursus_id,['surat'=>$dokumen_path]))
+                                {
+                                    $this->appsess->setFlashSession("success", true);
+                                }
+                                else
+                                {
+                                    $this->appsess->setFlashSession("success", false);
+                                }
+                            }
+                        }
+                        $this->appsess->setFlashSession("success", true);
+                    }
+                    else
+                    {
+                        $this->appsess->setFlashSession("success", false);
+                    }
                 }
             }
         }

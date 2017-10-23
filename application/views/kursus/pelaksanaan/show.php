@@ -52,42 +52,52 @@
                     </table>
                     
                     </div>
-                    <?php if($kursus->stat_laksana == 'R') : ?>
-                    <?php if(!$kursus->peruntukan_id) : ?>
-                    <form method="post">
-                    <?php $csrf = [
-                        'name' => $this->security->get_csrf_token_name(),
-                        'hash' => $this->security->get_csrf_hash()
-                        ];
-                    ?>
-                    <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
-                    <button type="submit" class="btn btn-success" name="submit">Laksana</button>
-                    </form>
-                    <?php endif ?>
-                    <?php endif ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<?php if($kursus->peruntukan_id) : ?>
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">                            
         <div class="x_panel">
-            <div class="x_title">
-                <h2>Maklumat Perbelanjaan</h2>
-                <div class="clearfix"></div>
-            </div>
+            <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
 
-            <div class="x_content">
-                <form method="post" class="form-horizontal form-label-left">
-                    <?php $csrf = [
-                        'name' => $this->security->get_csrf_token_name(),
-                        'hash' => $this->security->get_csrf_hash()
-                        ];
-                    ?>
-                    <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                <div class="x_title">
+                    <h2>Surat Rasmi Kursus / Aturcara Kursus</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Surat Jemputan <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                           <input type="file" name="userfile" <?= ($kursus->stat_laksana == 'R') ? 'required' : '' ?> >
+                        </div>
+                    </div>
+                    <?php if($kursus->stat_laksana == 'L'): ?>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <a class="btn btn-info btn-sm" target="_blank" href="<?= base_url('assets/uploads/' . $kursus->surat )?>">Papar Surat</a>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <br/>
+                <?php if($kursus->peruntukan_id) : ?>
+                <div class="x_title">
+                    <h2>Maklumat Perbelanjaan Kursus</h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Status<span class="required">*</span>
                         </label>
@@ -133,6 +143,7 @@
                             <input type="text" id="txtTkhResit" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhResit" value="<?=(isset($belanja->tkh_resit)) ? date('d-m-Y',strtotime($belanja->tkh_resit)) : ''?>">
                         </div>
                     </div>
+                    <?php endif ?>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -143,9 +154,8 @@
                             <?php endif ?>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<?php endif ?>
