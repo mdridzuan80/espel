@@ -54,35 +54,37 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h2>LAPORAN SENARAI ANGGOTA YANG TIDAK MENJAWAB BORANG A <?= $tahun ?></h2></td>
+            <td style="width: 100%; text-align:center;"><h2>LAPORAN SENARAI ANGGOTA YANG TIDAK MENJAWAB BORANG B <?= $tahun ?></h2></td>
         </tr>
     </table>
     <br/>
     <table class="biasa">
       <thead>
         <tr>
-          <th style="width:5%;">Bil</th>
-          <th style="width:20%;">Nama</th>
-          <th style="width:20%;">Jabatan</th>
-          <th style="width:20%;">Kumpulan Gred</th>
-          <th style="width:20%;">Skim Perkhidmatan</th>
-          <th style="width:5%;">Gred</th>
-          <th style="width:5%;">Tajuk Kursus</th>
+            <th style="width:1%;">Bil</th>
+            <th style="width:10%;">Nama<br>PPP</th>
+            <th style="width:10%;">Jabatan<br>PPP</th>
+            <th style="width:10%;">Kumpulan<br>Gred PPP</th>
+            <th style="width:10%;">Skim<br>Perkhidmatan<br>PPP</th>
+            <th style="width:5%;">Gred<br>PPP</th>
+            <th style="width:10%;">Nama<br>PYD</th>
+            <th style="width:20%;">Tajuk<br>Kursus</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <?php $x = 1 ?>
         <?php foreach($sen_anggota as $anggota) : ?>
         <tr>
             <td><?= $x++ ?></td>
-            <td><?= $anggota->nama ?></td>
-            <td><?= $anggota->title ?></td>
-            <td><?= $anggota->kumpulan ?></td>
-            <td><?= $anggota->skim ?></td>
+            <td><?= $anggota->nama_ppp ?></td>
+            <td><?= $anggota->jabatan_ppp ?></td>
+            <td><?= $anggota->kumpulan_ppp ?></td>
+            <td><?= $anggota->skim_ppp ?></td>
             <td><?= $anggota->gred_id ?></td>
+            <td><?= $anggota->nama ?></td>
             <td><?= $anggota->tajuk ?></td>
         </tr>
         <?php endforeach ?>
-       </tbody>
-   </table>
+        </tbody>
+    </table>
 </page>
