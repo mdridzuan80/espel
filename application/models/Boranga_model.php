@@ -143,4 +143,52 @@ class Boranga_model extends MY_Model
         
         return $this->db->query($sql)->result();
     }
+
+    public function analisa_reaksi($sen_jabatan, $tahun)
+    {
+        $sql = "SELECT
+            Sum(view_analisa_boranga_reaksi.`b1-1`) AS `b1-1`,
+            Sum(view_analisa_boranga_reaksi.`b2-1`) AS `b2-1`,
+            Sum(view_analisa_boranga_reaksi.`b3-1`) AS `b3-1`,
+            Sum(view_analisa_boranga_reaksi.`b4-1`) AS `b4-1`,
+            Sum(view_analisa_boranga_reaksi.`b5-1`) AS `b5-1`,
+            Sum(view_analisa_boranga_reaksi.`b6-1`) AS `b6-1`,
+            Sum(view_analisa_boranga_reaksi.`b7-1`) AS `b7-1`,
+            Sum(view_analisa_boranga_reaksi.`b8-1`) AS `b8-1`,
+            Sum(view_analisa_boranga_reaksi.`b1-2`) AS `b1-2`,
+            Sum(view_analisa_boranga_reaksi.`b2-2`) AS `b2-2`,
+            Sum(view_analisa_boranga_reaksi.`b3-2`) AS `b3-2`,
+            Sum(view_analisa_boranga_reaksi.`b4-2`) AS `b4-2`,
+            Sum(view_analisa_boranga_reaksi.`b5-2`) AS `b5-2`,
+            Sum(view_analisa_boranga_reaksi.`b6-2`) AS `b6-2`,
+            Sum(view_analisa_boranga_reaksi.`b7-2`) AS `b7-2`,
+            Sum(view_analisa_boranga_reaksi.`b8-2`) AS `b8-2`,
+            Sum(view_analisa_boranga_reaksi.`b1-3`) AS `b1-3`,
+            Sum(view_analisa_boranga_reaksi.`b2-3`) AS `b2-3`,
+            Sum(view_analisa_boranga_reaksi.`b3-3`) AS `b3-3`,
+            Sum(view_analisa_boranga_reaksi.`b4-3`) AS `b4-3`,
+            Sum(view_analisa_boranga_reaksi.`b5-3`) AS `b5-3`,
+            Sum(view_analisa_boranga_reaksi.`b6-3`) AS `b6-3`,
+            Sum(view_analisa_boranga_reaksi.`b7-3`) AS `b7-3`,
+            Sum(view_analisa_boranga_reaksi.`b8-3`) AS `b8-3`,
+            Sum(view_analisa_boranga_reaksi.`b1-4`) AS `b1-4`,
+            Sum(view_analisa_boranga_reaksi.`b2-4`) AS `b2-4`,
+            Sum(view_analisa_boranga_reaksi.`b3-4`) AS `b3-4`,
+            Sum(view_analisa_boranga_reaksi.`b4-4`) AS `b4-4`,
+            Sum(view_analisa_boranga_reaksi.`b5-4`) AS `b5-4`,
+            Sum(view_analisa_boranga_reaksi.`b6-4`) AS `b6-4`,
+            Sum(view_analisa_boranga_reaksi.`b7-4`) AS `b7-4`,
+            Sum(view_analisa_boranga_reaksi.`b8-4`) AS `b8-4`,
+            view_analisa_boranga_reaksi.tahun,
+            view_analisa_boranga_reaksi.ptj_jabatan_id_created
+            FROM
+            view_analisa_boranga_reaksi
+            WHERE 1=1
+            AND view_analisa_boranga_reaksi.ptj_jabatan_id_created in (?)
+            AND view_analisa_boranga_reaksi.tahun = ?
+            GROUP BY
+            view_analisa_boranga_reaksi.ptj_jabatan_id_created,
+            view_analisa_boranga_reaksi.tahun";
+        return $this->query($sql,[$sen_jabatan,$tahun]);
+    }
 }

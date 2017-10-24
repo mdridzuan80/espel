@@ -19,8 +19,8 @@
       <?php endif ?>
       <li><a><i class="fa fa-smile-o"></i> Borang Soal Selidik <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="<?=base_url('mockup/ptj/laporan/kursus')?>">Analisa Borang A</a></li>
-          <li><a href="<?=base_url('mockup/ptj/laporan/kewangan')?>">Analisa Borang B</a></li>
+          <li><a href="<?=base_url('selidik/analisa_boranga')?>">Analisa Borang A</a></li>
+          <li><a href="<?=base_url('selidik/analisa_borangb')?>">Analisa Borang B</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>

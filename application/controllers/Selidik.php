@@ -132,4 +132,12 @@ class Selidik extends MY_Controller {
 			return $this->renderView('selidik/borangb/terimakasih');
 		}
 	}
+
+	public function analisa_boranga()
+	{
+		$plugins = ['embedjs'=>[
+			$this->load->view('analisa/boranga/js01.php','',TRUE)
+		]];
+		return $this->renderView('analisa/boranga/show','',$plugins);
+	}
 }

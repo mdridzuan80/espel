@@ -248,6 +248,22 @@ class Kursus_model extends MY_Model
         }
     }
 
+    public function senarai_kursus_boranga($ptj_jabatan_id)
+    {
+        $sql = "SELECT espel_dict_program.nama AS program, hrmis_carta_organisasi.title, a.penganjur,
+            a.tajuk, year(a.tkh_mula) AS tahun, a.tkh_mula, a.tkh_tamat, a.ptj_jabatan_id_created, a.anjuran
+            FROM espel_kursus AS a
+            LEFT OUTER JOIN hrmis_carta_organisasi ON a.penganjur_id = hrmis_carta_organisasi.buid
+            INNER JOIN espel_dict_program ON a.program_id = espel_dict_program.id
+            WHERE
+            1 = 1 AND
+            a.stat_laksana = 'L'
+            AND a.ptj_jabatan_id_created in (?)
+            ORDER BY
+            a.tkh_mula ASC";
+        return $this->db->query($sql,[$ptj_jabatan_id]);
+    }
+
     public function takwim_senarai_pengguna($takwim)
     {
         $sql = "select * from (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, NULL as stat_mohon FROM espel_kursus a, espel_dict_program b
