@@ -361,6 +361,7 @@ class Laporan extends MY_Controller
         }
     }
 
+    // laporan prestasi_kursus_individu
     public function prestasi_kursus_individu()
     {
         if(!$this->exist("submit"))
@@ -602,39 +603,8 @@ class Laporan extends MY_Controller
     // laporan prestasi kewangan
     public function prestasi_kewangan()
     {
-        if(!$this->exist("submit"))
-        {
-            $plugins = ['embedjs'=>[$this->load->view('laporan/ptj/prestasi_kewangan/js','',true)]];
-            return $this->renderView("laporan/ptj/prestasi_kewangan/param",'',$plugins);
-        }
-        else
-        {
-            try {
-                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
-                $html2pdf->pdf->SetDisplayMode('fullpage');
-                $html2pdf->setTestTdInOnePage(false);
-
-                ob_start();
-                $content = ob_get_clean();
-
-                $tahun = $this->input->post("txtTahun");
-                $data['tahun'] = $tahun;
-
-                $this->load->model('profil_model','profil');
-                $this->load->model('kursus_model','kursus');
-
-                $data['sen_kelas'] = $this->profil->statistik_kelas();
-                $data['objKursus'] = $this->kursus;
-
-                $html2pdf->writeHTML($this->load->view("laporan/prestasi/prestasi_kewangan",$data,TRUE));
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
-                
-                $html2pdf->output('prestasi_kewangan.pdf', "D");
-            } catch (Html2PdfException $e) {
-                $formatter = new ExceptionFormatter($e);
-                echo $formatter->getHtmlMessage();
-            }
-        }
+        $plugins = ['embedjs'=>[$this->load->view('laporan/ptj/prestasi_kewangan/js','',true)]];
+        return $this->renderView("laporan/ptj/prestasi_kewangan/param",'',$plugins);
     }
 
     public function ajax_prestasi_kewangan()
@@ -727,5 +697,53 @@ class Laporan extends MY_Controller
             $formatter = new ExceptionFormatter($e);
             echo $formatter->getHtmlMessage();
         }
+    }
+
+    public function x_jawab_borang_a()
+    {
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $this->load->model('profil_model', 'profil');
+
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('laporan/ptj/x_jawab_boranga/js','',true)
+        ]];
+
+        return $this->renderView("laporan/ptj/x_jawab_boranga/param", $data, $plugins);
+    }
+
+    public function ajax_x_jawab_borang_a()
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model("hrmis_carta_model","jabatan");
+        $this->load->model('boranga_model', 'boranga');
+
+        $tahun = $this->input->post("tahun");
+        
+        $jab_id = $this->input->post("jabatan");
+
+        $flatted = flatten_array(
+            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+        );
+        
+        array_push($flatted,$jab_id);
+        
+        $filter = new obj([
+            'tahun' => $tahun,
+            'jabatan_id' => $flatted,
+            'kelas_id' => $this->input->post("kelas"),
+            'skim_id' => $this->input->post("skim"),
+            'gred_id' => $this->input->post("gred"),
+        ]);
+
+        $data['tahun'] = $tahun;
+
+        $data['sen_anggota'] = $this->boranga->sen_tidak_jawab($filter);
+
+        return $this->load->view('laporan/ptj/x_jawab_boranga/result',$data);
     }
 }

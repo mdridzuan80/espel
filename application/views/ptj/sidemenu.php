@@ -28,6 +28,8 @@
           <li><a href="<?=base_url('laporan/prestasi_kursus_individu')?>">Laporan Senarai Prestasi Individu</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kewangan')?>">Laporan Prestasi Kewangan</a></li>
+          <li><a href="<?=base_url('laporan/x_jawab_borang_a')?>">Tidak Menjawab Borang A</a></li>
+          <li><a href="<?=base_url('laporan/x_jawab_borang_b')?>">Tidak Menjawab Borang B</a></li>
         </ul>
       </li>
       <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
