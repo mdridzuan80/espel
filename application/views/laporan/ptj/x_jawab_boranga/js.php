@@ -30,7 +30,6 @@ $(function(){
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),
-            hari: $('#comHari').val(),
             jenis: $(this).attr('data-cmd')
         };
         janaReport(data, $(this).attr('data-cmd'));
@@ -43,7 +42,6 @@ $(function(){
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),
-            hari: $('#comHari').val(),
             jenis: $(this).attr('data-cmd')
         };
         janaReport(data, $(this).attr('data-cmd'));
@@ -56,7 +54,6 @@ $(function(){
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),
-            hari: $('#comHari').val(),
             jenis: $(this).attr('data-cmd')
         };
         janaReport(data, $(this).attr('data-cmd'));
@@ -70,13 +67,13 @@ $(function(){
             },
             method: 'post',
             data: data,
-            url: base_url + 'laporan/ajax_prestasi_kursus_individu_export',
+            url: base_url + 'laporan/ajax_x_jawab_borang_a_export',
             success: function(blob){
                 var ext = {1: '.pdf', 2: '.xls', 3: '.doc'};
                 console.log(blob.size);
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
-                link.download="prestasi_individu" + ext[jenis];
+                link.download="tidak_menjawab_boranga" + ext[jenis];
                 link.click();
             }
         });

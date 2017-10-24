@@ -54,7 +54,7 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h3>LAPORAN PRESTASI SENARAI ANGGOTA <?= $tahun ?></h3></td>
+            <td style="width: 100%; text-align:center;"><h2>LAPORAN SENARAI ANGGOTA YANG TIDAK MENJAWAB BORANG A <?= $tahun ?></h2></td>
         </tr>
     </table>
     <br/>
@@ -67,7 +67,7 @@ table.biasa td, table.listing td {
           <th style="width:20%;">Kumpulan Gred</th>
           <th style="width:20%;">Skim Perkhidmatan</th>
           <th style="width:5%;">Gred</th>
-          <th style="width:5%;">Hari</th>
+          <th style="width:5%;">Tajuk Kursus</th>
         </tr>
       </thead>
       <tbody>
@@ -76,11 +76,11 @@ table.biasa td, table.listing td {
         <tr>
             <td><?= $x++ ?></td>
             <td><?= $anggota->nama ?></td>
-            <td><?= $anggota->jabatan ?></td>
-            <td><?= $anggota->kumpulan ?></td>
-            <td><?= $anggota->skim ?></td>
+            <td><?= $anggota->title ?></td>
+            <td><?= $anggota->kelas_id ?></td>
+            <td><?= $anggota->skim_id ?></td>
             <td><?= $anggota->gred_id ?></td>
-            <td><?= $anggota->hari ?></td>
+            <td><?= $anggota->tajuk ?></td>
         </tr>
         <?php endforeach ?>
        </tbody>

@@ -525,6 +525,7 @@ class Laporan extends MY_Controller
             break;
         }
     }
+
     // laporan prestasi kursus ptj
     public function prestasi_kursus_keseluruhan()
     {
@@ -745,5 +746,75 @@ class Laporan extends MY_Controller
         $data['sen_anggota'] = $this->boranga->sen_tidak_jawab($filter);
 
         return $this->load->view('laporan/ptj/x_jawab_boranga/result',$data);
+    }
+
+    public function ajax_x_jawab_borang_a_export()
+    {
+        $tahun = $this->input->post('tahun');
+        $jenis = $this->input->post('jenis');
+
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model("hrmis_carta_model","jabatan");
+        $this->load->model('boranga_model', 'boranga');
+
+        $tahun = $this->input->post("tahun");
+        
+        $jab_id = $this->input->post("jabatan");
+
+        $flatted = flatten_array(
+            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+        );
+        
+        array_push($flatted,$jab_id);
+        
+        $filter = new obj([
+            'tahun' => $tahun,
+            'jabatan_id' => $flatted,
+            'kelas_id' => $this->input->post("kelas"),
+            'skim_id' => $this->input->post("skim"),
+            'gred_id' => $this->input->post("gred"),
+        ]);
+
+        $data['tahun'] = $tahun;
+
+        $data['sen_anggota'] = $this->boranga->sen_tidak_jawab($filter);
+
+        switch($jenis)
+        {
+            case 1 :
+                try {
+                    $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+                    $html2pdf->setTestTdInOnePage(false);
+
+                    ob_start();
+                    $content = ob_get_clean();
+
+                    $html2pdf->writeHTML($this->load->view("laporan/ptj/x_jawab_boranga/pdf",$data,TRUE));
+                    
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export PDF laporan prestasi individu']);
+                    $html2pdf->output('ringkasan.pdf');
+                } catch (Html2PdfException $e) {
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
+                }
+            break;
+
+            case 2 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan prestasi kursus']);
+                $this->output->set_header('Content-type: application/vnd.ms-excel');
+                $this->output->set_header('Content-Disposition: attachment; filename=prestasi_kursus.xls');
+                $content = $this->load->view("laporan/ptj/x_jawab_boranga/pdf",$data,TRUE);
+                echo $content;
+            break;
+
+            case 3 :
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Word laporan prestasi kursus']);
+                $this->output->set_header('Content-type: application/vnd.ms-word');
+                $this->output->set_header('Content-Disposition: attachment; filename=prestasi_kursus.doc');
+                $content = $this->load->view("laporan/ptj/x_jawab_boranga/pdf",$data,TRUE);
+                echo $content;
+            break;
+        }
     }
 }
