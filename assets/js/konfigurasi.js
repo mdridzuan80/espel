@@ -2,10 +2,14 @@
     $('#comLogin').change(function(event) {
         var login = $(this).val();
         if(login == 'T') {
+            $("#input-username").prop('required', true);
+            $("#input-password").prop('required', true);
             $('#input-username').show();
             $('#input-password').show();
         }
         else {
+            $("#input-username").prop('required', false);
+            $("#input-password").prop('required', false);
             $('#input-username').hide();
             $('#input-password').hide();
         }

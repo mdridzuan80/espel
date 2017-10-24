@@ -42,7 +42,7 @@ class AppAuth
             $this->CI->load->model("kumpulan_profil_model","kumpulan_profil");
             $this->CI->appsess->setSessionData('isLogged', TRUE);
             $this->CI->appsess->setSessionData('username', $username);
-            $this->CI->appsess->setSessionData('kumpulan', $this->CI->kumpulan_profil->getDefaultKumpulan($username));
+            $this->CI->appsess->setSessionData('kumpulan', ($username != 'admin') ? SELF::PENGGUNA : SELF::SUPER);
             return $this->isLogged();
         }
 

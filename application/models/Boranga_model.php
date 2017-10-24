@@ -178,17 +178,15 @@ class Boranga_model extends MY_Model
             Sum(view_analisa_boranga_reaksi.`b5-4`) AS `b5-4`,
             Sum(view_analisa_boranga_reaksi.`b6-4`) AS `b6-4`,
             Sum(view_analisa_boranga_reaksi.`b7-4`) AS `b7-4`,
-            Sum(view_analisa_boranga_reaksi.`b8-4`) AS `b8-4`,
-            view_analisa_boranga_reaksi.tahun,
-            view_analisa_boranga_reaksi.ptj_jabatan_id_created
+            Sum(view_analisa_boranga_reaksi.`b8-4`) AS `b8-4`
             FROM
             view_analisa_boranga_reaksi
             WHERE 1=1
-            AND view_analisa_boranga_reaksi.ptj_jabatan_id_created in (?)
+            AND view_analisa_boranga_reaksi.ptj_jabatan_id_created in ?
             AND view_analisa_boranga_reaksi.tahun = ?
             GROUP BY
             view_analisa_boranga_reaksi.ptj_jabatan_id_created,
             view_analisa_boranga_reaksi.tahun";
-        return $this->query($sql,[$sen_jabatan,$tahun]);
+        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
     }
 }

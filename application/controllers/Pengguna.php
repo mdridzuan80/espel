@@ -13,13 +13,20 @@ class Pengguna extends MY_Controller
     }
 
     public function index(){
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ']))
+        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['ADMIN','PTJ']) || $this->appsess->getSessionData("username")=='admin' )
         {
             $this->load->model('kumpulan_profil_model','kumpulan_profil');
             $this->load->model('profil_model', 'profil');
 
             $data['sen_kumpulan'] = $this->profil->sen_kump();
-            $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+            if($this->appsess->getSessionData("username")=='admin')
+            {
+                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),1);
+            }
+            else
+            {
+                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);               
+            }
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
             return $this->renderView("pengguna/show",$data,['embedjs'=>[$this->load->view('scripts/carian_js',$data,true)]]);
         }

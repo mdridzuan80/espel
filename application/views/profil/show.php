@@ -33,6 +33,7 @@
 
                       <h3><?=$profil->nama?></h3>
                       <h4><?=$profil->nokp?></h4>
+                      <?php if($profil->nokp != 'admin') : ?>
                       <ul class="list-unstyled user_data">
                           <li>
                             <?php $skim_keterangan = $skim->get_by('kod',$profil->skim_id); ?>
@@ -57,6 +58,7 @@
                             <?=$profil->email?>
                         </li>
                       </ul>
+                      <?php endif ?>
                       <br />
                     </div>
                     <div class="col-md-8 col-sm-8 col-xs-12">

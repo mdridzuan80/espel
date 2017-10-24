@@ -49,14 +49,14 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Username">Username<span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtUsername" required="required" class="form-control col-md-7 col-xs-12" name="txtUsername">
+                        <input type="text" id="txtUsername" class="form-control col-md-7 col-xs-12" name="txtUsername">
                     </div>
                 </div>
                 <div class="form-group" id="input-password" style="display: none;">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Password">Password<span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="password" id="txtPassword" required="required" class="form-control col-md-7 col-xs-12" name="txtPassword">
+                        <input type="password" id="txtPassword" class="form-control col-md-7 col-xs-12" name="txtPassword">
                     </div>
                 </div>
                 <div class="form-group">

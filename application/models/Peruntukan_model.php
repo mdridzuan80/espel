@@ -78,12 +78,10 @@ class Peruntukan_model extends MY_Model
     public function prestasi($tahun, $jabatan_id)
     {
         $sql = "SELECT
-            espel_peruntukan.id,
             espel_dict_jns_peruntukan.id as jns_peruntukan_id,
             espel_dict_jns_peruntukan.nama,
             hrmis_carta_organisasi.title,
-            Sum(espel_peruntukan.jumlah) as jumlah,
-            espel_peruntukan.keterangan
+            Sum(espel_peruntukan.jumlah) as jumlah
             FROM
             espel_peruntukan
             INNER JOIN hrmis_carta_organisasi ON espel_peruntukan.jabatan_id = hrmis_carta_organisasi.buid
@@ -93,10 +91,8 @@ class Peruntukan_model extends MY_Model
             AND
             espel_peruntukan.jabatan_id = ?
             GROUP BY
-            espel_peruntukan.id,
             hrmis_carta_organisasi.title,
-            espel_dict_jns_peruntukan.nama,
-            espel_peruntukan.keterangan";
+            espel_dict_jns_peruntukan.nama";
 
         return $this->db->query($sql,[$tahun,$jabatan_id])->result();
     }
