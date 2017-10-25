@@ -150,7 +150,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Anjuran:</td>
-        <td colspan="3"><?=$latihan->jabatan?></td>
+        <td colspan="3"><?= ($latihan->anjuran == 'D') ? $latihan->anjuran_dalam : $latihan->anjuran_luar ?></td>
       </tr>
     <?php endforeach?>
 <?php else:?>
@@ -232,7 +232,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Anjuran:</td>
-        <td colspan="3"><?=$latihan->jabatan?></td>
+        <td colspan="3"><?= ($latihan->anjuran == 'D') ? $latihan->anjuran_dalam : $latihan->anjuran_luar ?></td>
       </tr>
     <?php endforeach?>
     <?php else:?>
@@ -313,7 +313,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Anjuran:</td>
-        <td colspan="3"><?=$latihan->jabatan?></td>
+        <td colspan="3"><?= ($latihan->anjuran == 'D') ? $latihan->anjuran_dalam : $latihan->anjuran_luar ?></td>
       </tr>
     <?php endforeach?>
     <?php else:?>
@@ -394,7 +394,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Anjuran:</td>
-        <td colspan="3"><?=$latihan->jabatan?></td>
+        <td colspan="3"><?= ($latihan->anjuran == 'D') ? $latihan->anjuran_dalam : $latihan->anjuran_luar ?></td>
       </tr>
     <?php endforeach?>
     <?php else:?>
@@ -475,7 +475,7 @@ table.biasa td, table.listing td {
       </tr>
       <tr>
         <td style="width: 5%">Anjuran:</td>
-        <td colspan="3"><?=$latihan->jabatan?></td>
+        <td colspan="3"><?= ($latihan->anjuran == 'D') ? $latihan->anjuran_dalam : $latihan->anjuran_luar ?></td>
       </tr>
     <?php endforeach?>
     <?php else:?>

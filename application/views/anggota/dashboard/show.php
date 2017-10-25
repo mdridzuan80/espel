@@ -13,16 +13,30 @@
                 <th>Anjuran</th>
                 <th>Masa Mula</th>
                 <th>Masa Tamat</th>
-                <th>Operasi</th>
+                <th style="text-align:center">Status</th>
+                <th style="text-align:center">Operasi</th>
               </tr>
             </thead>
             <tbody>
                 <?php foreach($sen_dicalonkan as $dicalonkan): ?>
               <tr>
                 <td><?=$dicalonkan->tajuk?></td>
-                <td><?=($dicalonkan->anjuran=='D') ? $dicalonkan->penganjur_dalam : $dicalonkan->penganjur_luar ?></td>
+                <td><?= ($dicalonkan->anjuran == 'D') ? $dicalonkan->anjuran_dalam : $dicalonkan->anjuran_luar ?></td>
                 <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_tamat))?></td>
+                <td align="center">
+                    <?php if($dicalonkan->stat_laksana == 'L'):?>
+                    <span class="label label-success">SELESAI</span>
+                    <?php else : ?>
+                    <span class="label label-warning">RANCANG</span>
+                    <?php endif?>
+                    <?php if($dicalonkan->stat_hadir == 'Y'):?>
+                    <span class="label label-success">HADIR</span>
+                    <?php endif?>
+                    <?php if($dicalonkan->stat_hadir == 'T'):?>
+                    <span class="label label-alert">TIDAK HADIR</span>
+                    <?php endif?>
+                </td>
                 <td align="center">
                   <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs" target="_blank" >Papar surat</a>
                   <a href="<?= base_url('kursus/info_kursus_pengguna/' . $dicalonkan->id) ?>" class="btn btn-info btn-xs" >Info</a>
@@ -59,7 +73,7 @@
                 <?php foreach($sen_permohonan as $permohonan): ?>
               <tr>
                 <td><?=$permohonan->tajuk?></td>
-                <td><?=$permohonan->nama?></td>
+                <td><?= ($permohonan->anjuran == 'D') ? $permohonan->anjuran_dalam : $permohonan->anjuran_luar ?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh))?></td>
@@ -107,7 +121,7 @@
                 <?php foreach($sen_hadir as $hadir): ?>
               <tr>
                 <td><?=$hadir->tajuk?></td>
-                <td><?=$hadir->jabatan?></td>
+                <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
                 <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
                 <td><?=$hadir->hari?></td>

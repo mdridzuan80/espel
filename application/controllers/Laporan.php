@@ -87,63 +87,9 @@ class Laporan extends MY_Controller
 
     public function bukulog()
     {
-        if(!$this->exist("submit"))
-        {
-            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan buku log latihan']);
-            $plugins = ['embedjs'=>[$this->load->view('laporan/pengguna/bukulog/js','',true)]];
-            return $this->renderView("laporan/pengguna/bukulog/param",'',$plugins);
-        }
-        else
-        {
-            try {
-                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
-                $html2pdf->pdf->SetDisplayMode('fullpage');
-                $html2pdf->setTestTdInOnePage(false);
-
-                ob_start();
-                $content = ob_get_clean();
-
-                $tahun = $this->input->post("txtTahun");
-                $data = [];
-
-                $this->load->model("profil_model", "profil");
-                $this->load->model("kursus_model","kursus");
-                $this->load->library('appcpd');
-                $this->load->model("program_model","program");
-                $this->load->model('hrmis_skim_model', 'skim');
-                $this->load->model('hrmis_carta_model', 'jabatan');   
-
-                $data["profil"] = $this->profil->with(["jawatan","jabatan"])->get($this->appsess->getSessionData("username"));
-                $data["sen_latihan_dalam_negara"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),1,$tahun);
-                $data["sen_latihan_luar_negara"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),2,$tahun);
-                $data["sen_latihan_semuka"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),3,$tahun);
-                $data["sen_latihan_tidak_semuka"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),4,$tahun);
-                $data["sen_latihan_kendiri"]  = $this->kursus->get_kursus_by_program($this->appsess->getSessionData("username"),5,$tahun);
-
-                foreach($this->program->get_all() as $program)
-                {
-                    $data['program'][$program->id]["nama"]=$program->nama;
-                    $data['program'][$program->id]["hari"]=$this->kursus->getBilhari($this->appsess->getSessionData('username'), $program->id, $tahun);
-                }
-                
-                $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
-                $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
-                    ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
-                    ->setTkhTamat($tahun . "-12-31")
-                    ->setTkhMula($tahun . "-01-01")
-                    ->cumulativePoint();
-                $data["tahun"] = $tahun;
-                $data['mskim'] = $this->skim;
-                $data['mjabatan'] = $this->jabatan;
-
-                $html2pdf->writeHTML($this->load->view("laporan/bukulog/bukulog",$data,TRUE));
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
-                $html2pdf->output('bukulog.pdf', "D");
-            } catch (Html2PdfException $e) {
-                $formatter = new ExceptionFormatter($e);
-                echo $formatter->getHtmlMessage();
-            }
-        }
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan buku log latihan']);
+        $plugins = ['embedjs'=>[$this->load->view('laporan/pengguna/bukulog/js','',true)]];
+        return $this->renderView("laporan/pengguna/bukulog/param",'',$plugins);
     }
 
     public function ajax_papar_bukulog()

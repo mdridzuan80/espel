@@ -81,7 +81,7 @@ table.biasa td, table.listing td {
         <tr>
             <td><?= $x++ ?></td>
             <td><?=$hadir->tajuk?></td>
-            <td><?=$hadir->jabatan?></td>
+            <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
             <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
             <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
             <td><?=$hadir->hari?></td>

@@ -7,13 +7,31 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_permohonan($nokp)
     {
-        $this->db->select("b.tajuk, c.nama, b.tkh_mula, b.tkh_tamat, a.tkh, a.stat_mohon");
-        $this->db->from($this->_table . " a");
-        $this->db->join("espel_kursus b", "a.kursus_id = b.id");
-        $this->db->join("espel_dict_jabatan c","b.penganjur_id = c.id" );
-        $this->db->where("a.nokp", $nokp);
+        $sql = "SELECT espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon, espel_permohonan_kursus.nokp, espel_permohonan_kursus.tkh
+            FROM espel_permohonan_kursus
+            INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND espel_permohonan_kursus.nokp = ?
+            AND espel_permohonan_kursus.role = 'PENGGUNA'";
 
-        return $this->db->get()->result();
+        return $this->db->query($sql,[$nokp])->result();
+    }
+
+    public function get_dicalonkan($nokp)
+    {
+        $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon, espel_permohonan_kursus.nokp, espel_permohonan_kursus.tkh,
+            espel_kursus.surat,espel_kursus.stat_laksana,espel_permohonan_kursus.stat_hadir
+            FROM espel_permohonan_kursus
+            INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND espel_permohonan_kursus.nokp = ?
+            AND espel_permohonan_kursus.role = 'PTJ'";
+
+        return $this->db->query($sql,[$nokp])->result();
     }
 
     public function get_permohonan_jabatan($jabatan_id)
