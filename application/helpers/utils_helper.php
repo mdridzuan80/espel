@@ -135,13 +135,16 @@ function get_peruntukan_parent($elements, $buid, $tahun)
             if(!$element['peruntukan'])
             {
 
-                $peruntukan[] = get_peruntukan_parent($elements, $element['parent_buid'], $tahun);
+                $peruntukan = get_peruntukan_parent($elements, $element['parent_buid'], $tahun);
             }
             else
             {
                 if($element['tahun'] == $tahun)
                 {
-                    $peruntukan[] = $element['peruntukan'];
+                    if($element['stat_initial'] == 'Y')
+                    {
+                        $peruntukan[] = $element['peruntukan'];
+                    }
                 }
             }
         }

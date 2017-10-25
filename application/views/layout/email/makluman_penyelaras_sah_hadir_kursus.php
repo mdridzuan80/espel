@@ -416,7 +416,7 @@
                                     </tr>
                                     <tr>
                                       <td><b>Program</b></td>
-                                      <td><?= $kursus->program->nama ?></td>
+                                      <td><?= $mprogram->mprogram->get($kursus->program_id)->nama ?></td>
                                     </tr>
                                     <tr>
                                       <td><b>Mula</b></td>

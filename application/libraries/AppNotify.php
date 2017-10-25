@@ -31,6 +31,7 @@ class AppNotify
             {
                 $this->mail = new PHPMailer(true);
                 $this->mail_config($mail_config);
+                $this->reset($this->mail);
                 $this->mail_recipient($attr);
                 try {
 
@@ -122,5 +123,16 @@ class AppNotify
                 $this->mail->addBCC($attr['bcc']);
             }
         }
+    }
+
+    private function reset($mail)
+    {
+        $mail->clearAddresses();
+        $mail->clearCCs();
+        $mail->clearBCCs();
+        $mail->clearReplyTos();
+        $mail->clearAllRecipients();
+        $mail->clearAttachments();
+        $mail->clearCustomHeaders();
     }
 }

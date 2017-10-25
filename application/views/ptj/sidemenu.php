@@ -3,6 +3,7 @@
   <div class="menu_section">
     <h3>Menu Utama</h3>
     <ul class="nav side-menu">
+      <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
       <li><a><i class="fa fa-laptop"></i> Pengurusan Kursus <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('kursus/takwim')?>">Takwim Kursus</a></li>
@@ -32,7 +33,6 @@
           <li><a href="<?=base_url('laporan/x_jawab_borang_b')?>">Tidak Menjawab Borang B</a></li>
         </ul>
       </li>
-      <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
 
 <!--       <li><a><i class="fa fa-gear"></i> Konfigurasi <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">

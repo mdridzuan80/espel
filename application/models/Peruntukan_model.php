@@ -51,6 +51,20 @@ class Peruntukan_model extends MY_Model
         return $this->db->get()->result();
     }
 
+    public function dropdown_peruntukan2($sen_peruntukan)
+    {
+        $sql = "SELECT
+            espel_peruntukan.id,
+            espel_dict_jns_peruntukan.nama,
+            espel_dict_jns_peruntukan.keterangan
+            FROM espel_peruntukan
+            INNER JOIN espel_dict_jns_peruntukan ON espel_peruntukan.jns_peruntukan_id = espel_dict_jns_peruntukan.id
+            WHERE 1=1
+            AND espel_peruntukan.id in ($sen_peruntukan)";
+
+        return $this->db->query($sql)->result();
+    }
+
     public function jabatan_has_peruntukan($tahun)
     {
         $data = [];
@@ -176,7 +190,13 @@ class Peruntukan_model extends MY_Model
 
     public function get_peruntukan_related()
     {
-        $sql = 'select distinct a.buid, a.parent_buid, b.id as peruntukan, year(b.tarikh) as tahun from hrmis_carta_organisasi a
+        $sql = 'SELECT DISTINCT
+            a.buid,
+            a.parent_buid,
+            b.id AS peruntukan,
+            year(b.tarikh) AS tahun,
+            b.stat_initial
+            from hrmis_carta_organisasi a
             left join espel_peruntukan b on a.buid = b.jabatan_id';
         return $this->db->query($sql)->result_array();
     }

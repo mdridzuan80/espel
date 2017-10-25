@@ -282,8 +282,12 @@ class Kursus extends MY_Controller
                 $data['sen_penyelia'] = $this->profil->where(
                     ["jabatan_id" => $jabatan_id]
                 )->dropdown('nokp','nama');
-                $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
 
+                $elements = $this->peruntukan->get_peruntukan_related();
+                $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
+
+                $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',',$peruntukan));
+                
                 return $this->renderView("kursus/jabatan/daftar",$data,$this->plugins());
             }
             else
@@ -1080,6 +1084,36 @@ class Kursus extends MY_Controller
 		}
     }
 
+    public function delete_jabatan($id)
+    {
+        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
+        {
+            $this->load->model('kursus_model','kursus');
+
+            $kursus = $this->kursus->get($id);
+
+            if($kursus->stat_laksana=='R')
+            {
+                if($this->kursus->delete($id))
+                {
+                    $sql = $this->db->last_query();
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
+                    $this->appsess->setFlashSession("success", true);
+                }
+                else
+                {
+                    $this->appsess->setFlashSession("success", false);
+                }
+                redirect('kursus/takwim');
+            }
+            $this->output->set_status_header(401);
+        }
+		else
+		{
+			return $this->renderPermissionDeny();
+		}
+    }
+
     public function delete_luar($id)
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
@@ -1648,6 +1682,9 @@ class Kursus extends MY_Controller
         $this->load->model('mohon_kursus_model','mohon_kursus');
         $this->load->model('profil_model','profil');
         $this->load->model('hrmis_carta_model','jabatan');
+        $this->load->model('hrmis_carta_model','mjabatan');
+        $this->load->model('hrmis_skim_model', 'mjawatan');
+        $this->load->model('program_model', 'mprogram');
 
         $profil_kursus = $this->kursus->with(['program'])->get($kursus_id);
 
@@ -1699,6 +1736,9 @@ class Kursus extends MY_Controller
                                 $pemohon = $this->profil->get_by("nokp",$peserta->nokp);
                                 $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                                 $kursus = $this->kursus->with(["program","aktiviti"])->get($kursus_id);
+                                $mjawatan = $this->mjawatan;
+                                $mprogram = $this->mprogram;
+                                $mjabatan = $this->mjabatan;
 
                                 $this->appnotify->send($mail);
 
@@ -1707,7 +1747,7 @@ class Kursus extends MY_Controller
                                     $mail = [
                                         "to" => $penyelia->email,
                                         "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
-                                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram],TRUE),
                                     ];
                                 }
 
@@ -1716,7 +1756,7 @@ class Kursus extends MY_Controller
                                     $mail = [
                                         "to" => $pemohon->email,
                                         "subject" => "[espel][Makluman] Anda Terpilih untuk mengikuti kursus",
-                                        "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus],TRUE),
+                                        "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram],TRUE),
                                     ];
                                 }
                                 $this->appnotify->send($mail);
@@ -1732,9 +1772,10 @@ class Kursus extends MY_Controller
             }
             else // ada bajet
             {
+                $kursus = $this->kursus->with(['program'])->get($kursus_id);
+
                 if($kursus->stat_laksana == 'R')
                 {
-                    $kursus = $this->kursus->with(['program'])->get($kursus_id);
                     $data = [
                         'kursus_id' => $kursus_id,
                         'stat_byr' => $this->input->post("comStat"),
@@ -1783,16 +1824,18 @@ class Kursus extends MY_Controller
                                             $pemohon = $this->profil->get_by("nokp",$peserta->nokp);
                                             $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                                             $kursus = $this->kursus->with(["program","aktiviti"])->get($kursus_id);
-
-                                            $this->appnotify->send($mail);
+                                            $mjawatan = $this->mjawatan;
+                                            $mprogram = $this->mprogram;
+                                            $mjabatan = $this->mjabatan;
 
                                             if($penyelia->email)
                                             {
                                                 $mail = [
                                                     "to" => $penyelia->email,
                                                     "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
-                                                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                                                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram,'mjabatan'=>$mjabatan],TRUE),
                                                 ];
+                                                $this->appnotify->send($mail);
                                             }
 
                                             if($pemohon->email)
@@ -1800,10 +1843,10 @@ class Kursus extends MY_Controller
                                                 $mail = [
                                                     "to" => $pemohon->email,
                                                     "subject" => "[espel][Makluman] Anda Terpilih untuk mengikuti kursus",
-                                                    "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus],TRUE),
+                                                    "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram,'mjabatan'=>$mjabatan],TRUE),
                                                 ];
+                                                $this->appnotify->send($mail);
                                             }
-                                            $this->appnotify->send($mail);
                                         }
                                     }
                                     $this->appsess->setFlashSession("success", true);
