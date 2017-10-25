@@ -78,7 +78,7 @@ class Kursus extends MY_Controller
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
-        $plugins["embedjs"][] = $this->load->view("kursus/js.php",NULL,TRUE);
+        $plugins["embedjs"][] = $this->load->view("kursus/js",NULL,TRUE);
 
         return $this->renderView("kursus/takwim", $data, $plugins);
     }
@@ -132,7 +132,7 @@ class Kursus extends MY_Controller
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
-        $plugins["embedjs"][] = $this->load->view("kursus/pengguna_js.php",NULL,TRUE);
+        $plugins["embedjs"][] = $this->load->view("kursus/pengguna_js",NULL,TRUE);
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses takwim kursus (Pengguna)']);
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
