@@ -33,7 +33,6 @@
                     <div id="sen_kursus_anjuran"></div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                    <?php if(count($sen_kursus)):?>
                     <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                     <a href="#" id="cmdTidahHadir" class="btn btn-danger pull-right" role="button" title="Daftar peserta di dalam kursus ini">Tidak Hadir</a>
@@ -83,11 +82,6 @@
                     </div>
                     </div>
                     </div>
-                    <?php else:?>
-                    <div class="alert alert-warning " role="warning">
-                      <strong>INFO!</strong> Tiada rekod
-                    </div>
-                    <?php endif?>
                 </div>
               </div>
             </div>
