@@ -23,6 +23,15 @@
           </div>
           <?php endif?>
           <?php endif?>
+          <?php if(isset($result_ujian)):?>
+          <?php if($result_ujian):?>
+          <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+            </button>
+            <strong>INFO!</strong> Penghantaran berjaya.
+          </div>
+          <?php endif?>
+          <?php endif?>
           <?php if(count($mails)):?>
           <div class="table-responsive">
               <table class="table table-striped table-bordered jambo_table datatable">

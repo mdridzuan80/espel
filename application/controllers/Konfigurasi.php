@@ -233,12 +233,15 @@ class Konfigurasi extends MY_Controller
 
         if($this->appnotify->test_send($this->mail_conf->get($id),$mail))
         {
-            $this->load->model('mailconf_model','mail_conf');
-            $data["mails"] = $this->mail_conf->get_all();
-            
-            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
-            return $this->renderView("konfigurasi/email/show",$data);
+            $data['result_ujian'] = TRUE;
         }
+
+        $this->load->model('mailconf_model','mail_conf');
+        $data["mails"] = $this->mail_conf->get_all();
+        $data['Ujian'] = 
+        
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
+        return $this->renderView("konfigurasi/email/show",$data);
     }
 
     public function email_deleted($id)
