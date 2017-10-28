@@ -219,6 +219,28 @@ class Konfigurasi extends MY_Controller
         }
     }
 
+    public function email_ujian($id)
+    {
+        $this->load->model('profil_model','profil');
+        $this->load->model("mailconf_model","mail_conf");
+        $this->load->library('appnotify');
+
+        $mail = [
+            "to" => $this->profil->get($this->appsess->getSessionData('username'))->email,
+            "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
+            "body" => $this->load->view("layout/email/pengujian",'',TRUE),
+        ];
+
+        if($this->appnotify->test_send($this->mail_conf->get($id),$mail))
+        {
+            $this->load->model('mailconf_model','mail_conf');
+            $data["mails"] = $this->mail_conf->get_all();
+            
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
+            return $this->renderView("konfigurasi/email/show",$data);
+        }
+    }
+
     public function email_deleted($id)
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']))

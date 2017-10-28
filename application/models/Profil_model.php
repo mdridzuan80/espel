@@ -56,10 +56,10 @@ class Profil_model extends MY_Model
             espel_profil.nokp <> \'admin\'';
 
             if($filter['nama'])
-                $sql .= ' AND espel_profil.nama like \'' . trim($filter['nama']) . '\'';
+                $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
             
             if($filter['nokp'])
-                $sql .= ' AND espel_profil.nokp = \'' . trim($filter['nokp']) . '\'';
+                $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
 
             if($filter['jabatan_id'] and $filter['sub_jabatan'])
             {

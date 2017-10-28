@@ -45,9 +45,14 @@
                     <td><?=$mail->user?></td>
                     <td><?=$mail->port?></td>
                     <td align="center">
-                        <a href="<?=base_url('konfigurasi/email/' . $mail->id . "/default")?>" class="btn btn-round btn-xs <?=($mail->status)?"btn-warning":"btn-default"?>" data-toggle="tooltip" title="Aktifkan"><i class="fa fa-star"></i></a>
-                        <a href="<?=base_url('konfigurasi/email/' . $mail->id . "/kemaskini")?>" class="btn btn-round btn-primary btn-xs" data-toggle="tooltip" title="Kemaskini"><i class="fa fa-edit"></i></button>
-                        <a href="<?=base_url('konfigurasi/email/' . $mail->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" data-toggle="tooltip" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
+                      <table>
+                        <tr>
+                          <th><a href="<?=base_url('konfigurasi/email/' . $mail->id . "/ujian")?>" class="btn btn-round btn-xs btn-success" title="Pengujian"><i class="fa fa-check-circle"></i></a></th>
+                          <th><a href="<?=base_url('konfigurasi/email/' . $mail->id . "/default")?>" class="btn btn-round btn-xs <?=($mail->status)?"btn-warning":"btn-default"?>" title="Pengaktifan"><i class="fa fa-star"></i></a></th>
+                          <th><a href="<?=base_url('konfigurasi/email/' . $mail->id . "/kemaskini")?>" class="btn btn-round btn-primary btn-xs" title="Kemaskini"><i class="fa fa-edit"></i></button></th>
+                          <th><a href="<?=base_url('konfigurasi/email/' . $mail->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a></th>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                 <?php endforeach?>

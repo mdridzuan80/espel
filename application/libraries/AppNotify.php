@@ -135,4 +135,43 @@ class AppNotify
         $mail->clearAttachments();
         $mail->clearCustomHeaders();
     }
+
+    public function test_send($mail_config, array $attr)
+    {
+        if($this->type == "email")
+        {
+            if($mail_config)
+            {
+                $this->mail = new PHPMailer(true);
+                $this->mail_config($mail_config);
+                $this->reset($this->mail);
+                $this->mail_recipient($attr);
+                $mail_config->debug = 2;
+                try {
+
+                    //Attachments
+                    //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+                    //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+                    //Content
+                    $this->mail->isHTML(true);                                  // Set email format to HTML
+                    $this->mail->Subject = $attr['subject'];
+                    $this->mail->Body    = $attr['body'];
+                    $this->mail->AltBody = htmlentities($attr['body']);
+
+                    $this->mail->send();
+                    return true;
+                    //echo 'Message has been sent';
+                } catch (Exception $e) {
+                    echo 'Message could not be sent.';
+                    echo 'Mailer Error: ' . $this->mail->ErrorInfo;
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }

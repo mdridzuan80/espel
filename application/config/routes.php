@@ -78,6 +78,7 @@ $route['konfigurasi/email/add'] = "konfigurasi/email_add";
 $route['konfigurasi/email/(:num)/default'] = "konfigurasi/email_set_default/$1";
 $route['konfigurasi/email/(:num)/kemaskini'] = "konfigurasi/email_edit/$1";
 $route['konfigurasi/email/(:num)/hapus'] = "konfigurasi/email_deleted/$1";
+$route['konfigurasi/email/(:num)/ujian'] = "konfigurasi/email_ujian/$1";
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
