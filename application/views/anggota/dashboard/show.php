@@ -38,7 +38,9 @@
                     <?php endif?>
                 </td>
                 <td align="center">
+                  <?php if($dicalonkan->stat_laksana == 'L'):?>
                   <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs" target="_blank" >Papar surat</a>
+                  <?php endif ?>
                   <a href="<?= base_url('kursus/info_kursus_pengguna/' . $dicalonkan->id) ?>" class="btn btn-info btn-xs" >Info</a>
                 </td>
               </tr>

@@ -138,6 +138,61 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
     }
 
+    public function takwim_pengguna_2()
+    {
+        $prefs['show_next_prev'] = TRUE;
+        $prefs['start_day'] = 'monday';
+        $prefs['month_type'] = 'long';
+        $prefs['day_type'] = 'long';
+        $prefs['template'] = '
+
+        {table_open}<div id="calendar-wrap">{/table_open}
+
+        {heading_row_start}<table><tr>{/heading_row_start}
+        {heading_previous_cell}<td><a href="{previous_url}" class="btn btn-default pull-right btn-sm" title="Daftar kursus yang dianjurkan">&lt;&lt;</a></td>{/heading_previous_cell}
+        {heading_title_cell}<td width="99%" align="center"><h1>{heading}</h1></td>{/heading_title_cell}
+        {heading_next_cell}<td><a href="{next_url}" class="btn btn-default pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">&gt;&gt;</a></td>{/heading_next_cell}
+        {heading_row_end}</tr></table><div id="calendar">{/heading_row_end}
+
+        {week_row_start}<ul class="weekdays">{/week_row_start}
+        {week_day_cell}<li>{week_day}</li>{/week_day_cell}
+        {week_row_end}</ul>{/week_row_end}
+
+        {cal_row_start}<ul class="days">{/cal_row_start}
+        {cal_cell_start}<li class="day">{/cal_cell_start}
+        {cal_cell_start_today}<li class="day highlight">{/cal_cell_start_today}
+        {cal_cell_start_other}<li class="day other-month">{/cal_cell_start_other}
+
+        {cal_cell_content}<div class="date"><a href="{content}">{day}</a></div>{/cal_cell_content}
+        {cal_cell_content_today}<div class="highlight"><a href="{content}">{day}</a></div>{/cal_cell_content_today}
+
+        {cal_cell_no_content}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content}
+        {cal_cell_no_content_today}<div id="cell-{day}" class="date">{day}</div>{/cal_cell_no_content_today}
+
+        {cal_cell_blank}&nbsp;{/cal_cell_blank}
+
+        {cal_cell_other}{day}{/cal_cel_other}
+
+        {cal_cell_end}</li>{/cal_cell_end}
+        {cal_cell_end_today}</li>{/cal_cell_end_today}
+        {cal_cell_end_other}</li>{/cal_cell_end_other}
+        {cal_row_end}</ul>{/cal_row_end}
+
+        {table_close}</div></div>{/table_close}
+        ';
+
+        $this->load->library('calendar', $prefs);
+
+        $data["objCal"] = $this->calendar;
+        $data["tahun"] = $this->uri->segment(3, date('Y'));
+        $data["bulan"] = $this->uri->segment(4, date('m'));
+        $plugins = $this->plugins();
+        $plugins["embedjs"][] = $this->load->view("kursus/pengguna_2_js",NULL,TRUE);
+
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses takwim kursus (Pengguna)']);
+        return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
+    }
+    
     function takwim_pengguna_senarai()
     {
         $prefs['show_next_prev'] = TRUE;
@@ -159,7 +214,7 @@ class Kursus extends MY_Controller
             "tahun" => $this->uri->segment(3, date('Y')),
             "bulan" => $this->uri->segment(4, date('m'))
         ]);
-        $data["sen_kursus"]=$this->kursus->takwim_senarai_pengguna($data["takwim"]);
+        $data["sen_kursus"]=$this->kursus->takwim_day_pengguna_2(0,$data["takwim"]);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses senarai kursus  (Pengguna)']);
         return $this->renderView("kursus/takwim_pengguna_senarai", $data);
@@ -566,23 +621,9 @@ class Kursus extends MY_Controller
 
         if(!$this->exist("mohon"))
         {
-            $this->load->model('program_model','program');
-            $this->load->model('aktiviti_model','aktiviti');
-            $this->load->model('profil_model','profil');
-            $this->load->model("peruntukan_model", "peruntukan");
             $this->load->model('kursus_model','kursus');
-            $this->load->model('kumpulan_profil_model','kumpulan_profil');
-            $this->load->model('mohon_kursus_model','mohon_kursus');
 
-            $data['kursus'] = $this->kursus->get($id);
-
-            $data['sen_program'] = $this->program->dropdown("id","nama");
-            $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
-            $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
-            $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
-            $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
-            $data['sen_peruntukan'] = $this->peruntukan->dropdown_pengguna_peruntukan(date('Y'));
-            $data['has_mohon'] = $this->mohon_kursus->count_by(['nokp' => $this->appsess->getSessionData('username'), 'kursus_id' => $id]);
+            $data['kursus'] = $this->kursus->info_kursus($id);
 
             return $this->renderView("kursus/pengguna/info",$data,$this->plugins());
         }
@@ -1729,16 +1770,15 @@ class Kursus extends MY_Controller
                                 $mprogram = $this->mprogram;
                                 $mjabatan = $this->mjabatan;
 
-                                $this->appnotify->send($mail);
-
                                 if($penyelia->email)
                                 {
                                     $mail = [
                                         "to" => $penyelia->email,
                                         "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
-                                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram],TRUE),
+                                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram, 'mjabatan'=>$mjabatan],TRUE),
                                     ];
                                 }
+                                $this->appnotify->send($mail);
 
                                 if($pemohon->email)
                                 {

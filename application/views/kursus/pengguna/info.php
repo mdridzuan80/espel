@@ -44,6 +44,16 @@
                   ?>
                   <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <input type="hidden" class="hddProgram" name="hddProgram" />
+                  <table class="table table-bordered">
+                      <tr>
+                        <th>Tajuk</th>
+                        <td><?= $kursus->tajuk ?></td>
+                      </tr>
+                      <tr>
+                        <th>Jenis Aktiviti</th>
+                        <td><?= $kursus->aktiviti ?></td>
+                      </tr>
+                  </table>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>

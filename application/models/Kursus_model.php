@@ -571,7 +571,7 @@ class Kursus_model extends MY_Model
             $takwim->tahun,$takwim->bulan,$takwim->hari,
             $takwim->tahun,$takwim->bulan,$takwim->hari
         ]);
-
+        
         if($rst->num_rows())
         {
             return $rst->result_array();
@@ -579,6 +579,84 @@ class Kursus_model extends MY_Model
         else
         {
             return NULL;
+        }
+    }
+
+    public function takwim_day_pengguna_2($ptj_jabatan_id, $takwim)
+    {
+        $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
+        $sql = "SELECT * FROM (
+                SELECT espel_kursus.id, espel_kursus.tajuk, espel_dict_program.nama, date_format(espel_kursus.tkh_mula,'%Y-%m-%d') as mula, date_format(espel_kursus.tkh_tamat,'%Y-%m-%d') as tamat, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, a.nokp, a.stat_mohon, espel_kursus.stat_laksana
+                FROM espel_kursus
+                INNER JOIN espel_dict_program ON espel_kursus.program_id = espel_dict_program.id
+                LEFT JOIN (select * from espel_permohonan_kursus where nokp = '" . $this->appsess->getSessionData('username') . "') a ON espel_kursus.id = a.kursus_id
+                WHERE 1=1
+                AND espel_kursus.stat_terbuka = 'Y'
+                AND YEAR(espel_kursus.tkh_mula) = ?
+                AND MONTH(espel_kursus.tkh_mula) = ?
+                UNION
+                SELECT espel_kursus.id, espel_kursus.tajuk, espel_dict_program.nama, date_format(espel_kursus.tkh_mula,'%Y-%m-%d') as mula, date_format(espel_kursus.tkh_tamat,'%Y-%m-%d') as tamat, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, a.nokp, a.stat_mohon, espel_kursus.stat_laksana
+                FROM espel_kursus
+                INNER JOIN espel_dict_program ON espel_kursus.program_id = espel_dict_program.id
+                LEFT JOIN (select * from espel_permohonan_kursus where nokp = '" . $this->appsess->getSessionData('username') . "') a ON espel_kursus.id = a.kursus_id
+                WHERE 1=1
+                AND espel_kursus.stat_terbuka = 'Y'
+                AND YEAR(espel_kursus.tkh_tamat) = ?
+                AND MONTH(espel_kursus.tkh_tamat) = ?
+                AND espel_kursus.id NOT IN(SELECT espel_kursus.id FROM espel_kursus
+                    INNER JOIN espel_dict_program ON espel_kursus.program_id = espel_dict_program.id
+                    LEFT JOIN (select * from espel_permohonan_kursus where nokp = '" . $this->appsess->getSessionData('username') . "') a ON espel_kursus.id = a.kursus_id
+                    WHERE 1=1
+                    AND espel_kursus.stat_terbuka = 'Y'
+                    AND YEAR(espel_kursus.tkh_mula) = ?
+                    AND MONTH(espel_kursus.tkh_mula) = ?)
+            
+            UNION
+            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, c.nokp, c.stat_mohon, a.stat_laksana
+            FROM espel_kursus a, espel_dict_program b, espel_permohonan_kursus c
+            WHERE 1=1
+            AND c.nokp = '" . $this->appsess->getSessionData('username') . "'
+            and a.stat_terbuka = 'T'
+            AND a.program_id = b.id
+            AND c.kursus_id = a.id
+            AND YEAR(a.tkh_mula) = ?
+            AND MONTH(a.tkh_mula) = ?
+            UNION
+            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, c.nokp, c.stat_mohon, a.stat_laksana
+            FROM espel_kursus a, espel_dict_program b, espel_permohonan_kursus c
+            WHERE 1=1
+            AND c.nokp = '" . $this->appsess->getSessionData('username') . "'
+            and a.stat_terbuka = 'T'
+            AND a.program_id = b.id
+            AND c.kursus_id = a.id
+            AND YEAR(a.tkh_tamat) = ?
+            AND MONTH(a.tkh_tamat) = ?
+            AND a.id NOT IN(SELECT a.id FROM espel_kursus a, espel_permohonan_kursus b
+                WHERE 1=1
+                AND b.nokp = '" . $this->appsess->getSessionData('username') . "'
+                AND b.kursus_id = a.id
+                and a.stat_terbuka = 'T'
+                AND YEAR(a.tkh_mula) = ?
+                AND MONTH(a.tkh_mula) = ?)
+            ) a
+            ORDER BY a.tkh_mula";
+
+        $rst = $this->db->query($sql,[
+            $takwim->tahun,$takwim->bulan,
+            $takwim->tahun,$takwim->bulan,
+            $takwim->tahun,$takwim->bulan,
+            $takwim->tahun,$takwim->bulan,
+            $takwim->tahun,$takwim->bulan,
+            $takwim->tahun,$takwim->bulan
+        ]);
+        
+        if($rst->num_rows())
+        {
+            return $rst->result_array();
+        }
+        else
+        {
+            return [];
         }
     }
 
@@ -817,5 +895,23 @@ class Kursus_model extends MY_Model
             and year(b.tkh_mula) = $tahun
             AND ptj_jabatan_id_created in($related_jabatan_id)";
         return $this->db->query($sql);
+    }
+
+    public function info_kursus($id)
+    {
+        $sql = "SELECT a.id, a.tajuk, c.nama as program, b.nama as aktiviti, 
+            a.tkh_mula, a.tkh_tamat, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, 
+            a.telefon, a.email, a.stat_terbuka, a.peruntukan_id, f.nama as peruntukan, 
+            a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.program_id
+            FROM espel_kursus a
+            INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+            INNER JOIN espel_dict_program c ON a.program_id = c.id
+            LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+            LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+            LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+            WHERE 1=1
+            AND a.id = ?";
+
+        return $this->db->query($sql,[$id])->result();    
     }
 }
