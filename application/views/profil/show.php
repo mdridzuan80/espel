@@ -46,12 +46,16 @@
                         <li>
                           <i class="fa fa-users user-profile-icon"></i>
                           <?php $ppp = $mprofil->profil->get_by('nokp', $profil->nokp_ppp); ?>
+                          <?php if($ppp) :?>
                           <?= $ppp->nama ?> (<?= $ppp->nokp ?>)
+                          <?php endif ?>
                         </li>
                         <li>
                           <i class="fa fa-users user-profile-icon"></i>
                           <?php $ppk = $mprofil->profil->get_by('nokp', $profil->nokp_ppk); ?>
+                          <?php if($ppk) :?>
                           <?= $ppk->nama ?> (<?= $ppk->nokp ?>)
+                          <?php endif ?>
                         </li>
                         <li>
                           <i class="fa fa-bookmark user-profile-icon"></i>

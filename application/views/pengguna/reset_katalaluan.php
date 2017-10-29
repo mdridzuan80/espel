@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Reset Katalaluan Pengguna</h2>
+                    <h2>Reset Katalaluan Pengguna <?= $profil->nama . ' (' . $profil->nokp . ')' ?></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -29,14 +29,14 @@
                         ];?>
                         <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="Nama">Katalaluan<span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="Nama">Katalaluan Baru<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="password" id="txtKatalaluan" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtKatalaluan">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="Nama">Re-Katalaluan<span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="Nama">Re-Katalaluan Baru<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="password" id="txtReKatalaluan" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtReKatalaluan">

@@ -1,16 +1,12 @@
-<div>
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Senarai Pengguna</h2>
-          <button id="cmdFilter" class="btn btn-default btn-sm pull-right"><i class="fa fa-filter"></i> Carian</button>
-          <!-- <button id="cmdPdf" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-pdf-o"></i></button>
-          <button id="cmdMsWord" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-word-o"></i></button>
-          <button id="cmdExcell" class="btn btn-default btn-sm pull-right"><i class="fa fa-file-excel-o"></i></button> -->
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Senarai Pengguna</h2>
+        <button id="cmdFilter" class="btn btn-default btn-sm pull-right"><i class="fa fa-search"></i> Carian</button>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
             <?php if(appsess()->getFlashSession()):?>
             <?php if(appsess()->getFlashSession('success')):?>
             <div class="alert alert-success alert-dismissible fade in" role="alert">
@@ -51,7 +47,13 @@
                   </div>
                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?= $jab_ptj->jabatan_id ?>" >
+                      <table>
+                        <tr>
+                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?= $jab_ptj->jabatan_id ?>" ></td>
+                          <td>&nbsp;Sub&nbsp;Jabatan&nbsp;</td>
+                          <td><input id="chk_subjabatan" type="checkbox" checked></td>
+                        <tr>
+                      </table>
                     </div>
                   </div>
                   <div class="form-group">
@@ -60,7 +62,7 @@
                         <select class="form-control input-sm" id="comKelas" name="comKelas">
                           <option selected="selected" value="0">Pilih Semua</option>
                           <?php foreach($sen_kumpulan as $kumpulan):?>
-                          <option value="<?=$kumpulan['id']?>"><?=$kumpulan['kod']?></option>
+                          <option value="<?=trim($kumpulan['id'])?>"><?=$kumpulan['kod']?></option>
                           <?php endforeach?>
                         </select>
                     </div>
@@ -90,14 +92,17 @@
                         </select>
                     </div>
                   </div>
-                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                      <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Tapis</button>
-                      <button class="btn btn-primary btn-sm" type="reset">Reset</button>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Cari</button>
+                    </div>
                   </div>
+                  <div class="ln_solid"></div>
                 </form>
             </div>
-
             <div id="datagrid"></div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
+

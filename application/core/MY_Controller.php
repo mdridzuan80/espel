@@ -134,7 +134,6 @@ class MY_Controller extends CI_Controller {
         return $this->kumpulan_profil->with("kumpulan")
         ->get_many_by(
             [
-                "kumpulan_id<>"=>$this->kumpulan->get_by("kod",$this->appsess->getSessionData("kumpulan"))->id,
                 "profil_nokp"=>$this->appsess->getSessionData("username"),
             ]
         );

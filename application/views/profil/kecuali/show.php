@@ -2,7 +2,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Pengecualian Kelayakan Kursus</h2>
+                <h2>Pengecualian Kelayakan Kursus <?= $profil->nama . ' (' . $profil->nokp . ')' ?></h2>
                 <div class="clearfix"></div>
             </div>
 
@@ -60,9 +60,7 @@
                             <th>Mula</th>
                             <th>Tamat</th>
                             <th>Catatan</th>
-                            <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
                             <th style="text-align:center">Operasi</th>
-                            <?php endif?>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,11 +69,9 @@
                             <td><?= date('d-M-Y', strtotime($kecuali->mula)) ?></td>
                             <td><?= date('d-M-Y', strtotime($kecuali->tamat)) ?></td>
                             <td><?= $kecuali->catatan ?></td>
-                                <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])):?>
                                <td align="center">
-                                <a href="<?=base_url("profil/" . $kecuali->nokp . "/kecuali/" . $kecuali->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" data-toggle="tooltip" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
+                                <a href="<?=base_url("profil/" . $kecuali->nokp . "/kecuali/" . $kecuali->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>
                                 </td>
-                                <?php endif?>
                             </tr>
                         <?php endforeach?>
                     </tbody>

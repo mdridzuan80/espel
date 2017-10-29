@@ -26,7 +26,7 @@ class Profil extends MY_Controller
 
 	public function index($nokp)
 	{
-		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$nokp)
+		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ']) || $this->appsess->getSessionData("username")==$nokp)
 		{
 			$this->load->model('profil_model','profil');
 			$this->load->model('hrmis_skim_model','skim');
@@ -128,12 +128,16 @@ class Profil extends MY_Controller
 
 	public function reset_katalaluan($username)
 	{
-		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")==$username)
+		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ']) || $this->appsess->getSessionData("username")==$username)
 		{
 			if(!$this->exist("submit"))
 			{
+				$this->load->model('profil_model','profil');
+
+				$data['profil'] = $this->profil->get($username);
+
 				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menu reset katalaluan']);
-				return $this->renderView("pengguna/reset_katalaluan");
+				return $this->renderView("pengguna/reset_katalaluan", $data);
 			}
 			else
 			{
@@ -178,8 +182,11 @@ class Profil extends MY_Controller
 
 		if(!$this->exist("submit"))
 		{
-			$data['sen_kecuali'] = $this->kecuali->get_many_by('nokp',$nokp);
+			$this->load->model('profil_model','profil');
 
+			$data['sen_kecuali'] = $this->kecuali->get_many_by('nokp',$nokp);
+			$data['profil'] = $this->profil->get($nokp);
+			
 			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses profil ' . $nokp . ' pengecualian kelayakan kursus.']);
 			$plugins = $this->plugins();
 			$plugins['embedjs']=[$this->load->view('profil/kecuali/js','',true)];

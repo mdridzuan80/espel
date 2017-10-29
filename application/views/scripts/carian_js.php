@@ -35,11 +35,24 @@
                 }
             }
         });
+
+        $.ajax({
+            url: base_url + "api/get_laporan_gred/" + $(this).val() + "/0",
+            success: function(gred,textStatus,jqXHR)
+            {
+                $('#comGred').html('<option value="0">Pilih Semua</option>');
+                for(var i=0;i<gred.length;i++)
+                {
+                    var option=$('<option></option>').attr("value",gred[i]['id']).text(gred[i]['kod']);
+                    $('#comGred').append(option);
+                }
+            }
+        });
     });
 
     $("#comSkim").change(function(){
         $.ajax({
-            url:"<?=base_url("api/get_laporan_gred/")?>" + $(this).val(),
+            url:"<?=base_url("api/get_laporan_gred/")?>/" + $("#comKelas").val() + "/" + $(this).val(),
             success: function(gred,textStatus,jqXHR)
             {
                 $('#comGred').html('<option value="0">Pilih Semua</option>');
@@ -55,13 +68,16 @@
     load_datagrid(options);
 
     function load_datagrid(params){
+        var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span>Loading...</span>');
         $.ajax({
             method: 'post',
             url: options.url,
             data: params.filter,
+            beforeSend: function(jqXHR,settings){
+                $('#datagrid').html(loader);
+            },
             success: function(data,textStatus,jqXHR){
                 $('#datagrid').html(data);
-                console.log(data);
                 $('ul.pagination li a').click(function(e){
                     e.preventDefault();
                     params.url = $(this).attr('href');
@@ -77,6 +93,7 @@
         options.filter.nama = $('#txtNama').val();
         options.filter.nokp = $('#txtNoKP').val();
         options.filter.jabatan_id = $('#comJabatan').val();
+        options.filter.sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
         options.filter.kump_id = $('#comKelas').val();
         options.filter.skim_id = $('#comSkim').val();
         options.filter.gred_id = $('#comGred').val();

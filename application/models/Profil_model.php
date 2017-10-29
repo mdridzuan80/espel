@@ -86,7 +86,7 @@ class Profil_model extends MY_Model
             $sql .= ' ORDER BY espel_profil.nama';
 
             $info['count'] = $this->db->query($sql)->num_rows();
-            //dd($this->db->last_query());
+            
             $sql .= ' LIMIT ' . $start . ', ' . $limit;
         
             $info['data'] = $this->db->query($sql)->result();
@@ -111,11 +111,32 @@ class Profil_model extends MY_Model
         return $data;
     }
 
-    public function sen_gred($kump)
+    public function sen_gred($kelas, $skim)
     {
         $data = [];
-        $sql = "select distinct gred_id from espel_profil where skim_id = ?";
-        $sen_gred = $this->db->query($sql,[$kump])->result();
+        $param = [];
+        $sql = "select distinct gred_id from espel_profil where 1=1";
+
+        if($kelas)
+        {
+            $sql .= " AND kelas_id = ?";
+            $param[] = $kelas;           
+        }
+
+        if($skim)
+        {
+            $sql .= " AND skim_id = ?";
+            $param[] = $skim;
+        }
+
+        if(!$kelas && !$skim)
+        {
+            $sql .= ' AND id = 0';
+        }
+
+        $sql .= " order by 1";
+
+        $sen_gred = $this->db->query($sql,$param)->result();
 
         foreach($sen_gred as $gred)
         {
@@ -132,7 +153,8 @@ class Profil_model extends MY_Model
             from espel_profil a, hrmis_skim b
             where 1=1
             and a.skim_id = b.kod
-            and a.kelas_id = ?";
+            and a.kelas_id = ?
+            order by b.keterangan";
         $sen_skim = $this->db->query($sql,[$kump])->result();
 
         foreach($sen_skim as $skim)

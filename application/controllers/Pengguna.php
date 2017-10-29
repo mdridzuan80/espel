@@ -13,20 +13,14 @@ class Pengguna extends MY_Controller
     }
 
     public function index(){
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['ADMIN','PTJ']) || $this->appsess->getSessionData("username")=='admin' )
+        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ']) || $this->appsess->getSessionData("username")=='admin' )
         {
             $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('kumpulan_model','kumpulan');
             $this->load->model('profil_model', 'profil');
 
             $data['sen_kumpulan'] = $this->profil->sen_kump();
-            if($this->appsess->getSessionData("username")=='admin')
-            {
-                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),1);
-            }
-            else
-            {
-                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);               
-            }
+            $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
             return $this->renderView("pengguna/show",$data,['embedjs'=>[$this->load->view('scripts/carian_js',$data,true)]]);
         }
@@ -45,7 +39,7 @@ class Pengguna extends MY_Controller
 
         $config = array();
         $config["base_url"] = base_url() . "pengguna/data_grid/";
-        $config["per_page"] = 15;
+        $config["per_page"] = 10;
 
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $profile = $this->profil->all_profil($config["per_page"],$page, $this->input->post());
@@ -80,7 +74,7 @@ class Pengguna extends MY_Controller
         $data["links"] = $this->pagination->create_links();
         $data['total'] = $profile['count'];
         $data['mula'] = $this->uri->segment(3, 0) + 1;
-        $data['hingga'] = $config["per_page"] + $this->uri->segment(3, 0) ;
+        $data['hingga'] = ($config["per_page"]>$profile['count']) ? $profile['count'] : $config["per_page"] + $this->uri->segment(3, 0) ;
 
         return $this->load->view("pengguna/datagrid",$data);
     }
