@@ -28,7 +28,9 @@
         <ul class="nav child_menu">
           <li><a href="<?=base_url('laporan/prestasi_kursus_individu')?>">Laporan Senarai Prestasi Individu</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
+          <?php if($has_peruntukan) : ?>
           <li><a href="<?=base_url('laporan/prestasi_kewangan')?>">Laporan Prestasi Kewangan</a></li>
+          <?php endif ?>
           <li><a href="<?=base_url('laporan/x_jawab_borang_a')?>">Tidak Menjawab Borang A</a></li>
           <li><a href="<?=base_url('laporan/x_jawab_borang_b')?>">Tidak Menjawab Borang B</a></li>
         </ul>
