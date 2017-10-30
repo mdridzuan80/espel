@@ -52,10 +52,12 @@ class MY_Controller extends CI_Controller {
             case AppAuth::PENYELARAS:
                 $this->load->model('peruntukan_model','peruntukan');
                 $this->load->model('kumpulan_profil_model','kumpulan_profil');
+                $this->load->model('program_model','program');
 
                 $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
 
                 $layout['has_peruntukan'] = in_array($jabatan_id,$this->peruntukan->jabatan_has_peruntukan(date('Y')));
+                $layout['sen_program'] = $this->program->get_all();
                 $sidemenu = SELF::PTJ_SIDEMENU;
             break;
             case AppAuth::PENGGUNA:
