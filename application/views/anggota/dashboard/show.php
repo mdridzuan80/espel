@@ -69,6 +69,7 @@
                 <th>Masa Tamat</th>
                 <th>Tarikh Mohon</th>
                 <th style="text-align:center">Status</th>
+                <th>Info</th>
               </tr>
             </thead>
             <tbody>
@@ -86,6 +87,9 @@
                     <?php if($permohonan->stat_mohon == 'L'):?>
                     <span class="label label-success">Lulus</span>
                     <?php endif?>
+                </td>
+                <td>
+                  <a href="<?= base_url('kursus/info_kursus_pengguna/' . $permohonan->id) ?>" class="btn btn-info btn-xs" >Info</a>
                 </td>
               </tr>
           <?php endforeach?>

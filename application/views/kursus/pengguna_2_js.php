@@ -29,9 +29,7 @@
                 events_e = sen_kursus.filter(function(kursus){
                     return tkh_cal.isSame(kursus.tamat)
                 });
-                console.log(events_s);
-                console.log(events_r);
-                console.log(events_e);
+
                 events_s.forEach(function(element){
                     $("#cell-"+i).parent().append(linkEvent(element));
                 });

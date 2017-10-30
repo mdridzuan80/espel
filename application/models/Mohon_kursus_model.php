@@ -7,7 +7,7 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_permohonan($nokp)
     {
-        $sql = "SELECT espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+        $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
             espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon, espel_permohonan_kursus.nokp, espel_permohonan_kursus.tkh
             FROM espel_permohonan_kursus
             INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id

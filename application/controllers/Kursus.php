@@ -643,16 +643,23 @@ class Kursus extends MY_Controller
                 $this->load->model("kursus_model", "kursus");
                 $this->load->model("profil_model", "profil");
                 $this->load->library("appnotify");
+                $this->load->model('hrmis_skim_model', 'mjawatan');
+                $this->load->model('hrmis_carta_model', 'mjabatan');
 
                 $pemohon = $this->profil->get_by("nokp",$this->appsess->getSessionData("username"));
                 $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                 $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
+                $mJawatan = $this->mjawatan;
+                $mJabatan = $this->mjabatan;
 
-                $mail = [
-                    "to" => $penyelia->email_ppp,
-                    "subject" => "[espel] Permohonan Kursus",
-                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
-                ];
+                if($pemohon->email_ppp)
+                {
+                    $mail = [
+                        "to" => $pemohon->email_ppp,
+                        "subject" => "[eSPeL] Permohonan Kursus",
+                        "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE),
+                    ];
+                }
 
                 $this->appnotify->send($mail);
 

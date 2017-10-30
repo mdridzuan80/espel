@@ -639,7 +639,7 @@ class Kursus_model extends MY_Model
                 AND YEAR(a.tkh_mula) = ?
                 AND MONTH(a.tkh_mula) = ?)
             ) a
-            ORDER BY a.tkh_mula";
+            ORDER BY a.tkh_mula, a.tkh_tamat";
 
         $rst = $this->db->query($sql,[
             $takwim->tahun,$takwim->bulan,
@@ -683,7 +683,7 @@ class Kursus_model extends MY_Model
                 AND ptj_jabatan_id_created = ?
                 AND YEAR(tkh_mula) = ?
                 AND MONTH(tkh_mula) = ?)) a
-            ORDER BY a.tkh_mula";
+            ORDER BY a.tkh_mula, a.tkh_tamat";
 
         $rst = $this->db->query($sql,[
             $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,

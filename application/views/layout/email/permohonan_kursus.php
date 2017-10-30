@@ -400,7 +400,7 @@
                                     </tr>
                                     <tr>
                                       <td><b>Jawatan</b></td>
-                                      <td><?=$pemohon->jawatan->perihal?></td>
+                                      <td><?= $mjawatan->mjawatan->get_by('kod',$pemohon->skim_id)->keterangan ?></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -432,7 +432,11 @@
                                     </tr>
                                     <tr>
                                       <td><b>Penganjur</b></td>
-                                      <td><?=$kursus->penganjur->nama?></td>
+                                      <?php if($kursus->anjuran == 'D') : ?>
+                                      <td><?= $mjabatan->mjabatan->get_by('buid',$kursus->penganjur_id)->title?></td>
+                                      <?php else : ?>
+                                      <td><?= $kursus->penganjur ?></td>
+                                      <?php endif ?>
                                     </tr>
                                   </tbody>
                                 </table>
