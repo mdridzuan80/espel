@@ -342,7 +342,6 @@ class Kursus extends MY_Controller
                 $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
 
                 $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',',$peruntukan));
-                
                 return $this->renderView("kursus/jabatan/daftar",$data,$this->plugins());
             }
             else

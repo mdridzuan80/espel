@@ -37,7 +37,9 @@
                     $("#cell-"+i).parent().append(linkEvent(element));
                 });
                 events_e.forEach(function(element){
-                    $("#cell-"+i).parent().append(linkEvent(element));
+                    if(element.mula != element.tamat){
+                        $("#cell-"+i).parent().append(linkEvent(element));
+                    }
                 });
             }
         }

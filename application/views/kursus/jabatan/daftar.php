@@ -13,8 +13,8 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control espel_program">
                                 <option selected="selected" >Sila buat pilihan</option>
-                                <?php foreach($sen_program as $key=>$val):?>
-                                <option value="<?=$key?>"><?=$val?></option>
+                                <?php foreach($sen_program as $program):?>
+                                <option value="<?=$program->id?>"><?=$program->nama?></option>
                                 <?php endforeach?>
                             </select>
                         </div>
