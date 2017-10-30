@@ -624,7 +624,7 @@ class Kursus extends MY_Controller
             $this->load->model('kursus_model','kursus');
 
             $data['kursus'] = $this->kursus->info_kursus($id);
-
+            
             return $this->renderView("kursus/pengguna/info",$data,$this->plugins());
         }
         else

@@ -46,11 +46,19 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus['tkh_mula']))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus['tkh_tamat']))?></td>
                                 <td align="center">
-                                    <?php if($kursus['stat_laksana'] == 'L') : ?>
-                                        <span class="label label-success">SELESAI</span>
-                                    <?php endif ?>
                                     <?php if(strtotime($kursus['tkh_mula']) > strtotime(date('Y-m-d')) && is_null($kursus['stat_mohon']) && $kursus['stat_laksana'] == 'R') : ?>
                                     <a href="<?=base_url('kursus/info_kursus_pengguna/' . $kursus['id'])?>" class="btn btn-primary btn-sm" title="Mohon">Mohon</a>
+                                    <?php else : ?>
+                                        <?php if($kursus['stat_laksana'] == 'L') : ?>
+                                            <span class="label label-success">SELESAI</span>
+                                        <?php else: ?>
+                                            <?php if($kursus['stat_mohon'] == 'M') : ?>
+                                                <span class="label label-warning">TELAH MEMOHON</span>
+                                            <?php endif ?>
+                                            <?php if($kursus['stat_mohon'] == 'L') : ?>
+                                                <span class="label label-warning">PERMOHONAN LULUS</span>
+                                            <?php endif ?>
+                                        <?php endif ?>
                                     <?php endif ?>
                                 </td>
                               </tr>

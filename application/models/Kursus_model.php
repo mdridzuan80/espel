@@ -663,41 +663,32 @@ class Kursus_model extends MY_Model
     public function takwim_day_all($ptj_jabatan_id, $takwim)
     {
         $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
-        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
+
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
-            AND DAY(a.tkh_mula) = ?
             UNION
-            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_tamat) = ?
             AND MONTH(a.tkh_tamat) = ?
-            AND DAY(a.tkh_tamat) = ?
             AND a.id NOT IN(SELECT id FROM espel_kursus
                 WHERE 1=1
                 AND ptj_jabatan_id_created = ?
                 AND YEAR(tkh_mula) = ?
-                AND MONTH(tkh_mula) = ?
-                AND DAY(tkh_mula) = ?)
-            UNION
-            SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
-            WHERE 1=1
-            AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = $ptj_jabatan_id
-            AND a.tkh_mula < '$tkh'
-            AND a.tkh_tamat > '$tkh') a
+                AND MONTH(tkh_mula) = ?)) a
             ORDER BY a.tkh_mula";
 
         $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,$takwim->hari]
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
+            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
         );
 
         if($rst->num_rows())
@@ -706,7 +697,7 @@ class Kursus_model extends MY_Model
         }
         else
         {
-            return NULL;
+            return [];
         }
     }
 
@@ -902,16 +893,17 @@ class Kursus_model extends MY_Model
         $sql = "SELECT a.id, a.tajuk, c.nama as program, b.nama as aktiviti, 
             a.tkh_mula, a.tkh_tamat, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, 
             a.telefon, a.email, a.stat_terbuka, a.peruntukan_id, f.nama as peruntukan, 
-            a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.program_id
+            a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.program_id, a.sumber, g.nama as penyelia
             FROM espel_kursus a
             INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
             INNER JOIN espel_dict_program c ON a.program_id = c.id
             LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
             LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
             LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+            LEFT JOIN espel_profil g ON a.penyelia_nokp = g.nokp 
             WHERE 1=1
             AND a.id = ?";
 
-        return $this->db->query($sql,[$id])->result();    
+        return $this->db->query($sql,[$id])->row();    
     }
 }

@@ -29,7 +29,9 @@
                 events_e = sen_kursus.filter(function(kursus){
                     return tkh_cal.isSame(kursus.tamat)
                 });
-                
+                console.log(events_s);
+                console.log(events_r);
+                console.log(events_e);
                 events_s.forEach(function(element){
                     $("#cell-"+i).parent().append(linkEvent(element));
                 });
@@ -58,7 +60,7 @@
             if(element.stat_laksana == 'R'){
                 if(element.stat_mohon){
                     text = text + "<div class=\"event pass\"> \
-                        <div class=\"event-desc\">" + owner[0].tajuk + " \
+                        <div class=\"event-desc\">" + element.tajuk + " \
                         </div> \
                         <div class=\"event-time\"> \
                             " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \

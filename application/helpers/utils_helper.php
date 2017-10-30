@@ -312,6 +312,14 @@ function pass_encode($password)
     return password_hash($password,PASSWORD_BCRYPT);
 }
 
+function status_mohon($id,$nokp)
+{
+    $CI =& get_instance();
+    $CI->load->model("mohon_kursus_model","mohon_kursus");
+    $r = $CI->mohon_kursus->get_by(['kursus_id'=>$id,'nokp'=>$nokp]);
+    return count($r);
+}
+
 class Obj {
     public function __construct(array $arguments = array()) {
         if (!empty($arguments)) {

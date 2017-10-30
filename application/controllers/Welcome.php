@@ -72,14 +72,13 @@ class Welcome extends MY_Controller {
 		);
 	}
 
-	public function get_event_all($tahun,$bulan,$hari)
+	public function get_event_all($tahun,$bulan)
 	{
 		$this->load->model("kursus_model","kursus");
 		$this->load->model("kumpulan_profil_model","kumpulan_profil");
 		$takwim = initObj([
 			"tahun" => $tahun,
 			"bulan" => $bulan,
-			"hari" => $hari,
 		]);
 
 		$this->output
