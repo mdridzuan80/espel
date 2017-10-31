@@ -4,7 +4,13 @@
     <h3>Menu Utama</h3>
     <ul class="nav side-menu">
         <li><a href="<?=base_url()?>"><i class="fa fa-home"></i> Dashboard</a></li>
-        <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
+        <li><a><i class="fa fa-users"></i> Modul Pengguna <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="<?=base_url("pengguna")?>">Senarai Pengguna</a></li>
+            <li><a href="<?=base_url("pengguna/penyelaras")?>">Senarai Penyelaras</a></li>
+            <li><a href="<?=base_url("pengguna/pengecualian")?>">Senarai Pengecualian Kursus</a></li>
+          </ul>
+        </li>
         <li><a href="<?=base_url("peruntukan")?>"><i class="fa fa-money"></i>Agihan Peruntukan</a></li>
         <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">

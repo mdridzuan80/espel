@@ -250,7 +250,7 @@ class Pengguna extends MY_Controller
 
     public function pengecualian()
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")=='admin' )
+        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ']) || $this->appsess->getSessionData("username")=='admin' )
         {
             $this->load->model('kumpulan_profil_model','kumpulan_profil');
             $this->load->model('kumpulan_model','kumpulan');

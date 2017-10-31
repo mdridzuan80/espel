@@ -4,12 +4,18 @@
     <h3>Menu Utama</h3>
     <ul class="nav side-menu">
       <li><a href="<?=base_url()?>"><i class="fa fa-home"></i> Dashboard</a></li>
-      <li><a href="<?=base_url("pengguna")?>"><i class="fa fa-users"></i> Pengurusan Pengguna </a></li>
+      <li><a><i class="fa fa-users"></i> Modul Pengguna <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="<?=base_url("pengguna")?>">Senarai Pengguna</a></li>
+          <li><a href="<?=base_url("pengguna/pengecualian")?>">Senarai Pengecualian Kursus</a></li>
+        </ul>
+      </li>
       <li><a><i class="fa fa-laptop"></i> Pengurusan Kursus <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('kursus/takwim')?>">Takwim Kursus</a></li>
           <li><a href="<?=base_url('kursus/permohonan_kursus')?>">Senarai Permohonan</a></li>
           <li><a href="<?=base_url('kursus/pengesahan_kehadiran')?>">Pengesahan Kehadiran</a></li>
+          <li><a href="<?=base_url('kursus/Kursus_separa')?>">Kursus Separa Siap</a></li>
         </ul>
       </li>
       <?php if($has_peruntukan) : ?>

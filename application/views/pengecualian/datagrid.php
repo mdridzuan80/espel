@@ -27,8 +27,8 @@
                     <td><?=$profile->layak?></td>
                     <td align="center">
                       <table>
-                        <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN'])) : ?>
-                        <th><a href="<?=base_url("profil/" . $profile->nokp . "/kump")?>" type="button" class="btn btn-round btn-default btn-xs" title="Tukar peranan"><i class="fa fa-tasks"></i></a></th>
+                        <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ'])) : ?>
+                        <th><a href="<?=base_url("profil/" . $profile->nokp . "/kecuali")?>" type="button" class="btn btn-round btn-default btn-xs" title="Cipta Pengecualian"><i class="fa fa-code-fork"></i></a></th>
                         <?php endif ?>
                       </table>
                     </td>
