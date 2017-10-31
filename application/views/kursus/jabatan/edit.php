@@ -13,8 +13,8 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control espel_program" disabled>
                                 <option selected="selected" >Sila buat pilihan</option>
-                                <?php foreach($sen_program as $key=>$val):?>
-                                <option value="<?=$key?>" <?=set_select('comProgram', $key, $key==$kursus->program_id)?> ><?=$val?></option>
+                                <?php foreach($sen_program as $program):?>
+                                <option value="<?= $program->id ?>" <?=set_select('comProgram', $program->id, $program->id==$kursus->program_id)?> ><?=$program->nama?></option>
                                 <?php endforeach?>
                             </select>
                         </div>
@@ -112,7 +112,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>">
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>">
                     </div>
                   </div>
                   <div class="form-group">
@@ -121,15 +121,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
-                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -267,7 +258,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -276,24 +267,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?>  >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
-                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
-                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -431,7 +404,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -440,15 +413,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
-                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -605,7 +569,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail" value="<?= $kursus->email ?>" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -614,15 +578,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" <?=set_select('comTerbuka', 'T', 'T'==$kursus->stat_terbuka)?> >Tidak</option>
                             <option value="Y" <?=set_select('comTerbuka', 'Y', 'Y'==$kursus->stat_terbuka)?> >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option value="G" <?=set_select('comJenis', 'G', 'G'==$kursus->jenis)?> >Generic</option>
-                            <option value="L" <?=set_select('comJenis', 'L', 'L'==$kursus->jenis)?> >Functional</option>
                         </select>
                     </div>
                   </div>

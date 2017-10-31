@@ -112,7 +112,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail">
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail">
                     </div>
                   </div>
                   <div class="form-group">
@@ -124,15 +124,6 @@
                         </select>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option selected="selected" value="G" >Generic</option>
-                            <option value="L" >Functional</option>
-                        </select>
-                    </div>
-                  </div>                  
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Peruntukan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -265,7 +256,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail">
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail">
                     </div>
                   </div>
                   <div class="form-group">
@@ -274,15 +265,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" >Tidak</option>
                             <option value="Y" >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option selected="selected" value="G" >Generic</option>
-                            <option value="L" >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -418,7 +400,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail">
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail">
                     </div>
                   </div>
                   <div class="form-group">
@@ -427,15 +409,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" >Tidak</option>
                             <option value="Y" >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option selected="selected" value="G" >Generic</option>
-                            <option value="L" >Functional</option>
                         </select>
                     </div>
                   </div>
@@ -590,7 +563,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="email" id="txtEmail" required="required" class="form-control col-md-7 col-xs-12" name="txtEmail">
+                        <input type="email" id="txtEmail" class="form-control col-md-7 col-xs-12" name="txtEmail">
                     </div>
                   </div>
                   <div class="form-group">
@@ -599,15 +572,6 @@
                         <select class="form-control" name="comTerbuka" id="comTerbuka">
                             <option value="T" >Tidak</option>
                             <option value="Y" >Ya</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kursus</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" name="comJenis" id="comJenis">
-                            <option selected="selected" value="G" >Generic</option>
-                            <option value="L" >Functional</option>
                         </select>
                     </div>
                   </div>

@@ -363,10 +363,10 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        //'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
-                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -401,7 +401,6 @@ class Kursus extends MY_Controller
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
-                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -438,7 +437,6 @@ class Kursus extends MY_Controller
                         'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
-                        'jenis' => $this->input->post("comJenis"),
                     ];
                     if($this->input->post("comAnjuran")=="L")
                     {
@@ -725,7 +723,6 @@ class Kursus extends MY_Controller
                             'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
-                            'jenis' => $this->input->post("comJenis"),
                         ];
                         if($this->input->post("comAnjuran")=="L")
                         {
@@ -760,7 +757,6 @@ class Kursus extends MY_Controller
                             'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
-                            'jenis' => $this->input->post("comJenis"),
                         ];
                         if($this->input->post("comAnjuran")=="L")
                         {
@@ -797,7 +793,6 @@ class Kursus extends MY_Controller
                             'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
-                            'jenis' => $this->input->post("comJenis"),
                         ];
                         if($this->input->post("comAnjuran")=="L")
                         {
