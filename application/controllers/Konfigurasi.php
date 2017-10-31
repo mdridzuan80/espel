@@ -221,23 +221,16 @@ class Konfigurasi extends MY_Controller
 
     public function email_ujian($id)
     {
-        $this->load->model('profil_model','profil');
         $this->load->model("mailconf_model","mail_conf");
         $this->load->library('appnotify');
 
         $mail = [
-            "to" => $this->profil->get($this->appsess->getSessionData('username'))->email,
+            "to" => 'md.ridzuan80@gmail.com',
             "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
             "body" => $this->load->view("layout/email/pengujian",'',TRUE),
         ];
-
-        if($this->appnotify->test_send($this->mail_conf->get($id),$mail))
-        {
-            $data['result_ujian'] = TRUE;
-        }
-
-        $this->load->model('mailconf_model','mail_conf');
-        $data["mails"] = $this->mail_conf->get_all();
+        $mail_conf = $this->mail_conf->get($id);
+        $this->appnotify->test_send($mail_conf,$mail);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
         return $this->renderView("konfigurasi/email/show",$data);
