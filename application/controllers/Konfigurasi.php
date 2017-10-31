@@ -229,11 +229,12 @@ class Konfigurasi extends MY_Controller
             "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
             "body" => $this->load->view("layout/email/pengujian",'',TRUE),
         ];
+        
         $mail_conf = $this->mail_conf->get($id);
         $this->appnotify->test_send($mail_conf,$mail);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
-        return $this->renderView("konfigurasi/email/show",$data);
+        return $this->renderView("konfigurasi/email/show");
     }
 
     public function email_deleted($id)
