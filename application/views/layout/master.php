@@ -124,7 +124,9 @@
                     <?php endif ?>
 
                     <?php if(appsess()->getSessionData('kumpulan') != appauth::PENGGUNA) : ?>
+                      <?php if(appsess()->getSessionData('username') != 'admin') : ?>
                       <li><a href="<?=base_url('profil/tukar_peranan/' . appauth::PENGGUNA)?>">Pengguna</a></li>
+                      <?php endif ?>
                     <?php endif ?>
                     <?php if(count($availPeranan)):?>
                     <?php foreach($availPeranan as $peranan):?>

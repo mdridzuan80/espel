@@ -133,9 +133,9 @@ class Welcome extends MY_Controller {
 		$this->load->model("hrmis_carta_model","jabatan");
 		$this->load->model('kumpulan_profil_model','kumpulan_profil');
 
-		if( $this->appsess->getSessionData("kumpulan")== $this->appauth::SUPER )
+		if( $this->appsess->getSessionData("kumpulan")== $this->appauth::SUPER || $this->appsess->getSessionData("kumpulan")== $this->appauth::ADMIN  )
 		{
-			$id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>1])->jabatan_id;
+			$id = $this->config->item('espel_default_jabatan_id');
 		}
 		else
 		{
