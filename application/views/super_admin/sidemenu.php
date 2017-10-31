@@ -8,7 +8,7 @@
           <ul class="nav child_menu">
             <li><a href="<?=base_url("pengguna")?>">Senarai Pengguna</a></li>
             <li><a href="<?=base_url("pengguna/penyelaras")?>">Senarai Penyelaras</a></li>
-            <li><a href="form_validation.html">Senarai Pengecualian Kursus</a></li>
+            <li><a href="<?=base_url("pengguna/pengecualian")?>">Senarai Pengecualian Kursus</a></li>
           </ul>
         </li>
       <li><a><i class="fa fa-gear"></i> Konfigurasi <span class="fa fa-chevron-down"></span></a>

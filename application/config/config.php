@@ -463,6 +463,8 @@ $config['csrf_exclude_uris'] = [
 	'pengguna/data_grid',
 	'pengguna/penyelaras_data_grid/[0-9]+',
 	'pengguna/penyelaras_data_grid',
+	'pengguna/pengecualian_data_grid/[0-9]+',
+	'pengguna/pengecualian_data_grid',
 	'kursus/kehadiran_peserta',
 	'kursus/pengesahan_kejadiran',
 	'laporan/prestasi_kursus_keseluruhan',
