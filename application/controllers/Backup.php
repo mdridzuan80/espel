@@ -8,15 +8,12 @@ class Backup extends MY_Controller
         $this->load->dbutil();
         $this->load->library('zip');
         $this->load->library('form_validation');
-        $this->load->model('backup_model', 'backup');
     }
 
     public function index()
     {
-        $data['sen_backup'] = $this->backup->get_all();
-
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat backup']);
-        return $this->renderView('backup/show',$data);
+        return $this->renderView('backup/show');
     }
 
     public function create()
