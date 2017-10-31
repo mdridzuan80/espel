@@ -136,7 +136,7 @@ class AppNotify
         $mail->clearCustomHeaders();
     }
 
-    public function test_send($mail_conf, $attr)
+    public function test_send($mail_config, $attr)
     {
         if($this->type == "email")
         {
