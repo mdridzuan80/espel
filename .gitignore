@@ -13,7 +13,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .DS_Store
 
 #codeigniter 3
-application/config
 application/logs
 index.php
 system
