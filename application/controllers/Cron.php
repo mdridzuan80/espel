@@ -103,4 +103,16 @@ class Cron extends CI_Controller
             }
         }
     }
+
+    public function test_send()
+    {
+        $this->load->library('appnotify');
+        $mail = [
+            "to" => 'md.ridzuan80@gmail.com',
+            "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
+            "body" => $this->load->view("layout/email/pengujian",'',TRUE),
+        ];
+
+        $this->appnotify->send($mail);
+    }
 }
