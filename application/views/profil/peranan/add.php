@@ -18,6 +18,7 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Peranan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select id="comPeranan" class="select2_single form-control" name="comPeranan">
+                            <option value="0">Pilih Peranan</option>
                             <?php foreach($senPeranan as $peranan):?>
                             <option value="<?=$peranan->id?>"><?=$peranan->nama?></option>
                             <?php endforeach?>
