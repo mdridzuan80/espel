@@ -198,8 +198,33 @@ class Profil extends MY_Controller
 				'nokp' => $nokp,
 				'mula' => $this->input->inputToDate("txtTkhMulaKecuali"),
 				'tamat' => $this->input->inputToDate("txtTkhTamatKecuali"),
-				'catatan' => $this->input->post('txtCatatan')
+				'catatan' => $this->input->post('txtCatatan'),
 			];
+
+			$data_array=[];
+			$ym = date('Y',strtotime($this->input->inputToDate("txtTkhMulaKecuali")));
+			$yt = date('Y',strtotime($this->input->inputToDate("txtTkhTamatKecuali")));
+
+			if($ym==$yt)
+			{
+				$data_array[$ym] = datediff('d', $this->input->inputToDate("txtTkhMulaKecuali"),$this->input->inputToDate("txtTkhTamatKecuali"))+1;
+				$data['tahun1'] = $ym;
+				$data['hari1'] = $data_array[$ym];
+				$data['layak1'] = round((365-$data_array[$ym])*7/365);
+			}
+			else
+			{
+				$data_array[$ym] = datediff('d', $this->input->inputToDate("txtTkhMulaKecuali"),$ym . '-12-31')+1;
+				$data['tahun1'] = $ym;
+				$data['hari1'] = $data_array[$ym];
+				$data['layak1'] = round((365-$data_array[$ym])*7/365);
+				$data_array[$yt] = datediff('d', $yt . '-01-01',$this->input->inputToDate("txtTkhTamatKecuali"))+1;
+				$data['tahun2'] = $yt;
+				$data['hari2'] = $data_array[$yt];
+				$data['layak2'] = round((365-$data_array[$yt])*7/365);
+			}
+
+			$data['serialize'] = serialize($data_array);
 
 			if($this->kecuali->insert($data))
 			{
