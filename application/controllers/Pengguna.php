@@ -172,4 +172,79 @@ class Pengguna extends MY_Controller
         }
         return redirect('pengguna');
     }
+
+    public function penyelaras()
+    {
+        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN']) || $this->appsess->getSessionData("username")=='admin' )
+        {
+            $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('kumpulan_model','kumpulan');
+            $this->load->model('profil_model', 'profil');
+
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+            if($this->appsess->getSessionData('kumpulan') == AppAuth::SUPER || $this->appsess->getSessionData('kumpulan') == AppAuth::ADMIN)
+            {
+                $data['jab_ptj'] = initObj(['jabatan_id'=>$this->config->item('espel_default_jabatan_id')]);
+            }
+            else
+            {
+                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
+            }
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai penyelaras']);
+            return $this->renderView("penyelaras/show",$data,['embedjs'=>[$this->load->view('penyelaras/carian_js',$data,true)]]);
+        }
+        else
+        {
+            $this->renderPermissionDeny();
+        }
+    }
+
+    public function penyelaras_data_grid()
+    {
+        $this->load->helper("url");
+        $this->load->library("pagination");
+        $this->load->model('profil_model','profil');
+        $this->load->model('hrmis_kumpulan_model','hrmis_kumpulan');
+
+        $config = array();
+        $config["base_url"] = base_url() . "pengguna/penyelaras_data_grid/";
+        $config["per_page"] = 10;
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $profile = $this->profil->all_penyelaras($config["per_page"],$page, $this->input->post());
+        
+        $config["total_rows"] = $profile['count'];
+        $config["uri_segment"] = 3;
+
+        //config for bootstrap pagination class integration
+        $config['full_tag_open'] = '<ul class="pagination" style="margin:0">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+
+        $data["profiles"] = $profile['data'];
+        $data["sen_kumpulan"] = $this->hrmis_kumpulan->get_all();
+        $data["links"] = $this->pagination->create_links();
+        $data['total'] = $profile['count'];
+        $data['mula'] = $this->uri->segment(3, 0) + 1;
+        $data['hingga'] = ($config["per_page"]>$profile['count']) ? $profile['count'] : $config["per_page"] + $this->uri->segment(3, 0) ;
+
+        return $this->load->view("penyelaras/datagrid",$data);
+    }
 }

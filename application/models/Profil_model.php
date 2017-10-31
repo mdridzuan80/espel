@@ -94,6 +94,70 @@ class Profil_model extends MY_Model
         return $info;
     }
 
+    public function all_penyelaras($limit, $start, $filter)
+    {
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
+        $info = [];
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
+
+        $sql = 'SELECT
+            espel_profil.nokp,
+            espel_profil.nama,
+            espel_profil.gred_id,
+            espel_profil.`status`,
+            hrmis_skim.keterangan AS skim,
+            hrmis_kumpulan.keterangan AS kumpulan,
+            hrmis_carta_organisasi.title AS jabatan,
+            a.title AS penyelaras
+            FROM
+            espel_profil
+            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
+            INNER JOIN espel_kumpulan_profil ON espel_kumpulan_profil.profil_nokp = espel_profil.nokp
+            INNER JOIN hrmis_carta_organisasi a ON a.buid = espel_kumpulan_profil.jabatan_id
+            WHERE espel_profil.nokp <> \'admin\'
+            AND espel_kumpulan_profil.kumpulan_id = 3';
+
+            if($filter['nama'])
+                $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
+            
+            if($filter['nokp'])
+                $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
+
+            if($filter['jabatan_id'] and $filter['sub_jabatan'])
+            {
+                $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter['jabatan_id']));
+                array_push($all_jabatan,$filter['jabatan_id']);
+                $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+            }
+            else
+            {
+                $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
+            }
+
+            if($filter['kump_id'])
+                $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\''  ;
+
+            if($filter['skim_id'])
+                $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'' ;
+
+            if($filter['gred_id'])
+                $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
+            
+            $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+
+            $sql .= ' ORDER BY espel_profil.nama';
+
+            $info['count'] = $this->db->query($sql)->num_rows();
+            
+            $sql .= ' LIMIT ' . $start . ', ' . $limit;
+        
+            $info['data'] = $this->db->query($sql)->result();
+
+        return $info;
+    }
+
     public function sen_kump()
     {
         $data = [];
