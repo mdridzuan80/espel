@@ -107,6 +107,7 @@ class Cron extends CI_Controller
     public function test_send()
     {
         $this->load->library('appnotify');
+
         $mail = [
             "to" => 'md.ridzuan80@gmail.com',
             "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
@@ -114,5 +115,19 @@ class Cron extends CI_Controller
         ];
 
         $this->appnotify->send($mail);
+    }
+
+    public function test_send_2($id)
+    {
+        $this->load->model("mailconf_model","mail_conf");
+        $this->load->library('appnotify');
+
+        $mail = [
+            "to" => 'md.ridzuan80@gmail.com',
+            "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
+            "body" => $this->load->view("layout/email/pengujian",'',TRUE),
+        ];
+        $mail_conf = $this->mail_conf->get($id);
+        $this->appnotify->test_send($mail_conf,$mail);
     }
 }

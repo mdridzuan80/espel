@@ -238,7 +238,6 @@ class Konfigurasi extends MY_Controller
 
         $this->load->model('mailconf_model','mail_conf');
         $data["mails"] = $this->mail_conf->get_all();
-        $data['Ujian'] = 
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mencapai maklumat konfigursi email']);        
         return $this->renderView("konfigurasi/email/show",$data);

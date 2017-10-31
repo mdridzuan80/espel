@@ -136,7 +136,7 @@ class AppNotify
         $mail->clearCustomHeaders();
     }
 
-    public function test_send($mail_config, array $attr)
+    public function test_send($mail_conf, array $attr)
     {
         if($this->type == "email")
         {
@@ -146,7 +146,6 @@ class AppNotify
                 $this->mail_config($mail_config);
                 $this->reset($this->mail);
                 $this->mail_recipient($attr);
-                $mail_config->debug = 2;
                 try {
 
                     //Attachments
