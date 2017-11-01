@@ -54,9 +54,24 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h2>LAPORAN SENARAI ANGGOTA YANG TIDAK MENJAWAB BORANG A <?= $tahun ?></h2></td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width: 75%;">
+                <table>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td style="width: 100%; text-align:center; font-size: 12px">LAPORAN SENARAI ANGGOTA YANG TIDAK MENJAWAB BORANG A <?= $tahun ?></td>
+                                </tr>
+                            </table>               
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
         </tr>
-    </table>
+    </table>    
+
     <br/>
     <table class="biasa">
       <thead>

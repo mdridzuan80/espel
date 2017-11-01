@@ -54,13 +54,25 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h3>LAPORAN SENARAI KURSUS YANG DIHADIRI PADA <?= $tahun ?></h3></td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td>Nama</td>
-            <td>: <?=$profil->nama ?></td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width: 75%;">
+                <table>
+                    <tr>
+                        <td><b>LAPORAN SENARAI KURSUS YANG DIHADIRI PADA <?= $tahun ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td>: <?=$profil->nama ?></td>
+                                </tr>
+                            </table>               
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
         </tr>
     </table>
     <br/>
@@ -69,7 +81,7 @@ table.biasa td, table.listing td {
         <tr>
           <th style="width:5%;">BIL</th>
           <th style="width:35%;">TAJUK KURSUS</th>
-          <th style="width:10%;">ANJURAN</th>
+          <th style="width:25%;">ANJURAN</th>
           <th style="width:10%;">MULA</th>
           <th style="width:10%;">TAMAT</th>
           <th style="width:5%;">BIL. HARI</th>

@@ -51,17 +51,27 @@ table.biasa td, table.listing td {
        </tr>
        </table>
     </page_footer>
-
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><h3>LAPORAN RINGKASAN<br/>KEHADIRAN PROGRAM LATIHAN</h3></td>
-        </tr>
-    </table>
-    <br/>
-    <table>
-        <tr>
-            <td>Nama</td>
-            <td>: <?=$profil->nama ?></td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width: 75%;">
+                <table>
+                    <tr>
+                        <td><b>LAPORAN RINGKASAN<br/>KEHADIRAN PROGRAM LATIHAN <?= $tahun ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td>: <?=$profil->nama ?></td>
+                                </tr>
+                            </table>               
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:1%;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
         </tr>
     </table>
     <br/>
