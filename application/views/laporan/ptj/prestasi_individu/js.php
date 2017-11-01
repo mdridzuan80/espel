@@ -6,6 +6,7 @@ $(function(){
         var btnPapar = this;
         var tahun = $('#txtTahun').val();
         var jabatan = $('#comJabatan').val();
+        var sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
         var kelas = $('#comKelas').val();
         var skim = $('#comSkim').val();
         var gred = $('#comGred').val();
@@ -15,7 +16,7 @@ $(function(){
         $('#rptPapar').html(loader);
         $.ajax({
             method: 'post',
-            data: {tahun: tahun, jabatan: jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari},
+            data: {tahun: tahun, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari},
             url: base_url + 'laporan/ajax_prestasi_kursus_individu',
             success: function(data, textStatus, jqXHR){
                 $('#rptPapar').html(data);
@@ -28,6 +29,7 @@ $(function(){
         var data = {
             tahun:  $('#txtTahun').val(),
             jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),
@@ -41,6 +43,7 @@ $(function(){
         var data = {
             tahun:  $('#txtTahun').val(),
             jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),
@@ -54,6 +57,7 @@ $(function(){
         var data = {
             tahun:  $('#txtTahun').val(),
             jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
             kelas: $('#comKelas').val(),
             skim: $('#comSkim').val(),
             gred: $('#comGred').val(),

@@ -397,6 +397,11 @@ class Laporan extends MY_Controller
             'hari' => $this->input->post("hari"),
         ]);
 
+        if(!$this->input->post('sub_jabatan'))
+        {
+            $filter->jabatan_id = [$jab_id];
+        }
+
         $data['tahun'] = $tahun;
 
         $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
@@ -428,6 +433,11 @@ class Laporan extends MY_Controller
             'gred_id' => $this->input->post("gred"),
             'hari' => $this->input->post("hari"),
         ]);
+
+        if(!$this->input->post('sub_jabatan'))
+        {
+            $filter->jabatan_id = [$jab_id];
+        }
 
         $data['tahun'] = $tahun;
 
