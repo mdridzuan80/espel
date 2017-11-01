@@ -965,7 +965,7 @@ class Kursus extends MY_Controller
 
     public function edit_luar($id)
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PENGGUNA']))
+        if($this->appsess->getSessionData("kumpulan")==Appauth::PENGGUNA)
         {
             $this->load->model('kursus_model','kursus');
 
