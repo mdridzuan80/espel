@@ -107,7 +107,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                      <a href="<?= base_url('assets/uploads/' . $kursus->surat) ?>" target="_blank">Papar Dokumen</a>
+                      <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
                     </div>
                   </div>
@@ -224,7 +224,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="<?= base_url('assets/uploads/' . $kursus->surat) ?>" target="_blank">Papar Dokumen</a>
+                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
                     </div>
                   </div>
@@ -346,7 +346,7 @@
                     
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="<?= base_url('assets/uploads/' . $kursus->surat) ?>" target="_blank">Papar Dokumen</a>
+                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
                     </div>
 
