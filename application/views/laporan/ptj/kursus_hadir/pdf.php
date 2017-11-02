@@ -38,7 +38,7 @@ table.biasa td, table.listing td {
 }
 </style>
 
-<page style="font-size: 10px">
+<page>
     <page_footer style="font-size: 9px">
        <table style="width: 100%;">
              <tr>
@@ -51,13 +51,24 @@ table.biasa td, table.listing td {
        </tr>
        </table>
     </page_footer>
+
     <table>
         <tr>
             <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
             <td style="width: 75%;">
                 <table>
                     <tr>
-                        <td style="vertical-align: top;"><b>LAPORAN PRESTASI SENARAI ANGGOTA <?= $tahun ?></b></td>
+                        <td><b>LAPORAN SENARAI KURSUS YANG DIHADIRI PADA <?= $tahun ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td>: <?=$profil->nama ?></td>
+                                </tr>
+                            </table>               
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -68,28 +79,24 @@ table.biasa td, table.listing td {
     <table class="biasa">
       <thead>
         <tr>
-          <th style="width:5%;">Bil</th>
-          <th style="width:20%;">Nama</th>
-          <th style="width:20%;">Jabatan</th>
-          <th style="width:20%;">Kumpulan Gred</th>
-          <th style="width:10%;">Skim Perkhidmatan</th>
-          <th style="width:5%;">Gred</th>
-          <th style="width:8%;">Jumlah Hari Berkursus</th>
-          <th style="width:8%;">Kelayakan Hari Berkursus</th>
+          <th style="width:5%;">BIL</th>
+          <th style="width:35%;">TAJUK KURSUS</th>
+          <th style="width:25%;">ANJURAN</th>
+          <th style="width:10%;">MULA</th>
+          <th style="width:10%;">TAMAT</th>
+          <th style="width:5%;">BIL. HARI</th>
         </tr>
       </thead>
       <tbody>
         <?php $x = 1 ?>
-        <?php foreach($sen_anggota as $anggota) : ?>
+        <?php foreach($sen_hadir as $hadir) : ?>
         <tr>
             <td><?= $x++ ?></td>
-            <td><?= $anggota->nama ?></td>
-            <td><?= $anggota->jabatan ?></td>
-            <td><?= $anggota->kumpulan ?></td>
-            <td><?= $anggota->skim ?></td>
-            <td><?= $anggota->gred_id ?></td>
-            <td><?= $anggota->jum_hari . " Hari" ?></td>
-            <td><?= $anggota->kelayakan . " Hari" ?></td>
+            <td><?=$hadir->tajuk?></td>
+            <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
+            <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
+            <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
+            <td><?=$hadir->hari?></td>
         </tr>
         <?php endforeach ?>
        </tbody>

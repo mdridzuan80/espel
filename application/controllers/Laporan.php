@@ -310,67 +310,19 @@ class Laporan extends MY_Controller
     // laporan prestasi_kursus_individu
     public function prestasi_kursus_individu()
     {
-        if(!$this->exist("submit"))
-        {
-            $this->load->model('kumpulan_profil_model','kumpulan_profil');
-            $this->load->model('profil_model', 'profil');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $this->load->model('profil_model', 'profil');
 
-            $data['sen_kumpulan'] = $this->profil->sen_kump();
-            $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
-            $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
 
-            $plugins = ['embedjs'=>[
-                $this->load->view('scripts/carian_js',$data,true),
-                $this->load->view('laporan/ptj/prestasi_individu/js','',true)
-            ]];
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('laporan/ptj/prestasi_individu/js','',true)
+        ]];
 
-            return $this->renderView("laporan/ptj/prestasi_individu/param", $data, $plugins);
-        }
-        else
-        {
-            try {
-                $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
-                $html2pdf->pdf->SetDisplayMode('fullpage');
-                $html2pdf->setTestTdInOnePage(false);
-
-                ob_start();
-                $content = ob_get_clean();
-
-                $this->load->model('mohon_kursus_model','mohon_kursus');
-                $this->load->model("hrmis_carta_model","jabatan");
-
-                $tahun = $this->input->post("tahun");
-                
-                $jab_id = $this->input->post("jabatan");
-
-                $flatted = flatten_array(
-                    relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
-                );
-                
-                array_push($flatted,$jab_id);
-                
-                $filter = new obj([
-                    'tahun' => $tahun,
-                    'jabatan_id' => $flatted,
-                    'kelas_id' => $this->input->post("kelas"),
-                    'skim_id' => $this->input->post("skim"),
-                    'gred_id' => $this->input->post("gred"),
-                    'hari' => $this->input->post("hari"),
-                ]);
-
-                $data['tahun'] = $tahun;
-
-                $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
-
-                $html2pdf->writeHTML($this->load->view("laporan/prestasi/senarai_individu",$data,TRUE));
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Jana laporan ringkasan']);
-
-                $html2pdf->output('senarai_prestasi_anggota.pdf', "D");
-            } catch (Html2PdfException $e) {
-                $formatter = new ExceptionFormatter($e);
-                echo $formatter->getHtmlMessage();
-            }
-        }
+        return $this->renderView("laporan/ptj/prestasi_individu/param", $data, $plugins);
     }
 
     public function ajax_prestasi_kursus_individu()
@@ -390,6 +342,8 @@ class Laporan extends MY_Controller
         
         $filter = new obj([
             'tahun' => $tahun,
+            'nama' => $this->input->post("nama"),
+            'nokp' => $this->input->post("nokp"),
             'jabatan_id' => $flatted,
             'kelas_id' => $this->input->post("kelas"),
             'skim_id' => $this->input->post("skim"),
@@ -404,7 +358,7 @@ class Laporan extends MY_Controller
 
         $data['tahun'] = $tahun;
 
-        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
+        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi_individu($filter);
 
         return $this->load->view('laporan/ptj/prestasi_individu/result',$data);
     }
@@ -427,6 +381,8 @@ class Laporan extends MY_Controller
         
         $filter = new obj([
             'tahun' => $tahun,
+            'nama' => $this->input->post("nama"),
+            'nokp' => $this->input->post("nokp"),
             'jabatan_id' => $flatted,
             'kelas_id' => $this->input->post("kelas"),
             'skim_id' => $this->input->post("skim"),
@@ -441,7 +397,7 @@ class Laporan extends MY_Controller
 
         $data['tahun'] = $tahun;
 
-        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
+        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi_individu($filter);
 
         switch($jenis)
         {
@@ -895,4 +851,111 @@ class Laporan extends MY_Controller
         }
     }
     // end laporan ptj x jawab borang b
+
+    // laporan senarai hadir oleh PTJ
+    public function pengguna_hadir_kursus_ptj()
+    {
+            $this->load->model('kumpulan_profil_model','kumpulan_profil');
+            $this->load->model('profil_model', 'profil');
+
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+            $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+
+            $plugins = ['embedjs'=>[
+                $this->load->view('scripts/carian_js',$data,true),
+                $this->load->view('laporan/ptj/kursus_hadir/js','',true)
+            ]];
+
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan Senarai Latihan yang dihadiri']);
+        return $this->renderView("laporan/ptj/kursus_hadir/param",'',$plugins);
+    }
+
+    public function ajax_papar_pengguna_hadir_ptj_kursus()
+    {
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model("hrmis_carta_model","jabatan");
+
+        $tahun = $this->input->post("tahun");
+        
+        $jab_id = $this->input->post("jabatan");
+
+        $flatted = flatten_array(
+            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+        );
+        
+        array_push($flatted,$jab_id);
+        
+        $filter = new obj([
+            'tahun' => $tahun,
+            'jabatan_id' => $flatted,
+            'kelas_id' => $this->input->post("kelas"),
+            'skim_id' => $this->input->post("skim"),
+            'gred_id' => $this->input->post("gred"),
+            'hari' => $this->input->post("hari"),
+        ]);
+
+        if(!$this->input->post('sub_jabatan'))
+        {
+            $filter->jabatan_id = [$jab_id];
+        }
+
+        $data['tahun'] = $tahun;
+
+        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
+
+        return $this->load->view('laporan/ptj/kursus_hadir/result',$data);
+    }
+
+    public function ajax_papar_pengguna_hadir_ptj_export()
+    {
+        $tahun = $this->input->post('tahun');
+        $jenis = $this->input->post('jenis');
+
+        $this->load->model("kursus_model", "kursus");
+        $this->load->model("profil_model", "profil");
+
+        $tahun = $this->input->post('tahun');
+        
+        $data['tahun'] = $tahun;
+        $data['profil'] = $this->profil->get($this->appsess->getSessionData('username'));
+        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
+
+        switch($jenis)
+        {
+            case 1 :
+                try {
+                    $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+
+                    ob_start();
+                    $content = ob_get_clean();
+
+                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export PDF laporan Senarai Latihan yang dihadiri']);
+                    $html2pdf->writeHTML($this->load->view("laporan/ptj/kursus_hadir/pdf",$data,TRUE));
+                    $html2pdf->output('about.pdf');
+                } catch (Html2PdfException $e) {
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
+                }
+            break;
+
+            case 2 :
+                $this->output->set_header('Content-type: application/vnd.ms-excel');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.xls');
+                $content = $this->load->view("laporan/ptj/kursus_hadir/pdf",$data,TRUE);
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan Senarai Latihan yang dihadiri']);
+                echo $content;
+            break;
+
+            case 3 :
+                $this->output->set_header('Content-type: application/vnd.ms-word');
+                $this->output->set_header('Content-Disposition: attachment; filename=senarai_hadir.doc');
+                $content = $this->load->view("laporan/ptj/kursus_hadir/pdf",$data,TRUE);
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Word laporan Senarai Latihan yang dihadiri']);
+                echo $content;
+            break;
+        }
+    }
+    // end: laporan senarai hadir oleh pengguna
 }

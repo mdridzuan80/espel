@@ -2,28 +2,16 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-          <h2>Laporan Senarai Prestasi Kursus</h2>
+          <h2>Laporan Senarai Kursus Yang Dihadiri</h2>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
                       <div>
               <form method="post" class="form-horizontal form-label-left">
-                  <div class="form-group">
+              <div class="form-group">
                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Tahun</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input id="txtTahun" name="txtTahun" class="form-control input-sm" value="<?= date('Y') ?>" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="txtNama" name="txtNama" class="form-control input-sm">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. KP</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="txtNoKP" name="txtNoKP" class="form-control input-sm">
                     </div>
                   </div>
                   <div class="form-group">

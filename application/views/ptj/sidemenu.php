@@ -33,6 +33,7 @@
       </li>
       <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
+          <li><a href="<?=base_url('laporan/pengguna_hadir_kursus_ptj')?>">Laporan Senarai Kehadiran Individu</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kursus_individu')?>">Laporan Senarai Prestasi Individu</a></li>
           <li><a href="<?=base_url('laporan/prestasi_kursus_keseluruhan')?>">Laporan Prestasi Keseluruhan</a></li>
           <?php if($has_peruntukan) : ?>

@@ -1445,13 +1445,15 @@ class Kursus extends MY_Controller
                 {
                     $data[] = $kehadiran;
                 }
-
+                
                 foreach($data as $row)
                 {
                     if($this->kursus->update($row,['stat_hadir'=>$this->input->post('hadir')]))
                     {
+                        //$this->output->set_status_header(401);
+                        //dd($this->db->last_query());
                         //jabatan profil
-                        $this->load->model('profil');
+                        $this->load->model('profil_model','profil');
                         $this->load->model('hrmis_carta_model','jabatan');
                         $this->load->model('kumpulan_profil_model','kumpulan_profil');
                         $this->load->model('hrmis_skim_model', 'mjawatan');

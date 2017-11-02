@@ -42,7 +42,7 @@ class Kursus_model extends MY_Model
             WHERE 1=1
             AND YEAR(espel_kursus.tkh_mula) = ?
             AND espel_permohonan_kursus.nokp = ?
-            and espel_permohonan_kursus.stat_hadir = 'Y') a where 1=1 order by tkh_mula";
+            and espel_permohonan_kursus.stat_hadir = 'Y' and espel_permohonan_kursus.stat_mohon ='L') a where 1=1 order by tkh_mula";
         return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp])->result();
     }
 

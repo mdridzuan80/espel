@@ -27,7 +27,7 @@
                         <th><a href="<?=base_url("profil/" . $profile->nokp . "/kump")?>" type="button" class="btn btn-round btn-default btn-xs" title="Tukar peranan"><i class="fa fa-tasks"></i></a></th>
                         <?php endif ?>
                         <th><a href="<?=base_url("profil/" . $profile->nokp . "/kecuali")?>" type="button" class="btn btn-round btn-default btn-xs" title="Cipta Pengecualian"><i class="fa fa-code-fork"></i></a></th>
-                        <th><a href="<?=base_url("profil/" . $profile->nokp . "/status")?>" type="button" class="btn btn-round btn-default btn-xs" title="Kemaskini status" onclick="return confirm('Anda pasti untuk proses ini?')"><i class="fa fa-star-o"></i></a></th>
+                        <th><a href="<?=base_url("profil/" . $profile->nokp . "/status")?>" type="button" class="btn btn-round btn-default btn-xs" title="Nyahaktif Pengguna" onclick="return confirm('Anda pasti untuk nyahaktif pengguna <?=addslashes ($profile->nama)?> ?')"><i class="fa fa-star-o"></i></a></th>
                       </table>
                     </td>
                   </tr>

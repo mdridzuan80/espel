@@ -18,8 +18,8 @@
                   <th style="width:20%;">Kumpulan Gred</th>
                   <th style="width:20%;">Skim Perkhidmatan</th>
                   <th style="width:5%;">Gred</th>
-                  <th style="width:5%;">Jumlah Hari Berkursus</th>
-                  <th style="width:5%;">Kelayakan Hari Berkursus</th>
+                  <th style="width:5%;">Hari</th>
+                  <th style="width:5%;">Operasi</th>
                 </tr>
               </thead>
               <tbody>
@@ -32,8 +32,8 @@
                     <td><?= $anggota->kumpulan ?></td>
                     <td><?= $anggota->skim ?></td>
                     <td><?= $anggota->gred_id ?></td>
-                    <td><?= $anggota->jum_hari . " Hari" ?></td>
-                    <td><?= $anggota->kelayakan . " Hari" ?></td>
+                    <td><?= $anggota->hari ?></td>
+                    <td><a class="btn btn-primary btn-sm">Papar</a></td>
                 </tr>
                 <?php endforeach ?>
               </tbody>
