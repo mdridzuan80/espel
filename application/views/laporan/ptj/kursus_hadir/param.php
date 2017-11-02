@@ -8,10 +8,22 @@
         <div class="x_content">
                       <div>
               <form method="post" class="form-horizontal form-label-left">
-              <div class="form-group">
+                  <div class="form-group">
                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Tahun</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input id="txtTahun" name="txtTahun" class="form-control input-sm" value="<?= date('Y') ?>" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="txtNama" name="txtNama" class="form-control input-sm" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. KP</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="txtNoKP" name="txtNoKP" class="form-control input-sm">
                     </div>
                   </div>
                   <div class="form-group">
@@ -62,10 +74,10 @@
                           <option value="2">Lebih atau sama dengan 1 hari</option>
                           <option value="3">Lebih atau sama dengan 2 hari</option>
                           <option value="4">Lebih atau sama dengan 3 hari</option>
-                          <option value="4">Lebih atau sama dengan 4 hari</option>
-                          <option value="5">Lebih atau sama dengan 5 hari</option>
-                          <option value="6" >Lebih atau sama dengan 6 hari</option>
-                          <option value="7">Lebih atau sama dengan 7 hari</option>
+                          <option value="5">Lebih atau sama dengan 4 hari</option>
+                          <option value="6">Lebih atau sama dengan 5 hari</option>
+                          <option value="7" >Lebih atau sama dengan 6 hari</option>
+                          <option value="8">Lebih atau sama dengan 7 hari</option>
                         </select>
                     </div>
                   </div>
@@ -80,3 +92,20 @@
   </div>
 
 <div id=rptPapar></div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

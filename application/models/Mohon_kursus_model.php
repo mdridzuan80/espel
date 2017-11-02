@@ -272,11 +272,11 @@ group by nokp
         {
             if($filter->hari == 1)
             {
-                $sql .= ' and hadir.hari < ' . $filter->hari;
+                $sql .= ' and hadir.jum_hari < ' . $filter->hari;
             }
             else
             {
-                $sql .= ' and hadir.hari >= ' . $filter->hari;
+                $sql .= ' and hadir.jum_hari >= ' . ($filter->hari-1);
             }
         }
 

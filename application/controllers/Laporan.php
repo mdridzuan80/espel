@@ -25,9 +25,18 @@ class Laporan extends MY_Controller
         $this->load->model("kursus_model", "kursus");
 
         $tahun = $this->input->post('tahun');
+
+        if($this->input->post('nokp'))
+        {
+            $nokp = $this->input->post('nokp');
+        }
+        else
+        {
+            $nokp = $this->appsess->getSessionData('username');
+        }
         
         $data['tahun'] = $tahun;
-        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
+        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($nokp, $tahun);
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Papar laporan Senarai Latihan yang dihadiri']);
         return $this->load->view('laporan/pengguna/kursus_hadir/result',$data);
@@ -41,11 +50,18 @@ class Laporan extends MY_Controller
         $this->load->model("kursus_model", "kursus");
         $this->load->model("profil_model", "profil");
 
-        $tahun = $this->input->post('tahun');
-        
+        if($this->input->post('nokp'))
+        {
+            $nokp = $this->input->post('nokp');
+        }
+        else
+        {
+            $nokp = $this->appsess->getSessionData('username');
+        }
+
         $data['tahun'] = $tahun;
-        $data['profil'] = $this->profil->get($this->appsess->getSessionData('username'));
-        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'), $tahun);
+        $data['profil'] = $this->profil->get($nokp);
+        $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($nokp, $tahun);
 
         switch($jenis)
         {
@@ -855,19 +871,19 @@ class Laporan extends MY_Controller
     // laporan senarai hadir oleh PTJ
     public function pengguna_hadir_kursus_ptj()
     {
-            $this->load->model('kumpulan_profil_model','kumpulan_profil');
-            $this->load->model('profil_model', 'profil');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $this->load->model('profil_model', 'profil');
 
-            $data['sen_kumpulan'] = $this->profil->sen_kump();
-            $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
-            $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
 
-            $plugins = ['embedjs'=>[
-                $this->load->view('scripts/carian_js',$data,true),
-                $this->load->view('laporan/ptj/kursus_hadir/js','',true)
-            ]];
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('laporan/ptj/kursus_hadir/js','',true)
+        ]];
 
-        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan Senarai Latihan yang dihadiri']);
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses laporan PTJ Senarai Latihan yang dihadiri']);
         return $this->renderView("laporan/ptj/kursus_hadir/param",'',$plugins);
     }
 
@@ -889,6 +905,8 @@ class Laporan extends MY_Controller
         $filter = new obj([
             'tahun' => $tahun,
             'jabatan_id' => $flatted,
+            'nama' => $this->input->post("nama"),
+            'nokp' => $this->input->post("nokp"),
             'kelas_id' => $this->input->post("kelas"),
             'skim_id' => $this->input->post("skim"),
             'gred_id' => $this->input->post("gred"),
@@ -902,7 +920,7 @@ class Laporan extends MY_Controller
 
         $data['tahun'] = $tahun;
 
-        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi($filter);
+        $data['sen_anggota'] = $this->mohon_kursus->sen_prestasi_individu($filter);
 
         return $this->load->view('laporan/ptj/kursus_hadir/result',$data);
     }
