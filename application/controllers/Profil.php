@@ -65,7 +65,8 @@ class Profil extends MY_Controller
 			$data["sen_subscribe"] = $this->kumpulan_profil->subscribe_peranan($username);
 
 			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengakses maklumat peranan ' . $profil->nama]);
-			return $this->renderView("profil/peranan/add", $data);
+			$plugins['embedjs']=[$this->load->view('profil/peranan/js','',true)];
+			return $this->renderView("profil/peranan/add", $data, $plugins);
 		}
 		else
 		{

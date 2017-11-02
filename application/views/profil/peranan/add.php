@@ -7,7 +7,7 @@
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
-            <form method="post" class="form-horizontal form-label-left">
+            <form id="frmKumpulan" method="post" class="form-horizontal form-label-left">
                 <?php $csrf = [
                     'name' => $this->security->get_csrf_token_name(),
                     'hash' => $this->security->get_csrf_hash()
