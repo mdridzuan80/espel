@@ -59,6 +59,7 @@
                         <tr class="headings">
                             <th>Mula</th>
                             <th>Tamat</th>
+                            <th>Jumlah Hari</th>
                             <th>Catatan</th>
                             <th style="text-align:center">Operasi</th>
                         </tr>
@@ -68,6 +69,7 @@
                             <tr>
                             <td><?= date('d-M-Y', strtotime($kecuali->mula)) ?></td>
                             <td><?= date('d-M-Y', strtotime($kecuali->tamat)) ?></td>
+                            <td><?= $kecuali->hari1 + $kecuali->hari2 ?></td>
                             <td><?= $kecuali->catatan ?></td>
                                <td align="center">
                                 <a href="<?=base_url("profil/" . $kecuali->nokp . "/kecuali/" . $kecuali->id . "/hapus")?>" class="btn btn-round btn-danger btn-xs" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')"><i class="fa fa-eraser"></i></a>

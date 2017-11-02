@@ -171,19 +171,19 @@ class Profil_model extends MY_Model
             espel_profil.`status`,
             hrmis_skim.keterangan AS skim,
             hrmis_carta_organisasi.title AS jabatan,
-            a.mula,
-            a.tamat,
-            a.layak
+            a.hari,
+            round( (365-a.hari)*7/365 ) as layak
             FROM
             espel_profil
             INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
             INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
-            INNER JOIN (select id, nokp, mula, tamat, tahun1 as tahun,hari1 as hari ,layak1 as layak from espel_sejarah_cuti
+            INNER JOIN (select nokp, sum(hari) as hari from (select id, nokp, hari1 as hari from espel_sejarah_cuti
                 where tahun1 = '. date('Y') .'
                 union
-                select id, nokp, mula, tamat, tahun2,hari2,layak2 from espel_sejarah_cuti
-                where tahun2 = '. date('Y') .'
+                select id, nokp, hari2 as hari from espel_sejarah_cuti
+                where tahun2 = '. date('Y') .') as kelayakan
+                group by nokp
                 ) as a ON a.nokp = espel_profil.nokp
             WHERE espel_profil.nokp <> \'admin\'';
 

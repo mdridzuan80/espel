@@ -8,8 +8,7 @@
                     <th>Skim Perkhidmatan</th>
                     <th>Gred</th>
                     <th>Jabatan</th>
-                    <th>Mula</th>
-                    <th>Tamat</th>
+                    <th>Jumlah Hari Dikecualikan</th>
                     <th>Kelayakan</th>
                     <th style="text-align:center">Operasi</th>
                   </tr>
@@ -22,9 +21,8 @@
                     <td><?=$profile->skim?></td>
                     <td><?=$profile->gred_id?></td>
                     <td><?=$profile->jabatan?></td>
-                    <td><?=date('d M Y',strtotime($profile->mula))?></td>
-                    <td><?=date('d M Y',strtotime($profile->tamat))?></td>
-                    <td><?=$profile->layak?></td>
+                    <td><?=$profile->hari?> Hari</td>
+                    <td><?=$profile->layak?> Hari</td>
                     <td align="center">
                       <table>
                         <?php if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ'])) : ?>
