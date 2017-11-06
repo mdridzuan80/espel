@@ -74,21 +74,25 @@ class Cron extends CI_Controller
     {
         $this->load->model('profil_2_model', 'profil');
         $this->load->model('hrmis_profil_model', 'hrmis_profil');
-        $this->load->model('hrmis_carta_model', 'hrmis_carta');
 
         $sen_hrmis = $this->hrmis_profil->get_all();
 
-        $x=1;
+        $x=0;
         foreach($sen_hrmis as $hrmis)
         {
             $x++;
+
             $data['nama'] = trim($hrmis->nama);
             $data['nokp'] = trim($hrmis->nokp);
             $data['password'] = pass_encode($hrmis->nokp);
-            $data['gred_id'] = trim($hrmis->gred);
+            $data['gred_id'] = trim($hrmis->gred_id);
+            preg_match_all('!\d+!', $data['gred_id'], $matches);
+            $data['gred'] = $matches[0][0];
             $data['skim_id'] = trim($hrmis->skim_id);
             $data['kelas_id'] = trim($hrmis->kelas_id);
-            $data['jabatan_id'] = $this->hrmis_carta->get_by('title', (explode(',',$hrmis->unit))[0])->buid;
+            $data['jabatan_id'] = trim($hrmis->jabatan_id);            
+            //$data['jabatan_desc'] = trim($hrmis->jabatan_desc);
+            $data['email'] = trim($hrmis->email);
             $data['nokp_ppp'] = trim($hrmis->nokp_ppp);
             $data['email_ppp'] = trim($hrmis->email_ppp);
             $data['nokp_ppk'] = trim($hrmis->nokp_ppk);
@@ -98,11 +102,10 @@ class Cron extends CI_Controller
                 $this->profil->insert($data);
                 echo $data['nokp'] . " done " . $x . "\n";
             }
-            catch(Exception $e) {
+            catch(CiError $e) {
                 $myfile = fopen("log.txt", "a");
                 $msg = 'Message: ' . $e->getMessage() . "\n";
                 fwrite($myfile, $msg);
-                echo $data['nokp'] . " error exception " . $x . " \n";
             }
         }
     }

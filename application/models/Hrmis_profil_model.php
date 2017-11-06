@@ -1,7 +1,7 @@
 <?php
 class Hrmis_profil_model extends MY_Model
 {
-    protected $_table = "hrmis_data_peribadi";
+    protected $_table = "hrmis_profil";
 
     public function get_data()
     {
