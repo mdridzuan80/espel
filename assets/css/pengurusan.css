@@ -1,0 +1,19 @@
+div > div.icon > i {
+    font-family: helvetica;
+    color: #73879C;
+}
+
+
+div.aktif {
+    color: black;
+    background-color:#19bc9d
+}
+
+div.aktif > div.icon > i {
+    color: black;
+}
+
+div.aktif > h3
+{
+    color: black;
+}

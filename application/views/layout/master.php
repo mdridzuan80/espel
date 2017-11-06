@@ -22,6 +22,7 @@
     <link href="<?=base_url("assets/js/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css")?>" rel="stylesheet">
     <link href="<?=base_url("assets/js/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css")?>" rel="stylesheet">
     <link href="<?=base_url("assets/js/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css")?>" rel="stylesheet">
+    <link href="<?=base_url("assets/css/pengurusan.css")?>" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="<?=base_url('assets/css/custom.min.css')?>" rel="stylesheet">

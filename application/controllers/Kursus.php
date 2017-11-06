@@ -15,6 +15,11 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/show", $data);
     }
 
+    public function pengurusan()
+    {
+         return $this->renderView("kursus/pengurusan/show");
+    }
+
     private function plugins()
     {
         return [
