@@ -62,6 +62,23 @@ class Cron extends CI_Controller
         print_r($peruntukan);
     }
 
+    public function update_inc_jabatan()
+    {
+        $this->load->model('kumpulan_profil_model', 'kumpulan_profil');
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
+        
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();   
+        $sen_penyelaras = $this->kumpulan_profil->get_many_by(['kumpulan_id'=>3]);
+
+        foreach($sen_penyelaras as $penyelaras)
+        {
+            $selected = flattenArray(relatedJabatan($all_jabatan,$penyelaras->jabatan_id));
+            
+            array_push($selected,$penyelaras->jabatan_id);
+            $this->kumpulan_profil->update($penyelaras->id,['inc_jab'=>serialize($selected)]);
+        }
+    }
+
     public function huhu()
     {
         $this->load->model('hrmis_carta_model','hrmis_carta');

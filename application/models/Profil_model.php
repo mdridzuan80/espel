@@ -36,6 +36,7 @@ class Profil_model extends MY_Model
     public function all_profil($limit, $start, $filter)
     {
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
+        
         $info = [];
         $all_jabatan = $this->hrmis_carta->as_array()->get_all();
 

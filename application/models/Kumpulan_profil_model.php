@@ -14,6 +14,8 @@ class Kumpulan_profil_model extends MY_Model
     {
         $sql = 'SELECT
             espel_kumpulan_profil.id,
+            espel_kumpulan_profil.kumpulan_id,
+            espel_kumpulan_profil.sub_tree,
             espel_kumpulan_profil.profil_nokp,
             espel_kumpulan.kod,
             espel_kumpulan.nama,

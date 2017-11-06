@@ -71,6 +71,10 @@ class Profil extends MY_Controller
 		else
 		{
 			$this->load->model("kumpulan_profil_model", "kumpulan_profil");
+			$this->load->model('hrmis_carta_model', 'hrmis_carta');
+        
+			$all_jabatan = $this->hrmis_carta->as_array()->get_all();
+		
 			$data =[
 				"kumpulan_id" => $this->input->post('comPeranan'),
 				"profil_nokp" => $username,
@@ -79,6 +83,10 @@ class Profil extends MY_Controller
 			if($this->input->post('comPeranan')==3)
 			{
 				$data["jabatan_id"] = $this->input->post('comJabatanPenyelaras');
+				$selected = flattenArray(relatedJabatan($all_jabatan,$data["jabatan_id"]));
+				array_push($selected,$data["jabatan_id"]);
+				$data["inc_jab"] = serialize($selected);
+				$data['sub_tree'] = $this->input->post('comSubTree');
 			}
 
 			if($this->kumpulan_profil->insert($data))

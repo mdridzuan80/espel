@@ -16,9 +16,11 @@
     $("#comPeranan").change(function(){
         if($(this).val() == 3){
             $("#jabatan-penyelaras").show();
+            $('#jabatan-tree').show();
         }
         else{
             $("#jabatan-penyelaras").hide();
+            $('#jabatan-tree').hide();
         }
     });
 })();
