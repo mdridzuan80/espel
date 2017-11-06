@@ -12,7 +12,7 @@
       </li>
       <li><a><i class="fa fa-laptop"></i>Modul Kursus <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="<?=base_url('kursus/pengurusan')?>">Pengurusan Kursus</a></li>
+          <li><a href="<?=base_url('kursus/takwim')?>">Pengurusan Kursus</a></li>
           <li><a href="<?=base_url('kursus/takwim')?>">Takwim Kursus</a></li>
           <li><a href="<?=base_url('kursus/permohonan_kursus')?>">Senarai Permohonan</a></li>
           <li><a href="<?=base_url('kursus/pengesahan_kehadiran')?>">Pengesahan Kehadiran</a></li>
