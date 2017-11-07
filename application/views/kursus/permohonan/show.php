@@ -5,7 +5,7 @@
         <div class="x_title">
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <h2>Kursus yang ditawarkan</h2>
+              <h2>Kursus yang dirancang</h2>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
               <div style="float:right">

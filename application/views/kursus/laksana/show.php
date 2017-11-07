@@ -5,7 +5,7 @@
         <div class="x_title">
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <h2>Kursus yang ditawarkan</h2>
+              <h2>Kursus yang dirancang untuk pelaksanaan</h2>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
               <div style="float:right">
@@ -72,7 +72,7 @@
               </div>
               <div class="ln_solid"></div>
           </div>
-          <div id="sen_permohonan_sah"></div>
+          <div id="sen_permohonan_pelaksanaan"></div>
         </div>
       </div>
     </div>

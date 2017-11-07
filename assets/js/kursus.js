@@ -224,32 +224,4 @@ $(document).ready(function() {
          });
      }
  })();
-
- (function (){
-     var current = new Date();
-     var dateObj = {
-         placeholder: $('#sen_kursus_anjuran'),
-         tahun: current.getFullYear(),
-         bulan: current.getMonth()+1
-     };
-     getPermohonanKursus(dateObj);
-
-     $('#cmdTapis').click(function(e){
-        e.preventDefault();
-        dateObj.tahun = $('#comTahun').val();
-        dateObj.bulan = $('#comBulan').val();
-        getPermohonanKursus(dateObj);
-     });
-
-     function getPermohonanKursus(obj) {
-         $.ajax({
-             url: base_url + 'kursus/ajax_senarai_anjuran_sah',
-             data: { tahun: obj.tahun, bulan: obj.bulan },
-             method: 'POST',
-             success: function (data, textStatus, jqXHR) {
-                 obj.placeholder.html(data);
-             }
-         });
-     }
- })();
 });

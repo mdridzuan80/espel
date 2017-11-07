@@ -78,7 +78,7 @@ class Mohon_kursus_model extends MY_Model
         }
 
         $rst = $this->db->get();
-
+        dd($this->db->last_query());
         return $rst->result();
     }
 

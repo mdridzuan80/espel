@@ -15,11 +15,6 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/show", $data);
     }
 
-    public function pengurusan()
-    {
-         return $this->renderView('kursus/pengurusan/show',$data);
-    }
-
     private function plugins()
     {
         return [
@@ -80,10 +75,10 @@ class Kursus extends MY_Controller
         $this->load->library('calendar', $prefs);
 
         $data['level'] = 1;
+        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
         $data["objCal"] = $this->calendar;
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
-        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
         $plugins = $this->plugins();
         $plugins["embedjs"][] = $this->load->view("kursus/js",NULL,TRUE);
 
@@ -1512,9 +1507,48 @@ class Kursus extends MY_Controller
 		}
     }
 
+    public function kedudukan_pelaksanaan()
+    {
+        $this->load->model('kursus_model','kursus');
+
+        $data['level'] = 3;
+        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
+        $data['sen_tahun'] = $this->kursus->sen_tahun();
+        $plugins = $this->plugins();
+        $plugins['embedjs'][] = $this->load->view('kursus/laksana/js','',TRUE);
+
+        return $this->renderView("kursus/laksana/show", $data,  $plugins);
+    }
+
+    public function ajax_senarai_pelaksanaan()
+    {
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+        $takwim = initObj([
+            "tajuk" => $this->input->post('tajuk'),
+			"tahun" => $this->input->post('tahun'),
+            "bulan" => $this->input->post('bulan'),
+            "status" => $this->input->post('status'),
+        ]);
+
+        $data['objMohonKursus'] = $this->mohon_kursus;
+        $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
+        return $this->load->view('kursus/laksana/senarai',$data);
+    }
+
     public function permohonan_kursus()
     {
-        return $this->renderView("permohonan/show",'',$this->plugins());
+        $this->load->model('kursus_model','kursus');
+
+        $data['level'] = 2;
+        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
+        $data['sen_tahun'] = $this->kursus->sen_tahun();
+        $plugins = $this->plugins();
+        $plugins['embedjs'][] = $this->load->view('kursus/permohonan/js','',TRUE);
+
+        return $this->renderView("kursus/permohonan/show", $data,  $plugins);
     }
 
     public function pencalonan($kursus_id)
@@ -1692,13 +1726,15 @@ class Kursus extends MY_Controller
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
         $takwim = initObj([
+            "tajuk" => $this->input->post('tajuk'),
 			"tahun" => $this->input->post('tahun'),
-			"bulan" => $this->input->post('bulan'),
+            "bulan" => $this->input->post('bulan'),
+            "status" => $this->input->post('status'),
         ]);
 
         $data['objMohonKursus'] = $this->mohon_kursus;
         $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
-        return $this->load->view('permohonan/senarai',$data);
+        return $this->load->view('kursus/permohonan/senarai',$data);
     }
 
     public function ajax_senarai_anjuran_sah()
@@ -1708,6 +1744,7 @@ class Kursus extends MY_Controller
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
         $takwim = initObj([
+            "tajuk" => $this->input->post('tajuk'),
 			"tahun" => $this->input->post('tahun'),
 			"bulan" => $this->input->post('bulan'),
         ]);

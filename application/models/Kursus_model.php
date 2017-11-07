@@ -664,7 +664,7 @@ class Kursus_model extends MY_Model
     {
         $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
 
-        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat
+        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, a.stat_laksana
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
@@ -672,7 +672,8 @@ class Kursus_model extends MY_Model
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             UNION
-            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat FROM espel_kursus a, espel_dict_program b
+            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, a.stat_laksana
+            FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
@@ -710,7 +711,6 @@ class Kursus_model extends MY_Model
             AND a.penganjur_id = c.buid
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
-            AND MONTH(a.tkh_mula) = ?
             UNION
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat, a.penganjur, a.stat_laksana
             FROM espel_kursus a, espel_dict_program b
@@ -718,18 +718,33 @@ class Kursus_model extends MY_Model
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_tamat) = ?
-            AND MONTH(a.tkh_tamat) = ?
             AND a.id NOT IN(SELECT a.id FROM espel_kursus a, hrmis_carta_organisasi b
                 WHERE 1=1
                 AND a.penganjur_id = b.buid
                 AND a.ptj_jabatan_id_created = ?
-                AND YEAR(a.tkh_mula) = ?
-                AND MONTH(a.tkh_mula) = ?)) as a ORDER BY a.tkh_mula";
+                AND YEAR(a.tkh_mula) = ?)) as a WHERE 1=1";
+
+        if($takwim->tajuk)
+        {
+            $sql .= " AND a.tajuk like '%" . $takwim->tajuk . "%'";
+        }
+
+        if($takwim->bulan)
+        {
+            $sql .= "  AND month(a.tkh_mula) = " . $takwim->bulan;
+        }
+
+        if($takwim->status)
+        {
+            $sql .= "  AND a.stat_laksana = '" . $takwim->status . "'";
+        }
+
+        $sql .= " ORDER BY a.tkh_mula";
 
         $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
+            $ptj_jabatan_id,$takwim->tahun,
+            $ptj_jabatan_id,$takwim->tahun,
+            $ptj_jabatan_id,$takwim->tahun]
         );
 
         if($rst->num_rows())
@@ -765,7 +780,19 @@ class Kursus_model extends MY_Model
                 AND a.penganjur_id = b.buid
                 AND a.stat_laksana = 'L'
                 AND a.ptj_jabatan_id_created = ?
-                AND YEAR(a.tkh_mula) = ?)) as a ORDER BY a.tkh_mula";
+                AND YEAR(a.tkh_mula) = ?)) as a WHERE 1=1";
+        
+        if($takwim->tajuk)
+        {
+            $sql .= " AND a.tajuk like '%" . $takwim->tajuk . "%'";
+        }
+
+        if($takwim->bulan)
+        {
+            $sql .= "  AND month(a.tkh_mula) = " . $takwim->bulan;
+        }
+
+        $sql .= " ORDER BY a.tkh_mula";
 
         $rst = $this->db->query($sql,[
             $ptj_jabatan_id,$takwim->tahun,
@@ -905,5 +932,14 @@ class Kursus_model extends MY_Model
             AND a.id = ?";
 
         return $this->db->query($sql,[$id])->row();    
+    }
+
+    public function sen_tahun()
+    {
+        $sql = 'SELECT DISTINCT
+            year(espel_kursus.tkh_mula) as tahun
+            FROM espel_kursus
+            order by tahun desc';
+        return $this->db->query($sql)->result();            
     }
 }

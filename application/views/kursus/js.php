@@ -18,11 +18,10 @@
         if(sen_kursus.length != 0){
             for(i = 1; i<=31; i++){
                 var tkh_cal = moment(tahun + '-' + bulan + '-' + i.toString().padStart(2,'0'));
-                
                 events_s = sen_kursus.filter(function(kursus){
                     return tkh_cal.isSame(kursus.mula)
                 });
-                
+
                 events_r = sen_kursus.filter(function(kursus){
                     return tkh_cal.isBetween(kursus.mula, kursus.tamat)
                 });
@@ -37,7 +36,9 @@
                     $("#cell-"+i).parent().append(linkEvent(element));
                 });
                 events_e.forEach(function(element){
-                    $("#cell-"+i).parent().append(linkEvent(element));
+                    if(element.mula != element.tamat) {
+                        $("#cell-"+i).parent().append(linkEvent(element));
+                    }
                 });
             }
         }
@@ -51,9 +52,10 @@
         var tkhTamat;
 
         tkhMula = moment(element.tkh_mula);
-        tkhTamat = moment(element.tkh_tamat);
-
-        if(!tkhMula.isBefore(now)){
+        tkhTamat = moment(element.tkh_tamat);             
+    
+        if(element.stat_laksana == 'R')
+        {
             text = text + "<div class=\"event\"> \
                 <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + element.id + " \"> " + element.tajuk + "</a>\
                 </div> \
@@ -61,8 +63,19 @@
                     " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
                 </div> \
             </div>";
-            return text;
         }
+        else
+        {
+            text = text + "<div class=\"event pass\"> \
+            <div class=\"event-desc\">" + element.tajuk + "\
+            </div> \
+            <div class=\"event-time\"> \
+                " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+            </div> \
+        </div>";
+
+        }
+        return text;
     }
 
     function genCell(i){
