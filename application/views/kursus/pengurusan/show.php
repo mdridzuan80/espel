@@ -44,7 +44,7 @@
                 </div>
                 <div class="count">&nbsp;</div>
 
-                <h3>Pengesahan Kehadiran</h3>
+                <h3><a href="<?=base_url('kursus/kedudukan_pengesahan')?>">Pengesahan Kehadiran</a></h3>
                 <p>Mengesahkan kehadiran kursus yang dianjurkan</p>
               </div>
             </div>
