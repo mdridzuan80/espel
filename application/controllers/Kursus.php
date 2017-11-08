@@ -2048,7 +2048,11 @@ class Kursus extends MY_Controller
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
         $data['jabatan_id'] = $this->profil->get($this->appsess->getSessionData('username'))->jabatan_id;
         $data['objJabatan'] = $this->jabatan;
-        $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id,[]);
+
+        $filter = initObj([
+        ]);
+
+        $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id,$filter);
 
         return $this->renderView('calon/show_sah', $data,['embedjs'=>[$this->load->view('calon/calon_sah_js','',TRUE)]]);
     }
