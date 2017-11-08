@@ -1690,6 +1690,7 @@ class Kursus extends MY_Controller
 
         $filter = initObj([
             'nama' => $this->input->post('nama'),
+            'nokp' => $this->input->post('nokp'),
 			'jabatan_id' => $this->input->post('jabatanID'),
             'kumpulan' => $this->input->post('kumpulan'),
             'gred' => $this->input->post('gred'),
@@ -1709,6 +1710,7 @@ class Kursus extends MY_Controller
 
         $filter = initObj([
             'nama' => $this->input->post('nama'),
+            'nokp' => $this->input->post('nokp'),
 			'jabatan_id' => $this->input->post('jabatanID'),
             'kumpulan' => $this->input->post('kumpulan'),
             'gred' => $this->input->post('gred'),

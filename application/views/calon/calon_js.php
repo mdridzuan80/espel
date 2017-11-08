@@ -9,6 +9,7 @@ $(document).ready(function() {
         };
         var filter = {
             nama: null,
+            nokp: null,
             jabatanID: <?= $jabatan_id ?>,
             kumpulan: null,
             gred: null,
@@ -27,6 +28,7 @@ $(document).ready(function() {
             e.preventDefault();
 
             filter.nama = $('#txtNama').val();
+            filter.nokp = $('#txtNoKP').val();
             filter.jabatanID = $('#comJabatan').val();
             filter.kumpulan = $('#comKelas').val(),
             filter.gred = $('#comGred').val(),

@@ -66,6 +66,11 @@ class Mohon_kursus_model extends MY_Model
             $this->db->like('b.nama', $filter->nama);
         }
 
+        if($filter->nokp)
+        {
+            $this->db->like('b.nokp', $filter->nokp);
+        }
+
         if($filter->jabatan_id && $filter->sub_jabatan)
         {
             $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter->jabatan_id));
@@ -114,6 +119,11 @@ class Mohon_kursus_model extends MY_Model
         if($filter->nama)
         {
             $sql .= ' and a.nama like \'%' . $filter->nama . '%\'';
+        }
+
+        if($filter->nokp)
+        {
+            $sql .= ' and a.nokp like \'%' . $filter->nokp . '%\'';
         }
 
         if($filter->jabatan_id && $filter->sub_jabatan)
