@@ -153,4 +153,9 @@ class Cron extends CI_Controller
         $mail_conf = $this->mail_conf->get($id);
         $this->appnotify->test_send($mail_conf,$mail);
     }
+
+    public function get_sub()
+    {
+        dd(jabatan_not_in('820921045240'));
+    }
 }

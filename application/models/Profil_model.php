@@ -62,7 +62,7 @@ class Profil_model extends MY_Model
             if($filter['nokp'])
                 $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
 
-            if($filter['jabatan_id'] and $filter['sub_jabatan'])
+            if($filter['jabatan_id'] && $filter['sub_jabatan'])
             {
                 $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter['jabatan_id']));
                 array_push($all_jabatan,$filter['jabatan_id']);
@@ -71,6 +71,15 @@ class Profil_model extends MY_Model
             else
             {
                 $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
+            }
+
+            if($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != '1' && $this->appsess->getSessionData("kumpulan") != '2')
+            {
+                $status_tree = jabatan_not_in($this->appsess->getSessionData('username'));
+                if($status_tree['status_subtree'] == 'F')
+                {
+                    $sql .= ' AND espel_profil.jabatan_id not in (' . implode(",", $status_tree['not_in']) . ')';
+                }
             }
 
             if($filter['kump_id'])

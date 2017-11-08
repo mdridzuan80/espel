@@ -8,10 +8,12 @@ $(document).ready(function() {
             kursus_id: $('#kursus_id').val()
         };
         var filter = {
+            nama: null,
             jabatanID: <?= $jabatan_id ?>,
             kumpulan: null,
             gred: null,
-            hari: null
+            hari: null,
+            sub_jabatan: 1,
         };
 
         createCalon(curview, filter);
@@ -24,10 +26,12 @@ $(document).ready(function() {
         $('#cmdDoTapis').click(function(e){
             e.preventDefault();
 
+            filter.nama = $('#txtNama').val();
             filter.jabatanID = $('#comJabatan').val();
             filter.kumpulan = $('#comKelas').val(),
             filter.gred = $('#comGred').val(),
-            filter.hari = $('#comHari').val()
+            filter.hari = $('#comHari').val(),
+            filter.sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
 
             createCalon(curview, filter);
         });
@@ -74,9 +78,11 @@ $(document).ready(function() {
                 break;
 
                 case 2:
+                    var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span>Loading...</span>');
+
                     $('#cur_title').text(curview.curtitle);
                     $('#cmdSenarai').text(curview.curbutton);
-
+                    $('#sen_calon').html(loader);
                     $.ajax({
                         method: 'post',
                         url: base_url + 'kursus/ajax_get_pencalonan/' + curview.kursus_id,

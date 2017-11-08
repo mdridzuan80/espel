@@ -53,7 +53,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div style="float:right">
                                 <input id="kursus_id" type="hidden" value="<?=$kursus->id?>">
-                                <a id="cmdShowTapis" class="btn btn-primary btn-sm" style="margin:0"><i class="fa fa-filter"></i></a>
+                                <a id="cmdShowTapis" class="btn btn-default btn-sm" style="margin:0"><i class="fa fa-search"></i> Carian</a>
                                 <a id="cmdSenarai" class="btn btn-primary btn-sm" style="margin:0"></a>
                             </div>
                             <div class="clearfix"></div>
@@ -79,11 +79,23 @@
                 <?php endif?>
                 <?php endif?>
                 <div id="filter" style="display:none">
-                    <form method="post" class="form-horizontal form-label-left">
+                <form method="post" class="form-horizontal form-label-left">
+                    <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="txtNama" name="txtNama" class="form-control col-md-7 col-xs-12 input-sm" >
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jabatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$jabatan_id?>" >
+                       <table>
+                        <tr>
+                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?= $jabatan_id ?>" ></td>
+                          <td>&nbsp;Lihat&nbsp;Sub&nbsp;Jabatan&nbsp;</td>
+                          <td><input id="chk_subjabatan" type="checkbox" checked></td>
+                        <tr>
+                      </table>
                     </div>
                   </div>
                   <div class="form-group">
@@ -122,8 +134,7 @@
                     </div>
                   </div>
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Tapis</button>
-                        <button class="btn btn-primary btn-sm" type="reset">Reset</button>
+                        <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Cari</button>
                     </div>
                 </form>
                 <br/>

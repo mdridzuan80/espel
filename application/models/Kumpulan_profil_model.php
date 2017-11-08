@@ -62,4 +62,10 @@ class Kumpulan_profil_model extends MY_Model
         $sql = 'select * from espel_kumpulan_profil where profil_nokp = ? and kumpulan_id = ?';
         return $this->db->query($sql,[$nokp,$role])->row();
     }
+
+    public function get_jabatan_bawah($sen_jabatan)
+    {
+        $sql = "select * from espel_kumpulan_profil where 1=1 and jabatan_id in (" . implode(',',$sen_jabatan) . ")";
+        return $this->db->query($sql)->result();
+    }
 }

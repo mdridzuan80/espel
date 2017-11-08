@@ -354,3 +354,49 @@ class Obj {
         $this->{$name} = $value;
     }
 }
+// paramater untuk nokp penyelaras sahaja
+function jabatan_not_in($nokp_penyelaras)
+{
+    $data = [];
+    $notin = [];
+    $CI =& get_instance();
+    $CI->load->model("kumpulan_profil_model","kumpulan_profil");
+    $kump = $CI->kumpulan_profil->get_by(['profil_nokp'=>$nokp_penyelaras,'kumpulan_id'=>3]);
+    $data['status_subtree'] = $kump->sub_tree;
+
+    if($kump->sub_tree == 'F')
+    {
+        $subtree = unserialize($kump->inc_jab);
+        
+        deleteElement($kump->jabatan_id, $subtree);
+
+        $related = $CI->kumpulan_profil->get_jabatan_bawah(($subtree) ? $subtree : [0]);
+        
+        if(count($related) != 0)
+        {
+            foreach($related as $relate)
+            {
+                $notin[] = unserialize($relate->inc_jab);
+            }
+            $data['not_in'] = flatten_array($notin);
+        }
+        else
+        {
+            $data['not_in'] = [0];
+        }
+    }
+    
+    return $data;
+}
+/**
+ * Remove an element from an array.
+ * 
+ * @param string|int $element
+ * @param array $array
+ */
+function deleteElement($element, &$array){
+    $index = array_search($element, $array);
+    if($index !== false){
+        unset($array[$index]);
+    }
+}

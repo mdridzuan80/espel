@@ -1455,7 +1455,6 @@ class Kursus extends MY_Controller
                     if($this->kursus->update($row,['stat_hadir'=>$this->input->post('hadir')]))
                     {
                         //$this->output->set_status_header(401);
-                        //dd($this->db->last_query());
                         //jabatan profil
                         $this->load->model('profil_model','profil');
                         $this->load->model('hrmis_carta_model','jabatan');
@@ -1690,10 +1689,12 @@ class Kursus extends MY_Controller
         $this->load->model('mohon_kursus_model','mohon_kursus');
 
         $filter = initObj([
+            'nama' => $this->input->post('nama'),
 			'jabatan_id' => $this->input->post('jabatanID'),
             'kumpulan' => $this->input->post('kumpulan'),
             'gred' => $this->input->post('gred'),
             'hari' => $this->input->post('hari'),
+            'sub_jabatan' => $this->input->post('sub_jabatan'),
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id, $filter);
@@ -1707,10 +1708,12 @@ class Kursus extends MY_Controller
         $this->load->model('mohon_kursus_model','mohon_kursus');
 
         $filter = initObj([
+            'nama' => $this->input->post('nama'),
 			'jabatan_id' => $this->input->post('jabatanID'),
             'kumpulan' => $this->input->post('kumpulan'),
             'gred' => $this->input->post('gred'),
             'hari' => $this->input->post('hari'),
+            'sub_jabatan' => $this->input->post('sub_jabatan'),
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_pencalonan($kursus_id, $filter);
@@ -1912,7 +1915,6 @@ class Kursus extends MY_Controller
                             if ( ! $this->upload->do_upload('userfile'))
                             {
                                     $error = array('error' => $this->upload->display_errors());
-                                    dd($this->upload->display_errors());
                             }
                             else
                             {
@@ -2003,7 +2005,6 @@ class Kursus extends MY_Controller
                             if ( ! $this->upload->do_upload('userfile'))
                             {
                                     $error = array('error' => $this->upload->display_errors());
-                                    dd($this->upload->display_errors());
                             }
                             else
                             {

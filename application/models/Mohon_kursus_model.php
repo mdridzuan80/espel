@@ -47,7 +47,10 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_calon($Kursus_id, $filter)
     {
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
         $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
 
         $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
@@ -58,13 +61,20 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod');
         $this->db->where('a.kursus_id',$Kursus_id);
 
-
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
+        if($filter->nama)
         {
-            if($filter->jabatan_id != $jabatan_id)
-            {
-                $this->db->where('b.jabatan_id',$filter->jabatan_id);
-            }
+            $this->db->like('b.nama', $filter->nama);
+        }
+
+        if($filter->jabatan_id && $filter->sub_jabatan)
+        {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter->jabatan_id));
+            array_push($all_jabatan,$filter->jabatan_id);
+            $this->db->where_in('b.jabatan_id',implode(',',$all_jabatan));
+        }
+        else
+        {
+            $this->db->where_in('b.jabatan_id',$filter->jabatan_id);
         }
 
         if(isset($filter->kumpulan) && $filter->kumpulan)
@@ -76,14 +86,16 @@ class Mohon_kursus_model extends MY_Model
         {
             $this->db->where('b.gred_id',$filter->gred);
         }
-
         $rst = $this->db->get();
-        dd($this->db->last_query());
+        //dd($this->db->last_query());
         return $rst->result();
     }
 
     public function get_pencalonan($kursus_id, $filter)
     {
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
+
         $sql = 'select * from (SELECT a.nokp, a.nama, b.title jabatan, a.jabatan_id, a.gred_id, a.skim_id, 0 as hari
                 FROM espel_profil a, hrmis_carta_organisasi b
                 WHERE 1=1
@@ -99,9 +111,20 @@ class Mohon_kursus_model extends MY_Model
                 GROUP BY a.nokp, a.nama, c.title, a.jabatan_id, a.gred_id, a.skim_id) as a WHERE 1=1
                 AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = ' . $kursus_id .')';
 
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
+        if($filter->nama)
         {
-            $sql .= ' and a.jabatan_id = ' . $filter->jabatan_id;
+            $sql .= ' and a.nama like \'%' . $filter->nama . '%\'';
+        }
+
+        if($filter->jabatan_id && $filter->sub_jabatan)
+        {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter->jabatan_id));
+            array_push($all_jabatan,$filter->jabatan_id);
+            $sql .= ' and a.jabatan_id in(' . implode(',',$all_jabatan) . ')';
+        }
+        else
+        {
+            $sql .= ' and a.jabatan_id in(' . $filter->jabatan_id . ')';
         }
 
         if(isset($filter->kumpulan) && $filter->kumpulan)
@@ -128,7 +151,7 @@ class Mohon_kursus_model extends MY_Model
         }
 
         $rst = $this->db->query($sql);
-
+        //dd($this->db->last_query());
         return $rst->result();
     }
 
