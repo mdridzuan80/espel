@@ -100,7 +100,7 @@ $(document).ready(function() {
                                         action: function ( e, dt, node, config ) {
                                             e.preventDefault();
                                             var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': curview.kursus_id};
-                                            $(":checked").each(function() {
+                                            $(".chkCalon:checked").each(function() {
                                               data['chkKehadiran[]'].push($(this).val());
                                             });
 

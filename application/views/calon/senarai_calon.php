@@ -13,7 +13,7 @@
             <tbody>
                 <?php foreach($sen_calon as $calon):?>
               <tr>
-                <td><input type="checkbox" value="<?=$calon->nokp?>"></td>
+                <td><input class="chkCalon" type="checkbox" value="<?=$calon->nokp?>"></td>
                 <td><?=$calon->nokp?></td>
                 <td><?=$calon->nama?></td>
                 <td><?=$calon->jabatan?></td>
