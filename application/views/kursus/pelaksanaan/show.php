@@ -109,24 +109,24 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nama">No. LO<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nama">No. LO
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO" value="<?=(isset($belanja->no_lo)) ? $belanja->no_lo : ''?>" required>
+                            <input type="text" id="txtNoLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtNoLO" value="<?=(isset($belanja->no_lo)) ? $belanja->no_lo : ''?>" >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Host">Tarikh LO<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Host">Tarikh LO
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO" value="<?=(isset($belanja->tkh_lo)) ? date('d-m-Y',strtotime($belanja->tkh_lo)) : ''?>" required>
+                            <input type="text" id="txtTkhLO" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtTkhLO" value="<?=(isset($belanja->tkh_lo)) ? date('d-m-Y',strtotime($belanja->tkh_lo)) : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Jumlah<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Alamat e-mail">Jumlah
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah" value="<?=(isset($belanja->jumlah)) ? $belanja->jumlah : ''?>" required>
+                            <input type="text" id="txtJumlah" required="required" class="form-control col-md-7 col-xs-12 input-sm" name="txtJumlah" value="<?=(isset($belanja->jumlah)) ? $belanja->jumlah : ''?>">
                         </div>
                     </div>
                     <div class="form-group">
