@@ -103,8 +103,8 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control input-sm" id="comStat" name="comStat" required>
-                                <option value="T">Tanggungan</option>
-                                <option value="S">Selesai</option>
+                                <option value="T" <?=(isset($belanja->stat_byr)) ? ($belanja->stat_byr=='T') ? 'selected' : '' : ''?>>Tanggungan</option>
+                                <option value="S" <?=(isset($belanja->stat_byr)) ? ($belanja->stat_byr=='S') ? 'selected' : '' : ''?>>Selesai</option>
                             </select>
                         </div>
                     </div>

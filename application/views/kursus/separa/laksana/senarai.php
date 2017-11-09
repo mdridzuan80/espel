@@ -26,17 +26,9 @@
                     <span class="label label-success">Selesai</span>
                     <?php endif ?>
                     <span class="label label-info"><?=$objMohonKursus->count_by('kursus_id', $permohonan->id)?> Peserta</span>
-                    <?php if($permohonan->peruntukan_id) : ?>
-                      <?php if($permohonan->stat_byr == 'T') : ?>
-                        <span class="label label-alert">Bayaran : Tanggungan</span>
-                      <?php endif ?>
-                       <?php if($permohonan->stat_byr == 'S') : ?>
-                        <span class="label label-success">Bayaran : Selesai</span>
-                      <?php endif ?>
-                    <?php endif ?>
                 </td>
                 <td align="center">
-                    <a href="<?=base_url('kursus/separa_pelaksanaan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pelaksanaan</a>
+                    <a href="<?=base_url('kursus/pelaksanaan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pelaksanaan</a>
                 </td>
               </tr>
           <?php endforeach?>

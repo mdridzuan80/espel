@@ -55,10 +55,10 @@ class Mohon_kursus_model extends MY_Model
 
         $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
         $this->db->from($this->_table . ' a');
-        $this->db->join('espel_profil b', 'a.nokp = b.nokp');
+        $this->db->join('espel_profil b', 'a.nokp = b.nokp', 'left');
         $this->db->join('hrmis_carta_organisasi c', 'b.jabatan_id = c.buid');
         $this->db->join('hrmis_kumpulan e', 'b.kelas_id = e.kod');
-        $this->db->join('hrmis_skim f', 'b.skim_id = f.kod');
+        $this->db->join('hrmis_skim f', 'b.skim_id = f.kod', 'left');
         $this->db->where('a.kursus_id',$Kursus_id);
 
         if($filter->nama)
@@ -75,11 +75,11 @@ class Mohon_kursus_model extends MY_Model
         {
             $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter->jabatan_id));
             array_push($all_jabatan,$filter->jabatan_id);
-            $this->db->where_in('b.jabatan_id',implode(',',$all_jabatan));
+            $this->db->where_in('b.jabatan_id',$all_jabatan);
         }
         else
         {
-            $this->db->where_in('b.jabatan_id',$filter->jabatan_id);
+            $this->db->where('b.jabatan_id',$filter->jabatan_id);
         }
 
         if(isset($filter->kumpulan) && $filter->kumpulan)

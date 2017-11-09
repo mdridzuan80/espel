@@ -85,6 +85,10 @@ $(document).ready(function() {
         if(nilai == 5){
             viewPanelKursus(false,false,false,true);
         }
+        if (nilai == 0) {
+            viewPanelKursus(false, false, false, false);
+        }
+        $('.elPeruntukan').hide();
     });
 
     $("#cmdHadir").click(function(e){
