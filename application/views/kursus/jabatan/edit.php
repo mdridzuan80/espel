@@ -27,7 +27,7 @@
 </div>
 
 <?php if($kursus->program_id == 1 || $kursus->program_id == 2):?>
-<div class="row espel_latihan">
+<div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
@@ -173,7 +173,7 @@
 
 <?php if($kursus->program_id == 3):?>
 <!-- pembelajaran -->
-<div class="row espel_pembelajaran1">
+<div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
@@ -319,7 +319,7 @@
 
 <?php if($kursus->program_id == 4):?>
 <!-- pembelajaran -->
-<div class="row espel_pembelajaran2">
+<div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
@@ -465,7 +465,7 @@
 
 <?php if($kursus->program_id == 5):?>
 <!-- Kendiri -->
-<div class="row espel_kendiri" style="display:none">
+<div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
@@ -563,7 +563,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $Kursus->telefon ?>">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
