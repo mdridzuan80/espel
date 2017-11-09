@@ -1461,6 +1461,7 @@ class Kursus extends MY_Controller
                         $this->load->model('kumpulan_profil_model','kumpulan_profil');
                         $this->load->model('hrmis_skim_model', 'mjawatan');
                         $this->load->model('hrmis_carta_model', 'mjabatan');
+                        $this->load->model('program_model', 'mprogram');
                         
                         $elements = $this->jabatan->senarai_penyelaras();
                         $jabatan = $this->profil->get($this->kursus->get($row)->nokp)->jabatan_id;
@@ -1470,10 +1471,12 @@ class Kursus extends MY_Controller
 
                         $mJawatan = $this->mjawatan;
                         $mJabatan = $this->mjabatan;
+                        $mProgram = $this->mjabatan;
 
                         $kursus = $this->kursus->get($row);
                         $pemohon = $this->profil->get_by('nokp',$kursus->nokp);
-                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE);
+                        $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
+                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=>$mProgram],TRUE);
 
                         foreach($sen_penyelaras as $penyelaras)
                         {

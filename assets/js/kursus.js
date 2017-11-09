@@ -90,7 +90,7 @@ $(document).ready(function() {
     $("#cmdHadir").click(function(e){
         e.preventDefault();
         var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':''};
-        $(":checked").each(function() {
+        $(".chkKursusLuar:checked").each(function() {
           data['chkKehadiran[]'].push($(this).val());
         });
 
@@ -102,6 +102,26 @@ $(document).ready(function() {
                 location.reload(true);
             },
             error: function(jqXHR,textStatus,errorThrown){
+                alert(errorThrown);
+            }
+        });
+    });
+
+    $("#cmdTidahHadir").click(function (e) {
+        e.preventDefault();
+        var data = { 'chkKehadiran[]': [], 'hadir': 'T', 'submit': '' };
+        $(".chkKursusLuar:checked").each(function () {
+            data['chkKehadiran[]'].push($(this).val());
+        });
+
+        $.ajax({
+            data: data,
+            method: 'post',
+            url: $(location).attr('href'),
+            success: function () {
+                location.reload(true);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
             }
         });
