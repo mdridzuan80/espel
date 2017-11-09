@@ -26,6 +26,10 @@
                     <span class="label label-success">Selesai</span>
                     <?php endif ?>
                     <span class="label label-info"><?=$objMohonKursus->count_by('kursus_id', $permohonan->id)?> Peserta</span>
+                    
+                    <?php if($objMohonKursus->get_count_sah($permohonan->id)) : ?>
+                      <span class="label label-warning">Belum Sah : <?= $objMohonKursus->get_count_sah($permohonan->id) ?></span>
+                    <?php endif ?>
                 </td>
                 <td align="center">
                     <a href="<?=base_url('kursus/sah_calon/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pengesahan Kehadiran</a>

@@ -30,7 +30,7 @@
                       <?php if($permohonan->stat_byr == 'T') : ?>
                         <span class="label label-alert">Bayaran : Tanggungan</span>
                       <?php endif ?>
-                       <?php if($permohonan->stat_byr == 'S') : ?>
+                      <?php if($permohonan->stat_byr == 'S') : ?>
                         <span class="label label-success">Bayaran : Selesai</span>
                       <?php endif ?>
                     <?php endif ?>

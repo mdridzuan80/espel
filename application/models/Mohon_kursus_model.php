@@ -45,6 +45,12 @@ class Mohon_kursus_model extends MY_Model
         return $this->db->get()->result();
     }
 
+    public function get_count_sah($kursus_id)
+    {
+        $sql = "select * from espel_permohonan_kursus where 1=1 and kursus_id = ? and stat_hadir is null ";
+        return $this->db->query($sql,[$kursus_id])->num_rows();
+    }
+
     public function get_calon($Kursus_id, $filter)
     {
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
@@ -60,7 +66,7 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('hrmis_kumpulan e', 'b.kelas_id = e.kod');
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod', 'left');
         $this->db->where('a.kursus_id',$Kursus_id);
-
+        
         if($filter->nama)
         {
             $this->db->like('b.nama', $filter->nama);
@@ -79,7 +85,10 @@ class Mohon_kursus_model extends MY_Model
         }
         else
         {
-            $this->db->where('b.jabatan_id',$filter->jabatan_id);
+            if($filter->jabatan_id)
+            {
+                $this->db->where('b.jabatan_id',$filter->jabatan_id);
+            }
         }
 
         if(isset($filter->kumpulan) && $filter->kumpulan)
