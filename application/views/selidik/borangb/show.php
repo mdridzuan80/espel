@@ -30,7 +30,7 @@
                   <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                   <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                   <td align="center">
-                      <a href="<?=base_url('selidik/borangb_jawab/' . $kursus->borangaid)?>" class="btn btn-primary btn-xs" title="Menjawab soal selidik">Jawab</a>
+                      <a href="<?=base_url('selidik/borangb_jawab/' . $kursus->nokp . '/' . $kursus->kursus_id )?>" class="btn btn-primary btn-xs" title="Menjawab soal selidik">Jawab</a>
                   </td>
                 </tr>
                 <?php endforeach?>

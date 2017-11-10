@@ -147,46 +147,104 @@ class Boranga_model extends MY_Model
     public function analisa_reaksi($sen_jabatan, $tahun)
     {
         $sql = "SELECT
-            Sum(view_analisa_boranga_reaksi.`b1-1`) AS `b1-1`,
-            Sum(view_analisa_boranga_reaksi.`b2-1`) AS `b2-1`,
-            Sum(view_analisa_boranga_reaksi.`b3-1`) AS `b3-1`,
-            Sum(view_analisa_boranga_reaksi.`b4-1`) AS `b4-1`,
-            Sum(view_analisa_boranga_reaksi.`b5-1`) AS `b5-1`,
-            Sum(view_analisa_boranga_reaksi.`b6-1`) AS `b6-1`,
-            Sum(view_analisa_boranga_reaksi.`b7-1`) AS `b7-1`,
-            Sum(view_analisa_boranga_reaksi.`b8-1`) AS `b8-1`,
-            Sum(view_analisa_boranga_reaksi.`b1-2`) AS `b1-2`,
-            Sum(view_analisa_boranga_reaksi.`b2-2`) AS `b2-2`,
-            Sum(view_analisa_boranga_reaksi.`b3-2`) AS `b3-2`,
-            Sum(view_analisa_boranga_reaksi.`b4-2`) AS `b4-2`,
-            Sum(view_analisa_boranga_reaksi.`b5-2`) AS `b5-2`,
-            Sum(view_analisa_boranga_reaksi.`b6-2`) AS `b6-2`,
-            Sum(view_analisa_boranga_reaksi.`b7-2`) AS `b7-2`,
-            Sum(view_analisa_boranga_reaksi.`b8-2`) AS `b8-2`,
-            Sum(view_analisa_boranga_reaksi.`b1-3`) AS `b1-3`,
-            Sum(view_analisa_boranga_reaksi.`b2-3`) AS `b2-3`,
-            Sum(view_analisa_boranga_reaksi.`b3-3`) AS `b3-3`,
-            Sum(view_analisa_boranga_reaksi.`b4-3`) AS `b4-3`,
-            Sum(view_analisa_boranga_reaksi.`b5-3`) AS `b5-3`,
-            Sum(view_analisa_boranga_reaksi.`b6-3`) AS `b6-3`,
-            Sum(view_analisa_boranga_reaksi.`b7-3`) AS `b7-3`,
-            Sum(view_analisa_boranga_reaksi.`b8-3`) AS `b8-3`,
-            Sum(view_analisa_boranga_reaksi.`b1-4`) AS `b1-4`,
-            Sum(view_analisa_boranga_reaksi.`b2-4`) AS `b2-4`,
-            Sum(view_analisa_boranga_reaksi.`b3-4`) AS `b3-4`,
-            Sum(view_analisa_boranga_reaksi.`b4-4`) AS `b4-4`,
-            Sum(view_analisa_boranga_reaksi.`b5-4`) AS `b5-4`,
-            Sum(view_analisa_boranga_reaksi.`b6-4`) AS `b6-4`,
-            Sum(view_analisa_boranga_reaksi.`b7-4`) AS `b7-4`,
-            Sum(view_analisa_boranga_reaksi.`b8-4`) AS `b8-4`
+            Sum(a.`b1-1`) AS `b1-1`,
+            Sum(a.`b2-1`) AS `b2-1`,
+            Sum(a.`b3-1`) AS `b3-1`,
+            Sum(a.`b4-1`) AS `b4-1`,
+            Sum(a.`b5-1`) AS `b5-1`,
+            Sum(a.`b6-1`) AS `b6-1`,
+            Sum(a.`b7-1`) AS `b7-1`,
+            Sum(a.`b8-1`) AS `b8-1`,
+            Sum(a.`b1-2`) AS `b1-2`,
+            Sum(a.`b2-2`) AS `b2-2`,
+            Sum(a.`b3-2`) AS `b3-2`,
+            Sum(a.`b4-2`) AS `b4-2`,
+            Sum(a.`b5-2`) AS `b5-2`,
+            Sum(a.`b6-2`) AS `b6-2`,
+            Sum(a.`b7-2`) AS `b7-2`,
+            Sum(a.`b8-2`) AS `b8-2`,
+            Sum(a.`b1-3`) AS `b1-3`,
+            Sum(a.`b2-3`) AS `b2-3`,
+            Sum(a.`b3-3`) AS `b3-3`,
+            Sum(a.`b4-3`) AS `b4-3`,
+            Sum(a.`b5-3`) AS `b5-3`,
+            Sum(a.`b6-3`) AS `b6-3`,
+            Sum(a.`b7-3`) AS `b7-3`,
+            Sum(a.`b8-3`) AS `b8-3`,
+            Sum(a.`b1-4`) AS `b1-4`,
+            Sum(a.`b2-4`) AS `b2-4`,
+            Sum(a.`b3-4`) AS `b3-4`,
+            Sum(a.`b4-4`) AS `b4-4`,
+            Sum(a.`b5-4`) AS `b5-4`,
+            Sum(a.`b6-4`) AS `b6-4`,
+            Sum(a.`b7-4`) AS `b7-4`,
+            Sum(a.`b8-4`) AS `b8-4`
             FROM
-            view_analisa_boranga_reaksi
+            view_analisa_boranga_reaksi a
             WHERE 1=1
-            AND view_analisa_boranga_reaksi.ptj_jabatan_id_created in ?
-            AND view_analisa_boranga_reaksi.tahun = ?
-            GROUP BY
-            view_analisa_boranga_reaksi.ptj_jabatan_id_created,
-            view_analisa_boranga_reaksi.tahun";
+            AND a.ptj_jabatan_id_created in ?
+            AND a.tahun = ?";
+
+        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
+    }
+
+    public function analisa_pembelajaran($sen_jabatan, $tahun)
+    {
+        $sql = "SELECT
+            Sum(a.`c1-1`) AS `c1-1`,
+            Sum(a.`c2-1`) AS `c2-1`,
+            Sum(a.`c3-1`) AS `c3-1`,
+            Sum(a.`c4-1`) AS `c4-1`,
+            Sum(a.`c5-1`) AS `c5-1`,
+            Sum(a.`c6-1`) AS `c6-1`,
+            Sum(a.`c7-1`) AS `c7-1`,
+            Sum(a.`c8-1`) AS `c8-1`,
+            Sum(a.`c9-1`) AS `c9-1`,
+            Sum(a.`c10-1`) AS `c10-1`,
+            Sum(a.`c11-1`) AS `c11-1`,
+            Sum(a.`c12-1`) AS `c12-1`,
+            Sum(a.`c1-2`) AS `c1-2`,
+            Sum(a.`c2-2`) AS `c2-2`,
+            Sum(a.`c3-2`) AS `c3-2`,
+            Sum(a.`c4-2`) AS `c4-2`,
+            Sum(a.`c5-2`) AS `c5-2`,
+            Sum(a.`c6-2`) AS `c6-2`,
+            Sum(a.`c7-2`) AS `c7-2`,
+            Sum(a.`c8-2`) AS `c8-2`,
+            Sum(a.`c9-2`) AS `c9-2`,
+            Sum(a.`c10-2`) AS `c10-2`,
+            Sum(a.`c11-2`) AS `c11-2`,
+            Sum(a.`c12-2`) AS `c12-2`,
+            Sum(a.`c1-3`) AS `c1-3`,
+            Sum(a.`c2-3`) AS `c2-3`,
+            Sum(a.`c3-3`) AS `c3-3`,
+            Sum(a.`c4-3`) AS `c4-3`,
+            Sum(a.`c5-3`) AS `c5-3`,
+            Sum(a.`c6-3`) AS `c6-3`,
+            Sum(a.`c7-3`) AS `c7-3`,
+            Sum(a.`c8-3`) AS `c8-3`,
+            Sum(a.`c9-3`) AS `c9-3`,
+            Sum(a.`c10-3`) AS `c10-3`,
+            Sum(a.`c11-3`) AS `c11-3`,
+            Sum(a.`c12-3`) AS `c12-3`,
+            Sum(a.`c1-4`) AS `c1-4`,
+            Sum(a.`c2-4`) AS `c2-4`,
+            Sum(a.`c3-4`) AS `c3-4`,
+            Sum(a.`c4-4`) AS `c4-4`,
+            Sum(a.`c5-4`) AS `c5-4`,
+            Sum(a.`c6-4`) AS `c6-4`,
+            Sum(a.`c7-4`) AS `c7-4`,
+            Sum(a.`c8-4`) AS `c8-4`,
+            Sum(a.`c9-4`) AS `c9-4`,
+            Sum(a.`c10-4`) AS `c10-4`,
+            Sum(a.`c11-4`) AS `c11-4`,
+            Sum(a.`c12-4`) AS `c12-4`
+            FROM
+            view_analisa_boranga_pembelajaran a
+            WHERE 1=1
+            AND a.ptj_jabatan_id_created in ?
+            AND a.tahun = ?";
+            
         return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
     }
 }

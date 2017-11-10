@@ -151,18 +151,33 @@ class Welcome extends MY_Controller {
 		$this->load->model('boranga_model','boranga');
 		$this->load->model("hrmis_carta_model","jabatan");
 		$this->load->model('kumpulan_profil_model','kumpulan_profil');
+		
+		$jab_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+
+        $all_jabatan = $this->jabatan->as_array()->get_all();
+		$related = flattenArray(relatedJabatan($all_jabatan,$jab_id));
+        array_push($related,$jab_id);
+
+		$this->output
+		->set_content_type('application/json')
+		->set_output(json_encode($this->boranga->analisa_reaksi($related,date('Y'))));
+	}
+
+	public function analisa_pembelajaran()
+	{
+		$this->load->model('boranga_model','boranga');
+		$this->load->model("hrmis_carta_model","jabatan");
+		$this->load->model('kumpulan_profil_model','kumpulan_profil');
         
         $jab_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
 
-        $flatted = flatten_array(
-            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
-        );
-		array_push($flatted,$jab_id);
-
-		// buildTreeParentInc($this->jabatan->as_array()->get_all(),$id,$id)
+		$all_jabatan = $this->jabatan->as_array()->get_all();
+		$related = flattenArray(relatedJabatan($all_jabatan,$jab_id));
+        array_push($related,$jab_id);
+        
 		
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode($this->boranga->analisa_reaksi($flatted,date('Y'))));
+		->set_output(json_encode($this->boranga->analisa_pembelajaran($related,date('Y'))));
 	}
 }

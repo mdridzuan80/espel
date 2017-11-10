@@ -584,7 +584,6 @@ class Kursus extends MY_Controller
                 $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
                 $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',',$peruntukan));
                 $plugins = $this->plugins();
-                $plugins['embedjs'][] = $this->load->view('kursus/separa/jabatan/js','',TRUE);
                 
                 return $this->renderView("kursus/separa/jabatan/daftar",$data,$plugins);
             }
@@ -706,7 +705,7 @@ class Kursus extends MY_Controller
                 {
                     $this->appsess->setFlashSession("success", false);
                 }
-                redirect('kursus/takwim');
+                redirect('kursus/separa_takwim');
             }
         }
         else

@@ -80,12 +80,12 @@ class Selidik extends MY_Controller {
 		$this->load->model('profil_model','profil');
 		$this->load->model('borangb_model','borangb');
 
-		$data["sen_borangb"] = $this->borangb->senarai_boranga_related(implode(',',$this->profil->sen_pyd($this->appsess->getSessionData('username'))));
+		$data["sen_borangb"] = $this->borangb->senarai_boranga_related($this->appsess->getSessionData('username'));
 
 		return $this->renderView("selidik/borangb/show", $data);
 	}
 
-	public function borangb_jawab($boranga_id)
+	public function borangb_jawab($nokp_peserta,$kursus_id)
 	{
 		if(!$this->exist("submit"))
 		{
@@ -95,9 +95,8 @@ class Selidik extends MY_Controller {
 			$this->load->model('hrmis_skim_model','hrmis_skim');
 			$this->load->model('hrmis_carta_model','hrmis_carta');
 
-			$rekodBorangA = $this->boranga->get($boranga_id);
-			$data['kursus'] = $this->kursus->get($rekodBorangA->kursus_id);
-			$data['profil'] = $this->profil->get($rekodBorangA->nokp);
+			$data['kursus'] = $this->kursus->get($kursus_id);
+			$data['profil'] = $this->profil->get($nokp_peserta);
 			$data['objSkim'] = $this->hrmis_skim;
 			$data['objCarta'] = $this->hrmis_carta;
 			
@@ -108,7 +107,8 @@ class Selidik extends MY_Controller {
 			$this->load->model('borangb_model','borangb');
 
 			$data = [
-				'boranga_id' => $boranga_id,
+				'kursus_id' => $kursus_id,
+				'nokp_peserta' => $nokp_peserta,
 				'nokp' => $this->appsess->getSessionData('username'),
 				'kat_kursus' => $this->input->post('comKategoriKursus'),
 				'tarikh' => date('Y-m-d H:i:s'),
@@ -136,7 +136,7 @@ class Selidik extends MY_Controller {
 	public function analisa_boranga()
 	{
 		$plugins = ['embedjs'=>[
-			$this->load->view('analisa/boranga/js01.php','',TRUE)
+			$this->load->view('analisa/boranga/js01','',TRUE)
 		]];
 		return $this->renderView('analisa/boranga/show','',$plugins);
 	}

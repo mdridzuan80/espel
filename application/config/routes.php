@@ -64,6 +64,7 @@ $route["api/get_event_all/(:num)/(:num)"] = "welcome/get_event_all/$1/$2";
 $route["api/get_laporan_gred/(:any)/(:any)"] = "welcome/get_laporan_gred/$1/$2";
 $route["api/get_laporan_skim/(:any)"] = "welcome/get_laporan_skim/$1";
 $route["api/analisa_reaksi"] = "welcome/analisa_reaksi";
+$route["api/analisa_pembelajaran"] = "welcome/analisa_pembelajaran";
 
 $route['profil/(:any)'] = "profil/index/$1";
 $route['profil/(:any)/kump'] = "profil/kumpulan/$1";
