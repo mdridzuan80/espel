@@ -80,6 +80,14 @@ class Profil extends MY_Controller
 				"profil_nokp" => $username,
 			];
 
+			if($this->input->post('comPeranan')==1 || $this->input->post('comPeranan')==2)
+			{
+				$selected = flattenArray(relatedJabatan($all_jabatan,$this->config->item('espel_default_jabatan_id')));
+				array_push($selected,$this->config->item('espel_default_jabatan_id'));
+				$data["inc_jab"] = serialize($selected);
+				$data['sub_tree'] = 'Y';
+			}
+
 			if($this->input->post('comPeranan')==3)
 			{
 				$data["jabatan_id"] = $this->input->post('comJabatanPenyelaras');
