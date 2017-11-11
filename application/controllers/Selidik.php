@@ -140,4 +140,13 @@ class Selidik extends MY_Controller {
 		]];
 		return $this->renderView('analisa/boranga/show','',$plugins);
 	}
+
+	public function analisa_borangb()
+	{
+		$plugins = ['embedjs'=>[
+			$this->load->view('analisa/borangb/js01','',TRUE)
+		]];
+		return $this->renderView('analisa/borangb/show','',$plugins);
+	}
+
 }
