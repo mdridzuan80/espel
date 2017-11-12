@@ -22,7 +22,7 @@ class Hrmis_carta_model extends MY_Model
         $sql = 'select * from hrmis_carta_organisasi
             where 1=1';
 
-        if($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != '1' && $this->appsess->getSessionData("kumpulan") != '2')
+        if($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != appauth::PENGGUNA)
         {
             $status_tree = jabatan_not_in($this->appsess->getSessionData('username'));
             if($status_tree['status_subtree'] == 'F')

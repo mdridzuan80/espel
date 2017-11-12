@@ -36,7 +36,7 @@
                     <?php endif ?>
                 </td>
                 <td align="center">
-                    <a href="<?=base_url('kursus/separa_pelaksanaan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pelaksanaan</a>
+                    <a href="<?=base_url('kursus/pelaksanaan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pelaksanaan</a>
                 </td>
               </tr>
           <?php endforeach?>

@@ -86,7 +86,7 @@ $(document).ready(function() {
             viewPanelKursus(false,false,false,true);
         }
         if (nilai == 0) {
-            viewPanelKursus(false, false, false, false);
+            viewPanelKursus(false,false,false,false);
         }
     });
 

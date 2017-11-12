@@ -27,7 +27,7 @@
 
         function getPermohonanKursus(obj) {
             $.ajax({
-                url: base_url + 'kursus/ajax_senarai_permohonan',
+                url: base_url + 'kursus/ajax_senarai_separa_permohonan',
                 data: { tajuk: obj.tajuk, tahun: obj.tahun, bulan: obj.bulan, status: obj.status },
                 method: 'POST',
                 success: function (data, textStatus, jqXHR) {

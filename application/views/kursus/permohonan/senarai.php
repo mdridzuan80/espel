@@ -28,7 +28,7 @@
                     <span class="label label-info"><?=$objMohonKursus->count_by('kursus_id', $permohonan->id)?> Peserta</span>
                 </td>
                 <td align="center">
-                    <a href="<?=base_url('kursus/separa_pencalonan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pencalonan</a>
+                    <a href="<?=base_url('kursus/pencalonan/' . $permohonan->id)?>" class="btn btn-primary btn-xs" title="Info">Pencalonan</a>
                 </td>
               </tr>
           <?php endforeach?>

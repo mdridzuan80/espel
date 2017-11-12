@@ -1082,8 +1082,7 @@ class Kursus extends MY_Controller
             $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
             $data['sen_penyelia'] = $this->profil->where(
                 [
-                    "jabatan_id" => $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id,
-                    "nokp<>" => $this->appsess->getSessionData("username"),
+                    "nokp" => $this->profil->get($this->appsess->getSessionData("username"))->nokp_ppp
                 ]
             )->dropdown('nokp','nama');
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses daftar kursus']);
@@ -1394,32 +1393,25 @@ class Kursus extends MY_Controller
 
     public function delete_luar($id)
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
+        $this->load->model('kursus_model','kursus');
+
+        $kursus = $this->kursus->get($id);
+
+        if($kursus->stat_hadir=='M')
         {
-            $this->load->model('kursus_model','kursus');
-
-            $kursus = $this->kursus->get($id);
-
-            if($kursus->stat_hadir=='M')
+            if($this->kursus->delete($id))
             {
-                if($this->kursus->delete($id))
-                {
-                    $sql = $this->db->last_query();
-                    $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
-                    $this->appsess->setFlashSession("success", true);
-                }
-                else
-                {
-                    $this->appsess->setFlashSession("success", false);
-                }
-                redirect('kursus/luar');
+                $sql = $this->db->last_query();
+                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
+                $this->appsess->setFlashSession("success", true);
             }
-            $this->output->set_status_header(401);
+            else
+            {
+                $this->appsess->setFlashSession("success", false);
+            }
+            redirect('kursus/luar');
         }
-		else
-		{
-			return $this->renderPermissionDeny();
-		}
+        $this->output->set_status_header(401);
     }
 
     public function view_luar($id)
@@ -2121,6 +2113,24 @@ class Kursus extends MY_Controller
         $data['objMohonKursus'] = $this->mohon_kursus;
         $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
         return $this->load->view('kursus/permohonan/senarai',$data);
+    }
+
+    public function ajax_senarai_separa_permohonan()
+    {
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+
+        $takwim = initObj([
+            "tajuk" => $this->input->post('tajuk'),
+			"tahun" => $this->input->post('tahun'),
+            "bulan" => $this->input->post('bulan'),
+            "status" => $this->input->post('status'),
+        ]);
+
+        $data['objMohonKursus'] = $this->mohon_kursus;
+        $data['sen_permohonan'] = $this->kursus->sen_takwim_mohon($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $takwim);
+        return $this->load->view('kursus/separa/permohonan/senarai',$data);
     }
 
     public function ajax_senarai_anjuran_sah()

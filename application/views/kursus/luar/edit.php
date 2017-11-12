@@ -104,11 +104,19 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <?php if($kursus->dokumen_path) : ?>
+                  <div class="form-group">
+                      <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">&nbsp;</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
+                      </div>
+                  </div>
+                  <?php endif ?>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                      <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
+                        <span>Hanya Fail PDF Sahaja</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -221,11 +229,19 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <?php if($kursus->dokumen_path) : ?>
+                  <div class="form-group">
+                      <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">&nbsp;</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
+                      </div>
+                  </div>
+                  <?php endif ?>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
+                        <span>Hanya Fail PDF Sahaja</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -342,16 +358,21 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
+                  <?php if($kursus->dokumen_path) : ?>
                   <div class="form-group">
-                    
+                      <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">&nbsp;</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
+                      </div>
+                  </div>
+                  <?php endif ?>
+                  <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" target="_blank" class="btn btn-primary btn-sm">Papar Dokumen</a>
                         <input type="file" name="userfile">
+                        <span>Hanya Fail PDF Sahaja</span>
                     </div>
-
-                  </div>
-                  <div class="ln_solid"></div>
+                  </div>                  <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success" name="submit">Simpan</button>
