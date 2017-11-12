@@ -1937,10 +1937,14 @@ class Kursus extends MY_Controller
         $this->load->model('mohon_kursus_model','mohon_kursus');
         $this->load->model('kursus_model','kursus');
         $this->load->model('profil_model','profil');
+        $this->load->model('hrmis_carta_model','mjabatan');
+        $this->load->model('program_model', 'mprogram');
 
         $permohonan = $this->mohon_kursus->get($id);
         $kursus = $this->kursus->get($permohonan->kursus_id);
         $pemohon = $this->profil->get_by('nokp',$permohonan->nokp);
+        $mprogram = $this->mprogram;
+        $mjabatan = $this->mjabatan;
 
 
         if($this->mohon_kursus->update($id,['stat_mohon'=>'T']))
@@ -1953,7 +1957,7 @@ class Kursus extends MY_Controller
                     $mail = [
                         "to" => $pemohon->email,
                         "subject" => "[espel][Makluman] Permohonan kursus anda ditolak",
-                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_tolak",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
+                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_tolak",["pemohon"=>$pemohon, "kursus"=>$kursus, 'mprogram'=> $mProgram, 'mjabatan'=>$mJabatan],TRUE),
                     ];
                     $this->appnotify->send($mail);
                 }

@@ -400,7 +400,7 @@
                                     </tr>
                                     <tr>
                                       <td><b>Program</b></td>
-                                      <td><?=$kursus->program->nama?></td>
+                                      <td><?= $mprogram->mprogram->get($kursus->program_id)->nama ?></td>
                                     </tr>
                                     <tr>
                                       <td><b>Mula</b></td>
@@ -416,7 +416,11 @@
                                     </tr>
                                     <tr>
                                       <td><b>Penganjur</b></td>
-                                      <td><?=$kursus->penganjur->nama?></td>
+                                      <?php if($kursus->anjuran == 'D') : ?>
+                                      <td><?= $mjabatan->mjabatan->get_by('buid',$kursus->penganjur_id)->title?></td>
+                                      <?php else : ?>
+                                      <td><?= $kursus->penganjur ?></td>
+                                      <?php endif ?>
                                     </tr>
                                   </tbody>
                                 </table>
