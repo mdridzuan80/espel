@@ -57,7 +57,11 @@
                   <td><?=$kursus->program?></td>
                   <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                   <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
-                  <td><a target="_blank" class="btn btn-info btn-xs" href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" >Papar Dokumen</a></td>
+                  <td>
+                    <?php if($kursus->dokumen_path) : ?>
+                    <a target="_blank" class="btn btn-info btn-xs" href="<?= base_url('assets/uploads/' . $kursus->dokumen_path) ?>" >Papar Dokumen</a>
+                    <?php endif ?>
+                  </td>
                   <!-- <td align="center"><?=($kursus->stat_soal_selidik_a == "Y")? "<span class=\"label label-default\">YA</span>" : "<span class=\"label label-default\">TIDAK</span>"?></td>
                   <td align="center"><?=($kursus->stat_soal_selidik_b == "Y")? "<span class=\"label label-default\">YA</span>" : "<span class=\"label label-default\">TIDAK</span>"?></td> -->
                   <td align="center">

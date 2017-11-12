@@ -766,14 +766,17 @@ class Kursus extends MY_Controller
                 $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                 $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
 
-                $mail = [
-                    "to" => $penyelia->email_ppp,
-                    "subject" => "[espel] Permohonan Kursus",
-                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
-                ];
+                if(filter_var($penyelia->email_ppp, FILTER_VALIDATE_EMAIL))
+                {
+                    $mail = [
+                        "to" => $penyelia->email_ppp,
+                        "subject" => "[espel] Permohonan Kursus",
+                        "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                    ];
 
-                $this->appnotify->send($mail);
-
+                    $this->appnotify->send($mail);
+                }
+                
                 $this->appsess->setFlashSession("success", true);
             }
             else
@@ -836,13 +839,16 @@ class Kursus extends MY_Controller
                 $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
                 $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
 
-                $mail = [
-                    "to" => $penyelia->email_ppp,
-                    "subject" => "[espel] Permohonan Kursus",
-                    "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
-                ];
+                if(filter_var($penyelia->email_ppp, FILTER_VALIDATE_EMAIL))
+                {
+                    $mail = [
+                        "to" => $penyelia->email_ppp,
+                        "subject" => "[espel] Permohonan Kursus",
+                        "body" => $this->load->view("layout/email/permohonan_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus],TRUE),
+                    ];
 
-                $this->appnotify->send($mail);
+                    $this->appnotify->send($mail);
+                }
 
                 $this->appsess->setFlashSession("success", true);
             }
@@ -892,7 +898,7 @@ class Kursus extends MY_Controller
                 $mJawatan = $this->mjawatan;
                 $mJabatan = $this->mjabatan;
 
-                if($pemohon->email_ppp)
+                if($pemohon->email_ppp && filter_var($pemohon->email_ppp, FILTER_VALIDATE_EMAIL))
                 {
                     $mail = [
                         "to" => $pemohon->email_ppp,
@@ -1470,6 +1476,7 @@ class Kursus extends MY_Controller
             $this->load->model("kursus_model","kursus");
             $this->load->model('hrmis_skim_model', 'mjawatan');
             $this->load->model('hrmis_carta_model', 'mjabatan');
+            $this->load->model('program_model', 'mprogram');
 
             if($this->kursus->update($id, $data))
             {
@@ -1480,13 +1487,14 @@ class Kursus extends MY_Controller
                     $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
                     $mJawatan = $this->mjawatan;
                     $mJabatan = $this->mjabatan;
+                    $mProgram = $this->mprogram;
 
                     if($pemohon->email_ppp)
                     {
                         $mail = [
                             "to" => $pemohon->email_ppp,
                             "subject" => "[espel][Makluman] Pengesahan Kehadiran Kursus",
-                            "body" => $this->load->view("layout/email/sah_hadir_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE),
+                            "body" => $this->load->view("layout/email/sah_hadir_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=> $mProgram],TRUE),
                         ];
                         
                         //jabatan profil
@@ -1496,41 +1504,44 @@ class Kursus extends MY_Controller
                         $elements = $this->jabatan->senarai_penyelaras();
                         $jabatan_penyelaras = get_parent_penyelaras($elements, $pemohon->jabatan_id);
 
-                        $sen_penyelaras = $this->kumpulan_profil->get_by('jabatan_id', $jabatan_penyelaras);
-
-                        $kursus = $this->kursus->get($row);
-                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan],TRUE);
+                        $sen_penyelaras = $this->kumpulan_profil->get_many_by('jabatan_id', $jabatan_penyelaras);
+                        
+                        $kursus = $this->kursus->get($id);
+                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=> $mProgram],TRUE);
 
                         foreach($sen_penyelaras as $penyelaras)
                         {
-                            if($this->profil->get($penyelaras->nokp)->email)
+                            $profil_penyelaras = $this->profil->get($penyelaras->profil_nokp);
+                            if($profil_penyelaras->email)
                             {
-                                $this->load->library('appnotify');
+                                if (filter_var($profil_penyelaras->email, FILTER_VALIDATE_EMAIL)) {
+                                    $this->load->library('appnotify');
 
-                                $mail = [
-                                    "to" => $penyelaras->email ,
-                                    "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
-                                    "body" => $mesej,
-                                ];
-                                $this->appnotify->send($mail);
+                                    $mail = [
+                                        "to" => $profil_penyelaras->email,
+                                        "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
+                                        "body" => $mesej,
+                                    ];
+                                    $this->appnotify->send($mail);
+                                }
                             }
                         }
                     }
                     else
                     {
                         $this->appsess->setFlashSession("success", false);
-                        return redirect('kursus/view_luar/' . $id);
+                        return redirect('kursus/pengesahan_kehadiran');
                     }
                 }
 
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengesahkan kursus luar','sql'=>$sql]);
                 $this->appsess->setFlashSession("success", true);
-                return redirect('kursus/view_luar/' . $id);
+                return redirect('kursus/pengesahan_kehadiran');
             }
             else
             {
                 $this->appsess->setFlashSession("success", false);
-                return redirect('kursus/view_luar/' . $id);
+                return redirect('kursus/pengesahan_kehadiran');
             }
         }
 		else
@@ -1698,7 +1709,7 @@ class Kursus extends MY_Controller
                         $jabatan = $this->profil->get($this->kursus->get($row)->nokp)->jabatan_id;
                         $jabatan_penyelaras = get_parent_penyelaras($elements, $jabatan);
 
-                        $sen_penyelaras = $this->kumpulan_profil->get_by('jabatan_id', $jabatan_penyelaras);
+                        $sen_penyelaras = $this->kumpulan_profil->get_many_by('jabatan_id', $jabatan_penyelaras);
 
                         $mJawatan = $this->mjawatan;
                         $mJabatan = $this->mjabatan;
@@ -1711,16 +1722,19 @@ class Kursus extends MY_Controller
 
                         foreach($sen_penyelaras as $penyelaras)
                         {
-                            if($this->profil->get($penyelaras->nokp)->email)
+                            $profil_penyelaras = $this->profil->get($penyelaras->profil_nokp) ;
+                            if($profil_penyelaras->email)
                             {
-                                $this->load->library('appnotify');
+                                if (filter_var($profil_penyelaras->email, FILTER_VALIDATE_EMAIL)) {
+                                    $this->load->library('appnotify');
 
-                                $mail = [
-                                    "to" => $pemohon->email ,
-                                    "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
-                                    "body" => $mesej,
-                                ];
-                                $this->appnotify->send($mail);
+                                    $mail = [
+                                        "to" => $profil_penyelaras->email ,
+                                        "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
+                                        "body" => $mesej,
+                                    ];
+                                    $this->appnotify->send($mail);
+                                }
                             }
 
                         }
@@ -1897,14 +1911,16 @@ class Kursus extends MY_Controller
         {
             if($pemohon->email)
             {
-                $this->load->library('appnotify');
+                if (filter_var($pemohon->email, FILTER_VALIDATE_EMAIL)) {
+                    $this->load->library('appnotify');
 
-                $mail = [
-                    "to" => $pemohon->email ,
-                    "subject" => "[espel][Makluman] Terpilih untuk mengikuti kursus",
-                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_pilih",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
-                ];
-                $this->appnotify->send($mail);
+                    $mail = [
+                        "to" => $pemohon->email ,
+                        "subject" => "[espel][Makluman] Terpilih untuk mengikuti kursus",
+                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_pilih",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
+                    ];
+                    $this->appnotify->send($mail);
+                }
                 $this->appsess->setFlashSession("success", true);
             }
             else
@@ -1931,14 +1947,16 @@ class Kursus extends MY_Controller
         {
             if($pemohon->email)
             {
-                $this->load->library('appnotify');
+                if (filter_var($pemohon->email, FILTER_VALIDATE_EMAIL)) {
+                    $this->load->library('appnotify');
 
-                $mail = [
-                    "to" => $pemohon->email,
-                    "subject" => "[espel][Makluman] Permohonan kursus anda ditolak",
-                    "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_tolak",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
-                ];
-                $this->appnotify->send($mail);
+                    $mail = [
+                        "to" => $pemohon->email,
+                        "subject" => "[espel][Makluman] Permohonan kursus anda ditolak",
+                        "body" => $this->load->view("layout/email/permohonan_kursus_berjaya_tolak",["pemohon"=>$pemohon, "kursus"=>$kursus],TRUE),
+                    ];
+                    $this->appnotify->send($mail);
+                }
                 $this->appsess->setFlashSession("success", true);
             }
             else
@@ -2215,7 +2233,7 @@ class Kursus extends MY_Controller
                                 $mprogram = $this->mprogram;
                                 $mjabatan = $this->mjabatan;
 
-                                if($penyelia->email)
+                                if($penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $penyelia->email,
@@ -2225,7 +2243,7 @@ class Kursus extends MY_Controller
                                 }
                                 $this->appnotify->send($mail);
 
-                                if($pemohon->email)
+                                if($pemohon->email && filter_var($pemohon->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $pemohon->email,
@@ -2233,6 +2251,7 @@ class Kursus extends MY_Controller
                                         "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram],TRUE),
                                     ];
                                 }
+
                                 $this->appnotify->send($mail);
                             }
                         }
@@ -2301,7 +2320,7 @@ class Kursus extends MY_Controller
                                             $mprogram = $this->mprogram;
                                             $mjabatan = $this->mjabatan;
 
-                                            if($penyelia->email)
+                                            if($penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
                                             {
                                                 $mail = [
                                                     "to" => $penyelia->email,
@@ -2311,7 +2330,7 @@ class Kursus extends MY_Controller
                                                 $this->appnotify->send($mail);
                                             }
 
-                                            if($pemohon->email)
+                                            if($pemohon->email && filter_var($pemohon->email, FILTER_VALIDATE_EMAIL))
                                             {
                                                 $mail = [
                                                     "to" => $pemohon->email,
@@ -2461,7 +2480,7 @@ class Kursus extends MY_Controller
                                 $mprogram = $this->mprogram;
                                 $mjabatan = $this->mjabatan;
 
-                                if($penyelia->email)
+                                if($penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $penyelia->email,
@@ -2471,7 +2490,7 @@ class Kursus extends MY_Controller
                                 }
                                 //$this->appnotify->send($mail);
 
-                                if($pemohon->email)
+                                if($pemohon->email && filter_var($pemohon->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $pemohon->email,
@@ -2547,7 +2566,7 @@ class Kursus extends MY_Controller
                                             $mprogram = $this->mprogram;
                                             $mjabatan = $this->mjabatan;
 
-                                            if($penyelia->email)
+                                            if($penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
                                             {
                                                 $mail = [
                                                     "to" => $penyelia->email,
@@ -2557,7 +2576,7 @@ class Kursus extends MY_Controller
                                                 //$this->appnotify->send($mail);
                                             }
 
-                                            if($pemohon->email)
+                                            if($pemohon->email && filter_var($pemohon->email, FILTER_VALIDATE_EMAIL))
                                             {
                                                 $mail = [
                                                     "to" => $pemohon->email,
@@ -2691,7 +2710,7 @@ class Kursus extends MY_Controller
                 $pemohon = $this->profil->get_by("nokp",$nokp_pyd);
                 $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
 
-                if($pemohon->email_ppp)
+                if($pemohon->email_ppp && filter_var($pemohon->email_ppp, FILTER_VALIDATE_EMAIL))
                 {
                     if($this->input->post('stat_hadir')=='Y')
                     {
@@ -2732,7 +2751,7 @@ class Kursus extends MY_Controller
                     foreach($sen_penyelaras as $penyelaras)
                     {
                         $email_penyelaras = $this->profil->get($penyelaras->profil_nokp)->email;
-                        if($email_penyelaras)
+                        if($email_penyelaras && filter_var($email_penyelaras, FILTER_VALIDATE_EMAIL))
                         {
                             $mail = [
                                 "to" => $email_penyelaras ,
