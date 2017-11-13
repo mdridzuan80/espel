@@ -145,8 +145,8 @@ class Profil extends MY_Controller
 
 	public function reset_katalaluan($username)
 	{
-		if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ','PENGGUNA']) || $this->appsess->getSessionData("username")==$username)
-		{
+		//if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['SUPER','ADMIN','PTJ','PENGGUNA']) || $this->appsess->getSessionData("username")==$username)
+		//{
 			if(!$this->exist("submit"))
 			{
 				$this->load->model('profil_model','profil');
@@ -186,11 +186,11 @@ class Profil extends MY_Controller
 					return redirect("profil/admin/reset_katalaluan");
 				}
 			}
-		}
-		else
-		{
-			return $this->renderPermissionDeny();
-		}
+		//}
+		//else
+		//{
+		//	return $this->renderPermissionDeny();
+		//}
 	}
 
 	public function kecuali($nokp)
