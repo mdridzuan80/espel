@@ -396,9 +396,9 @@ class Kursus extends MY_Controller
                     "stat_jabatan" => "T",
                 ]
             );
-            
+            $plugins['embedjs'][] = $this->load->view('kursus/luar/js','',TRUE);
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu Daftar kursus luar']);
-            return $this->renderView("kursus/luar/show", $data);
+            return $this->renderView("kursus/luar/show", $data, $plugins);
     }
 
     public function daftar_jabatan()
@@ -1092,7 +1092,7 @@ class Kursus extends MY_Controller
                 ]
             )->dropdown('nokp','nama');
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses daftar kursus']);
-            return $this->renderView("kursus/luar/daftar",$data,$this->plugins());
+            return $this->load->view("kursus/luar/daftar",$data);
         }
         else
         {
