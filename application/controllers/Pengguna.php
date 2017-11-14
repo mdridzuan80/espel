@@ -164,13 +164,12 @@ class Pengguna extends MY_Controller
         {
             $sql = $this->db->last_query();
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Nyah aktif profil', 'sql' => $sql]);
-            $this->appsess->setFlashSession("success", true);
+            $this->output->set_status_header(200);
         }
         else
         {
-            $this->appsess->setFlashSession("success", false);
+            $this->output->set_status_header(400,'Operasi gagal!');
         }
-        return redirect('pengguna');
     }
 
     public function penyelaras()

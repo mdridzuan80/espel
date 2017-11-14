@@ -237,6 +237,8 @@
 
     <script>
     var base_url = "<?=base_url()?>";
+    var csrf_name = "<?= $this->security->get_csrf_token_name() ?>"
+    var csrf_token = "<?= $this->security->get_csrf_hash() ?>"
     $(".easyui-combotree").css("width", $(".col-md-6").width()-5);
     </script>
     <!-- FastClick -->
@@ -264,6 +266,7 @@
     <script src="<?=base_url("assets/js/jquery.easyui.min.js")?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.all.min.js" integrity="sha256-hhRjXZ7KoeIPcBloYVc0fvx6RQVcSEKsNJcGEu1nn78=" crossorigin="anonymous"></script>
 
     <?php
     if(isset($plugins) && count($plugins))

@@ -67,7 +67,8 @@ $route["api/analisa_reaksi"] = "welcome/analisa_reaksi";
 $route["api/analisa_pembelajaran"] = "welcome/analisa_pembelajaran";
 $route["api/analisab_reaksi"] = "welcome/analisab_reaksi";
 $route["api/analisab_pembelajaran"] = "welcome/analisab_pembelajaran";
-$route['profil/(:any)'] = "profil/index/$1";
+
+$route['profil/papar/(:any)'] = "profil/index/$1";
 $route['profil/(:any)/kump'] = "profil/kumpulan/$1";
 $route['profil/(:any)/kump/add'] = "profil/kumpulan/$1";
 $route['profil/(:any)/kump/(:num)/hapus'] = "profil/kumpulan_hapus/$1/$2";

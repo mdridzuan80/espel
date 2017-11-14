@@ -40,7 +40,7 @@ class Profil extends MY_Controller
 			$data['sen_log'] = $this->logging->latest_log($nokp);
 
 			$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Melihat Profil']);
-	        return $this->renderView("profil/show",$data);
+	        return $this->load->view("profil/show",$data);
 		}
 		else
 		{
@@ -191,6 +191,43 @@ class Profil extends MY_Controller
 		//{
 		//	return $this->renderPermissionDeny();
 		//}
+	}
+
+	public function resetkatalaluan($username)
+	{
+		$this->load->model('profil_model','profil');
+
+		$data['profil'] = $this->profil->get($username);
+
+		$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Menu reset katalaluan']);
+		return $this->load->view('pengguna/reset_katalaluan', $data);
+	}
+
+	public function ajax_do_resetkatalaluan()
+	{
+		$this->load->model("profil_model","profil");
+
+		$username = $this->input->post('hddNoKP');
+		$katalaluan = $this->input->post("txtKatalaluan");
+		$reKatalaluan = $this->input->post("txtReKatalaluan");
+
+		if(strcmp($katalaluan,$reKatalaluan)==0)
+		{
+			$data = [
+				"password" => $this->appauth->hash_katalaluan($katalaluan),
+			];
+
+			if($this->profil->update($username,$data))
+			{
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Berjaya reset katalaluan']);
+				$this->output->set_status_header(200);
+			}
+			else
+			{
+				$this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Gagal reset katalaluan']);
+				$this->output->set_status_header(400,'Gagal reset katalaluan');
+			}
+		}
 	}
 
 	public function kecuali($nokp)

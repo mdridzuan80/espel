@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Reset Katalaluan Pengguna <?= $profil->nama . ' (' . $profil->nokp . ')' ?></h2>
+                    <h2>Profil : <?= $profil->nama . ' (' . $profil->nokp . ')' ?></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -22,12 +22,13 @@
                     </div>
                     <?php endif?>
                 <?php endif?>
-                    <form method="post" class="form-horizontal form-label-left">
+                    <form id="frm-reset-katalaluan" method="post" class="form-horizontal form-label-left">
                         <?php $csrf = [
                             'name' => $this->security->get_csrf_token_name(),
                             'hash' => $this->security->get_csrf_hash()
                         ];?>
                         <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                         <input type="hidden" name="hddNoKP" value="<?= $profil->nokp ?>" />
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="Nama">Katalaluan Baru<span class="required">*</span>
                             </label>
@@ -45,8 +46,8 @@
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button type="submit" class="btn btn-success" name="submit">Submit</button>
-                                <button class="btn btn-primary" type="reset">Reset</button>
+                                <button id="submit-reset-katalaluan" type="submit" class="btn btn-success" name="submit">Simpan</button>
+                                <button class="btn btn-primary" type="reset">Re-set</button>
                             </div>
                         </div>
                     </form>

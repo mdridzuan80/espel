@@ -1,3 +1,9 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <a href="<?= base_url() ?>">Home</a> > <a href="<?= base_url('pengguna') ?>">Modul Pengguna :: Senarai Pengguna</a> > Pengurusan Peranan
+  </div>
+</div>
+<br/>
 <div>
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">

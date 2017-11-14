@@ -14,6 +14,10 @@
         },
         url: base_url+'pengguna/data_grid/0'
    };
+   var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+   var modalHeader = "";
+   var modalUrl="";
+   var postData={};
 
     $('#frmFilter').hide();
 
@@ -101,6 +105,113 @@
         options.url = base_url+'pengguna/data_grid/0';
         
         load_datagrid(options);
+    });
+            
+    $('#datagrid').on('click','a.btn-papar-profil', function(e) {
+        e.preventDefault();
+        modalHeader = "Profil Pengguna";
+        modalUrl = base_url + 'profil/papar/' + $(this).attr('data-username');
+        
+        $('#myLargeModalLabel').html(modalHeader);
+        $('#myModal').modal();
+    });
+
+    $('#datagrid').on('click','a.btn-reset-password', function(e) {
+        e.preventDefault();
+        modalHeader = "Reset Katalaluan";
+        modalUrl = base_url + 'profil/resetKatalaluan/' + $(this).attr('data-username');
+        
+        $('#myLargeModalLabel').html(modalHeader);
+        $('#myModal').modal();
+    });
+
+    $('#datagrid').on('click','a.btn-nyahaktif', function(e) {
+        e.preventDefault();
+        var username = $(this).attr('data-username');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'profil/' + username + '/status',
+                success: function() {
+                    swal('Berjaya!','','success');
+                    load_datagrid(options);
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+            
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
+
+    // modal proses
+    $('#myModal').on('show.bs.modal',function(e){
+        var vData = $(this).find(".modal-body");
+        vData.html(loader);
+        load_content_modal(modalUrl,postData,vData);
+    })
+
+    $('#myModal').on('hidden.bs.modal',function(e){
+        var vData = $(this).find(".modal-body");
+        vData.html(loader);
+    })
+
+    function load_content_modal(url,data,placeholder){
+        $.ajax({
+            url: url,
+            success: function(data, textStatus, jqXHR){
+                placeholder.html(data);
+            }
+        });
+    }
+    // tamat modal proses
+
+    $('#myModal').on('submit','#frm-reset-katalaluan',function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+
+        if(e.target.txtKatalaluan.value === e.target.txtReKatalaluan.value) {
+            $.ajax({
+                method: 'post',
+                data: $(e.target).serialize(),
+                url: base_url + 'profil/ajax_do_resetkatalaluan',
+                success: function() {
+                    swal({
+                        title: 'Berjaya!',
+                        type: 'success'
+                    });
+                    $('#myModal').modal('hide');
+                },
+                error: function(jqXHR, textStatus,errorThrown)
+                {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        }
+        else {
+            swal('Oops...','Katalaluan tidak sama dengan Re-Katalaluan','warning');
+        }
     });
 })();
 </script>
