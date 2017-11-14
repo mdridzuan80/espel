@@ -111,7 +111,7 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="<?=base_url('profil/' . $login_profil->nokp)?>"> Profil Pengguna</a></li>
+                    <li><a id="linkProfil" data-username="<?= $login_profil->nokp ?>"> Profil Pengguna</a></li>
                     <!--
                     <li>
                       <a href="javascript:;">
@@ -137,7 +137,7 @@
                     <?php endforeach?>
                     <li class="divider"></li>
                     <?php endif?>
-                    <li><a href="<?=base_url("profil/".appsess()->getSessionData("username")."/reset_katalaluan")?>">Reset katalaluan</a></li>
+                    <li><a id="linkResetKatalaluan" data-username="<?= appsess()->getSessionData("username") ?>">Reset katalaluan</a></li>
                     <li><a href="<?=base_url('logout')?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
@@ -228,6 +228,22 @@
       </div>
     </div>
 
+    <!-- Modal -->
+      <div id="myGlobalModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <h4 class="modal-title" id="myLargeGlobalModalLabel">...</h4>
+            </div>
+            <div class="modal-body">
+              <p>...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- jQuery -->
     <script src="<?=base_url("assets/js/jquery.min.js")?>"></script>
     <script src="<?=base_url("assets/js/jquery-ajax-native.js")?>"></script>
@@ -295,5 +311,6 @@
         }
     }
     ?>
+    
     </body>
 </html>
