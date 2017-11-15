@@ -65,6 +65,19 @@
 
             if(nilai == 1 || nilai == 2){
                 viewPanelKursus(true,false,false,false);
+
+                $("#txtTkhMula").datetimepicker({
+                    format: "DD-MM-YYYY h:mm A"
+                });
+                $("#txtTkhTamat").datetimepicker({
+                    format: "DD-MM-YYYY h:mm A"
+                });
+                $("#txtTkhMula").on("dp.hide", function (e) {
+                    $('#txtTkhTamat').data("DateTimePicker").minDate(e.date);
+                });
+                $("#txtTkhTamat").on("dp.hide", function (e) {
+                    $('#txtTkhMula').data("DateTimePicker").maxDate(e.date);
+                });
             }
             if(nilai == 3){
                 viewPanelKursus(false,true,false,false);
@@ -92,6 +105,40 @@
             {
                 $("#input-txt-penganjur").hide();
                 $("#input-com-penganjur").show();
+            }
+        });
+    });
+
+    $('#myModal').on('submit','.frm-daftar-kursus',function(e){
+        e.preventDefault();
+        var formData = new FormData(this);
+        var formCsrf = {};
+
+        $.ajax({
+            url: base_url + 'api/csrf',
+            success: function(data, textStatus, jqXHR ) {
+                formCsrf = data;
+                formData.append(data.csrfTokenName, data.csrfHash);
+                $.ajax({
+                    method: 'post',
+                    data: formData,
+                    cache       : false,
+                    contentType : false,
+                    processData : false,
+                    url: base_url + 'kursus/ajax_do_daftar_luar',
+                    success: function() {
+                        swal({
+                            title: 'Berjaya!',
+                            text: 'Proses mendaftar kursus selesai.',
+                            type: 'success'
+                        });
+                        $('#myModal').modal('hide');
+                    },
+                    error: function(jqXHR, textStatus,errorThrown)
+                    {
+                        swal('Ralat!',errorThrown,'error');
+                    }
+                });
             }
         });
     });

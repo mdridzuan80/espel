@@ -67,6 +67,7 @@ $route["api/analisa_reaksi"] = "welcome/analisa_reaksi";
 $route["api/analisa_pembelajaran"] = "welcome/analisa_pembelajaran";
 $route["api/analisab_reaksi"] = "welcome/analisab_reaksi";
 $route["api/analisab_pembelajaran"] = "welcome/analisab_pembelajaran";
+$route["api/csrf"] = "welcome/ajaxmethod";
 
 $route['profil/papar/(:any)'] = "profil/index/$1";
 $route['profil/(:any)/kump'] = "profil/kumpulan/$1";

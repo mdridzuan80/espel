@@ -214,4 +214,15 @@ class Welcome extends MY_Controller {
 		->set_content_type('application/json')
 		->set_output(json_encode($this->borangb->analisa_pembelajaran($related,date('Y'))));
 	}
+
+	public function ajaxmethod()
+    {
+        // get your data, then prep the returned value:
+		$result = [
+			"csrfTokenName"=> $this->security->get_csrf_token_name(),
+			"csrfHash"=> $this->security->get_csrf_hash(),		 
+		];
+		$this->output->set_content_type('application/json')
+		->set_output(json_encode($result));
+    }
 }
