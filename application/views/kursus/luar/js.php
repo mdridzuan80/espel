@@ -24,6 +24,7 @@
                 url: url,
                 success: function(data, textStatus, jqXHR){
                     placeholder.html(data);
+                    $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
                     $('#comPenganjur').combotree();
                 }
             });
