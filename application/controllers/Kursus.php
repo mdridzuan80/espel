@@ -1113,7 +1113,7 @@ class Kursus extends MY_Controller
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
             if($this->input->post("comAnjuran")=="L")
@@ -1132,13 +1132,13 @@ class Kursus extends MY_Controller
                 'tajuk' => $this->input->post("txtTajuk"),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                'tkh_mula' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),
+                'tkh_tamat' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))),
                 'tempat' => $this->input->post("txtTempat"),
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
             if($this->input->post("comAnjuran")=="L")
@@ -1157,13 +1157,13 @@ class Kursus extends MY_Controller
                 'tajuk' => $this->input->post("txtTajuk"),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                'tkh_mula' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),
+                'tkh_tamat' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))),
                 'tempat' => $this->input->post("txtTempat"),
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -1242,7 +1242,7 @@ class Kursus extends MY_Controller
                             "nokp<>" => $this->appsess->getSessionData("username"),
                         ]
                     )->dropdown('nokp','nama');
-                    return $this->renderView("kursus/luar/edit",$data,$this->plugins());
+                    return $this->load->view("kursus/luar/edit",$data);
                 }
                 else
                 {
@@ -1421,7 +1421,6 @@ class Kursus extends MY_Controller
                 return $this->output->set_status_header(400,'Operasi hapus tidak berjaya!');
             }
         }
-        
     }
 
     public function view_luar($id)

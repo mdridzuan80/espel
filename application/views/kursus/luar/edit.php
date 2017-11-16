@@ -36,26 +36,20 @@
       </div>
       <div class="x_content">
           <div class="x_content">
-            <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
-                <?php $csrf = [
-                      'name' => $this->security->get_csrf_token_name(),
-                      'hash' => $this->security->get_csrf_hash()
-                      ];
-                  ?>
-                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+            <form method="post" class="form-horizontal form-label-left frm-edit-daftar_kursus" enctype="multipart/form-data">
                   <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk *
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="txtTajuk" required="required" class="form-control col-md-7 col-xs-12" name="txtTajuk" value="<?=set_value('txtTajuk', $kursus->tajuk)?>" >
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Aktiviti</label>
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Aktiviti *</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" name="comAktiviti" id="comAktiviti">
-                            <option value="0">Sila buat pilihan</option>
+                            <option value="">Sila buat pilihan</option>
                             <?php foreach($sen_xtvt_lat as $key => $val):?>
                             <option value="<?=$key?>" <?=set_select('comAktiviti', $key, $key==$kursus->aktiviti_id)?> ><?=$val?></option>
                             <?php endforeach?>
@@ -63,30 +57,36 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Mula
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh *
                     </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y h:i A',strtotime($kursus->tkh_mula)))?>" >
+                    <div class="col-md-63 col-sm-3 col-xs-12">
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" required="required" value="<?= set_value('txtTkhMula',date('d-m-Y',strtotime($kursus->tkh_mula))) ?>">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" required="required" value="<?= set_value('txtTkhTamat',date('d-m-Y',strtotime($kursus->tkh_tamat))) ?>">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Akhir
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Masa *
                     </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y h:i A',strtotime($kursus->tkh_tamat)))?>" >
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <input type="text" class="form-control espel-cal-input" id="txtMasaMula" name="txtMasaMula" required="required" value="<?=set_value('txtTkhMula',date('h:i A',strtotime($kursus->tkh_mula)))?>">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <input type="text" class="form-control espel-cal-input" id="txtMasaTamat" name="txtMasaTamat" required="required" value="<?=set_value('txtTkhTamat',date('h:i A',strtotime($kursus->tkh_tamat)))?>">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Tempat</label>
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Tempat *</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" id="txtTempat" required="required" class="form-control col-md-7 col-xs-12" name="txtTempat" value="<?=set_value('txtTempat', $kursus->tempat)?>" >
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran</label>
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Anjuran *</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" name="comAnjuran" id="comAnjuran">
-                            <option selected="selected" >Sila buat pilihan</option>
+                            <option selected="selected" value="" >Sila buat pilihan</option>
                             <option value="D" <?=set_select('comAnjuran', 'D', 'D'==$kursus->anjuran)?> >Dalaman</option>
                             <option value="L" <?=set_select('comAnjuran', 'L', 'L'==$kursus->anjuran)?> >Luaran</option>
                         </select>
@@ -95,13 +95,13 @@
                   <div id="input-txt-penganjur" class="form-group" <?=($kursus->anjuran=='L'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtPenganjur" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?=$kursus->penganjur?>">
+                        <input type="text" id="txtPenganjurLatihan" class="form-control col-md-7 col-xs-12" name="txtPenganjur" value="<?=$kursus->penganjur?>">
                     </div>
                   </div>
                   <div id="input-com-penganjur" class="form-group" <?=($kursus->anjuran=='D'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                        <input id="comPenganjurLatihan" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
                   <?php if($kursus->dokumen_path) : ?>
@@ -116,7 +116,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        <span>Hanya Fail PDF Sahaja</span>
+                        <span>*Hanya Fail PDF Sahaja</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>

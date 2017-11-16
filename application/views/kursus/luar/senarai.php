@@ -37,7 +37,7 @@
                 <?php endif ?>
                 <td align="center">
                     <?php if($kursus->stat_hadir == 'M'):?>
-                    <a href="<?=base_url('kursus/edit_luar/' . $kursus->id)?>" class="btn btn-round btn-primary btn-xs" title="Kemaskini"><i class="fa fa-edit"></i></a>
+                    <a data-kursusid="<?= $kursus->id ?>" class="btn btn-round btn-primary btn-xs cmdEditKursusLuar" title="Kemaskini"><i class="fa fa-edit"></i></a>
                     <a data-kursusid="<?= $kursus->id ?>" class="btn btn-round btn-danger btn-xs cmdHapusKursusLuar" title="Hapus"><i class="fa fa-eraser"></i></a>
                     <?php endif?>
                 </td>
