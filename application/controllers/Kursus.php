@@ -388,18 +388,23 @@ class Kursus extends MY_Controller
 */
     public function luar()
     {
-            $this->load->model("kursus_model","kursus");
-            $data["sen_kursus"] = $this->kursus->with(["program"])->get_many_by(
-                [
-                    "nokp" => $this->appsess->getSessionData('username'),
-                    "year(tkh_mula)" => date("Y"),
-                    "stat_jabatan" => "T",
-                ]
-            );
-            $plugins=$this->plugins();
-            $plugins['embedjs'][] = $this->load->view('kursus/luar/js','',TRUE);
-            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu Daftar kursus luar']);
-            return $this->renderView("kursus/luar/show", $data, $plugins);
+        $plugins=$this->plugins();
+        $plugins['embedjs'][] = $this->load->view('kursus/luar/js','',TRUE);
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu Daftar kursus luar']);
+        return $this->renderView("kursus/luar/show",'', $plugins);
+    }
+
+    public function ajax_senarai_luar()
+    {
+        $this->load->model("kursus_model","kursus");
+        $data["sen_kursus"] = $this->kursus->with(["program"])->get_many_by(
+            [
+                "nokp" => $this->appsess->getSessionData('username'),
+                "year(tkh_mula)" => date("Y"),
+                "stat_jabatan" => "T",
+            ]
+        );
+        return $this->load->view("kursus/luar/senarai",$data);
     }
 
     public function daftar_jabatan()
@@ -1099,11 +1104,11 @@ class Kursus extends MY_Controller
         if($this->input->post("hddProgram")==1 || $this->input->post("hddProgram")==2)
         {
             $data = [
-                'tajuk' => $this->input->post("txtTajuk"),
+                'tajuk' => strtoupper($this->input->post("txtTajuk")),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                'tkh_mula' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),
+                'tkh_tamat' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))),
                 'tempat' => $this->input->post("txtTempat"),
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
@@ -1206,7 +1211,7 @@ class Kursus extends MY_Controller
         }
         else
         {
-            $this->output->set_status_header(400,'Dokumen yang dilampirkan bermasalah');
+            $this->output->set_status_header(400,'Pastikan semua medan diisi!');
             return false;
         }
     }

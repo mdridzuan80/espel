@@ -29,7 +29,7 @@
 
     <!-- easyui -->
     <link href="<?=base_url("assets/css/easyui.css")?>" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="<?=base_url("assets/css/bootstrap-timepicker.min.css")?>"> 
 
     <?php
     if(isset($plugins) && count($plugins))
@@ -282,10 +282,11 @@
     <!-- easyui -->
     <script src="<?=base_url("assets/js/jquery.easyui.min.js")?>"></script>
     <script src="<?=base_url("assets/js/jquery.actual.min.js")?>"></script>
+    <script src="<?=base_url("assets/js/bootstrap-timepicker.min.js")?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.all.min.js" integrity="sha256-hhRjXZ7KoeIPcBloYVc0fvx6RQVcSEKsNJcGEu1nn78=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    
 
     <?php
     if(isset($plugins) && count($plugins))
