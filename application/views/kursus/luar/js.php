@@ -9,17 +9,6 @@
         var operasi = '';
         
         load_data_grid();
-        // modal proses
-        $('#myModal').on('show.bs.modal',function(e){
-            var vData = $(this).find(".modal-body");
-            vData.html(loader);
-            load_content_modal(modalUrl,postData,vData);
-        })
-
-        $('#myModal').on('hidden.bs.modal',function(e){
-            var vData = $(this).find(".modal-body");
-            vData.html(loader);
-        })
 
         function load_data_grid()
         {
@@ -38,6 +27,18 @@
                 }
             });
         }
+        
+        // modal proses
+        $('#myModal').on('show.bs.modal',function(e){
+            var vData = $(this).find(".modal-body");
+            vData.html(loader);
+            load_content_modal(modalUrl,postData,vData);
+        })
+
+        $('#myModal').on('hidden.bs.modal',function(e){
+            var vData = $(this).find(".modal-body");
+            vData.html(loader);
+        })
 
         function load_content_modal(url,data,placeholder){
             $.ajax({
