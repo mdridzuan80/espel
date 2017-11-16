@@ -1414,15 +1414,14 @@ class Kursus extends MY_Controller
             {
                 $sql = $this->db->last_query();
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
-                $this->appsess->setFlashSession("success", true);
+                return $this->output->set_status_header(200);
             }
             else
             {
-                $this->appsess->setFlashSession("success", false);
+                return $this->output->set_status_header(400,'Operasi hapus tidak berjaya!');
             }
-            redirect('kursus/luar');
         }
-        $this->output->set_status_header(401);
+        
     }
 
     public function view_luar($id)
