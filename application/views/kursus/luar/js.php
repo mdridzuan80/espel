@@ -142,6 +142,7 @@
                     defaultTime: false
                 });
             }
+
             if(program_id == 4){
                 viewPanelKursus(false,false,true,false);
                 $("#txtTkhMulaPemb2").datetimepicker({
@@ -373,6 +374,46 @@
                         contentType : false,
                         processData : false,
                         url: base_url + 'kursus/ajax_do_daftar_luar',
+                        success: function() {
+                            swal({
+                                title: 'Berjaya!',
+                                text: 'Proses mendaftar kursus selesai.',
+                                type: 'success'
+                            });
+                            $('#myModal').modal('hide');
+                            console.log('load data');
+                            load_data_grid();
+                        },
+                        error: function(jqXHR, textStatus,errorThrown)
+                        {
+                            swal('Ralat!',errorThrown,'error');
+                            button_submit.attr("disabled", false);
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#myModal').on('submit','.frm-edit-daftar-kursus',function(e){
+            e.preventDefault();
+            var button_submit = $(this).find("button[type=submit]");
+            var formData = new FormData(this);
+            var formCsrf = {};
+
+            button_submit.attr("disabled", true);
+
+            $.ajax({
+                url: base_url + 'api/csrf',
+                success: function(data, textStatus, jqXHR ) {
+                    formCsrf = data;
+                    formData.append(data.csrfTokenName, data.csrfHash);
+                    $.ajax({
+                        method: 'post',
+                        data: formData,
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                        url: base_url + 'kursus/ajax_do_edit_luar',
                         success: function() {
                             swal({
                                 title: 'Berjaya!',
