@@ -30,15 +30,15 @@ $(function(){
         });
     });
 
-    $('#myModal').on('click','#cmdPdf',function(e){
+    $('#myLaporanModal').on('click','#cmdPdf',function(e){
         janaReport(tahun, $(this).attr('data-cmd'));
     });
 
-    $('#myModal').on('click','#cmdXls',function(e){
+    $('#myLaporanModal').on('click','#cmdXls',function(e){
         janaReport(tahun, $(this).attr('data-cmd'));
     });
 
-    $('#myModal').on('click','#cmdWord',function(e){
+    $('#myLaporanModal').on('click','#cmdWord',function(e){
         janaReport(tahun, $(this).attr('data-cmd'));
     });
 
@@ -63,12 +63,13 @@ $(function(){
     }
 
     $('#rptPapar').on('click','.btn-papar-senarai', function(e) {
-        console.log(this);
+        e.preventDefault();
         pnokp = $(this).attr('data-nokp');
-        $('#myModal').modal();
+        $('#myLaporanModal').modal();
     });
 
-    $('#myModal').on('shown.bs.modal',function(e){
+    $('#myLaporanModal').on('shown.bs.modal',function(e){
+        e.preventDefault();
         var vData = $(this).find(".modal-body");
         vData.html(loader);
         $.ajax({
@@ -81,7 +82,8 @@ $(function(){
         });
     })
 
-    $('#myModal').on('hidden.bs.modal',function(e){
+    $('#myLaporanModal').on('hidden.bs.modal',function(e){
+        e.preventDefault();
         var vData = $(this).find(".modal-body");
         vData.html(loader);
     })

@@ -314,18 +314,22 @@ group by nokp
         {
             if($filter->hari == 1)
             {
-                $sql .= ' and hadir.jum_hari < ' . $filter->hari;
+                $sql .= ' and hadir.jum_hari is null';
+            }
+            else if($filter->hari > 1 && $filter->hari < 9)
+            {
+                $sql .= ' and hadir.jum_hari = ' . ($filter->hari-1);
             }
             else
             {
-                $sql .= ' and hadir.jum_hari >= ' . ($filter->hari-1);
+                $sql .= ' and hadir.jum_hari > ' . ($filter->hari-2);
             }
         }
 
         $sql .= " ORDER BY espel_profil.nama";
 
         $rst = $this->db->query($sql);
-
+        
         return $rst->result();
     }
 }

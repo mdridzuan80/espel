@@ -26,9 +26,9 @@
         $('#frmFilter').toggle('fast');
     });
 
-    $("#comKelas").change(function(){
+    $("#comKelas").change(function(e){
         $.ajax({
-            url:"<?=base_url("api/get_laporan_skim/")?>" + $(this).val(),
+            url:"<?=base_url("api/get_laporan_skim/")?>" + $(this).val().trim(),
             success: function(gred,textStatus,jqXHR)
             {
                 $('#comSkim').html('<option value="0">Pilih Semua</option>');
@@ -41,7 +41,7 @@
         });
 
         $.ajax({
-            url: base_url + "api/get_laporan_gred/" + $(this).val() + "/0",
+            url: "<?=base_url("api/get_laporan_gred/")?>" + $(this).val().trim() + "/0",
             success: function(gred,textStatus,jqXHR)
             {
                 $('#comGred').html('<option value="0">Pilih Semua</option>');
@@ -56,7 +56,7 @@
 
     $("#comSkim").change(function(){
         $.ajax({
-            url:"<?=base_url("api/get_laporan_gred/")?>/" + $("#comKelas").val() + "/" + $(this).val(),
+            url:"<?=base_url("api/get_laporan_gred/")?>/" + $("#comKelas").val().trim() + "/" + $(this).val(),
             success: function(gred,textStatus,jqXHR)
             {
                 $('#comGred').html('<option value="0">Pilih Semua</option>');

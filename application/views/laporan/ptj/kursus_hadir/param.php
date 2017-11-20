@@ -71,13 +71,14 @@
                         <select class="form-control input-sm" id="comHari">
                         <option selected="selected" value="0">Pilihan</option>
                           <option value="1">Tidak pernah hadir</option>
-                          <option value="2">Lebih atau sama dengan 1 hari</option>
-                          <option value="3">Lebih atau sama dengan 2 hari</option>
-                          <option value="4">Lebih atau sama dengan 3 hari</option>
-                          <option value="5">Lebih atau sama dengan 4 hari</option>
-                          <option value="6">Lebih atau sama dengan 5 hari</option>
-                          <option value="7" >Lebih atau sama dengan 6 hari</option>
-                          <option value="8">Lebih atau sama dengan 7 hari</option>
+                          <option value="2">1 hari</option>
+                          <option value="3">2 hari</option>
+                          <option value="4">3 hari</option>
+                          <option value="5">4 hari</option>
+                          <option value="6">5 hari</option>
+                          <option value="7">6 hari</option>
+                          <option value="8">7 hari</option>
+                          <option value="9">Lebih 7 hari</option>
                         </select>
                     </div>
                   </div>
@@ -94,7 +95,7 @@
 <div id=rptPapar></div>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myLaporanModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
