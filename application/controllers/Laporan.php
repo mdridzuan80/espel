@@ -457,7 +457,18 @@ class Laporan extends MY_Controller
     // laporan prestasi kursus ptj
     public function prestasi_kursus_keseluruhan()
     {
-        $plugins = ['embedjs'=>[$this->load->view('laporan/ptj/prestasi_kursus/js','',true)]];
+        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $this->load->model('profil_model', 'profil');
+
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('laporan/ptj/prestasi_kursus/js','',true)
+         ]];
+
         return $this->renderView("laporan/ptj/prestasi_kursus/param",'',$plugins);
     }
 
@@ -465,12 +476,40 @@ class Laporan extends MY_Controller
     {
         $this->load->model('profil_model','profil');
         $this->load->model('kursus_model','kursus');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model("hrmis_carta_model","jabatan");
 
         $tahun = $this->input->post("tahun");
+        
+        $jab_id = $this->input->post("jabatan");
+
+        $flatted = flatten_array(
+            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+        );
+        
+        array_push($flatted,$jab_id);
+        
+        $filter = new obj([
+            'tahun' => $tahun,
+            'nama' => $this->input->post("nama"),
+            'nokp' => $this->input->post("nokp"),
+            'jabatan_id' => $flatted,
+            'kelas_id' => $this->input->post("kelas"),
+            'skim_id' => $this->input->post("skim"),
+            'gred_id' => $this->input->post("gred"),
+            'hari' => $this->input->post("hari"),
+        ]);
+
+        if(!$this->input->post('sub_jabatan'))
+        {
+            $filter->jabatan_id = [$jab_id];
+        }
+
         $data['tahun'] = $tahun;
 
-        $data['sen_kelas'] = $this->profil->statistik_kelas();
+        $data['sen_kelas'] = $this->profil->statistik_kelas($filter);
         $data['objKursus'] = $this->kursus;
+        $data['objFilter'] = $filter;
 
         return $this->load->view('laporan/ptj/prestasi_kursus/result',$data);
     }

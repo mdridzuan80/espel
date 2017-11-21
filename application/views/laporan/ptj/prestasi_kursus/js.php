@@ -1,16 +1,27 @@
 <script>
 $(function(){
+    var tahun = $('#txtTahun').val();
+    var pnokp = 0;
+    var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+
     $('.btn-papar').on('click', function(e)
     {
         e.preventDefault();
         var btnPapar = this;
-        var tahun = $('#txtTahun').val();
-        var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        var nama = $('#txtNama').val();
+        var nokp = $('#txtNoKP').val();
+        var jabatan = $('#comJabatan').val();
+        var sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
+        var kelas = $('#comKelas').val();
+        var skim = $('#comSkim').val();
+        var gred = $('#comGred').val();
+        var hari = $('#comHari').val();
+        var pnokp = 0;
 
         $('#rptPapar').html(loader);
         $.ajax({
             method: 'post',
-            data: {tahun: tahun},
+            data: {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari},
             url: base_url + 'laporan/ajax_prestasi_kursus_keseluruhan',
             success: function(data, textStatus, jqXHR){
                 $('#rptPapar').html(data);

@@ -37,16 +37,16 @@
                     <td><?= $x++ ?></td>
                     <td><?= $kelas->keterangan ?></td>
                     <td><?= $kelas->bil ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 0, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 1, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 2, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 3, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 4, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 5, $kelas->kod) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($tahun, 6, $kelas->kod) ?></td>
-                    <?php $tujuh =  $objKursus->kursus->bil_prestasi_kelas($tahun, 7, $kelas->kod) ?>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 0, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 1, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 2, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 3, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 4, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 5, $kelas->id) ?></td>
+                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 6, $kelas->id) ?></td>
+                    <?php $tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 7, $kelas->id) ?>
                     <td><?= $tujuh ?></td>
-                    <?php $over_tujuh =  $objKursus->kursus->bil_prestasi_kelas($tahun, 8, $kelas->kod) ?>
+                    <?php $over_tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 8, $kelas->id) ?>
                     <td><?= $over_tujuh ?></td>
                     <td><?= $tujuh + $over_tujuh ?></td>
                 </tr>

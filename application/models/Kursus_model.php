@@ -813,34 +813,34 @@ class Kursus_model extends MY_Model
         }
     }
 
-    public function bil_prestasi_kelas($tahun, $bil_hari, $kelas_id)
+    public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id)
     {
-        $sql = "select a.nokp, a.kelas_id, sum(a.hari) as bil_hari from (SELECT a.nokp, c.kelas_id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, hrmis_carta_organisasi b, espel_profil c
+        $sql = "select a.nokp, a.kelas, sum(a.hari) as bil_hari from (SELECT a.nokp, c.kelas, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, view_laporan_statistik_prestasi c
         WHERE 1=1
         AND a.penganjur_id = b.buid
 				AND a.nokp = c.nokp
-        AND YEAR(a.tkh_mula) = $tahun
+        AND YEAR(a.tkh_mula) = $filter->tahun
         and a.stat_hadir = 'L'
         UNION
         SELECT a.nokp, c.kelas_id, a.tajuk, a.penganjur, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, espel_profil c
+        FROM espel_kursus a, view_laporan_statistik_prestasi c
         WHERE 1=1
 				AND a.nokp = c.nokp
         AND penganjur_id = 0
-        AND YEAR(tkh_mula) = $tahun
+        AND YEAR(tkh_mula) = $filter->tahun
         AND stat_hadir = 'L'
         UNION
-        SELECT d.nokp, d.kelas_id, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, espel_profil d
+        SELECT d.nokp, d.kelas, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, view_laporan_statistik_prestasi d
         WHERE 1=1
         AND a.penganjur_id = b.buid
         AND a.id = c.kursus_id
 				AND c.nokp = d.nokp
-        AND YEAR(a.tkh_mula) = $tahun
+        AND YEAR(a.tkh_mula) = $filter->tahun
         and c.stat_hadir = 'L') as a
-        where a.kelas_id = '$kelas_id'
-        group by a.nokp, a.kelas_id";
+        where a.kelas = '$kelas_id'
+        group by a.nokp, a.kelas";
 
         if($bil_hari == 0)
         {
@@ -855,7 +855,7 @@ class Kursus_model extends MY_Model
         }
         else
         {
-            $sql .= " HAVING sum(a.hari) >= 8";
+            $sql .= " HAVING sum(a.hari) > 7";
         }
 
         $rst = $this->db->query($sql);
