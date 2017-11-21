@@ -239,15 +239,15 @@ class Profil_model extends MY_Model
     public function sen_kump()
     {
         $data = [];
-        $sql = "select distinct b.kod, b.keterangan
-            from espel_profil a, hrmis_kumpulan b
+        $sql = "select distinct b.id, b.nama
+            from view_laporan_statistik_prestasi a, espel_dict_kelas b
             where 1=1
-            and a.kelas_id = b.kod";
+            and a.kelas = b.id";
         $sen_kump= $this->db->query($sql)->result();
 
         foreach($sen_kump as $kump)
         {
-            $data[]=['id' => $kump->kod,'kod' => $kump->keterangan];
+            $data[]=['id' => $kump->id,'kod' => $kump->nama];
         }
 
         return $data;
@@ -257,11 +257,11 @@ class Profil_model extends MY_Model
     {
         $data = [];
         $param = [];
-        $sql = "select distinct gred_id from espel_profil where 1=1";
+        $sql = "select distinct gred_id from view_laporan_statistik_prestasi where 1=1";
 
         if($kelas)
         {
-            $sql .= " AND kelas_id = ?";
+            $sql .= " AND kelas = ?";
             $param[] = $kelas;           
         }
 
@@ -292,10 +292,10 @@ class Profil_model extends MY_Model
     {
         $data = [];
         $sql = "select distinct b.kod, b.keterangan
-            from espel_profil a, hrmis_skim b
+            from view_laporan_statistik_prestasi a, hrmis_skim b
             where 1=1
             and a.skim_id = b.kod
-            and a.kelas_id = ?
+            and a.kelas = ?
             order by b.keterangan";
         $sen_skim = $this->db->query($sql,[$kump])->result();
 

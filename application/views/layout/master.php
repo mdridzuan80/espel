@@ -256,7 +256,8 @@
     var base_url = "<?=base_url()?>";
     var csrf_name = "<?= $this->security->get_csrf_token_name() ?>"
     var csrf_token = "<?= $this->security->get_csrf_hash() ?>"
-    
+    $(".easyui-combotree").css("width", $(".col-md-6").width()-9);
+
     </script>
     <!-- FastClick -->
     <script src="<?=base_url("assets/js/fastclick.js")?>"></script>

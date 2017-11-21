@@ -56,7 +56,7 @@
 
     $("#comSkim").change(function(){
         $.ajax({
-            url:"<?=base_url("api/get_laporan_gred/")?>/" + $("#comKelas").val().trim() + "/" + $(this).val(),
+            url:"<?=base_url("api/get_laporan_gred/")?>" + $("#comKelas").val().trim() + "/" + $(this).val(),
             success: function(gred,textStatus,jqXHR)
             {
                 $('#comGred').html('<option value="0">Pilih Semua</option>');

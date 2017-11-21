@@ -43,6 +43,7 @@ class Pengguna extends MY_Controller
         $this->load->library("pagination");
         $this->load->model('profil_model','profil');
         $this->load->model('hrmis_kumpulan_model','hrmis_kumpulan');
+        $this->load->model('kelas_model','kelas');
 
         $config = array();
         $config["base_url"] = base_url() . "pengguna/data_grid/";
@@ -77,7 +78,7 @@ class Pengguna extends MY_Controller
         $this->pagination->initialize($config);
 
         $data["profiles"] = $profile['data'];
-        $data["sen_kumpulan"] = $this->hrmis_kumpulan->get_all();
+        $data["sen_kumpulan"] = $this->kelas->get_all();
         $data["links"] = $this->pagination->create_links();
         $data['total'] = $profile['count'];
         $data['mula'] = $this->uri->segment(3, 0) + 1;

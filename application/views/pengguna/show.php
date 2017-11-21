@@ -31,7 +31,7 @@
 
         <div id="frmFilter">
           <form method="post" class="form-horizontal form-label-left">
-          <?php $csrf = [
+            <?php $csrf = [
                 'name' => $this->security->get_csrf_token_name(),
                 'hash' => $this->security->get_csrf_hash()
                 ];
