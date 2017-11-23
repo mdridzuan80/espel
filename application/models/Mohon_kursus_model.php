@@ -59,11 +59,11 @@ class Mohon_kursus_model extends MY_Model
         $all_jabatan = $this->hrmis_carta->as_array()->get_all();
         $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
 
-        $this->db->select('a.id, b.nama, b.gred_id as gred, e.keterangan as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
+        $this->db->select('a.id, b.nama, b.gred_id as gred, e.nama as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
         $this->db->from($this->_table . ' a');
-        $this->db->join('espel_profil b', 'a.nokp = b.nokp', 'left');
+        $this->db->join('view_laporan_statistik_prestasi b', 'a.nokp = b.nokp', 'left');
         $this->db->join('hrmis_carta_organisasi c', 'b.jabatan_id = c.buid');
-        $this->db->join('hrmis_kumpulan e', 'b.kelas_id = e.kod');
+        $this->db->join('espel_dict_kelas e', 'b.kelas = e.id');
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod', 'left');
         $this->db->where('a.kursus_id',$Kursus_id);
         
@@ -93,7 +93,12 @@ class Mohon_kursus_model extends MY_Model
 
         if(isset($filter->kumpulan) && $filter->kumpulan)
         {
-            $this->db->where('b.kelas_id',$filter->kumpulan);
+            $this->db->where('b.kelas',$filter->kumpulan);
+        }
+
+        if(isset($filter->skim) && $filter->skim)
+        {
+            $this->db->where('b.skim_id',$filter->skim);
         }
 
         if(isset($filter->gred) && $filter->gred)

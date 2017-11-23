@@ -12,11 +12,12 @@ $(document).ready(function() {
             nokp: null,
             jabatanID: <?= $jabatan_id ?>,
             kumpulan: null,
+            skim: null,
             gred: null,
             hari: null,
             sub_jabatan: 1,
         };
-
+        var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         createCalon(curview, filter);
 
         $('#cmdShowTapis').click(function (e) {
@@ -31,6 +32,7 @@ $(document).ready(function() {
             filter.nokp = $('#txtNoKP').val();
             filter.jabatanID = $('#comJabatan').val();
             filter.kumpulan = $('#comKelas').val(),
+            filter.skim = $('#comSkim').val(),
             filter.gred = $('#comGred').val(),
             filter.hari = $('#comHari').val(),
             filter.sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
@@ -67,7 +69,7 @@ $(document).ready(function() {
                 case 1:
                     $('#cur_title').text(curview.curtitle);
                     $('#cmdSenarai').text(curview.curbutton);
-
+                    $('#sen_calon').html(loader);
                     $.ajax({
                         method: 'post',
                         url: base_url + 'kursus/ajax_get_calon_terpilih/' + curview.kursus_id,
@@ -130,12 +132,40 @@ $(document).ready(function() {
             }
         }
 
-        $("#comKelas").change(function(){
+        $("#comKelas").change(function(e){
             $.ajax({
-                url:"<?=base_url("api/get_laporan_gred/")?>" + $(this).val(),
+                url:"<?=base_url("api/get_laporan_skim/")?>" + $(this).val().trim(),
                 success: function(gred,textStatus,jqXHR)
                 {
-                    $('#comGred').html('<option value="0">pilih semua</option>');
+                    $('#comSkim').html('<option value="0">Pilih Semua</option>');
+                    for(var i=0;i<gred.length;i++)
+                    {
+                        var option=$('<option></option>').attr("value",gred[i]['id']).text(gred[i]['kod']);
+                        $('#comSkim').append(option);
+                    }
+                }
+            });
+
+            $.ajax({
+                url: "<?=base_url("api/get_laporan_gred/")?>" + $(this).val().trim() + "/0",
+                success: function(gred,textStatus,jqXHR)
+                {
+                    $('#comGred').html('<option value="0">Pilih Semua</option>');
+                    for(var i=0;i<gred.length;i++)
+                    {
+                        var option=$('<option></option>').attr("value",gred[i]['id']).text(gred[i]['kod']);
+                        $('#comGred').append(option);
+                    }
+                }
+            });
+        });
+
+        $("#comSkim").change(function(){
+            $.ajax({
+                url:"<?=base_url("api/get_laporan_gred/")?>" + $("#comKelas").val().trim() + "/" + $(this).val(),
+                success: function(gred,textStatus,jqXHR)
+                {
+                    $('#comGred').html('<option value="0">Pilih Semua</option>');
                     for(var i=0;i<gred.length;i++)
                     {
                         var option=$('<option></option>').attr("value",gred[i]['id']).text(gred[i]['kod']);

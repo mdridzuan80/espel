@@ -97,7 +97,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                        <table>
                         <tr>
-                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?= $jabatan_id ?>" ></td>
+                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?= $this->config->item('espel_default_jabatan_id'); ?>" ></td>
                           <td>&nbsp;Lihat&nbsp;Sub&nbsp;Jabatan&nbsp;</td>
                           <td><input id="chk_subjabatan" type="checkbox" checked></td>
                         <tr>
@@ -115,30 +115,39 @@
                         </select>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Gred</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control input-sm" id="comGred" name="comGred">
-                        <option selected="selected" value="0">Pilihan Semua</option>
-                        </select>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Skim Perkhidmatan</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control input-sm" id="comSkim" name="comSkim">
+                            <option selected="selected" value="0">Pilih Semua</option>
+                            </select>
+                        </div>
                     </div>
-                  </div>
-                  <div class="form-group">
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Gred</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control input-sm" id="comGred" name="comGred">
+                            <option selected="selected" value="0">Pilih Semua</option>
+                            </select>
+                        </div>
+                    </div>
+                  <!-- <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Bilangan Hari</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control input-sm" id="comHari">
                         <option selected="selected" value="0">Pilihan</option>
                           <option value="1">Tidak pernah hadir</option>
-                          <option value="2">Lebih atau sama dengan 1 hari</option>
-                          <option value="3">Lebih atau sama dengan 2 hari</option>
-                          <option value="4">Lebih atau sama dengan 3 hari</option>
-                          <option value="4">Lebih atau sama dengan 4 hari</option>
-                          <option value="5">Lebih atau sama dengan 5 hari</option>
-                          <option value="6" >Lebih atau sama dengan 6 hari</option>
-                          <option value="7">Lebih atau sama dengan 7 hari</option>
+                          <option value="2">1 hari</option>
+                          <option value="3">2 hari</option>
+                          <option value="4">3 hari</option>
+                          <option value="5">4 hari</option>
+                          <option value="6">5 hari</option>
+                          <option value="7">6 hari</option>
+                          <option value="8">7 hari</option>
+                            <option value="9">lebih 7 hari</option>
                         </select>
                     </div>
-                  </div>
+                  </div> -->
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button id='cmdDoTapis' class="btn btn-success btn-sm" name="papar">Cari</button>
                     </div>

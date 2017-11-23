@@ -1854,7 +1854,6 @@ class Kursus extends MY_Controller
         $data['jabatan_id'] = $js['jabatan_id'];
         $data['objJabatan'] = $this->jabatan;
 
-
         return $this->renderView('calon/show', $data, $plugins);
     }
 
@@ -1994,6 +1993,7 @@ class Kursus extends MY_Controller
             'nokp' => $this->input->post('nokp'),
 			'jabatan_id' => $this->input->post('jabatanID'),
             'kumpulan' => $this->input->post('kumpulan'),
+            'skim' => $this->input->post('skim'),
             'gred' => $this->input->post('gred'),
             'hari' => $this->input->post('hari'),
             'sub_jabatan' => $this->input->post('sub_jabatan'),
