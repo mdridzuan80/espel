@@ -3,6 +3,7 @@
               <table class="table table-striped table-bordered jambo_table">
                 <thead>
                   <tr class="headings">
+                    <th>Bil.</th>
                     <th>Nama</th>
                     <th>No. KP</th>
                     <th>Skim Perkhidmatan</th>
@@ -12,8 +13,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($profiles as $profile):?>
+                    <?php $bil = $mula; foreach($profiles as $profile):?>
                   <tr>
+                    <td><?=$bil++?></td>
                     <td><?=$profile->nama?></td>
                     <td><?=$profile->nokp?></td>
                     <td><?=$profile->skim?></td>
