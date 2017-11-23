@@ -18,6 +18,10 @@ $(document).ready(function() {
             sub_jabatan: 1,
         };
         var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        var modalHeader = "";
+        var modalUrl="";
+        var postData={};
+
         createCalon(curview, filter);
 
         $('#cmdShowTapis').click(function (e) {
@@ -47,21 +51,12 @@ $(document).ready(function() {
                 $('#filter').toggle();
             }
 
-            curview.curtable = (curview.curtable == 1 ? 2 : 1);
+            modalHeader = "Senarai Pencalonan Peserta";
+            modalUrl = base_url + 'kursus/ajax_get_pencalonan/' + curview.kursus_id;
+            
+            $('#myLargeModalLabel').html(modalHeader);
 
-            if(curview.curtable == 1)
-            {
-                curview.curtitle = 'Senarai Peserta';
-                curview.curbutton = 'Senarai Pencalonan >>';
-            }
-
-            if(curview.curtable == 2)
-            {
-                curview.curtitle = 'Senarai Pilihan Pencalonan';
-                curview.curbutton = '<< Senarai Peserta';
-            }
-
-            createCalon(curview, filter);
+            $('#myCalonModal').modal();
         });
 
         function createCalon(curview, filter) {
@@ -174,6 +169,28 @@ $(document).ready(function() {
                 }
             });
         });
+
+        // modal proses
+        $('#myCalonModal').on('show.bs.modal',function(e){
+            var vData = $(this).find(".modal-body");
+            vData.html(loader);
+            load_content_modal(modalUrl,postData,vData);
+        })
+
+        $('#myCalonModal').on('hidden.bs.modal',function(e){
+            var vData = $(this).find(".modal-body");
+            vData.html(loader);
+        })
+
+        function load_content_modal(url,data,placeholder){
+            $.ajax({
+                url: url,
+                success: function(data, textStatus, jqXHR){
+                    placeholder.html(data);
+                }
+            });
+        }
+        // tamat modal proses
     })();
 });
 </script>
