@@ -1119,9 +1119,11 @@ class Kursus extends MY_Controller
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur"] = $this->input->post("txtPenganjur");
+                $data["penganjur_id"] = NULL;
             }
             if($this->input->post("comAnjuran")=="D")
             {
+                $data["penganjur"] = NULL;
                 $data["penganjur_id"] = $this->input->post("comPenganjur");
             }
         }
@@ -1144,9 +1146,11 @@ class Kursus extends MY_Controller
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur"] = $this->input->post("txtPenganjur");
+                $data["penganjur_id"] = NULL;
             }
             if($this->input->post("comAnjuran")=="D")
             {
+                $data["penganjur"] = NULL;
                 $data["penganjur_id"] = $this->input->post("comPenganjur");
             }
         }
@@ -1171,10 +1175,12 @@ class Kursus extends MY_Controller
             ];
             if($this->input->post("comAnjuran")=="L")
             {
+                $data["penganjur_id"] = NULL;
                 $data["penganjur"] = $this->input->post("txtPenganjur");
             }
             if($this->input->post("comAnjuran")=="D")
             {
+                $data["penganjur"] = NULL;
                 $data["penganjur_id"] = $this->input->post("comPenganjur");
             }
         }
@@ -1247,8 +1253,8 @@ class Kursus extends MY_Controller
             ];
             if($this->input->post("comAnjuran")=="L")
             {
-                $data["penganjur_id"] = NULL;
                 $data["penganjur"] = $this->input->post("txtPenganjur");
+                $data["penganjur_id"] = NULL;
             }
             if($this->input->post("comAnjuran")=="D")
             {
@@ -1271,8 +1277,8 @@ class Kursus extends MY_Controller
             ];
             if($this->input->post("comAnjuran")=="L")
             {
-                $data["penganjur_id"] = NULL;
                 $data["penganjur"] = $this->input->post("txtPenganjur");
+                $data["penganjur_id"] = NULL;
             }
             if($this->input->post("comAnjuran")=="D")
             {
@@ -1297,8 +1303,8 @@ class Kursus extends MY_Controller
             ];
             if($this->input->post("comAnjuran")=="L")
             {
-                $data["penganjur_id"] = NULL;
                 $data["penganjur"] = $this->input->post("txtPenganjur");
+                $data["penganjur_id"] = NULL;
             }
             if($this->input->post("comAnjuran")=="D")
             {

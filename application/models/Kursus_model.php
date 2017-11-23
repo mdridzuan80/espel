@@ -815,48 +815,85 @@ class Kursus_model extends MY_Model
 
     public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id)
     {
-        $sql = "select a.nokp, a.kelas, sum(a.hari) as bil_hari from (SELECT a.nokp, c.kelas, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, hrmis_carta_organisasi b, view_laporan_statistik_prestasi c
-        WHERE 1=1
-        AND a.penganjur_id = b.buid
-				AND a.nokp = c.nokp
-        AND YEAR(a.tkh_mula) = $filter->tahun
-        and a.stat_hadir = 'L'
+        $sql = "SELECT a.*, IFNULL(b.hari,0) as jum_hari 
+        FROM view_laporan_statistik_prestasi a
+        LEFT JOIN (select a.nokp, sum(a.hari) as hari from (SELECT a.nokp, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a
+        LEFT JOIN hrmis_carta_organisasi b ON a.penganjur_id = b.buid
+        WHERE 1=1 AND YEAR(a.tkh_mula) = $filter->tahun
+        AND a.stat_hadir = 'L' 
         UNION
-        SELECT a.nokp, c.kelas_id, a.tajuk, a.penganjur, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, view_laporan_statistik_prestasi c
-        WHERE 1=1
-				AND a.nokp = c.nokp
-        AND penganjur_id = 0
-        AND YEAR(tkh_mula) = $filter->tahun
-        AND stat_hadir = 'L'
-        UNION
-        SELECT d.nokp, d.kelas, a.tajuk, b.title jabatan, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, view_laporan_statistik_prestasi d
+        SELECT d.nokp, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari
+        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, espel_profil d
         WHERE 1=1
         AND a.penganjur_id = b.buid
         AND a.id = c.kursus_id
-				AND c.nokp = d.nokp
+		AND c.nokp = d.nokp
         AND YEAR(a.tkh_mula) = $filter->tahun
-        and c.stat_hadir = 'L') as a
-        where a.kelas = '$kelas_id'
-        group by a.nokp, a.kelas";
+        AND c.stat_hadir = 'Y' AND a.stat_laksana = 'L') as a group by a.nokp) as b ON a.nokp = b.nokp WHERE 1=1";
 
-        if($bil_hari == 0)
+        if(isset($filter->nama) && $filter->nama)
         {
-            $sql .= " HAVING sum(a.hari) = 0";
+            $sql .= ' and a.nama like \'%' . trim($filter->nama) . '%\'';
         }
-        elseif($bil_hari <= 7)
-        {
-            $mula = $bil_hari;
-            $tamat = $bil_hari + 1;
 
-            $sql .= " HAVING sum(a.hari) >= $mula AND sum(a.hari) < $tamat";
+        if(isset($filter->nokp) && $filter->nokp)
+        {
+            $sql .= ' and a.nokp like \'%' . trim($filter->nokp) . '%\'';
+        }
+
+        if(isset($filter->jabatan_id) && $filter->jabatan_id)
+        {
+            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        }
+
+        if(isset($filter->kelas_id) && $filter->kelas_id)
+        {
+            $sql .= ' and a.kelas = \'' . $filter->kelas_id . '\'';
+        }
+
+        if(isset($filter->skim_id) && $filter->skim_id)
+        {
+            $sql .= ' and a.skim_id = \'' . $filter->skim_id . '\'';
+        }
+
+        if(isset($filter->gred_id) && $filter->gred_id)
+        {
+            $sql .= ' and a.gred_id = \'' . $filter->gred_id . '\'';
+        }
+
+        if(isset($filter->hari) && $filter->hari)
+        {
+            if($filter->hari == 1)
+            {
+                $sql .= ' and b.hari is null';
+            }
+            else if($filter->hari > 1 && $filter->hari < 9)
+            {
+                $sql .= ' and b.hari = ' . ($filter->hari-1);
+            }
+            else
+            {
+                $sql .= ' and b.hari > ' . ($filter->hari-2);
+            }
+        }
+
+        if(!$bil_hari)
+        {
+            $sql .= ' and b.hari is null';
+        }
+        else if($bil_hari == 8)
+        {
+            $sql .= ' and b.hari > 7';
         }
         else
         {
-            $sql .= " HAVING sum(a.hari) > 7";
+            $sql .= ' and b.hari = ' . $bil_hari;
         }
+
+        $sql .= ' and a.kelas = ' . $kelas_id;
+        
+        //dd($sql);
 
         $rst = $this->db->query($sql);
 

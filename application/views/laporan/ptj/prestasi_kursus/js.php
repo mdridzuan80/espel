@@ -30,28 +30,56 @@ $(function(){
     });
 
     $('#rptPapar').on('click','#cmdPdf',function(e){
-        var tahun = $('#txtTahun').val();
-        janaReport(tahun, $(this).attr('data-cmd'));
+        var nama = $('#txtNama').val();
+        var nokp = $('#txtNoKP').val();
+        var jabatan = $('#comJabatan').val();
+        var sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
+        var kelas = $('#comKelas').val();
+        var skim = $('#comSkim').val();
+        var gred = $('#comGred').val();
+        var hari = $('#comHari').val();
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+
+        janaReport(filter, $(this).attr('data-cmd'));
     });
 
     $('#rptPapar').on('click','#cmdXls',function(e){
-        var tahun = $('#txtTahun').val();
-        janaReport(tahun, $(this).attr('data-cmd'));
+        var nama = $('#txtNama').val();
+        var nokp = $('#txtNoKP').val();
+        var jabatan = $('#comJabatan').val();
+        var sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
+        var kelas = $('#comKelas').val();
+        var skim = $('#comSkim').val();
+        var gred = $('#comGred').val();
+        var hari = $('#comHari').val();
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+
+        janaReport(filter, $(this).attr('data-cmd'));
     });
 
     $('#rptPapar').on('click','#cmdWord',function(e){
-        var tahun = $('#txtTahun').val();
-        janaReport(tahun, $(this).attr('data-cmd'));
+        var nama = $('#txtNama').val();
+        var nokp = $('#txtNoKP').val();
+        var jabatan = $('#comJabatan').val();
+        var sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
+        var kelas = $('#comKelas').val();
+        var skim = $('#comSkim').val();
+        var gred = $('#comGred').val();
+        var hari = $('#comHari').val();
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+        
+        janaReport(filter, $(this).attr('data-cmd'));
     });
 
-    function janaReport(tahun, jenis){
+    function janaReport(filter, jenis){
+        filter.jenis = jenis;
         $.ajax({
             dataType: 'native',
             xhrFields: {
                 responseType: 'blob'
             },
             method: 'post',
-            data: {tahun: tahun, jenis: jenis},
+            data: filter,
             url: base_url + 'laporan/ajax_prestasi_kursus_keseluruhan_export',
             success: function(blob){
                 var ext = {1: '.pdf', 2: '.xls', 3: '.doc'};

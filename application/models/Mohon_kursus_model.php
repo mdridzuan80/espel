@@ -247,7 +247,7 @@ class Mohon_kursus_model extends MY_Model
             IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
  			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
             FROM
-            espel_profil
+            view_laporan_statistik_prestasi as espel_profil
             INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
             INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
@@ -297,7 +297,7 @@ group by nokp
 
         if(isset($filter->kelas_id) && $filter->kelas_id)
         {
-            $sql .= ' and espel_profil.kelas_id = \'' . $filter->kelas_id . '\'';
+            $sql .= ' and espel_profil.kelas = \'' . $filter->kelas_id . '\'';
         }
 
         if(isset($filter->skim_id) && $filter->skim_id)

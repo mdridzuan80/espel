@@ -516,17 +516,43 @@ class Laporan extends MY_Controller
 
     public function ajax_prestasi_kursus_keseluruhan_export()
     {
-        $tahun = $this->input->post('tahun');
-        $jenis = $this->input->post('jenis');
-
         $this->load->model('profil_model','profil');
         $this->load->model('kursus_model','kursus');
+        $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model("hrmis_carta_model","jabatan");
 
         $tahun = $this->input->post("tahun");
+        
+        $jab_id = $this->input->post("jabatan");
+
+        $flatted = flatten_array(
+            relatedJabatan($this->jabatan->as_array()->get_all(),$jab_id)
+        );
+        
+        array_push($flatted,$jab_id);
+        
+        $filter = new obj([
+            'tahun' => $tahun,
+            'nama' => $this->input->post("nama"),
+            'nokp' => $this->input->post("nokp"),
+            'jabatan_id' => $flatted,
+            'kelas_id' => $this->input->post("kelas"),
+            'skim_id' => $this->input->post("skim"),
+            'gred_id' => $this->input->post("gred"),
+            'hari' => $this->input->post("hari"),
+        ]);
+
+        if(!$this->input->post('sub_jabatan'))
+        {
+            $filter->jabatan_id = [$jab_id];
+        }
+
         $data['tahun'] = $tahun;
 
-        $data['sen_kelas'] = $this->profil->statistik_kelas();
+        $data['sen_kelas'] = $this->profil->statistik_kelas($filter);
         $data['objKursus'] = $this->kursus;
+        $data['objFilter'] = $filter;
+        $jenis = $this->input->post('jenis');
 
         switch($jenis)
         {

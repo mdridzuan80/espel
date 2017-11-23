@@ -29,7 +29,75 @@ $(function(){
             }
         });
     });
+    ///
+        $('#rptPapar').on('click','#cmdPdf',function(e){
+        var data = {
+            tahun:  $('#txtTahun').val(),
+            nama: $('#txtNama').val(),
+            nokp: $('#txtNoKP').val(),
+            jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
+            kelas: $('#comKelas').val(),
+            skim: $('#comSkim').val(),
+            gred: $('#comGred').val(),
+            hari: $('#comHari').val(),
+            jenis: $(this).attr('data-cmd')
+        };
+        janaReport_1(data, $(this).attr('data-cmd'));
+    });
 
+    $('#rptPapar').on('click','#cmdXls',function(e){
+        var data = {
+            tahun:  $('#txtTahun').val(),
+            nama: $('#txtNama').val(),
+            nokp: $('#txtNoKP').val(),
+            jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
+            kelas: $('#comKelas').val(),
+            skim: $('#comSkim').val(),
+            gred: $('#comGred').val(),
+            hari: $('#comHari').val(),
+            jenis: $(this).attr('data-cmd')
+        };
+        janaReport_1(data, $(this).attr('data-cmd'));
+    });
+
+    $('#rptPapar').on('click','#cmdWord',function(e){
+        var data = {
+            tahun:  $('#txtTahun').val(),
+            nama: $('#txtNama').val(),
+            nokp: $('#txtNoKP').val(),
+            jabatan: $('#comJabatan').val(),
+            sub_jabatan: ($('#chk_subjabatan').is(":checked") ? 1 : 0),
+            kelas: $('#comKelas').val(),
+            skim: $('#comSkim').val(),
+            gred: $('#comGred').val(),
+            hari: $('#comHari').val(),
+            jenis: $(this).attr('data-cmd')
+        };
+        janaReport_1(data, $(this).attr('data-cmd'));
+    });
+
+    function janaReport_1(data, jenis){
+        $.ajax({
+            dataType: 'native',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            method: 'post',
+            data: data,
+            url: base_url + 'laporan/ajax_prestasi_kursus_individu_export',
+            success: function(blob){
+                var ext = {1: '.pdf', 2: '.xls', 3: '.doc'};
+                console.log(blob.size);
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(blob);
+                link.download="prestasi_individu" + ext[jenis];
+                link.click();
+            }
+        });
+    }
+    ///
     $('#myLaporanModal').on('click','#cmdPdf',function(e){
         janaReport(tahun, $(this).attr('data-cmd'));
     });

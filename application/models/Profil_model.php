@@ -49,7 +49,7 @@ class Profil_model extends MY_Model
             hrmis_kumpulan.keterangan AS kumpulan,
             hrmis_carta_organisasi.title AS jabatan
             FROM
-            espel_profil
+            view_laporan_statistik_prestasi as espel_profil
             INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
             INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
@@ -83,7 +83,7 @@ class Profil_model extends MY_Model
             }
 
             if($filter['kump_id'])
-                $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\''  ;
+                $sql .= ' AND espel_profil.kelas = \'' . trim($filter['kump_id']) . '\''  ;
 
             if($filter['skim_id'])
                 $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'' ;
