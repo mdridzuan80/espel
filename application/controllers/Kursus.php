@@ -1113,7 +1113,8 @@ class Kursus extends MY_Controller
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                //'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
             if($this->input->post("comAnjuran")=="L")

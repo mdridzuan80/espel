@@ -10,6 +10,7 @@ class Laporan extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->isLogged();
     }
 
     // laporan senarai hadir oleh pengguna
