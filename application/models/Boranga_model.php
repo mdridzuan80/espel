@@ -59,87 +59,56 @@ class Boranga_model extends MY_Model
 
     public function sen_x_jawab_b($filter)
     {
-        $sql = "select * from (SELECT
-            b.nama,
-            a.nokp,
-            a.tajuk,
-            'PENGGUNA' AS cipta,
-            a.stat_soal_selidik_b,
-            year(a.tkh_mula) AS tahun,
-            h.jabatan_id AS jabatan_id,
-            h.gred_id,
-            h.skim_id,
-            h.kelas_id,
-            h.nama AS nama_ppp,
-            d.title AS jabatan_ppp,
-            e.keterangan AS kumpulan_ppp,
-            f.keterangan AS skim_ppp
-            FROM
-            espel_kursus AS a
-            INNER JOIN espel_profil AS b ON b.nokp = a.nokp
-            LEFT JOIN espel_boranga AS c ON a.id = c.kursus_id AND a.nokp = c.nokp
-            LEFT JOIN espel_borangb AS g ON c.id = g.boranga_id
-            INNER JOIN espel_profil AS h ON b.nokp_ppp = h.nokp
-            INNER JOIN hrmis_carta_organisasi AS d ON h.jabatan_id = d.buid
-            INNER JOIN hrmis_kumpulan AS e ON h.kelas_id = e.kod
-            INNER JOIN hrmis_skim AS f ON h.skim_id = f.kod
-            WHERE
-            a.stat_soal_selidik_b = 'Y' AND
-            g.id IS NULL AND
-            a.stat_hadir = 'L'
+        $sql = "SELECT c.*, d.title as jabatan_ppp, e.nama as kumpulan_ppp, f.keterangan as skim_ppp, a.nama as peserta, a.id as kursus_id, a.tajuk   FROM (SELECT a.nokp_ppp, b.nokp, b.nama, b.id, b.tajuk, b.tahun
+            FROM view_laporan_statistik_prestasi a
+            INNER JOIN (SELECT a.nokp, b.nama, a.id, a.tajuk, year(a.tkh_mula) as tahun
+            FROM espel_kursus a
+            INNER JOIN espel_profil b ON a.nokp = b.nokp 
+            WHERE a.`stat_soal_selidik_b` = 'Y'
+            AND a.nokp is not null
+            AND a.stat_hadir = 'L'
             UNION
-            SELECT
-            c.nama,
-            b.nokp,
-            a.tajuk,
-            'PENYELARAS' AS cipta,
-            a.stat_soal_selidik_b,
-            year(a.tkh_mula) AS tahun,
-            a.ptj_jabatan_id_created AS jabatan_id,
-            f.gred_id,
-            f.skim_id,
-            f.kelas_id,
-            f.nama AS nama_ppp,
-            hrmis_carta_organisasi.title AS jabatan_ppp,
-            hrmis_kumpulan.keterangan AS kumpulan_ppp,
-            hrmis_skim.keterangan AS skim_ppp
-            FROM
-            espel_kursus AS a
-            INNER JOIN espel_permohonan_kursus AS b ON a.id = b.kursus_id
-            INNER JOIN espel_profil AS c ON c.nokp = b.nokp
-            LEFT JOIN espel_boranga AS d ON b.kursus_id = d.kursus_id AND b.nokp = d.nokp
-            INNER JOIN espel_borangb AS e ON d.id = e.boranga_id
-            INNER JOIN espel_profil AS f ON f.nokp_ppp = e.nokp
-            INNER JOIN hrmis_carta_organisasi ON f.jabatan_id = hrmis_carta_organisasi.buid
-            INNER JOIN hrmis_kumpulan ON f.kelas_id = hrmis_kumpulan.kod
-            INNER JOIN hrmis_skim ON f.skim_id = hrmis_skim.kod
-            WHERE
-            a.stat_soal_selidik_b = 'Y' AND
-            a.stat_laksana = 'L' AND
-            b.stat_mohon = 'L' AND
-            b.stat_hadir = 'Y') as a
-            WHERE 1=1";
+            SELECT b.nokp, c.nama, a.id, a.tajuk, year(a.tkh_mula) as tahun
+            FROM espel_kursus a
+            INNER JOIN espel_permohonan_kursus b ON b.kursus_id = a.id
+            INNER JOIN espel_profil c ON b.nokp = c.nokp
+            WHERE a.stat_soal_selidik_b = 'Y'
+            AND a.stat_laksana = 'L'
+            AND b.stat_mohon = 'L'
+            AND b.stat_hadir = 'Y') b ON a.nokp = b.nokp) a
+            LEFT JOIN espel_borangb b ON (a.nokp = b.nokp_peserta AND a.id = b.kursus_id AND a.nokp_ppp = b.nokp)
+            AND b.id IS NULL
+            INNER JOIN view_laporan_statistik_prestasi c ON a.nokp_ppp = c.nokp
+            INNER JOIN hrmis_carta_organisasi d ON c.jabatan_id = d.buid
+            INNER JOIN espel_dict_kelas e ON e.id = c.kelas
+            INNER JOIN hrmis_skim f ON f.kod = c.skim_id
+            ";
+
+        if(isset($filter->tahun) && $filter->tahun)
+        {
+            $sql .= ' and a.tahun = ' . $filter->tahun;
+        }
 
         if(isset($filter->jabatan_id) && $filter->jabatan_id)
         {
-            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+            $sql .= ' and c.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
         }
 
         if(isset($filter->kelas_id) && $filter->kelas_id)
         {
-            $sql .= ' and a.kelas_id = \'' . $filter->kelas_id . '\'';
+            $sql .= ' and c.kelas = '  . $filter->kelas_id ;
         }
 
         if(isset($filter->skim_id) && $filter->skim_id)
         {
-            $sql .= ' and a.skim_id = \'' . $filter->skim_id . '\'';
+            $sql .= ' and c.skim_id = \'' . $filter->skim_id . '\'';
         }
 
         if(isset($filter->gred_id) && $filter->gred_id)
         {
-            $sql .= ' and a.gred_id = \'' . $filter->gred_id . '\'';
+            $sql .= ' and c.gred_id = \'' . $filter->gred_id . '\'';
         }
-        $sql .= " ORDER BY a.nama_ppp";
+        $sql .= " ORDER BY c.nama";
         
         return $this->db->query($sql)->result();
     }

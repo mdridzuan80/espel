@@ -839,7 +839,6 @@ class Laporan extends MY_Controller
         $this->load->model('boranga_model', 'boranga');
 
         $tahun = $this->input->post("tahun");
-        
         $jab_id = $this->input->post("jabatan");
 
         $flatted = flatten_array(
@@ -857,7 +856,6 @@ class Laporan extends MY_Controller
         ]);
 
         $data['tahun'] = $tahun;
-
         $data['sen_anggota'] = $this->boranga->sen_x_jawab_b($filter);
 
         return $this->load->view('laporan/ptj/x_jawab_borangb/result',$data);

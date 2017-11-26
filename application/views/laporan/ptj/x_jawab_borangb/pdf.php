@@ -97,7 +97,7 @@ table.biasa td, table.listing td {
         <?php foreach($sen_anggota as $anggota) : ?>
         <tr>
             <td><?= $x++ ?></td>
-            <td><?= $anggota->nama_ppp ?></td>
+            <td><?= $anggota->nama ?></td>
             <td><?= $anggota->jabatan_ppp ?></td>
             <td><?= $anggota->kumpulan_ppp ?></td>
             <td><?= $anggota->skim_ppp ?></td>
