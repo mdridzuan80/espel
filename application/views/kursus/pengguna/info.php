@@ -8,12 +8,6 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
-                  <?php $csrf = [
-                      'name' => $this->security->get_csrf_token_name(),
-                      'hash' => $this->security->get_csrf_hash()
-                      ];
-                  ?>
-                  <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
                   <table class="table table-bordered">
                       <tr>
                         <th>Program</th>
@@ -65,7 +59,7 @@
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <button type="submit" class="btn btn-success" name="mohon">Mohon</button>
+                        <button id="btnMohon" type="submit" class="btn btn-success" name="mohon" data-kursus_id="<?= $kursus->id ?>">Mohon</button>
                     </div>
                   </div>
                   <?php endif ?>

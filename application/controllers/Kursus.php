@@ -876,8 +876,10 @@ class Kursus extends MY_Controller
             $this->load->model('kursus_model','kursus');
 
             $data['kursus'] = $this->kursus->info_kursus($id);
+            $plugins=$this->plugins();
+            $plugins['embedjs'][] = $this->load->view('kursus/pengguna/js','',TRUE);
             
-            return $this->renderView("kursus/pengguna/info",$data,$this->plugins());
+            return $this->renderView("kursus/pengguna/info",$data,$plugins);
         }
         else
         {
@@ -915,13 +917,12 @@ class Kursus extends MY_Controller
 
                 $this->appnotify->send($mail);
 
-                $this->appsess->setFlashSession("success", true);
+                return $this->output->set_status_header(200);
             }
             else
             {
-                $this->appsess->setFlashSession("success", false);
+                return $this->output->set_status_header(400,'Proses permohonan gagal.');
             }
-            redirect('');
         }
     }
 
