@@ -376,15 +376,15 @@
                 <td class="wrapper">
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td><h1>Sistem Maklumat Kursus espel</h1></td>
+                        <td><h1>Sistem Pengurusan Latihan eSPeL</h1></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
                       <td>
-                        <p><b>Dato’/Datin/Tuan/Puan/Cik, <?=$pemohon->nama . " (" . $pemohon->nokp .")"?>,</b></p>
-                        <p>Dukacita dimaklumkan bahawa, pemohonan anda untuk mengikuti kursus seperti dibawah telah di TOLAK:</p>
+                        <p><b>Datuk/Datin/Tuan/Puan/Cik, <?=$pemohon->nama . " (" . $pemohon->nokp .")"?>,</b></p>
+                        <p>Dukacita dimaklumkan bahawa, pemohonan anda untuk mengikuti kursus seperti di bawah telah di TOLAK :</p>
                         <table border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>
@@ -444,7 +444,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Modul Pengurusan Latihan</span>
+                    <span class="apple-link">Sistem Pengurusan Latihan eSPeL</span>
                     <br>Jabatan Kesihatan Negeri Melaka
                   </td>
                 </tr>

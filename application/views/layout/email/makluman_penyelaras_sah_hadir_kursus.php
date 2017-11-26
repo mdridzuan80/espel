@@ -384,7 +384,7 @@
                     <tr>
                       <td>
                         <p><b>Datuk/Datin/Tuan/Puan/Cik, Penyelaras Latihan</b></p>
-                        <p>Makluma, Anggota seperti dibawah telah disahkan hadir berkursus.</p>
+                        <p>Makluman, Anggota seperti di bawah telah disahkan hadir berkursus.</p>
                         <table border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>
@@ -460,7 +460,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Modul Pengurusan Latihan</span>
+                    <span class="apple-link">Sistem Pengurusan Latihan eSPeL</span>
                     <br>Jabatan Kesihatan Negeri Melaka
                   </td>
                 </tr>

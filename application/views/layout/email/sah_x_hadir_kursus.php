@@ -460,7 +460,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Modul Pengurusan Latihan</span>
+                    <span class="apple-link">Sistem Pengurusan Latihan eSPeL</span>
                     <br>Jabatan Kesihatan Negeri Melaka
                   </td>
                 </tr>

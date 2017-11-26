@@ -333,7 +333,7 @@
                 <tr>
                   <td class="content-block">
                     <span class="apple-link">Jabatan Kesihatan Negeri Melaka</span>
-                    <br> Sistem Maklumat Latihan Bersepadu espel.
+                    <br> Sistem Pengurusan Latihan eSPeL.
                   </td>
                 </tr>
               </table>
