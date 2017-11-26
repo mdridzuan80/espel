@@ -167,7 +167,8 @@ class Kursus_model extends MY_Model
             AND YEAR(espel_kursus.tkh_mula) = ?
             AND espel_permohonan_kursus.nokp = ?
             AND espel_kursus.program_id = ?
-            and espel_permohonan_kursus.stat_hadir = 'Y') a";
+            and espel_permohonan_kursus.stat_hadir = 'Y'
+            and espel_permohonan_kursus.stat_mohon = 'L') a";
         $rst = $this->db->query($sql,[$tahun,$nokp,$programID,$tahun,$nokp,$programID]);
 
         if($rst->num_rows())
