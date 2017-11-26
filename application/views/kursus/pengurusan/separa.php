@@ -14,8 +14,8 @@
                 </div>
                 <div class="count">&nbsp;</div>
 
-                <h3><a href="<?= base_url('kursus/separa_takwim') ?>">Takwim</a></h3>
-                <p>Menguruskan jadual kursus yang dianjurkan</p>
+                <h3><a href="<?=base_url('kursus/edit_separa_jabatan/' . $kursus_id)?>">Info</a></h3>
+                <p>Menguruskan maklumat kursus yang telah dijalankan</p>
               </div>
             </div>
             <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -24,8 +24,8 @@
                 </div>
                 <div class="count">&nbsp;</div>
 
-                <h3><a href="<?=base_url('kursus/separa_permohonan_kursus')?>">Pencalonan</a></h3>
-                <p>Menguruskan pencalonan peserta kursus yang dianjurkan</p>
+                <h3><a href="<?=base_url('kursus/separa_pencalonan/' . $kursus_id)?>">Pencalonan</a></h3>
+                <p>Menguruskan pencalonan peserta kursus yang telah dijalankan</p>
               </div>
             </div>
             <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -34,8 +34,8 @@
                 </div>
                 <div class="count">&nbsp;</div>
 
-                <h3><a href="<?=base_url('kursus/separa_kedudukan_pelaksanaan')?>">Pelaksanaan</a></h3>
-                <p>Melaksanakan kursus yang dianjurkan</p>
+                <h3><a href="<?=base_url('kursus/separa_pelaksanaan/' . $kursus_id)?>">Pelaksanaan</a></h3>
+                <p>Melaksanakan kursus yang telah dijalankan</p>
               </div>
             </div>
           </div>
