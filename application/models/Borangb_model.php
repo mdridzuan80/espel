@@ -6,7 +6,7 @@ class Borangb_model extends MY_Model
 
     public function senarai_boranga_related($nokp)
     {
-        $sql = "select * from (SELECT espel_kursus.nokp, espel_kursus.id as kursus_id, espel_kursus.tajuk, espel_kursus.anjuran, espel_dict_program.nama as program, hrmis_carta_organisasi.title as anjuran_dalam,
+        $sql = "select b.nama, a.* from (SELECT espel_kursus.nokp, espel_kursus.id as kursus_id, espel_kursus.tajuk, espel_kursus.anjuran, espel_dict_program.nama as program, hrmis_carta_organisasi.title as anjuran_dalam,
             espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.hari
             FROM espel_kursus
             INNER JOIN espel_dict_program ON espel_kursus.program_id = espel_dict_program.id

@@ -81,7 +81,7 @@ class Selidik extends MY_Controller {
 		$this->load->model('borangb_model','borangb');
 
 		$data["sen_borangb"] = $this->borangb->senarai_boranga_related($this->appsess->getSessionData('username'));
-
+		//dd($data['sen_borangb']);
 		return $this->renderView("selidik/borangb/show", $data);
 	}
 
