@@ -50,7 +50,10 @@
                                     <table>
                                         <tr>
                                             <?php if($kursus->stat_laksana == 'R') : ?>
-                                                <td><a href="<?=base_url('kursus/edit_separa_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Menguruskan Maklumat Pencalonan dan Pelaksanaan"><i class="fa fa-sitemap"></i> Pengurusan Kursus</a></td>
+                                                <td>
+                                                    <a href="<?=base_url('kursus/edit_separa_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Menguruskan Maklumat Pencalonan dan Pelaksanaan"><i class="fa fa-sitemap"></i> Pengurusan Kursus</a>
+                                                    <button class="btn btn-danger btn-hapus-separa btn-sm" type="button" data-kursus_id="<?= $kursus->id ?>">Hapus</button>
+                                                </td>
                                             <?php else : ?>
                                                 <td><a href="<?=base_url('#' . $kursus->id)?>" class="btn btn-info btn-sm" title="Menguruskan Maklumat Pencalonan dan Pelaksanaan"><i class="fa fa-info"></i> Info Kursus</a></td>
                                             <?php endif ?>
