@@ -2106,8 +2106,16 @@ class Kursus extends MY_Controller
         $this->load->model('hrmis_carta_model','jabatan');
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
         
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
         $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
-        $plugins['embedjs'][] = $this->load->view('kursus/separa/calon/calon_js',$js,TRUE);
+
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('kursus/separa/calon/calon_js',$js,TRUE)
+        ]];
+
 
         $data['level'] = 2;
         $data['vlevel']=$this->load->view('kursus/pengurusan/separa',['level'=>$data['level'],'kursus_id'=>$kursus_id],TRUE);
