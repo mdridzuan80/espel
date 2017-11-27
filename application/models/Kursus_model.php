@@ -815,24 +815,49 @@ class Kursus_model extends MY_Model
         }
     }
 
-    public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id)
+    public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id, $r = FALSE)
     {
-        $sql = "SELECT a.*, IFNULL(b.hari,0) as jum_hari 
-        FROM espel_profil a
-        LEFT JOIN (select a.nokp, sum(a.hari) as hari from (SELECT a.nokp, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a
-        LEFT JOIN hrmis_carta_organisasi b ON a.penganjur_id = b.buid
-        WHERE 1=1 AND YEAR(a.tkh_mula) = $filter->tahun
-        AND a.stat_hadir = 'L' 
-        UNION
-        SELECT d.nokp, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari
-        FROM espel_kursus a, hrmis_carta_organisasi b, espel_permohonan_kursus c, espel_profil d
-        WHERE 1=1
-        AND a.penganjur_id = b.buid
-        AND a.id = c.kursus_id
-		AND c.nokp = d.nokp
-        AND YEAR(a.tkh_mula) = $filter->tahun
-        AND c.stat_hadir = 'Y' AND a.stat_laksana = 'L') as a group by a.nokp) as b ON a.nokp = b.nokp WHERE 1=1";
+        $sql = "SELECT * FROM (SELECT
+            espel_profil.*,
+            hrmis_skim.keterangan AS skim,
+            hrmis_kumpulan.keterangan AS kumpulan,
+            hrmis_carta_organisasi.title AS jabatan,
+            IFNULL(hadir.jum_hari,0) as jum_hari,
+            IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
+ 			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
+            FROM
+            espel_profil
+            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
+            LEFT JOIN (select nokp, sum(hari) as jum_hari from (SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
+            FROM espel_kursus
+            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+            AND espel_kursus.stat_hadir = 'L'
+            AND espel_kursus.nokp is not null
+            UNION
+            SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
+            FROM espel_kursus
+            INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND espel_kursus.stat_laksana = 'L'
+            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+            and espel_permohonan_kursus.stat_hadir = 'Y' 
+            and espel_permohonan_kursus.stat_mohon ='L') as xx
+group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
+			LEFT JOIN (
+			select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
+                where tahun1 = " . $filter->tahun . "
+                union
+                select id, nokp, tahun2,hari2 from espel_sejarah_cuti
+                where tahun2 = " . $filter->tahun . ") as pengecualian
+group by nokp
+			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
+            WHERE
+            espel_profil.nokp <> 'admin') as a WHERE 1=1";
 
         if(isset($filter->nama) && $filter->nama)
         {
@@ -851,7 +876,7 @@ class Kursus_model extends MY_Model
 
         if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
         {
-            $sql .= ' and a.kelas in(' . implode($filter->kelas_id) . ')';
+            $sql .= ' and a.kelas in (' . implode(',',$filter->kelas_id) . ')';
         }
 
         if(isset($filter->skim_id) && $filter->skim_id[0])
@@ -866,51 +891,74 @@ class Kursus_model extends MY_Model
 
         if(isset($filter->gred_id) && $filter->gred_id[0])
         {
-            $sql .= ' and a.gred_id in (' . implode(',',$filter->gred_id) . ')';
+            $trimm = [];
+            foreach($filter->gred_id as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= ' and a.gred_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
         }
 
         if(isset($filter->hari) && $filter->hari)
         {
-            $sql .= " or (";
+            $i = 0;
+            $bil = sizeof($filter->hari);
+            $sql .= " AND (";
             foreach($filter->hari as $h)
             {
+                $i++;
                 if($h == 1)
                 {
-                    $sql .= ' b.hari is null';
+                    $sql .= ' (a.jum_hari >= 0 and a.jum_hari < 1)';
                 }
                 else if($h > 1 && $h < 9)
                 {
-                    $sql .= ' b.hari = ' . ($h-1);
+                    $sql .= ' (a.jum_hari >= ' . ($h-1) . " and a.jum_hari < " . $h . ")";
                 }
                 else
                 {
-                    $sql .= ' b.hari > ' . ($h-2);
+                    $sql .= ' a.jum_hari > ' . ($h-2);
                 }
-                $sql .= " or ";
+                
+                if($i == $bil)
+                {
+                    $sql .= " AND ";
+                }
+                else
+                {
+                    $sql .= " OR ";
+                }
             }
             $sql .="1=1)";
         }
 
         if(!$bil_hari)
         {
-            $sql .= ' and b.hari is null';
+            $sql .= ' and a.jum_hari = 0';
         }
         else if($bil_hari == 8)
         {
-            $sql .= ' and b.hari > 7';
+            $sql .= ' and a.jum_hari > 7';
         }
         else
         {
-            $sql .= ' and b.hari = ' . $bil_hari;
+            $sql .= ' and a.jum_hari >= ' . $bil_hari . " and a.jum_hari <" . ($bil_hari+1);
         }
 
-        $sql .= ' and a.kelas = ' . $kelas_id;
-        
+        $sql .= " AND a.kelas = $kelas_id";
+
         //dd($sql);
 
         $rst = $this->db->query($sql);
 
-        return $rst->num_rows();
+        if($r)
+        {
+            return $rst->result();
+        }
+        else
+        {
+            return $rst->num_rows();
+        }
     }
 
     public function sen_kursus_dicalonkan($nokp)

@@ -493,6 +493,7 @@ $config['csrf_exclude_uris'] = [
 	'laporan/ajax_x_jawab_borang_b_export',
 	'laporan/ajax_papar_pengguna_hadir_ptj_kursus',
 	'laporan/ajax_papar_pengguna_hadir_ptj_export',
+	'laporan/prestasi_detail',
 	'api/get_laporan_skim2',
 	'api/get_laporan_gred2'
 ];
