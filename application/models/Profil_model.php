@@ -257,7 +257,7 @@ class Profil_model extends MY_Model
     {
         $data = [];
         $param = [];
-        $sql = "select distinct gred_id from view_laporan_statistik_prestasi where 1=1";
+        $sql = "select distinct gred_id from espel_profil where 1=1";
 
         if($kelas)
         {
@@ -268,6 +268,46 @@ class Profil_model extends MY_Model
         if($skim)
         {
             $sql .= " AND skim_id = ?";
+            $param[] = $skim;
+        }
+
+        if(!$kelas && !$skim)
+        {
+            $sql .= ' AND id = 0';
+        }
+
+        $sql .= " order by 1";
+
+        $sen_gred = $this->db->query($sql,$param)->result();
+
+        foreach($sen_gred as $gred)
+        {
+            $data[]=['id' => $gred->gred_id,'kod' => $gred->gred_id];
+        }
+
+        return $data;
+    }
+
+    public function sen_gred2($kelas, $skim)
+    {
+        $data = [];
+        $param = [];
+        $sql = "select distinct gred_id from espel_profil where 1=1";
+
+        if($kelas)
+        {
+            $sql .= " AND kelas IN (" . implode(',',$kelas) . ")";
+            $param[] = $kelas;           
+        }
+
+        if($skim)
+        {
+            $trimm = [];
+            foreach($skim as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= " AND skim_id IN (" . "'" . trim(implode("', '",$trimm)) . "'" . ")";
             $param[] = $skim;
         }
 
@@ -307,6 +347,26 @@ class Profil_model extends MY_Model
         return $data;
     }
 
+    public function sen_skim2($kump)
+    {
+        $data = [];
+        $sql = "select distinct b.kod, b.keterangan
+            from espel_profil a, hrmis_skim b
+            where 1=1
+            and a.skim_id = b.kod
+            and a.kelas in(" . implode(',',$kump) . ")
+            order by b.keterangan";
+        
+        $sen_skim = $this->db->query($sql)->result();
+        
+        foreach($sen_skim as $skim)
+        {
+            $data[]=['id' => $skim->kod,'kod' => $skim->keterangan];
+        }
+
+        return $data;
+    }
+
     public function statistik_kelas($filter)
     {
         $sql = "SELECT
@@ -314,7 +374,7 @@ class Profil_model extends MY_Model
             espel_dict_kelas.nama as keterangan,
             Count(a.id) as bil
             FROM espel_dict_kelas
-            LEFT JOIN view_laporan_statistik_prestasi a ON a.kelas = espel_dict_kelas.id
+            LEFT JOIN espel_profil a ON a.kelas = espel_dict_kelas.id
             INNER JOIN (";
         $sql .= "SELECT
                 espel_profil.nokp,
@@ -373,34 +433,42 @@ class Profil_model extends MY_Model
             $sql .= ' and espel_profil.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && $filter->kelas_id)
+        if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
         {
-            $sql .= ' and espel_profil.kelas_id = \'' . $filter->kelas_id . '\'';
+            $sql .= ' and espel_profil.kelas in(' . implode($filter->kelas_id) . ')';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id)
+        if(isset($filter->skim_id) && $filter->skim_id[0])
         {
-            $sql .= ' and espel_profil.skim_id = \'' . $filter->skim_id . '\'';
+            $trimm = [];
+            foreach($filter->skim_id as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= ' and espel_profil.skim_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id)
+        if(isset($filter->gred_id) && $filter->gred_id[0])
         {
-            $sql .= ' and espel_profil.gred_id = \'' . $filter->gred_id . '\'';
+            $sql .= ' and espel_profil.gred_id in (' . implode(',',$filter->gred_id) . ')';
         }
 
         if(isset($filter->hari) && $filter->hari)
         {
-            if($filter->hari == 1)
+            foreach($filter->hari as $h)
             {
-                $sql .= ' and hadir.jum_hari is null';
-            }
-            else if($filter->hari > 1 && $filter->hari < 9)
-            {
-                $sql .= ' and hadir.jum_hari = ' . ($filter->hari-1);
-            }
-            else
-            {
-                $sql .= ' and hadir.jum_hari > ' . ($filter->hari-2);
+                if($h == 1)
+                {
+                    $sql .= ' or hadir.jum_hari is null';
+                }
+                else if($h > 1 && $h < 9)
+                {
+                    $sql .= ' or hadir.jum_hari = ' . ($h-1);
+                }
+                else
+                {
+                    $sql .= ' or hadir.jum_hari > ' . ($h-2);
+                }
             }
         }
 

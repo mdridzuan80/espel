@@ -818,7 +818,7 @@ class Kursus_model extends MY_Model
     public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id)
     {
         $sql = "SELECT a.*, IFNULL(b.hari,0) as jum_hari 
-        FROM view_laporan_statistik_prestasi a
+        FROM espel_profil a
         LEFT JOIN (select a.nokp, sum(a.hari) as hari from (SELECT a.nokp, a.tajuk, a.tkh_mula, a.tkh_tamat, a.hari
         FROM espel_kursus a
         LEFT JOIN hrmis_carta_organisasi b ON a.penganjur_id = b.buid
@@ -849,35 +849,46 @@ class Kursus_model extends MY_Model
             $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && $filter->kelas_id)
+        if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
         {
-            $sql .= ' and a.kelas = \'' . $filter->kelas_id . '\'';
+            $sql .= ' and a.kelas in(' . implode($filter->kelas_id) . ')';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id)
+        if(isset($filter->skim_id) && $filter->skim_id[0])
         {
-            $sql .= ' and a.skim_id = \'' . $filter->skim_id . '\'';
+            $trimm = [];
+            foreach($filter->skim_id as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= ' and a.skim_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id)
+        if(isset($filter->gred_id) && $filter->gred_id[0])
         {
-            $sql .= ' and a.gred_id = \'' . $filter->gred_id . '\'';
+            $sql .= ' and a.gred_id in (' . implode(',',$filter->gred_id) . ')';
         }
 
         if(isset($filter->hari) && $filter->hari)
         {
-            if($filter->hari == 1)
+            $sql .= " or (";
+            foreach($filter->hari as $h)
             {
-                $sql .= ' and b.hari is null';
+                if($h == 1)
+                {
+                    $sql .= ' b.hari is null';
+                }
+                else if($h > 1 && $h < 9)
+                {
+                    $sql .= ' b.hari = ' . ($h-1);
+                }
+                else
+                {
+                    $sql .= ' b.hari > ' . ($h-2);
+                }
+                $sql .= " or ";
             }
-            else if($filter->hari > 1 && $filter->hari < 9)
-            {
-                $sql .= ' and b.hari = ' . ($filter->hari-1);
-            }
-            else
-            {
-                $sql .= ' and b.hari > ' . ($filter->hari-2);
-            }
+            $sql .="1=1)";
         }
 
         if(!$bil_hari)

@@ -466,7 +466,7 @@ class Laporan extends MY_Controller
         $data['sen_kumpulan'] = $this->profil->sen_kump();
 
         $plugins = ['embedjs'=>[
-            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('laporan/ptj/prestasi_kursus/carian_js',$data,true),
             $this->load->view('laporan/ptj/prestasi_kursus/js','',true)
          ]];
 

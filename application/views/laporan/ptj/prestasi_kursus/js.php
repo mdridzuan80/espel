@@ -19,9 +19,10 @@ $(function(){
         var pnokp = 0;
 
         $('#rptPapar').html(loader);
+        console.log('papar');
         $.ajax({
             method: 'post',
-            data: {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari},
+            data: {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, 'kelas[]': kelas, 'skim[]': skim, 'gred[]': gred, 'hari[]': hari},
             url: base_url + 'laporan/ajax_prestasi_kursus_keseluruhan',
             success: function(data, textStatus, jqXHR){
                 $('#rptPapar').html(data);
@@ -38,7 +39,7 @@ $(function(){
         var skim = $('#comSkim').val();
         var gred = $('#comGred').val();
         var hari = $('#comHari').val();
-        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, 'kelas[]': kelas, 'skim[]': skim, 'gred[]': gred, 'hari[]': hari};
 
         janaReport(filter, $(this).attr('data-cmd'));
     });
@@ -52,7 +53,7 @@ $(function(){
         var skim = $('#comSkim').val();
         var gred = $('#comGred').val();
         var hari = $('#comHari').val();
-        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, 'kelas[]': kelas, 'skim[]': skim, 'gred[]': gred, 'hari[]': hari};
 
         janaReport(filter, $(this).attr('data-cmd'));
     });
@@ -66,7 +67,7 @@ $(function(){
         var skim = $('#comSkim').val();
         var gred = $('#comGred').val();
         var hari = $('#comHari').val();
-        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, kelas: kelas, skim: skim, gred: gred, hari: hari};
+        var filter = {tahun: tahun, nama: nama, nokp: nokp, jabatan: jabatan, sub_jabatan: sub_jabatan, 'kelas[]': kelas, 'skim[]': skim, 'gred[]': gred, 'hari[]': hari};
         
         janaReport(filter, $(this).attr('data-cmd'));
     });
