@@ -257,7 +257,7 @@ class Profil_model extends MY_Model
     {
         $data = [];
         $param = [];
-        $sql = "select distinct gred_id from view_laporan_statistik_prestasi where 1=1";
+        $sql = "select distinct gred_id from espel_profil where 1=1";
 
         if($kelas)
         {
@@ -268,6 +268,46 @@ class Profil_model extends MY_Model
         if($skim)
         {
             $sql .= " AND skim_id = ?";
+            $param[] = $skim;
+        }
+
+        if(!$kelas && !$skim)
+        {
+            $sql .= ' AND id = 0';
+        }
+
+        $sql .= " order by 1";
+
+        $sen_gred = $this->db->query($sql,$param)->result();
+
+        foreach($sen_gred as $gred)
+        {
+            $data[]=['id' => $gred->gred_id,'kod' => $gred->gred_id];
+        }
+
+        return $data;
+    }
+
+    public function sen_gred2($kelas, $skim)
+    {
+        $data = [];
+        $param = [];
+        $sql = "select distinct gred_id from espel_profil where 1=1";
+
+        if($kelas)
+        {
+            $sql .= " AND kelas IN (" . implode(',',$kelas) . ")";
+            $param[] = $kelas;           
+        }
+
+        if($skim)
+        {
+            $trimm = [];
+            foreach($skim as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= " AND skim_id IN (" . "'" . trim(implode("', '",$trimm)) . "'" . ")";
             $param[] = $skim;
         }
 
@@ -307,105 +347,150 @@ class Profil_model extends MY_Model
         return $data;
     }
 
+    public function sen_skim2($kump)
+    {
+        $data = [];
+        $sql = "select distinct b.kod, b.keterangan
+            from espel_profil a, hrmis_skim b
+            where 1=1
+            and a.skim_id = b.kod
+            and a.kelas in(" . implode(',',$kump) . ")
+            order by b.keterangan";
+        
+        $sen_skim = $this->db->query($sql)->result();
+        
+        foreach($sen_skim as $skim)
+        {
+            $data[]=['id' => $skim->kod,'kod' => $skim->keterangan];
+        }
+
+        return $data;
+    }
+
     public function statistik_kelas($filter)
     {
         $sql = "SELECT
             espel_dict_kelas.id,
             espel_dict_kelas.nama as keterangan,
-            Count(a.id) as bil
+            Count(c.id) as bil
             FROM espel_dict_kelas
-            LEFT JOIN view_laporan_statistik_prestasi a ON a.kelas = espel_dict_kelas.id
-            INNER JOIN (";
-        $sql .= "SELECT
-                espel_profil.nokp,
-                espel_profil.nama,
-                espel_profil.gred_id,
-                espel_profil.`status`,
-                hrmis_skim.keterangan AS skim,
-                hrmis_kumpulan.keterangan AS kumpulan,
-                hrmis_carta_organisasi.title AS jabatan,
-                IFNULL(hadir.jum_hari,0) as jum_hari,
-                IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
- 			    IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
-                FROM espel_profil
-                INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
-                INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
-                INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
-                LEFT JOIN (select nokp, sum(hari) as jum_hari from (SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
-                    FROM espel_kursus
-                    LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-                    WHERE 1=1
-                    AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-                    AND espel_kursus.stat_hadir = 'L'
-                    AND espel_kursus.nokp is not null
-                    UNION
-                    SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
-                    FROM espel_kursus
-                    INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
-                    LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-                    WHERE 1=1
-                    AND espel_kursus.stat_laksana = 'L'
-                    AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-                    and espel_permohonan_kursus.stat_hadir = 'Y' 
-                    and espel_permohonan_kursus.stat_mohon ='L') as xx
-                group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
-			LEFT JOIN (select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
-                    where tahun1 = " . $filter->tahun . "
-                    union
-                    select id, nokp, tahun2,hari2 from espel_sejarah_cuti
-                    where tahun2 = 2017) as pengecualian
-                    group by nokp
+            LEFT JOIN (SELECT
+            espel_profil.*,
+            hrmis_skim.keterangan AS skim,
+            hrmis_kumpulan.keterangan AS kumpulan,
+            hrmis_carta_organisasi.title AS jabatan,
+            IFNULL(hadir.jum_hari,0) as jum_hari,
+            IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
+ 			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
+            FROM
+            espel_profil
+            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
+            LEFT JOIN (select nokp, sum(hari) as jum_hari from (SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
+            FROM espel_kursus
+            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+            AND espel_kursus.stat_hadir = 'L'
+            AND espel_kursus.nokp is not null
+            UNION
+            SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
+            FROM espel_kursus
+            INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND espel_kursus.stat_laksana = 'L'
+            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+            and espel_permohonan_kursus.stat_hadir = 'Y' 
+            and espel_permohonan_kursus.stat_mohon ='L') as xx
+group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
+			LEFT JOIN (
+			select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
+                where tahun1 = " . $filter->tahun . "
+                union
+                select id, nokp, tahun2,hari2 from espel_sejarah_cuti
+                where tahun2 = " . $filter->tahun . ") as pengecualian
+group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
-            WHERE espel_profil.nokp <> 'admin'";
-
+            WHERE
+            espel_profil.nokp <> 'admin') as c ON c.kelas = espel_dict_kelas.id WHERE 1=1";
+            
         if(isset($filter->nama) && $filter->nama)
         {
-            $sql .= ' and espel_profil.nama like \'%' . trim($filter->nama) . '%\'';
+            $sql .= ' and c.nama like \'%' . trim($filter->nama) . '%\'';
         }
 
         if(isset($filter->nokp) && $filter->nokp)
         {
-            $sql .= ' and espel_profil.nokp like \'%' . trim($filter->nokp) . '%\'';
+            $sql .= ' and c.nokp like \'%' . trim($filter->nokp) . '%\'';
         }
 
         if(isset($filter->jabatan_id) && $filter->jabatan_id)
         {
-            $sql .= ' and espel_profil.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+            $sql .= ' and c.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && $filter->kelas_id)
+        if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
         {
-            $sql .= ' and espel_profil.kelas_id = \'' . $filter->kelas_id . '\'';
+            $sql .= ' and c.kelas in(' . implode(',', $filter->kelas_id) . ')';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id)
+        if(isset($filter->skim_id) && $filter->skim_id[0])
         {
-            $sql .= ' and espel_profil.skim_id = \'' . $filter->skim_id . '\'';
+            $trimm = [];
+            foreach($filter->skim_id as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= ' and c.skim_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id)
+        if(isset($filter->gred_id) && $filter->gred_id[0])
         {
-            $sql .= ' and espel_profil.gred_id = \'' . $filter->gred_id . '\'';
+            $trimm = [];
+            foreach($filter->gred_id as $x)
+            {
+                $trimm[]=trim($x);
+            }
+            $sql .= ' and c.gred_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
         }
 
         if(isset($filter->hari) && $filter->hari)
         {
-            if($filter->hari == 1)
+            $i = 0;
+            $bil = sizeof($filter->hari);
+            $sql .= " and (";
+            foreach($filter->hari as $h)
             {
-                $sql .= ' and hadir.jum_hari is null';
+                $i++;
+                if($h == 1)
+                {
+                    $sql .= ' (c.jum_hari >= 0 and c.jum_hari < 1)';
+                }
+                else if($h > 1 && $h < 9)
+                {
+                    $sql .= ' (c.jum_hari >= ' . ($h-1) . " and c.jum_hari < " . $h . ")";
+                }
+                else
+                {
+                    $sql .= ' c.jum_hari > ' . ($h-2);
+                }
+                
+                if($i == $bil)
+                {
+                    $sql .= " AND ";
+                }
+                else
+                {
+                    $sql .= " OR ";
+                }
+                    
             }
-            else if($filter->hari > 1 && $filter->hari < 9)
-            {
-                $sql .= ' and hadir.jum_hari = ' . ($filter->hari-1);
-            }
-            else
-            {
-                $sql .= ' and hadir.jum_hari > ' . ($filter->hari-2);
-            }
+            $sql .="1=1)";
         }
 
-        $sql .= ") as c ON a.nokp = c.nokp
-            GROUP BY
+            $sql .= " GROUP BY
             espel_dict_kelas.id,
             espel_dict_kelas.nama
             ORDER BY

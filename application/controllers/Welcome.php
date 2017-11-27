@@ -119,6 +119,27 @@ class Welcome extends MY_Controller {
         ->set_output(json_encode($this->profil->sen_gred($kelas, $skim)));
 	}
 
+	public function get_laporan_gred2()
+	{
+		$this->load->model("profil_model","profil");
+		
+		if($this->input->post('kelas'))
+			$kelas = $this->input->post('kelas');
+
+		if($this->input->post('skim'))
+		{
+			$skim = $this->input->post('skim');
+		}
+		else
+		{
+			$skim = 0;
+		}
+
+		$this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($this->profil->sen_gred2($kelas, $skim)));
+	}
+
 	public function get_laporan_skim($kod)
 	{
 		$this->load->model("profil_model","profil");
@@ -126,6 +147,15 @@ class Welcome extends MY_Controller {
 		$this->output
         ->set_content_type('application/json')
         ->set_output(json_encode($this->profil->sen_skim($kod)));
+	}
+
+	public function get_laporan_skim2()
+	{
+		$this->load->model("profil_model","profil");
+
+		$this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($this->profil->sen_skim2($this->input->post('kelas'))));
 	}
 
 	public function get_tree_jabatan_related()

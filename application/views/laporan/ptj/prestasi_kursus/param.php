@@ -41,10 +41,9 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Kumpulan Gred</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control input-sm" id="comKelas" name="comKelas">
-                          <option selected="selected" value="0">Pilih Semua</option>
+                        <select class="form-control input-sm" id="comKelas" name="comKelas[]" multiple>
                           <?php foreach($sen_kumpulan as $kumpulan):?>
-                          <option value="<?=$kumpulan['id']?>"><?=$kumpulan['kod']?></option>
+                          <option value="<?=$kumpulan['id']?>" selected><?=$kumpulan['kod']?></option>
                           <?php endforeach?>
                         </select>
                     </div>
@@ -52,33 +51,32 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Skim Perkhidmatan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control input-sm" id="comSkim" name="comSkim">
-                        <option selected="selected" value="0">Pilih Semua</option>
+                        <select class="form-control input-sm" id="comSkim" name="comSkim[]" multiple>
+                          <option value="0" selected>Semua</option>
                         </select>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Gred</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control input-sm" id="comGred" name="comGred">
-                        <option selected="selected" value="0">Pilih Semua</option>
+                        <select class="form-control input-sm" id="comGred" name="comGred[]" multiple>
+                          <option value="0" selected>Semua</option>
                         </select>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Bilangan Hari</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control input-sm" id="comHari">
-                        <option selected="selected" value="0">Pilihan</option>
-                          <option value="1">Tidak pernah hadir</option>
-                          <option value="2">1 hari</option>
-                          <option value="3">2 hari</option>
-                          <option value="4">3 hari</option>
-                          <option value="5">4 hari</option>
-                          <option value="6">5 hari</option>
-                          <option value="7">6 hari</option>
-                          <option value="8">7 hari</option>
-                          <option value="9">Lebih 7 hari</option>
+                        <select class="form-control input-sm" id="comHari" name="comHari[]" multiple>
+                          <option value="1" selected>Tidak pernah hadir</option>
+                          <option value="2" selected>1 hari</option>
+                          <option value="3" selected>2 hari</option>
+                          <option value="4" selected>3 hari</option>
+                          <option value="5" selected>4 hari</option>
+                          <option value="6" selected>5 hari</option>
+                          <option value="7" selected>6 hari</option>
+                          <option value="8" selected>7 hari</option>
+                          <option value="9" selected>Lebih 7 hari</option>
                         </select>
                     </div>
                   </div>
@@ -107,6 +105,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
+ 
   </div>
 </div>

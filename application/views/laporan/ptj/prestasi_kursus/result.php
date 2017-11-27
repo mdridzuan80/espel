@@ -32,23 +32,24 @@
               </thead>
               <tbody>
                 <?php $x = 1 ?>
+                <?php //dd($objFilter->hari); ?>
                 <?php foreach($sen_kelas as $kelas) : ?>
                 <tr>
                     <td><?= $x++ ?></td>
                     <td><?= $kelas->keterangan ?></td>
                     <td><?= $kelas->bil ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 0, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 1, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 2, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 3, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 4, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 5, $kelas->id) ?></td>
-                    <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 6, $kelas->id) ?></td>
-                    <?php $tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 7, $kelas->id) ?>
-                    <td><?= $tujuh ?></td>
-                    <?php $over_tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 8, $kelas->id) ?>
-                    <td><?= $over_tujuh ?></td>
-                    <td><?= $tujuh + $over_tujuh ?></td>
+                    <td><?= (in_array('1',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"0\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 0, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('2',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"1\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 1, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('3',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"2\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 2, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('4',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"3\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 3, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('5',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"4\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 4, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('6',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"5\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 5, $kelas->id) . "</a>" : '' ?></td>
+                    <td><?= (in_array('7',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"6\" data-kelas=\"" . $kelas->id . "\">" . $objKursus->kursus->bil_prestasi_kelas($objFilter, 6, $kelas->id) . "</a>" : '' ?></td>
+                    <?php $tujuh =  (in_array('8',$objFilter->hari)) ? $objKursus->kursus->bil_prestasi_kelas($objFilter, 7, $kelas->id) : '' ?>
+                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"7\" data-kelas=\"" . $kelas->id . "\">" . $tujuh . "</a>" ?></td>
+                    <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? $objKursus->kursus->bil_prestasi_kelas($objFilter, 8, $kelas->id) : '' ?>
+                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"8\" data-kelas=\"" . $kelas->id . "\">" . $over_tujuh . "</a>" ?></td>
+                    <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? ($tujuh + $over_tujuh) : '' ?></td>
                 </tr>
                 <?php endforeach ?>
               </tbody>
