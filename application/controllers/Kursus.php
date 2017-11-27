@@ -2110,13 +2110,7 @@ class Kursus extends MY_Controller
         $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
         $data['sen_kumpulan'] = $this->profil->sen_kump();
         $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
-
-        $plugins = ['embedjs'=>[
-            $this->load->view('scripts/carian_js',$data,true),
-            $this->load->view('kursus/separa/calon/calon_js',$js,TRUE)
-        ]];
-
-
+        $js['kursus_id'] = $kursus_id;
         $data['level'] = 2;
         $data['vlevel']=$this->load->view('kursus/pengurusan/separa',['level'=>$data['level'],'kursus_id'=>$kursus_id],TRUE);
         $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
@@ -2124,6 +2118,10 @@ class Kursus extends MY_Controller
         $data['jabatan_id'] = $js['jabatan_id'];
         $data['objJabatan'] = $this->jabatan;
 
+        $plugins = ['embedjs'=>[
+            $this->load->view('scripts/carian_js',$data,true),
+            $this->load->view('kursus/separa/calon/calon_js',$js,TRUE)
+        ]];
 
         return $this->renderView('kursus/separa/calon/show', $data, $plugins);
     }
@@ -2281,9 +2279,10 @@ class Kursus extends MY_Controller
         $filter = initObj([
             'nama' => $this->input->post('nama'),
             'nokp' => $this->input->post('nokp'),
-			'jabatan_id' => $this->input->post('jabatanID'),
-            'kumpulan' => $this->input->post('kumpulan'),
-            'gred' => $this->input->post('gred'),
+            'jabatan_id' => $this->input->post('jabatan_id'),
+            'sub_jabatan' => $this->input->post('sub_jabatan'),
+            'kumpulan' => $this->input->post('kelas_id'),
+            'gred' => $this->input->post('gred_id'),
             'hari' => $this->input->post('hari'),
             'sub_jabatan' => $this->input->post('sub_jabatan'),
         ]);

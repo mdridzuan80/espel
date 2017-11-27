@@ -67,7 +67,7 @@ class Mohon_kursus_model extends MY_Model
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod', 'left');
         $this->db->where('a.kursus_id',$Kursus_id);
         
-        if($filter->nama)
+        /* if($filter->nama)
         {
             $this->db->like('b.nama', $filter->nama);
         }
@@ -99,7 +99,7 @@ class Mohon_kursus_model extends MY_Model
         if(isset($filter->gred) && $filter->gred)
         {
             $this->db->where('b.gred_id',$filter->gred);
-        }
+        } */
         $rst = $this->db->get();
         //dd($this->db->last_query());
         return $rst->result();
@@ -148,7 +148,7 @@ class Mohon_kursus_model extends MY_Model
 
         if(isset($filter->kumpulan) && $filter->kumpulan)
         {
-            $sql .= ' and a.skim_id = ' . $filter->kumpulan;
+            $sql .= ' and a.kelas = ' . $filter->kumpulan;
         }
 
         if(isset($filter->gred) && $filter->gred)
@@ -168,7 +168,7 @@ class Mohon_kursus_model extends MY_Model
             }
 
         }
-
+        //dd($sql);
         $rst = $this->db->query($sql);
         //dd($this->db->last_query());
         return $rst->result();
