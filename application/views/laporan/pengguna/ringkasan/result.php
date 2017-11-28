@@ -32,8 +32,8 @@
                 </tr>
                 <?php endforeach?>
                 <tr>
-                    <td colspan="2">Jumlah Keseluruhan</td>
-                    <td><?=$total?></td>
+                    <td colspan="2">Jumlah Keseluruhan </td>
+                    <td><?= round($total) ?></td>
                 </tr>
               </tbody>
           </table>
