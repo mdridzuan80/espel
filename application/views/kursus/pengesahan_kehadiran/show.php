@@ -22,19 +22,19 @@
             <?php endif?>
             <?php endif?>
             <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
+<!--             <div class="col-md-12 col-sm-12 col-xs-12">
             <a href="#" id="cmdTidahHadir" class="btn btn-danger pull-right" role="button" title="Daftar peserta di dalam kursus ini">Tidak Hadir</a>
             <a href="#" id="cmdHadir" class="btn btn-info pull-right" role="button" title="Daftar peserta di dalam kursus ini">Hadir</a>
             </div>
             </div>
-
+ -->
             <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="table-responsive">
             <table class="table table-striped table-bordered jambo_table datatable">
               <thead>
                 <tr class="headings">
-                  <th><input id="chkAll" type="checkbox" value="0"></th>
+                  <!-- <th><input id="chkAll" type="checkbox" value="0"></th> -->
                   <th>Nama</th>
                   <th>Jabatan</th>
                   <th>Tajuk</th>
@@ -50,7 +50,7 @@
               <tbody>
                   <?php foreach($sen_kursus as $kursus):?>
                 <tr>
-                  <td><input class="chkKursusLuar" type="checkbox" value="<?=$kursus->id?>"></td>
+                  <!-- <td><input class="chkKursusLuar" type="checkbox" value="<?=$kursus->id?>"></td> -->
                   <td><?=$kursus->nama?></td>
                   <td><?=$kursus->jabatan?></td>
                   <td><?=$kursus->tajuk?></td>
