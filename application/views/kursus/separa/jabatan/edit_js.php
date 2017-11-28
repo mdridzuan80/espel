@@ -1,43 +1,15 @@
 <script>
     $(function(){
-        $('.espel_program').on('change', function(e){
-            e.preventDefault();
-            var nilai = $(this).val();
-            $('.hddProgram').val(nilai);
+        $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' ));
+        $('#comPenganjurLatihan').combotree();
+        $('#comPenganjurPemb').combotree();
+        $('#comPenganjurPemb2').combotree();
+        $('#comPenganjurKend').combotree();
 
-            initform(nilai);
-
-            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' ));
-            $('#comPenganjurLatihan').combotree();
-            $('#comPenganjurPemb').combotree();
-            $('#comPenganjurPemb2').combotree();
-            $('#comPenganjurKend').combotree();
-
-        });
-
-        function viewPanelKursus(latihan,pembelajaran1,pembelajaran2,kendiri)
-        {
-            $('.espel_latihan').hide();
-            $('.espel_pembelajaran1').hide();
-            $('.espel_pembelajaran2').hide();
-            $('.espel_kendiri').hide();
-
-            if(latihan)
-                $('.espel_latihan').show();
-
-            if(pembelajaran1)
-                $('.espel_pembelajaran1').show();
-
-            if(pembelajaran2)
-                $('.espel_pembelajaran2').show();
-
-            if(kendiri)
-                $('.espel_kendiri').show();
-        }
+        initform($('.espel_program').val());
 
         function initform(program_id) {
             if(program_id == 1 || program_id == 2){
-                viewPanelKursus(true,false,false,false);
                 $("#txtTkhMula").datetimepicker({
                     format: "DD-MM-YYYY"
                 });
@@ -69,7 +41,6 @@
             }
 
             if(program_id == 3){
-                viewPanelKursus(false,true,false,false);
                 $("#txtTkhMulaPemb").datetimepicker({
                     format: "DD-MM-YYYY"
                 });
@@ -101,7 +72,6 @@
             }
 
             if(program_id == 4){
-                viewPanelKursus(false,false,true,false);
                 $("#txtTkhMulaPemb2").datetimepicker({
                     format: "DD-MM-YYYY"
                 });
@@ -132,7 +102,6 @@
                 });
             }
             if(program_id == 5){
-                viewPanelKursus(false,false,false,true);
                 $("#txtTkhMulaKend").datetimepicker({
                     format: "DD-MM-YYYY"
                 });
@@ -161,9 +130,6 @@
                     disableFocus: true,
                     defaultTime: false
                 });
-            }
-            if (program_id == 0) {
-                viewPanelKursus(false,false,false,false);
             }
         }
 
@@ -239,8 +205,9 @@
             }
         });
 
-        $('#frm-program-latihan').on('submit', function(e){
+        $('.frm-edit-separa-kursus').on('submit', function(e){
             e.preventDefault();
+            var kursus_id = $(this).attr('data-kursus_id');
             var button_submit = $(this).find("button[type=submit]");
             var formData = new FormData(this);
             var formCsrf = {};
@@ -258,14 +225,14 @@
                         cache       : false,
                         contentType : false,
                         processData : false,
-                        url: base_url + 'kursus/ajax_separa_daftar_jabatan_simpan',
+                        url: base_url + 'kursus/ajax_edit_separa_jabatan/' + kursus_id,
                         success: function(data) {
                             swal({
                                 title: 'Berjaya!',
-                                text: 'Proses mendaftar kursus selesai.',
+                                text: 'Proses pengemaskinian selesai.',
                                 type: 'success'
                             }).then(function(){
-                                window.location.href=base_url + 'kursus/info_jabatan/' + data.kursus_id;
+                                button_submit.attr("disabled", false);
                             });
                         },
                         error: function(jqXHR, textStatus,errorThrown)
@@ -276,121 +243,43 @@
                     });
                 }
             });
-        });
+        }); 
         
-        $('#frm-pembelajaran-bersemuka').on('submit', function(e){
+        $('.btn-hapus-separa').on('click', function(e){
             e.preventDefault();
-            var button_submit = $(this).find("button[type=submit]");
-            var formData = new FormData(this);
-            var formCsrf = {};
-
-            button_submit.attr("disabled", true);
-
-            $.ajax({
-                url: base_url + 'api/csrf',
-                success: function(data, textStatus, jqXHR ) {
-                    formCsrf = data;
-                    formData.append(data.csrfTokenName, data.csrfHash);
-                    $.ajax({
-                        method: 'post',
-                        data: formData,
-                        cache       : false,
-                        contentType : false,
-                        processData : false,
-                        url: base_url + 'kursus/ajax_separa_daftar_jabatan_simpan',
-                        success: function(data) {
-                            swal({
-                                title: 'Berjaya!',
-                                text: 'Proses mendaftar kursus selesai.',
-                                type: 'success'
-                            }).then(function(){
-                                window.location.href=base_url + 'kursus/info_jabatan/' + data.kursus_id;
-                            });
-                        },
-                        error: function(jqXHR, textStatus,errorThrown)
-                        {
-                            swal('Ralat!',errorThrown,'error');
-                            button_submit.attr("disabled", false);
-                        }
-                    });
-                }
-            });
-        });
-
-        $('#frm-pembelajaran-tidak-bersemuka').on('submit', function(e){
-            e.preventDefault();
-            var button_submit = $(this).find("button[type=submit]");
-            var formData = new FormData(this);
-            var formCsrf = {};
-
-            button_submit.attr("disabled", true);
-
-            $.ajax({
-                url: base_url + 'api/csrf',
-                success: function(data, textStatus, jqXHR ) {
-                    formCsrf = data;
-                    formData.append(data.csrfTokenName, data.csrfHash);
-                    $.ajax({
-                        method: 'post',
-                        data: formData,
-                        cache       : false,
-                        contentType : false,
-                        processData : false,
-                        url: base_url + 'kursus/ajax_separa_daftar_jabatan_simpan',
-                        success: function(data) {
-                            swal({
-                                title: 'Berjaya!',
-                                text: 'Proses mendaftar kursus selesai.',
-                                type: 'success'
-                            }).then(function(){
-                                window.location.href=base_url + 'kursus/info_jabatan/' + data.kursus_id;
-                            });
-                        },
-                        error: function(jqXHR, textStatus,errorThrown)
-                        {
-                            swal('Ralat!',errorThrown,'error');
-                            button_submit.attr("disabled", false);
-                        }
-                    });
-                }
-            });
-        });
-
-        $('#frm-kendiri').on('submit', function(e){
-            e.preventDefault();
-            var button_submit = $(this).find("button[type=submit]");
-            var formData = new FormData(this);
-            var formCsrf = {};
-
-            button_submit.attr("disabled", true);
-
-            $.ajax({
-                url: base_url + 'api/csrf',
-                success: function(data, textStatus, jqXHR ) {
-                    formCsrf = data;
-                    formData.append(data.csrfTokenName, data.csrfHash);
-                    $.ajax({
-                        method: 'post',
-                        data: formData,
-                        cache       : false,
-                        contentType : false,
-                        processData : false,
-                        url: base_url + 'kursus/ajax_separa_daftar_jabatan_simpan',
-                        success: function(data) {
-                            swal({
-                                title: 'Berjaya!',
-                                text: 'Proses mendaftar kursus selesai.',
-                                type: 'success'
-                            }).then(function(){
-                                window.location.href=base_url + 'kursus/info_jabatan/' + data.kursus_id;
-                            });
-                        },
-                        error: function(jqXHR, textStatus,errorThrown)
-                        {
-                            swal('Ralat!',errorThrown,'error');
-                            button_submit.attr("disabled", false);
-                        }
-                    });
+            var kursus_id = $(this).attr('data-kursus_id');
+            swal({
+                title: 'Anda Pasti?',
+                text: 'Maklumat ini tidak akan diperolehi semula selepas dihapuskan',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then(function () {
+                $.ajax({
+                    url: base_url + 'kursus/ajax_delete_separa_jabatan/' + kursus_id,
+                    success: function() {
+                        swal('Berjaya!','','success').then(function(){
+                            window.location.href = base_url + 'kursus/separa_takwim';
+                        });
+                    } ,
+                    error: function(jqXHR, textStatus,errorThrown) {
+                        swal(textStatus,errorThrown,'error');
+                    }
+                });
+                
+            },
+            function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                    'Batal!',
+                    '',
+                    'error'
+                    )
                 }
             });
         });

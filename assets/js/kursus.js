@@ -1,63 +1,4 @@
 $(document).ready(function() {
-    (function(){
-        $("#txtTkhMula").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhTamat").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhMula").on("dp.hide", function (e) {
-            $('#txtTkhTamat').data("DateTimePicker").minDate(e.date);
-        });
-        $("#txtTkhTamat").on("dp.hide", function (e) {
-            $('#txtTkhMula').data("DateTimePicker").maxDate(e.date);
-        });
-    })();
-
-    (function(){
-        $("#txtTkhMulaPemb").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhTamatPemb").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhMulaPemb").on("dp.hide", function (e) {
-            $('#txtTkhTamatPemb').data("DateTimePicker").minDate(e.date);
-        });
-        $("#txtTkhTamatPemb").on("dp.hide", function (e) {
-            $('#txtTkhMulaPemb').data("DateTimePicker").maxDate(e.date);
-        });
-    })();
-
-    (function(){
-        $("#txtTkhMulaPemb2").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhTamatPemb2").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhMulaPemb2").on("dp.hide", function (e) {
-            $('#txtTkhTamatPemb2').data("DateTimePicker").minDate(e.date);
-        });
-        $("#txtTkhTamatPemb").on("dp.hide", function (e) {
-            $('#txtTkhMulaPemb2').data("DateTimePicker").maxDate(e.date);
-        });
-    })();
-
-    (function(){
-        $("#txtTkhMulaKend").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhTamatKend").datetimepicker({
-            format: "DD-MM-YYYY h:mm A"
-        });
-        $("#txtTkhMulaKend").on("dp.hide", function (e) {
-            $('#txtTkhTamatKend').data("DateTimePicker").minDate(e.date);
-        });
-        $("#txtTkhTamatKend").on("dp.hide", function (e) {
-            $('#txtTkhMulaKend').data("DateTimePicker").maxDate(e.date);
-        });
-    })();
 
     (function(){
         $("#txtTkhLO").datetimepicker({
@@ -67,28 +8,6 @@ $(document).ready(function() {
             format: "DD-MM-YYYY"
         });
     })();
-
-    $('.espel_program').change(function(e){
-        e.preventDefault();
-        var nilai = $(this).val();
-        $('.hddProgram').val(nilai);
-
-        if(nilai == 1 || nilai == 2){
-            viewPanelKursus(true,false,false,false);
-        }
-        if(nilai == 3){
-            viewPanelKursus(false,true,false,false);
-        }
-        if(nilai == 4){
-            viewPanelKursus(false,false,true,false);
-        }
-        if(nilai == 5){
-            viewPanelKursus(false,false,false,true);
-        }
-        if (nilai == 0) {
-            viewPanelKursus(false,false,false,false);
-        }
-    });
 
     $("#cmdHadir").click(function(e){
         e.preventDefault();

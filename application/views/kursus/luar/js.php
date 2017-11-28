@@ -60,26 +60,6 @@
         }
         // tamat modal proses
 
-        function viewPanelKursus(latihan,pembelajaran1,pembelajaran2,kendiri)
-        {
-            $('.espel_latihan').hide();
-            $('.espel_pembelajaran1').hide();
-            $('.espel_pembelajaran2').hide();
-            $('.espel_kendiri').hide();
-
-            if(latihan)
-                $('.espel_latihan').show();
-
-            if(pembelajaran1)
-                $('.espel_pembelajaran1').show();
-
-            if(pembelajaran2)
-                $('.espel_pembelajaran2').show();
-
-            if(kendiri)
-                $('.espel_kendiri').show();
-        }
-
         function initform(program_id) {
             if(program_id == 1 || program_id == 2){
                 viewPanelKursus(true,false,false,false);

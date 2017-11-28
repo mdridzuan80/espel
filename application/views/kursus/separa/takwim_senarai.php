@@ -1,6 +1,3 @@
-
-
-<?= $vlevel ?>
 <div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -50,10 +47,18 @@
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
                                 <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
                                 <td align="center">
-                                    <?php if($kursus->stat_laksana == 'R') : ?>
-                                    <a href="<?=base_url('kursus/edit_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Kemaskini">Edit</a>
-                                    <a href="<?=base_url('kursus/delete_jabatan/' . $kursus->id)?>" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')">Delete</a>
-                                    <?php endif ?>
+                                    <table>
+                                        <tr>
+                                            <?php if($kursus->stat_laksana == 'R') : ?>
+                                                <td>
+                                                    <a href="<?=base_url('kursus/edit_separa_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Menguruskan Maklumat Pencalonan dan Pelaksanaan"><i class="fa fa-sitemap"></i> Pengurusan Kursus</a>
+                                                    <button class="btn btn-danger btn-hapus-separa btn-sm" type="button" data-kursus_id="<?= $kursus->id ?>">Hapus</button>
+                                                </td>
+                                            <?php else : ?>
+                                                <td><a href="<?=base_url('#' . $kursus->id)?>" class="btn btn-info btn-sm" title="Menguruskan Maklumat Pencalonan dan Pelaksanaan"><i class="fa fa-info"></i> Info Kursus</a></td>
+                                            <?php endif ?>
+                                        </tr>
+                                    </table>                                   
                                 </td>
                               </tr>
                               <?php endforeach?>
