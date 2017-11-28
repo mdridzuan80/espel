@@ -2218,11 +2218,10 @@ class Kursus extends MY_Controller
 
         if($this->mohon_kursus->delete($id))
         {
-            $this->appsess->setFlashSession("success", true);
+            return $this->output->set_status_header(200);
         }
 
-        return redirect('kursus/pencalonan/' . $permohonan->kursus_id);
-
+        return $this->output->set_status_header(400, 'Proses hapus tidak berjaya!');
     }
 
     public function hapus_separa_pencalonan($id)

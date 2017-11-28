@@ -165,11 +165,15 @@ class Mohon_kursus_model extends MY_Model
         {
             if($filter->hari == 1)
             {
-                $sql .= ' and a.hari < ' . $filter->hari;
+                $sql .= ' and a.hari >= 0 and a.hari < 1';
+            }
+            else if($filter->hari > 1 && $filter->hari < 9)
+            {
+                $sql .= ' and a.hari >= ' . ($filter->hari-1) . ' and a.hari < ' . $filter->hari;
             }
             else
             {
-                $sql .= ' and a.hari >= ' . $filter->hari;
+                $sql .= ' and a.hari > ' . ($filter->hari-2);
             }
 
         }

@@ -42,7 +42,7 @@ $(function() {
                             text: 'Tambah Sebagai Peserta',
                             action: function ( e, dt, node, config ) {
                                 e.preventDefault();
-                                var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': curview.kursus_id};
+                                var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': kursus_id};
                                 $(".chkCalon:checked").each(function() {
                                     data['chkKehadiran[]'].push($(this).val());
                                 });
@@ -50,12 +50,16 @@ $(function() {
                                 $.ajax({
                                     data:data,
                                     method:'post',
-                                    url: base_url + 'kursus/ajax_set_pencalonan/' + curview.kursus_id,
+                                    url: base_url + 'kursus/ajax_set_pencalonan/' + kursus_id,
                                     success: function(){
-                                        location.reload(true);
+                                        swal('Berjaya!','','success').then(function(){
+                                            load_peserta();
+                                            $('#myModalPencalonan').modal('hide');
+                                        });
+                                        
                                     },
                                     error: function(jqXHR,textStatus,errorThrown){
-                                        alert(errorThrown);
+                                        swal('Ralat!',errorThrown,'error');
                                     }
                                 });
                             },
@@ -99,6 +103,48 @@ $(function() {
         filter.hari = $('#myModalPencalonan').find('#comHari').val();
         vData.html(loader);
         load_content_modal(modalUrl,filter,vData);
+    });
+
+    $('#sen_calon').on('click', '.btn-hapus-peserta', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var calon_id = $(this).attr('data-calon_id');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya! Hapuskan ',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/hapus_pencalonan/' + calon_id,
+                success: function() {
+                    swal('Berjaya!','','success').then(function(){
+                        el.parent().parent().hide('fast');
+                    });
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+            
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
     });
 
     function load_peserta()
