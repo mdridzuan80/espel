@@ -49,23 +49,23 @@
                 <?php foreach($sen_kelas as $kelas) : ?>
                 <tr>
                     <td><?= $x++ ?></td>
-                    <td><?= $kelas->keterangan ?></td>
-                    <td><?= $biltotal = $kelas->bil ?></td>
-                    <td><?= (in_array('1',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"0\" data-kelas=\"" . $kelas->id . "\">" . $bil0 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 0, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('2',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"1\" data-kelas=\"" . $kelas->id . "\">" . $bil1 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 1, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('3',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"2\" data-kelas=\"" . $kelas->id . "\">" . $bil2 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 2, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('4',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"3\" data-kelas=\"" . $kelas->id . "\">" . $bil3 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 3, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('5',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"4\" data-kelas=\"" . $kelas->id . "\">" . $bil4 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 4, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('6',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"5\" data-kelas=\"" . $kelas->id . "\">" . $bil5 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 5, $kelas->id) . "</a>" : '' ?></td>
-                    <td><?= (in_array('7',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"6\" data-kelas=\"" . $kelas->id . "\">" . $bil6 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 6, $kelas->id) . "</a>" : '' ?></td>
-                    <?php $tujuh =  (in_array('8',$objFilter->hari)) ? $bil7 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 7, $kelas->id) : '' ?>
-                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"7\" data-kelas=\"" . $kelas->id . "\">" . $tujuh . "</a>" ?></td>
-                    <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? $bilover7 = $objKursus->kursus->bil_prestasi_kelas($objFilter, 8, $kelas->id) : '' ?>
-                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"8\" data-kelas=\"" . $kelas->id . "\">" . $over_tujuh . "</a>" ?></td>
-                    <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? ($tujuh + $over_tujuh) : '' ?></td>
-                    <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round((($tujuh + $over_tujuh)/$biltotal),2)*100 : '' ?></td>
+                    <td><?= $kelas->kumpulan ?></td>
+                    <td><?= $kelas->pengisian ?></td>
+                    <td><?= (in_array('1',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"0\" data-kelas=\"" . $kelas->kelas . "\">" . $bil0 = $kelas->kosong . "</a>" : '' ?></td>
+                    <td><?= (in_array('2',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"1\" data-kelas=\"" . $kelas->kelas . "\">" . $bil1 = $kelas->satu . "</a>" : '' ?></td>
+                    <td><?= (in_array('3',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"2\" data-kelas=\"" . $kelas->kelas . "\">" . $bil2 = $kelas->dua . "</a>" : '' ?></td>
+                    <td><?= (in_array('4',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"3\" data-kelas=\"" . $kelas->kelas . "\">" . $bil3 = $kelas->tiga . "</a>" : '' ?></td>
+                    <td><?= (in_array('5',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"4\" data-kelas=\"" . $kelas->kelas . "\">" . $bil4 = $kelas->empat . "</a>" : '' ?></td>
+                    <td><?= (in_array('6',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"5\" data-kelas=\"" . $kelas->kelas . "\">" . $bil5 = $kelas->lima . "</a>" : '' ?></td>
+                    <td><?= (in_array('7',$objFilter->hari)) ? "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"6\" data-kelas=\"" . $kelas->kelas . "\">" . $bil6 = $kelas->enam . "</a>" : '' ?></td>
+                    <?php $tujuh =  (in_array('8',$objFilter->hari)) ? $bil7 = $kelas->tujuh : '' ?>
+                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"7\" data-kelas=\"" . $kelas->kelas . "\">" . $tujuh . "</a>" ?></td>
+                    <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? $bilover7 = $kelas->over_7 : '' ?>
+                    <td><?= "<a class=\"pdetail\" style=\"text-decoration: underline\" href=\"prestasi_detail\" data-hari=\"8\" data-kelas=\"" . $kelas->kelas . "\">" . $over_tujuh . "</a>" ?></td>
+                    <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? $kelas->over_77 : '' ?></td>
+                    <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round(($kelas->over_77/$kelas->pengisian),2)*100 : '' ?></td>
                     <?php
-                    $jbiltotal += $biltotal;
+                    $jbiltotal += $kelas->pengisian;
                     //dd((int) $jbil0);
                     if(in_array('1',$objFilter->hari)) { $jbil0 = (int) $jbil0; (int) $jbil0 += (int) $bil0; };
                     if(in_array('2',$objFilter->hari)) { $jbil1 = (int) $jbil1; (int) $jbil1 += (int) $bil1; };
