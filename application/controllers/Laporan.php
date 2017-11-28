@@ -24,6 +24,7 @@ class Laporan extends MY_Controller
     public function ajax_papar_pengguna_hadir_kursus()
     {
         $this->load->model("kursus_model", "kursus");
+        $this->load->model("mycpd_model", "mycpd");
 
         $tahun = $this->input->post('tahun');
 
@@ -38,6 +39,7 @@ class Laporan extends MY_Controller
         
         $data['tahun'] = $tahun;
         $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($nokp, $tahun);
+        $data["mycpd"] = $this->mycpd->get_point($nokp, $tahun);
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Papar laporan Senarai Latihan yang dihadiri']);
         return $this->load->view('laporan/pengguna/kursus_hadir/result',$data);
