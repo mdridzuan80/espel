@@ -541,7 +541,7 @@
                         <select class="form-control" name="comPenyelia" id="comPenyelia">
                             <option selected="selected" >Sila buat pilihan</option>
                             <?php foreach($sen_penyelia as $key => $val):?>
-                            <option value="<?=$key?>" <?=set_select('comPenyelia', $key, $key==$kursus->peruntukan_id)?> ><?=$val?></option>
+                            <option value="<?=$key?>" <?=set_select('comPenyelia', $key, $key==$kursus->penyelia_nokp)?> ><?=$val?></option>
                             <?php endforeach?>
                         </select>
                     </div>
@@ -570,7 +570,7 @@
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">No. Telefon Penganjur</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $Kursus->telefon ?>">
+                        <input type="text" id="txtTelefon" required="required" class="form-control col-md-7 col-xs-12" name="txtTelefon" value="<?= $kursus->telefon ?>">
                     </div>
                   </div>
                   <div class="form-group">
