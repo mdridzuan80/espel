@@ -40,7 +40,7 @@
                   if($mycpd->point != 0):
                     echo $mycpd = round(($mycpd->point/40)*7);
                   else:
-                    echo 0;
+                    echo $mycpd = 0;
                   endif
                 ?>
                 </td>

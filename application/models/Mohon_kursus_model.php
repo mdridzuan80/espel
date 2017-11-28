@@ -242,7 +242,7 @@ class Mohon_kursus_model extends MY_Model
         return $rst->result();
     }
 
-        public function sen_prestasi_individu($filter)
+    public function sen_prestasi_individu($filter)
     {
         $sql = "SELECT
             espel_profil.nokp,
@@ -250,33 +250,38 @@ class Mohon_kursus_model extends MY_Model
             espel_profil.gred_id,
             espel_profil.`status`,
             hrmis_skim.keterangan AS skim,
-            hrmis_kumpulan.keterangan AS kumpulan,
+            espel_dict_kelas.nama AS kumpulan,
             hrmis_carta_organisasi.title AS jabatan,
             IFNULL(hadir.jum_hari,0) as jum_hari,
             IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
  			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
-            FROM
-            espel_profil
+            FROM espel_profil
             INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
-            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
+            INNER JOIN espel_dict_kelas ON espel_profil.kelas = espel_dict_kelas.id
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
-            LEFT JOIN (select nokp, sum(hari) as jum_hari from (SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
-            FROM espel_kursus
-            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-            WHERE 1=1
-            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-            AND espel_kursus.stat_hadir = 'L'
-            AND espel_kursus.nokp is not null
-            UNION
-            SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
-            FROM espel_kursus
-            INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
-            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-            WHERE 1=1
-            AND espel_kursus.stat_laksana = 'L'
-            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-            and espel_permohonan_kursus.stat_hadir = 'Y' 
-            and espel_permohonan_kursus.stat_mohon ='L') as xx
+            LEFT JOIN (select nokp, round(sum(hari)) as jum_hari from (
+SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
+FROM espel_kursus
+LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+WHERE 1=1
+AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+AND espel_kursus.stat_hadir = 'L'
+AND espel_kursus.nokp is not null
+UNION
+SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
+FROM espel_kursus
+INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+WHERE 1=1
+AND espel_kursus.stat_laksana = 'L'
+AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
+and espel_permohonan_kursus.stat_hadir = 'Y' 
+and espel_permohonan_kursus.stat_mohon ='L'
+UNION
+SELECT mycpd.nokp, 'cpd' as id, round((mycpd.point/40)*7) as hari
+FROM mycpd
+WHERE mycpd.tahun = " . $filter->tahun . "
+						) as xx
 group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 			LEFT JOIN (
 			select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
@@ -285,55 +290,6 @@ group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
                 select id, nokp, tahun2,hari2 from espel_sejarah_cuti
                 where tahun2 = " . $filter->tahun . ") as pengecualian
 group by nokp
-			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
-            WHERE
-            espel_profil.nokp <> 'admin'";
-
-        $sql = "SELECT
-            espel_profil.nokp,
-            espel_profil.nama,
-            espel_profil.gred_id,
-            espel_profil.`status`,
-            hrmis_skim.keterangan AS skim,
-            hrmis_kumpulan.keterangan AS kumpulan,
-            hrmis_carta_organisasi.title AS jabatan,
-            IFNULL(hadir.jum_hari,0) as jum_hari,
-            IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
- 			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
-            FROM espel_profil
-            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
-            INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
-            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
-            LEFT JOIN (select nokp, round(sum(hari)) as jum_hari from (
-            SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
-            FROM espel_kursus
-            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-            WHERE 1=1
-            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-            AND espel_kursus.stat_hadir = 'L'
-            AND espel_kursus.nokp is not null
-            UNION
-            SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
-            FROM espel_kursus
-            INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
-            INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
-            WHERE 1=1
-            AND espel_kursus.stat_laksana = 'L'
-            AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
-            and espel_permohonan_kursus.stat_hadir = 'Y' 
-            and espel_permohonan_kursus.stat_mohon ='L'
-            UNION
-            SELECT mycpd.nokp, 'cpd' as id, round((mycpd.point/40)*7) as hari
-            FROM mycpd
-            WHERE mycpd.tahun = " . $filter->tahun . ") as xx
-            group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
-			LEFT JOIN (
-			select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
-                where tahun1 = " . $filter->tahun . "
-                union
-                select id, nokp, tahun2,hari2 from espel_sejarah_cuti
-                where tahun2 = " . $filter->tahun . ") as pengecualian
-                group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
             espel_profil.nokp <> 'admin'";
