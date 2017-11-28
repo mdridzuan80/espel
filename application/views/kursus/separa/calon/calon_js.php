@@ -42,7 +42,7 @@ $(function() {
                             text: 'Tambah Sebagai Peserta',
                             action: function ( e, dt, node, config ) {
                                 e.preventDefault();
-                                var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': curview.kursus_id};
+                                var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': kursus_id};
                                 $(".chkCalon:checked").each(function() {
                                     data['chkKehadiran[]'].push($(this).val());
                                 });
@@ -50,12 +50,16 @@ $(function() {
                                 $.ajax({
                                     data:data,
                                     method:'post',
-                                    url: base_url + 'kursus/ajax_set_pencalonan/' + curview.kursus_id,
+                                    url: base_url + 'kursus/ajax_set_pencalonan/' + kursus_id,
                                     success: function(){
-                                        location.reload(true);
+                                        swal('Berjaya!','','success').then(function(){
+                                            load_peserta();
+                                            $('#myModalPencalonan').modal('hide');
+                                        });
+                                        
                                     },
                                     error: function(jqXHR,textStatus,errorThrown){
-                                        alert(errorThrown);
+                                        swal('Ralat!',errorThrown,'error');
                                     }
                                 });
                             },
