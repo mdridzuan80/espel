@@ -26,15 +26,15 @@
                 <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_tamat))?></td>
                 <td align="center">
                     <?php if($dicalonkan->stat_laksana == 'L'):?>
-                    <span class="label label-success">SELESAI</span>
+                      <span class="label label-success">SELESAI</span>
+                      <?php if($dicalonkan->stat_hadir == 'Y'):?>
+                        <span class="label label-success">HADIR</span>
+                      <?php endif?>
+                      <?php if($dicalonkan->stat_hadir == 'T'):?>
+                        <span class="label label-alert">TIDAK HADIR</span>
+                      <?php endif?>
                     <?php else : ?>
-                    <span class="label label-warning">RANCANG</span>
-                    <?php endif?>
-                    <?php if($dicalonkan->stat_hadir == 'Y'):?>
-                    <span class="label label-success">HADIR</span>
-                    <?php endif?>
-                    <?php if($dicalonkan->stat_hadir == 'T'):?>
-                    <span class="label label-alert">TIDAK HADIR</span>
+                      <span class="label label-warning">RANCANG</span>
                     <?php endif?>
                 </td>
                 <td align="center">
