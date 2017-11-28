@@ -67,7 +67,7 @@
         else
         {
             text = text + "<div class=\"event pass\"> \
-            <div class=\"event-desc\">" + element.tajuk + "\
+            <div class=\"event-desc\"><a href=\"<?=base_url("kursus/info_jabatan/")?>" + element.id + " \"> " + element.tajuk + "</a>\
             </div> \
             <div class=\"event-time\"> \
                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \

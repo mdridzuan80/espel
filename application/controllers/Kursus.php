@@ -2311,6 +2311,7 @@ class Kursus extends MY_Controller
                 $data['kursus_id'] = $kursus_id;
                 $data['tkh'] = date('Y-m-d h:i');
                 $data['stat_mohon'] = 'L';
+                $data['stat_hadir'] = 'Y';
                 $data['role'] = $this->appsess->getSessionData('kumpulan');
 
                 if(!$this->mohon_kursus->insert($data))
