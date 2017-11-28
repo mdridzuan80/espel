@@ -52,6 +52,7 @@ class Laporan extends MY_Controller
 
         $this->load->model("kursus_model", "kursus");
         $this->load->model("profil_model", "profil");
+        $this->load->model("mycpd_model", "mycpd");
 
         if($this->input->post('nokp'))
         {
@@ -65,6 +66,7 @@ class Laporan extends MY_Controller
         $data['tahun'] = $tahun;
         $data['profil'] = $this->profil->get($nokp);
         $data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($nokp, $tahun);
+        $data["mycpd"] = $this->mycpd->get_point($nokp, $tahun);
 
         switch($jenis)
         {
@@ -207,11 +209,12 @@ class Laporan extends MY_Controller
 
     public function ajax_papar_ringkasan()
     {
-        $this->load->library('appcpd');
+        //$this->load->library('appcpd');
         $this->load->model("program_model","program");
         $this->load->model("kursus_model","kursus");
         $this->load->model("profil_model","profil");
         $this->load->model('hrmis_carta_model', 'jabatan');
+        $this->load->model('mycpd_model', 'mycpd');
 
         $data = [];
         $tahun = $this->input->post("tahun");
@@ -223,13 +226,15 @@ class Laporan extends MY_Controller
         }
 
         $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
-        $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+        /* $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
             ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
             ->setTkhTamat($tahun . "-12-31")
             ->setTkhMula($tahun . "-01-01")
-            ->cumulativePoint();
-        $data["tahun"] = $tahun;
+            ->cumulativePoint(); */
+        $data['program']['cpd']["hari"] = round(($this->mycpd->get_point($this->appsess->getSessionData('username'),$tahun)->point/40)*7);
+        $data['program']['cpd']["point"] = $this->mycpd->get_point($this->appsess->getSessionData('username'),$tahun)->point;
 
+        $data["tahun"] = $tahun;
         return $this->load->view('laporan/pengguna/ringkasan/result',$data);
 
     }
@@ -239,11 +244,12 @@ class Laporan extends MY_Controller
         $tahun = $this->input->post('tahun');
         $jenis = $this->input->post('jenis');
 
-        $this->load->library('appcpd');
+        //$this->load->library('appcpd');
         $this->load->model("kursus_model", "kursus");
         $this->load->model("profil_model", "profil");
         $this->load->model("program_model","program");
         $this->load->model('hrmis_carta_model', 'jabatan');
+        $this->load->model('mycpd_model', 'mycpd');
 
         $tahun = $this->input->post('tahun');
         $data = [];        
@@ -257,11 +263,14 @@ class Laporan extends MY_Controller
         }
 
         $data['program']['cpd']["nama"] = "Lain-Lain (myCPD) - Jumlah mata kumulatif";
-        $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
+        /* $data['program']['cpd']["hari"] = $this->appcpd->setNokp($this->appsess->getSessionData("username"))
             ->setHcp($this->profil->get($this->appsess->getSessionData("username"))->hcp)
             ->setTkhTamat($tahun . "-12-31")
             ->setTkhMula($tahun . "-01-01")
-            ->cumulativePoint();
+            ->cumulativePoint(); */
+        $data['program']['cpd']["hari"] = round(($this->mycpd->get_point($this->appsess->getSessionData('username'),$tahun)->point/40)*7);
+        $data['program']['cpd']["point"] = $this->mycpd->get_point($this->appsess->getSessionData('username'),$tahun)->point;
+
         $data["tahun"] = $tahun;
 
         switch($jenis)

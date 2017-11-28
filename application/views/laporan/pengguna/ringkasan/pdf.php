@@ -93,7 +93,7 @@ table.biasa td, table.listing td {
             <?php if($key != 'cpd'):?>
             <td><?=round($prog["hari"],2)?></td>
             <?php else:?>
-            <td><?= "<b>MATA:</b> " . $prog["hari"] . ", <b>HARI:</b> " . round(($prog["hari"]/40)*7,2)?></td>
+            <td><?= "<b>MATA:</b> " . $prog["point"] . ", <b>HARI:</b> " . $prog["hari"] ?></td>
             <?php endif?>
         </tr>
         <?php endforeach?>
