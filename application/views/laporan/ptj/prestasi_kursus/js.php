@@ -13,6 +13,7 @@ $(function(){
     var skelas = '';
     var pUrl = '';
     var filter = {};
+    var xhr = {};
 
     var pnokp = 0;
     var loader =$('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
@@ -130,7 +131,7 @@ $(function(){
         e.preventDefault();
         var vData = $(this).find(".modal-body");
         vData.html(loader);
-        $.ajax({
+        xhr = $.ajax({
             method: 'post',
             data: filter,
             url: base_url + 'laporan/' + pUrl ,
@@ -145,6 +146,10 @@ $(function(){
         e.preventDefault();
         var vData = $(this).find(".modal-body");
         vData.html(loader);
+        
+        if(xhr){ 
+            xhr.abort();
+        }
     })
 });
 </script>
