@@ -153,7 +153,6 @@
                 </form>
                 <br/>
                 </div>
-
                 <div id="sen_calon"></div>
             </div>
         </div>
@@ -245,6 +244,7 @@
                     <button type="button" class="btn btn-success btn-papar btn-sm" name="button">Papar</button>
                   </div>
                 </form>
+                <hr>
         </div>
         <div id="datagrid-calon">...</div>
         <br>
