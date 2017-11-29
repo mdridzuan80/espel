@@ -441,7 +441,13 @@
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left" action="<?= base_url('kursus/do_sah_kemaskini/' . $kursus->id) ?>">
-                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
+                <?php $csrf = [
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                    ];
+                ?>
+                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+                <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Program Latihan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
