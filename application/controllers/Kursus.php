@@ -74,8 +74,6 @@ class Kursus extends MY_Controller
 
         $this->load->library('calendar', $prefs);
 
-        $data['level'] = 1;
-        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
         $data["objCal"] = $this->calendar;
         $data["tahun"] = $this->uri->segment(3, date('Y'));
         $data["bulan"] = $this->uri->segment(4, date('m'));
