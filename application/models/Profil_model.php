@@ -168,7 +168,7 @@ class Profil_model extends MY_Model
         return $info;
     }
 
-        public function all_pengecualian($limit, $start, $filter)
+    public function all_pengecualian($limit, $start, $filter)
     {
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
         $info = [];

@@ -14,6 +14,7 @@ $(function() {
     var modalUrl = '';
     var postData = {};
     var kursus_id= <?= $kursus_id ?>;
+    var xhr = {};
     
     load_peserta();
     // modal proses
@@ -26,10 +27,15 @@ $(function() {
     $('#myModalPencalonan').on('hidden.bs.modal',function(e){
         var vData = $(this).find("#datagrid-calon");
         vData.html(loader);
+        
+        if(xhr)
+        {
+            xhr.abort();
+        }
     })
 
     function load_content_modal(url,data,placeholder){
-        $.ajax({
+        xhr = $.ajax({
             method: 'post',
             url: url,
             data: filter,

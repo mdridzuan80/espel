@@ -115,20 +115,54 @@ class Mohon_kursus_model extends MY_Model
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
         $all_jabatan = $this->hrmis_carta->as_array()->get_all();
 
-        $sql = 'select * from (SELECT a.nokp, a.nama, b.title jabatan, a.jabatan_id, a.gred_id, a.skim_id, 0 as hari
-                FROM espel_profil a, hrmis_carta_organisasi b
-                WHERE 1=1
-                AND a.jabatan_id = b.buid
-                AND a.nokp NOT IN (SELECT nokp FROM espel_kursus WHERE YEAR(tkh_mula) = ' . date('Y') . ' AND stat_hadir = \'L\' AND nokp is not null)
-                UNION
-                SELECT a.nokp, a.nama, c.title jabatan, a.jabatan_id, a.gred_id, a.skim_id, sum(b.hari) as hari
-                FROM espel_profil a, espel_kursus b, hrmis_carta_organisasi c
-                WHERE 1=1
-                AND a.nokp = b.nokp
-                AND a.jabatan_id = c.buid
-                AND YEAR(b.tkh_mula) = ' . date('Y') . ' AND b.stat_hadir = \'L\'
-                GROUP BY a.nokp, a.nama, c.title, a.jabatan_id, a.gred_id, a.skim_id) as a WHERE 1=1
-                AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = ' . $kursus_id .')';
+        $sql = "select * from (
+                SELECT
+            espel_profil.*,
+            hrmis_skim.keterangan AS skim,
+            espel_dict_kelas.nama AS kumpulan,
+            hrmis_carta_organisasi.title AS jabatan,
+            IFNULL(hadir.jum_hari,0) as jum_hari,
+            IFNULL(pengecualian.jum_kecuali,0) as jum_kecuali,
+ 			IF(ISNULL(pengecualian.jum_kecuali),7, round( (365-pengecualian.jum_kecuali)*7/365 ) ) as kelayakan
+            FROM espel_profil
+            INNER JOIN hrmis_carta_organisasi ON espel_profil.jabatan_id = hrmis_carta_organisasi.buid
+            INNER JOIN espel_dict_kelas ON espel_profil.kelas = espel_dict_kelas.id
+            INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
+            LEFT JOIN (select nokp, round(sum(hari)) as jum_hari from (
+SELECT espel_kursus.nokp, espel_kursus.id, espel_kursus.hari
+FROM espel_kursus
+LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+WHERE 1=1
+AND YEAR(espel_kursus.tkh_mula) = " . date('Y') . "
+AND espel_kursus.stat_hadir = 'L'
+AND espel_kursus.nokp is not null
+UNION
+SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
+FROM espel_kursus
+INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+WHERE 1=1
+AND espel_kursus.stat_laksana = 'L'
+AND YEAR(espel_kursus.tkh_mula) = " . date('Y') . "
+and espel_permohonan_kursus.stat_hadir = 'Y' 
+and espel_permohonan_kursus.stat_mohon ='L'
+UNION
+SELECT mycpd.nokp, 'cpd' as id, round((mycpd.point/40)*7) as hari
+FROM mycpd
+WHERE mycpd.tahun = " . date('Y') . "
+						) as xx
+group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
+			LEFT JOIN (
+			select nokp, sum(hari) as jum_kecuali from (select id, nokp, tahun1 as tahun,hari1 as hari from espel_sejarah_cuti
+                where tahun1 = " . date('Y') . "
+                union
+                select id, nokp, tahun2,hari2 from espel_sejarah_cuti
+                where tahun2 = " . date('Y') . ") as pengecualian
+group by nokp
+			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
+            WHERE
+            espel_profil.nokp <> 'admin') as a WHERE 1=1
+                AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = " . $kursus_id .")";
 
         if($filter->nama)
         {
@@ -165,15 +199,15 @@ class Mohon_kursus_model extends MY_Model
         {
             if($filter->hari == 1)
             {
-                $sql .= ' and a.hari >= 0 and a.hari < 1';
+                $sql .= ' and a.jum_hari = 0 ';
             }
             else if($filter->hari > 1 && $filter->hari < 9)
             {
-                $sql .= ' and a.hari >= ' . ($filter->hari-1) . ' and a.hari < ' . $filter->hari;
+                $sql .= ' and a.jum_hari = ' . ($filter->hari-1);
             }
             else
             {
-                $sql .= ' and a.hari > ' . ($filter->hari-2);
+                $sql .= ' and a.jum_hari > ' . ($filter->hari-2);
             }
 
         }

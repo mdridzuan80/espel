@@ -17,7 +17,7 @@
                 <td><?=$calon->nokp?></td>
                 <td><?=$calon->nama?></td>
                 <td><?=$calon->jabatan?></td>
-                <td><?=$calon->hari?></td>
+                <td><?=$calon->jum_hari?></td>
               </tr>
           <?php endforeach?>
       <?php else: ?>
