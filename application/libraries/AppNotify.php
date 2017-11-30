@@ -143,6 +143,14 @@ class AppNotify
             if($mail_config)
             {
                 $this->mail = new PHPMailer(true);
+                 $this->mail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
+
                 $this->mail_config($mail_config);
                 $this->reset($this->mail);
                 $this->mail_recipient($attr);
