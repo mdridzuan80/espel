@@ -587,22 +587,20 @@ class Kursus extends MY_Controller
 
             //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
             $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
-            $data['sen_program'] = $this->program->dropdown("id","nama");
+            $data['sen_program'] = $this->program->get_all();
             $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
             $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
             $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
             $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
-            $data['sen_penyelia'] = $this->profil->where(
-                ["jabatan_id" => $jabatan_id]
-            )->dropdown('nokp','nama');
+            $data['sen_penyelia'] = $this->profil->where(["jabatan_id" => $jabatan_id])->dropdown('nokp','nama');
 
             $elements = $this->peruntukan->get_peruntukan_related();
             $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
             $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',',$peruntukan));
-            $plugins = $this->plugins();
             $plugins['embedjs'][] = $this->load->view('kursus/separa/jabatan/js','',TRUE);
 
-            return $this->renderView("kursus/separa/jabatan/daftar",$data,$plugins);
+            //dd($data['sen_program']);
+            return $this->load->view("kursus/separa/jabatan/daftar",$data);
         }
         else
         {
