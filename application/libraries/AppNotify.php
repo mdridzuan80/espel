@@ -70,9 +70,17 @@ class AppNotify
         $this->mail->SMTPAuth = ($config->auth == 'T') ? TRUE : FALSE;                               // Enable SMTP authentication
         $this->mail->Username = $config->user;                 // SMTP username
         $this->mail->Password = $config->pass;                        // SMTP password
-
+        
         if($config->secure != 'NONE')
             $this->mail->SMTPSecure = $config->secure;                            // Enable TLS encryption, `ssl` also accepted
+
+        $this->mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
 
         $this->mail->Port = $config->port;                                  // TCP port to connect to
         $this->mail->setFrom($config->from, $config->nama);
@@ -142,15 +150,6 @@ class AppNotify
         {
             if($mail_config)
             {
-                $this->mail = new PHPMailer(true);
-                 $this->mail->SMTPOptions = [
-                    'ssl' => [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                        'allow_self_signed' => true
-                    ]
-                ];
-
                 $this->mail_config($mail_config);
                 $this->reset($this->mail);
                 $this->mail_recipient($attr);
