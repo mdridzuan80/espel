@@ -65,7 +65,8 @@ class AppNotify
     {
         //Server settings
         $this->mail->SMTPDebug = $config->debug;                             // Enable verbose debug output
-        $this->mail->isSMTP();                                      // Set mailer to use SMTP
+        $this->mail->isSMTP();
+        $this->mail->SMTPAutoTLS=false;                                      // Set mailer to use SMTP
         $this->mail->Host = $config->host;  // Specify main and backup SMTP servers
         $this->mail->SMTPAuth = ($config->auth == 'T') ? TRUE : FALSE;                               // Enable SMTP authentication
         $this->mail->Username = $config->user;                 // SMTP username
@@ -150,6 +151,7 @@ class AppNotify
         {
             if($mail_config)
             {
+                $this->mail = new PHPMailer(true);
                 $this->mail_config($mail_config);
                 $this->reset($this->mail);
                 $this->mail_recipient($attr);
