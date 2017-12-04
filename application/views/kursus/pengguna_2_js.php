@@ -2,10 +2,15 @@
 $(function(){
     var tahun = <?=$this->uri->segment(3, date('Y'))?>;
     var bulan = <?=$this->uri->segment(4, date('m'))?>;
-    
+    var xhr = {};
+    var kursusId = 0;
+    var tajuk = '';
+    var events = [];
+
     $.ajax({
         url: base_url + "api/get_event_pengguna_2/" + tahun + "/" + bulan,
         success: function(sen_kursus, textStatus, jqXHR ){
+            events = sen_kursus;
             generateEvents(sen_kursus);
         }
     });
@@ -52,60 +57,15 @@ $(function(){
 
         if(!tkhMula.isBefore(now))
         {
-            if(element.stat_laksana == 'R' || !element.stat_laksana){
-                if(element.stat_mohon){
-                    text = text + "<div class=\"event pass\"> \
-                        <div class=\"event-desc\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> " + element.tajuk + " \
-                        </div> \
-                        <div class=\"event-time\"> \
-                            " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-                        </div> \
-                    </div>";
-                }
-                else {
-                    text = text + "<div class=\"event\"> \
-                        <div class=\"event-desc\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"<?=base_url("kursus/info_kursus_pengguna/")?>" + element.id + " \"> " + element.tajuk + "</a>\
-                        </div> \
-                        <div class=\"event-time\"> \
-                            " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-                        </div>";
+            //selepas hari ini
+            text = text + "<div class=\"event\"> \
+            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
+            </div> \
+            <div class=\"event-time\"> \
+                " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+            </div>";
 
-                    if(element.stat_hadir == 'L') {
-                        text = text + "<div> \
-                            <span class=\"label label-success\">DISAHKAN</span> \
-                        </div>";
-                    }
-                    text = text + "</div>";
-                }
-            }
-            else
-            {
-                text = text + "<div class=\"event pass\"> \
-                    <div class=\"event-desc\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"<?=base_url("kursus/info_kursus_pengguna/")?>" + element.id + " \"> " + element.tajuk + "</a>\
-                    </div> \
-                    <div class=\"event-time\"> \
-                        " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-                    </div>";
-                
-                if(element.stat_hadir == 'L') {
-                    text = text + "<div> \
-                        <span class=\"label label-success\">DISAHKAN</span> \
-                    </div>";
-                }
-                text = text + "</div>";
-            }   
-        }
-        else
-        {
-            text = text + "<div class=\"event pass\"> \
-                <div class=\"event-desc\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"<?=base_url("kursus/info_kursus_pengguna/")?>" + element.id + " \"> " + element.tajuk + "</a>\
-                </div> \
-                <div class=\"event-time\"> \
-                    " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-                </div>";
-            
-            if(element.stat_laksana == 'L' && element.stat_hadir == 'L') {
-                if(element.stat_hadir == 'M') {
+            if(element.stat_hadir == 'M') {
                     text = text + "<div> \
                         <span class=\"label label-warning\">MOHON</span> \
                     </div>";
@@ -122,11 +82,79 @@ $(function(){
                         <span class=\"label label-danger\">DITOLAK</span> \
                     </div>";
                 }
-            }
+
             text = text + "</div>";
         }
+        else
+        {
+            // sebelum hari ini
+            text = text + "<div class=\"event pass\"> \
+            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
+            </div> \
+            <div class=\"event-time\"> \
+                " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+            </div>";
+
+            if(element.stat_hadir == 'M') {
+                text = text + "<div> \
+                    <span class=\"label label-warning\">MOHON</span> \
+                </div>";
+            }
+
+            if(element.stat_hadir == 'L') {
+                text = text + "<div> \
+                    <span class=\"label label-success\">DISAHKAN</span> \
+                </div>";
+            }
+
+            if(element.stat_hadir == 'T') {
+                text = text + "<div> \
+                    <span class=\"label label-danger\">DITOLAK</span> \
+                </div>";
+            }
+            
+             text = text + "</div>";
+        }
+
         return text;
     }
+
+    $('#calendar').on('click','.event-desc', function(e){
+        e.preventDefault();
+        kursusId = $(this).data('kursusid');
+        tajuk = $(this).data('tajuk');
+        $('#MyModalKursusInfo').modal();
+    });
+
+    $('#MyModalKursusInfo').on('show.bs.modal',function(e){
+        var vHeader = $(this).find(".modal-header");
+        var vTajuk = $(this).find(".modal-title");
+        var vData = $(this).find(".modal-body");  
+        var event = _.find(events, ['id', parseInt(kursusId)]);
+        
+        if(event.stat_jabatan == 'Y') {
+            vHeader.css( "background-color", "#0099FF" );
+        }
+
+        if(event.stat_jabatan=='T') {
+            vHeader.css( "background-color", "#19BC9D" );
+        }
+
+        vHeader.css( "color", "black" );
+        vTajuk.html(tajuk);
+        vData.html(loader);
+        //load_content_modal(modalUrl,postData,vData);
+    })
+
+    $('#MyModalKursusInfo').on('hidden.bs.modal',function(e){
+        var vData = $(this).find(".modal-body");
+        vData.html(loader);
+
+        if(xhr)
+        {
+            xhr.abort();
+        }
+    })
 
     // daftar kursus luar
     var loader = $('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');

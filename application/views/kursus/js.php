@@ -100,8 +100,8 @@
 
     $('#calendar').on('click','.event-desc', function(e){
         e.preventDefault();
-        kursus_id = $(this).attr('data-kursus_id');
-        tajuk = $(this).attr('data-tajuk');
+        kursus_id = $(this).data('kursusId');
+        tajuk = $(this).data('tajuk');
         $('#MyModalKursusInfo').modal();
     });
 
