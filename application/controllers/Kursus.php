@@ -268,9 +268,11 @@ class Kursus extends MY_Controller
             "bulan" => $this->uri->segment(4, date('m'))
         ]);
         $data["sen_kursus"]=$this->kursus->takwim_day_pengguna_2(0,$data["takwim"]);
+        $plugins = $this->plugins();
+        $plugins["embedjs"][] = $this->load->view("kursus/takwim_pengguna_js",NULL,TRUE);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses senarai kursus  (Pengguna)']);
-        return $this->renderView("kursus/takwim_pengguna_senarai", $data);
+        return $this->renderView("kursus/takwim_pengguna_senarai", $data, $plugins);
     }
 
     function separa_takwim_senarai()
@@ -632,6 +634,7 @@ class Kursus extends MY_Controller
                     'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("jenis")
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -671,6 +674,7 @@ class Kursus extends MY_Controller
                     'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("jenis")
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -712,6 +716,7 @@ class Kursus extends MY_Controller
                     'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
+                    'jenis' => $this->input->post("jenis")
                 ];
 
                 if($this->input->post("comAnjuran")=="L")

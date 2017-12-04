@@ -64,7 +64,7 @@ class Welcome extends MY_Controller {
 			"bulan" => $bulan
 		]);
 
-		$this->output->set_content_type('application/json')
+		return $this->output->set_content_type('application/json')
         ->set_output(
 			json_encode(
 				$this->kursus->takwim_day_pengguna_2(0,$takwim)

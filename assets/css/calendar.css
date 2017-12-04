@@ -80,9 +80,16 @@ header {
   text-decoration: none;
 }
 
+#calendar .t {
+  color: rgb(25,188,157);
+}
+
+#calendar .y {
+  color: rgb(0, 153, 255);
+}
+
 #calendar .event-desc {
   color: #666;
-  margin: 3px 0 7px 0;
   text-decoration: none;
   font-size: 0.85em;
   font-weight: bold;

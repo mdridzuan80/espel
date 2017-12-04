@@ -305,7 +305,7 @@ UNION
 SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
 FROM espel_kursus
 INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
-INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
 WHERE 1=1
 AND espel_kursus.stat_laksana = 'L'
 AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
