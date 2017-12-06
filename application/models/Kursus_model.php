@@ -589,7 +589,7 @@ class Kursus_model extends MY_Model
     {
         $username = $this->appsess->getSessionData('username');
 
-        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp from espel_kursus a
+        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp, a.jenis from espel_kursus a
                 inner join (
                     select kursus_id, nokp, stat_mohon, stat_hadir from espel_permohonan_kursus where nokp = ?
                 ) b ON a.id = b.kursus_id
@@ -597,13 +597,13 @@ class Kursus_model extends MY_Model
                 where month(a.tkh_mula) = ?
                 and year(a.tkh_mula) = ?
                 UNION
-                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp from espel_kursus a
+                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp, a.jenis from espel_kursus a
                 inner join espel_dict_program c on a.program_id = c.id
                 where nokp = ?
                 and month(a.tkh_mula) = ?
                 and year(a.tkh_mula) = ?
                 UNION
-                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, NULL as stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp  from espel_kursus a
+                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, NULL as stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp, a.jenis  from espel_kursus a
                 inner join espel_dict_program c on a.program_id = c.id
                 where a.stat_terbuka = 'Y'
                 and month(a.tkh_mula) = ?

@@ -88,6 +88,17 @@ header {
   color: rgb(0, 153, 255);
 }
 
+#calendar .r {
+  color: #6304fd;
+}
+
+#calendar .s {
+  color: #dcb5b5;
+}
+#calendar .n {
+  color: white;
+}
+
 #calendar .event-desc {
   color: #666;
   text-decoration: none;

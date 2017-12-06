@@ -51,15 +51,30 @@ $(function(){
         var text = "";
         var tkhMula;
         var tkhTamat;
+        var kodWarna;
 
         tkhMula = moment(element.tkh_mula, 'YYYY-MM-DD HH:mm:ss');
         tkhTamat = moment(element.tkh_tamat, 'YYYY-MM-DD HH:mm:ss');
 
-        if(!tkhMula.isBefore(now))
-        {
+        if(!tkhMula.isBefore(now)) {
             //selepas hari ini
+            if(element.stat_jabatan == 'Y') {
+                if(element.jenis && element.jenis == 'R') {
+                    kodWarna = element.jenis.toLowerCase();
+                }
+                else if(element.jenis && element.jenis == 'S') {
+                    kodWarna = element.jenis.toLowerCase();
+                }
+                else {
+                    kodWarna = 'n';
+                }
+            }
+            else {
+                kodWarna = element.stat_jabatan.toLowerCase();
+            }
+
             text = text + "<div class=\"event\"> \
-            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
+            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + kodWarna + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
             </div> \
             <div class=\"event-time\"> \
                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
@@ -88,8 +103,23 @@ $(function(){
         else
         {
             // sebelum hari ini
+            if(element.stat_jabatan == 'Y') {
+                if(element.jenis && element.jenis == 'R') {
+                    kodWarna = element.jenis.toLowerCase();
+                }
+                else if(element.jenis && element.jenis == 'S') {
+                    kodWarna = element.jenis.toLowerCase();
+                }
+                else {
+                    kodWarna = 'n';
+                }
+            }
+            else {
+                kodWarna = element.stat_jabatan.toLowerCase();
+            }
+
             text = text + "<div class=\"event pass\"> \
-            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + element.stat_jabatan.toLowerCase() + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
+            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + kodWarna + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
             </div> \
             <div class=\"event-time\"> \
                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
