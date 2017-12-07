@@ -163,7 +163,15 @@ $(function(){
         var event = _.find(events, ['id', parseInt(kursusId)]);
         
         if(event.stat_jabatan == 'Y') {
-            vHeader.css( "background-color", "#0099FF" );
+            if(event.jenis && event.jenis == 'R') {
+                vHeader.css( "background-color", "#c8b1f1" );
+            }
+            else if(event.jenis && event.jenis == 'S') {
+                vHeader.css( "background-color", "#dcb5b5" );
+            }
+            else {
+                vHeader.css( "background-color", "white" );
+            }
         }
 
         if(event.stat_jabatan=='T') {

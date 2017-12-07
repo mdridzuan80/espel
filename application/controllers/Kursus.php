@@ -343,61 +343,6 @@ class Kursus extends MY_Controller
         return $this->renderView('kursus/separa/pengurusan/info', $data, $plugins);
     }
 
-/*    public function delete($id)
-    {
-        $this->load->model("kursus_model","kursus");
-
-        if($this->kursus->hapus($id))
-        {
-            $this->appsess->setFlashSession("success", true);
-        }
-        else
-        {
-            $this->appsess->setFlashSession("success", false);
-        }
-        redirect('kursus');
-    }
-*/
-/*    public function edit($id)
-    {
-        if(!$this->exist("submit"))
-        {
-            $this->load->model('kursus_model','kursus');
-            $this->load->model('program_model','program');
-            $this->load->model('aktiviti_model','aktiviti');
-            $this->load->model('jabatan_model','jabatan');
-
-            $data['kursus'] = $this->kursus->find($id)->row();
-            $data['programs'] = $this->program->getAll();
-            $data['aktivitis'] = $this->aktiviti->findByProgram($data['kursus']->program_id);
-            $data['jabatans'] = $this->jabatan->getAll();
-            return $this->renderView("kursus/edit",$data,$this->plugins());
-        }
-        else
-        {
-            $data = [
-                'tajuk'=>$this->input->post("txtTajuk"),
-                'negara'=>$this->input->post("comNegara"),
-                'program_id'=>$this->input->post("hddProgram"),
-                'aktiviti_id'=>$this->input->post("comAktiviti"),
-                'tkh_mula'=>$this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat'=>$this->input->inputToDate("txtTkhTamat"),
-                'anjuran_jabatan_id'=>$this->input->post("comAnjuran"),
-                'terbuka'=>$this->input->post("comTerbuka"),
-            ];
-            $this->load->model("kursus_model","kursus");
-            if($this->kursus->kemaskini($data,$id))
-            {
-                $this->appsess->setFlashSession("success", true);
-            }
-            else
-            {
-                $this->appsess->setFlashSession("success", false);
-            }
-            redirect('kursus');
-        }
-    }
-*/
     public function luar()
     {
         $plugins=$this->plugins();

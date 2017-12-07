@@ -55,7 +55,7 @@
 
 <!-- Modal -->
 <div id="MyModalKursusInfo" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-md">
+  <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -64,11 +64,6 @@
       </div>
       <div class="modal-body">
         <p>...</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm">Pengurusan Kursus</button>
-        <button type="button" class="btn btn-primary btn-sm">Edit</button>
-        <button type="button" class="btn btn-danger btn-sm">Hapus</button>
       </div>
     </div>
   </div>
