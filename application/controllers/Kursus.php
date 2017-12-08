@@ -1317,7 +1317,7 @@ class Kursus extends MY_Controller
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
-                //'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'stat_laksana' => "L",
                 'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
@@ -1345,6 +1345,7 @@ class Kursus extends MY_Controller
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
+                'stat_laksana' => "L",
                 'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
@@ -1372,6 +1373,7 @@ class Kursus extends MY_Controller
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
+                'stat_laksana' => "L",
                 'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),

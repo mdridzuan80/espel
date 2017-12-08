@@ -1,10 +1,6 @@
 <div class="row espel_latihan">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <div class="x_title">
-        <h2>Program Latihan</h2>
-        <div class="clearfix"></div>
-      </div>
       <div class="x_content">
           <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
@@ -12,7 +8,7 @@
                       <tr>
                         <tr>
                           <th>TAJUK</th>
-                          <td><?= $kursus->tajuk ?></td>
+                          <td><?= strtoupper($kursus->tajuk) ?></td>
                         </tr>
                         <th>PROGRAM</th>
                         <td><?= strtoupper($kursus->program) ?></td>
@@ -71,24 +67,20 @@
                                 <?php if($kursus->stat_mohon) : ?>
                                   <span class="label label-warning">MOHON</span>
                                 <?php else : ?>
-                                  <span class="label label-info">KURSUS TELAH DILAKSANAKAN</span>
+                                  <span class="label label-info">PERMOHONAN TUTUP</span>
                                 <?php endif ?>
                               <?php else : ?>
                                 <span class="label label-info">PERMOHONAN DIBUKA</span>
                               <?php endif ?>
                             <?php else : ?>
-                              <?php if($kursus->stat_laksana == 'L') : ?>
-                                <span class="label label-info">KURSUS TELAH DILAKSANAKAN</span>
-                              <?php else : ?>
-                                <span class="label label-info">TAMAT TEMPOH PERMOHONAN</span>
-                              <?php endif ?>
+                              <span class="label label-info">PERMOHONAN TUTUP</span>
                             <?php endif ?>
                           <?php else : ?>
                             <?php if($kursus->stat_hadir == 'M') : ?>
                               <span class="label label-warning">MOHON</span>
                             <?php endif ?>
                             <?php if($kursus->stat_hadir == 'T') : ?>
-                              <span class="label label-warning">TOLAK</span>
+                              <span class="label label-danger">TOLAK</span>
                             <?php endif ?>
                             <?php if($kursus->stat_hadir == 'L') : ?>
                               <span class="label label-success">HADIR</span>
@@ -98,7 +90,7 @@
                       </tr>
                   </table>
                   <?php if($kursus->stat_jabatan == 'Y') : ?>
-                  <?php if(strtotime($kursus->tkh_mula) > time() || $kursus->stat_mohon) : ?>
+                  <?php if(strtotime($kursus->tkh_mula) > time() && $kursus->stat_laksana == 'R' && is_null($kursus->stat_mohon)) : ?>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -107,8 +99,13 @@
                   <?php endif ?>
                   </div>
                   <?php else : ?>
+                    <?php if($kursus->stat_hadir != 'L') : ?>
                     <div class="ln_solid"></div>
-                    <button id="btnEdit" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">EDIT</button>
+                    <div class="pull-right">
+                      <button id="btnEdit" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">EDIT</button>
+                      <button id="btnHapus" type="submit" class="btn btn-danger btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">HAPUS</button>
+                    </div
+                    <?php endif ?>
                   <?php endif ?>
               </form>
           </div>

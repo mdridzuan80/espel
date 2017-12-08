@@ -6,14 +6,23 @@ $(function(){
     var kursusId = 0;
     var tajuk = '';
     var events = [];
+    
+    populateEvent();
 
-    $.ajax({
-        url: base_url + "api/get_event_pengguna_2/" + tahun + "/" + bulan,
-        success: function(sen_kursus, textStatus, jqXHR ){
-            events = sen_kursus;
-            generateEvents(sen_kursus);
-        }
-    });
+    function resetPopulateEvent()
+    {
+        $('.event').remove();
+    }
+
+    function populateEvent() {
+        xhr = $.ajax({
+            url: base_url + "api/get_event_pengguna_2/" + tahun + "/" + bulan,
+            success: function(sen_kursus, textStatus, jqXHR ){
+                events = sen_kursus;
+                generateEvents(sen_kursus);
+            }
+        });
+    }
 
     function generateEvents(sen_kursus)
     {
@@ -52,6 +61,7 @@ $(function(){
         var tkhMula;
         var tkhTamat;
         var kodWarna;
+        var cssDisable = '';
 
         tkhMula = moment(element.tkh_mula, 'YYYY-MM-DD HH:mm:ss');
         tkhTamat = moment(element.tkh_tamat, 'YYYY-MM-DD HH:mm:ss');
@@ -59,6 +69,10 @@ $(function(){
         if(!tkhMula.isBefore(now)) {
             //selepas hari ini
             if(element.stat_jabatan == 'Y') {
+                if(element.stat_laksana == 'L' || element.stat_mohon) {
+                    cssDisable = 'pass';
+                }
+
                 if(element.jenis && element.jenis == 'R') {
                     kodWarna = element.jenis.toLowerCase();
                 }
@@ -73,7 +87,7 @@ $(function(){
                 kodWarna = element.stat_jabatan.toLowerCase();
             }
 
-            text = text + "<div class=\"event\"> \
+            text = text + "<div class=\"event " + cssDisable + "\"> \
             <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + kodWarna + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
             </div> \
             <div class=\"event-time\"> \
@@ -180,7 +194,7 @@ $(function(){
         }
 
         vHeader.css( "color", "black" );
-        vTajuk.html(tajuk);
+        vTajuk.html(tajuk.toUpperCase());
         vData.html(loader);
         load_content_modal(modalUrl,postData,vData);
     })
@@ -396,46 +410,6 @@ $(function(){
         $('#myModal').modal();
     });
 
-    $('#senKursusLuar').on('click','.cmdHapusKursusLuar',function(e){
-        e.preventDefault();
-        var kursus_id = $(this).attr('data-kursusid');
-        var el = $(this);
-        swal({
-            title: 'Anda Pasti?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!',
-            cancelButtonText: 'Tidak!',
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false
-        }).then(function () {
-            $.ajax({
-                url: base_url + 'kursus/delete_luar/' + kursus_id,
-                success: function() {
-                    swal('Berjaya!','','success');
-                    el.parent().parent().remove();
-                } ,
-                error: function(jqXHR, textStatus,errorThrown) {
-                    swal(textStatus,errorThrown,'error');
-                }
-            });
-        },
-        function (dismiss) {
-            // dismiss can be 'cancel', 'overlay',
-            // 'close', and 'timer'
-            if (dismiss === 'cancel') {
-                swal(
-                'Batal!',
-                '',
-                'error'
-                )
-            }
-        });
-    });
-
     $('#myModal').on('change','.espel_program', function(e){
         e.preventDefault();
         var nilai = $(this).val();
@@ -545,9 +519,9 @@ $(function(){
                             title: 'Berjaya!',
                             text: 'Proses mendaftar kursus selesai.',
                             type: 'success'
-                        }).then(function(){
-                            location.reload();
                         });
+                        resetPopulateEvent();
+                        populateEvent();
                         $('#myModal').modal('hide');
                     },
                     error: function(jqXHR, textStatus,errorThrown)
@@ -585,9 +559,9 @@ $(function(){
                             title: 'Berjaya!',
                             text: 'Proses mendaftar kursus selesai.',
                             type: 'success'
-                        }).then(function(){
-                            location.reload();
                         });
+                        resetPopulateEvent();
+                        populateEvent();
                         $('#myModal').modal('hide');
                     },
                     error: function(jqXHR, textStatus,errorThrown)
@@ -654,5 +628,47 @@ $(function(){
         });
     });
     // end mohon kursus
+
+    $('#MyModalKursusInfo').on('click', '#btnHapus', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/delete_luar/' + kursus_id,
+                success: function() {
+                    swal('Berjaya!','','success');
+                    resetPopulateEvent();
+                    populateEvent();
+                    $('#MyModalKursusInfo').modal('hide');
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
 });
 </script>
