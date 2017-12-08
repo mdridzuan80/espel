@@ -997,21 +997,42 @@ group by nokp
 
     public function info_kursus($id)
     {
-        $sql = "SELECT a.id, a.tajuk, c.nama as program, b.nama as aktiviti, 
-            a.tkh_mula, a.tkh_tamat, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, 
-            a.telefon, a.email, a.stat_terbuka, a.peruntukan_id, f.nama as peruntukan, 
-            a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.program_id, a.sumber, g.nama as penyelia
-            FROM espel_kursus a
-            INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
-            INNER JOIN espel_dict_program c ON a.program_id = c.id
-            LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
-            LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
-            LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
-            LEFT JOIN espel_profil g ON a.penyelia_nokp = g.nokp 
-            WHERE 1=1
-            AND a.id = ?";
-
-        return $this->db->query($sql,[$id])->row();    
+        $username = $this->appsess->getSessionData('username');
+        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp, a.jenis from espel_kursus a
+                inner join (
+                    select kursus_id, nokp, stat_mohon, stat_hadir from espel_permohonan_kursus where nokp = ?
+                ) b ON a.id = b.kursus_id
+                inner join espel_dict_program c on a.program_id = c.id
+                INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+                LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+                LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+                LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+                UNION
+                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tkh_mula, a.tkh_tamat, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp, a.jenis from espel_kursus a
+                inner join espel_dict_program c on a.program_id = c.id
+                INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+                LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+                LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+                LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+                where nokp = ?
+                UNION
+                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp, a.jenis  from espel_kursus a
+                inner join espel_dict_program c on a.program_id = c.id
+                INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+                LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+                LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+                LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+                where a.stat_terbuka = 'Y'
+                and a.id not in (
+                    select a.id from espel_kursus a
+                    inner join (
+                        select kursus_id, nokp   from espel_permohonan_kursus where nokp = ?
+                    ) b ON a.id = b.kursus_id)
+                ) as a
+                where 1=1
+                and id = ?
+                order by tkh_mula, tkh_tamat";
+        return $this->db->query($sql,[$username, $username, $username, $id])->row();    
     }
 
     public function sen_tahun()

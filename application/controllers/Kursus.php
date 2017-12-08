@@ -852,6 +852,16 @@ class Kursus extends MY_Controller
         }
     }
 
+    public function info_kursus_pengguna_2($id)
+    {
+        if(!$this->exist("mohon"))
+        {
+            $this->load->model('kursus_model','kursus');
+            $data['kursus'] = $this->kursus->info_kursus($id);
+            return $this->load->view("kursus/pengguna/info",$data);
+        }
+    }
+
     public function info_kursus_pengguna($id)
     {
         if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)

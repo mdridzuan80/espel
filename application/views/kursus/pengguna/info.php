@@ -10,58 +10,105 @@
               <form method="post" class="form-horizontal form-label-left">
                   <table class="table table-bordered">
                       <tr>
-                        <th>Program</th>
-                        <td><?= $kursus->program ?></td>
+                        <tr>
+                          <th>TAJUK</th>
+                          <td><?= $kursus->tajuk ?></td>
+                        </tr>
+                        <th>PROGRAM</th>
+                        <td><?= strtoupper($kursus->program) ?></td>
                       </tr>
                       <tr>
-                        <th>Jenis Aktiviti</th>
-                        <td><?= $kursus->aktiviti ?></td>
+                        <th>JENIS AKTIVITI</th>
+                        <td><?= strtoupper($kursus->aktiviti) ?></td>
                       </tr>
                       <tr>
-                        <th>Tajuk</th>
-                        <td><?= $kursus->tajuk ?></td>
+                        <th>TARIKH</th>
+                        <td><?= strtoupper(date("d M Y h:i A",strtotime($kursus->tkh_mula))) ?> - <?= strtoupper(date('d M Y h:i A',strtotime($kursus->tkh_tamat))) ?> </td>
                       </tr>
                       <tr>
-                        <th>Tarikh</th>
-                        <td><?= date("d M Y h:i A",strtotime($kursus->tkh_mula)) ?> - <?= date('d M Y h:i A',strtotime($kursus->tkh_tamat)) ?> </td>
+                        <th>TEMPAT</th>
+                        <td><?= strtoupper($kursus->tempat) ?></td>
                       </tr>
                       <tr>
-                        <th>Tempat</th>
-                        <td><?= $kursus->tempat ?></td>
+                        <th>ANJURAN</th>
+                        <td><?= ($kursus->anjuran == 'D') ? strtoupper($kursus->penganjur_dalam) : strtoupper($kursus->penganjur_luar) ?></td>
                       </tr>
+                      <?php if($kursus->stat_jabatan == 'Y') : ?>
                       <tr>
-                        <th>Anjuran</th>
-                        <td><?= ($kursus->anjuran == 'D') ? $kursus->penganjur_dalam : $kursus->penganjur_luar ?></td>
-                      </tr>
-                      <tr>
-                        <th>Hubungi</th>
+                        <th>HUBUNGI</th>
                         <td>
-                          <?= $kursus->telefon ?>
-                          <?= ($kursus->email) ? ('<br>' . $kursus->email) : '' ?>
-                        </td>
-                      </tr>
-                      <?php if($kursus->program_id == 5) : ?>
-                      <tr>
-                        <th>Sumber</th>
-                        <td>
-                          <?= $kursus->sumber ?>
-                        </td>
-                      </tr>
-                       <tr>
-                        <th>Penyelia</th>
-                        <td>
-                          <?= $kursus->penyelia ?>
+                          <?php if($kursus->telefon){ echo $kursus->telefon; } ?>
+                          <?php if($kursus->email){ echo '<br>' . strtoupper($kursus->email); } ?>
                         </td>
                       </tr>
                       <?php endif ?>
+                      <?php if($kursus->program_id == 5) : ?>
+                      <tr>
+                        <th>SUMBER</th>
+                        <td>
+                          <?= strtoupper($kursus->sumber) ?>
+                        </td>
+                      </tr>
+                       <tr>
+                        <th>PENYELIA</th>
+                        <td>
+                          <?= strtoupper($kursus->penyelia) ?>
+                        </td>
+                      </tr>
+                      <?php endif ?>
+                      <tr>
+                        <th>Status</th>
+                        <td>
+                          <?php if($kursus->stat_jabatan == 'Y') : ?>
+                            <?php if(strtotime($kursus->tkh_mula) > time()) : ?>
+                              <?php if($kursus->stat_laksana == 'R') : ?>
+                                <?php if($kursus->stat_mohon) : ?>
+                                  <span class="label label-warning">MOHON</span>
+                                <?php else : ?>
+                                  <span class="label label-info">PERMOHONAN DIBUKA</span>
+                                <?php endif ?>
+                              <?php elseif($kursus->stat_laksana == 'L') : ?>
+                                <?php if($kursus->stat_mohon) : ?>
+                                  <span class="label label-warning">MOHON</span>
+                                <?php else : ?>
+                                  <span class="label label-info">KURSUS TELAH DILAKSANAKAN</span>
+                                <?php endif ?>
+                              <?php else : ?>
+                                <span class="label label-info">PERMOHONAN DIBUKA</span>
+                              <?php endif ?>
+                            <?php else : ?>
+                              <?php if($kursus->stat_laksana == 'L') : ?>
+                                <span class="label label-info">KURSUS TELAH DILAKSANAKAN</span>
+                              <?php else : ?>
+                                <span class="label label-info">TAMAT TEMPOH PERMOHONAN</span>
+                              <?php endif ?>
+                            <?php endif ?>
+                          <?php else : ?>
+                            <?php if($kursus->stat_hadir == 'M') : ?>
+                              <span class="label label-warning">MOHON</span>
+                            <?php endif ?>
+                            <?php if($kursus->stat_hadir == 'T') : ?>
+                              <span class="label label-warning">TOLAK</span>
+                            <?php endif ?>
+                            <?php if($kursus->stat_hadir == 'L') : ?>
+                              <span class="label label-success">HADIR</span>
+                            <?php endif ?>
+                          <?php endif ?>
+                        </td>
+                      </tr>
                   </table>
-                  <?php if(!status_mohon($kursus->id, appsess()->getSessionData('username'))) : ?>
+                  <?php if($kursus->stat_jabatan == 'Y') : ?>
+                  <?php if(strtotime($kursus->tkh_mula) > time() || $kursus->stat_mohon) : ?>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <button id="btnMohon" type="submit" class="btn btn-success" name="mohon" data-kursus_id="<?= $kursus->id ?>">Mohon</button>
+                      <button id="btnMohon" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">MOHON</button>
                     </div>
+                  <?php endif ?>
                   </div>
+                  <?php else : ?>
+                    <div class="ln_solid"></div>
+                    <button id="btnEdit" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">EDIT</button>
                   <?php endif ?>
               </form>
           </div>
