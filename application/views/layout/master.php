@@ -31,6 +31,10 @@
     <link href="<?=base_url("assets/css/easyui.css")?>" rel="stylesheet">
     <link rel="stylesheet" href="<?=base_url("assets/css/bootstrap-timepicker.min.css")?>"> 
 
+    <!-- Custom Theme Style -->
+    <link href="<?=base_url("assets/css/custom.min.css")?>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
+
     <?php
     if(isset($plugins) && count($plugins))
     {
@@ -44,8 +48,6 @@
     }
     ?>
 
-    <!-- Custom Theme Style -->
-    <link href="<?=base_url("assets/css/custom.min.css")?>" rel="stylesheet">
   </head>
 
   <body class="nav-md menu_fixed">
@@ -74,7 +76,7 @@
 
             <br />
 
-            <?php $this->load->view($sidemenu);?>
+            <?php $this->load->view($sidemenu,['filterMenu'=>$filterMenu]);?>
 
             <!-- /menu footer buttons -->
             <!--

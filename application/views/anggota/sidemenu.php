@@ -5,7 +5,7 @@
     <ul class="nav side-menu">
       <li><a href="<?=base_url()?>"><i class="fa fa-home"></i> Dashboard</a></li>
         <li><a href="<?=base_url("kursus/takwim_pengguna_2")?>"><i class="fa fa-calendar"></i> Takwim Kursus</a></li>
-        <li><a href="<?=base_url("kursus/luar")?>"><i class="fa fa-file-text-o"></i> Daftar Kursus</a></li>
+        <!-- <li><a href="<?=base_url("kursus/luar")?>"><i class="fa fa-file-text-o"></i> Daftar Kursus</a></li> -->
         <li><a href="#"><i class="fa fa-smile-o"></i>Soal Selidik Kursus <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
               <li><a href="<?=base_url("selidik/boranga")?>">KKM/P&P/2013(A) <?php if($bil_boranga) : ?><span class="badge bg-green"><?=$bil_boranga?></span><?php endif ?></a></li>
@@ -70,6 +70,38 @@
   -->
     </ul>
   </div>
+
+  <?php if($filterMenu) : ?>
+  <div class="menu_section">
+    <h3>PAPAR JENIS TAKWIM</h3>
+    <ul class="nav side-menu">
+      <li>&nbsp;&nbsp;&nbsp;
+        <div class="pretty p-default p-curve p-fill">
+            <input class="jenis" type="checkbox" value="r" data-medan="jenis" checked/>
+            <div class="state p-rancang">
+                <label style="color:white;">Kursus Rancang</label>
+            </div>
+        </div>
+      </li>
+      <li>&nbsp;&nbsp;&nbsp;
+        <div class="pretty p-default p-curve p-fill">
+            <input class="jenis" type="checkbox" value="s" data-medan="jenis" checked/>
+            <div class="state p-siap">
+                <label style="color:white;">Kursus Siap</label>
+            </div>
+        </div>
+      </li>
+      <li>&nbsp;&nbsp;&nbsp;
+        <div class="pretty p-default p-curve p-fill">
+            <input class="jenis" type="checkbox" value="t" data-medan="stat_jabatan" checked/>
+            <div class="state p-luar">
+                <label style="color:white;">Kursus Luar</label>
+            </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <?php endif ?>
   <!--
   <div class="menu_section">
     <h3>Live On</h3>

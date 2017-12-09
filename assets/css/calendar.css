@@ -81,7 +81,7 @@ header {
 }
 
 #calendar .t {
-  color: rgb(25,188,157);
+  color: rgb(25, 188, 157);
 }
 
 #calendar .y {
@@ -123,6 +123,60 @@ header {
 #calendar .pass {
     background: #ddd;
 }
+
+.pretty input:checked~.state.p-rancang label:after,.pretty.p-toggle .state.p-rancang label:after {
+    background-color: #c8b1f1 !important
+}
+
+.pretty input:checked~.state.p-rancang .icon,.pretty input:checked~.state.p-rancang .svg,.pretty.p-toggle .state.p-rancang .icon,.pretty.p-toggle .state.p-rancang .svg {
+    color: #fff;
+    stroke: #fff
+}
+
+.pretty.p-switch input:checked~.state.p-rancang:before {
+    border-color: #c8b1f1
+}
+
+.pretty.p-switch.p-fill input:checked~.state.p-rancang:before {
+    background-color: #c8b1f1!important
+}
+
+/**/
+.pretty input:checked~.state.p-siap label:after,.pretty.p-toggle .state.p-siap label:after {
+    background-color: #dcb5b5 !important
+}
+
+.pretty input:checked~.state.p-siap .icon,.pretty input:checked~.state.p-siap .svg,.pretty.p-toggle .state.p-siap .icon,.pretty.p-toggle .state.p-siap .svg {
+    color: #fff;
+    stroke: #fff
+}
+
+.pretty.p-switch input:checked~.state.p-siap:before {
+    border-color: #dcb5b5
+}
+
+.pretty.p-switch.p-fill input:checked~.state.p-siap:before {
+    background-color: #dcb5b5!important
+}
+
+/**/
+.pretty input:checked~.state.p-luar label:after,.pretty.p-toggle .state.p-luar label:after {
+    background-color: rgb(25, 188, 157)!important
+}
+
+.pretty input:checked~.state.p-luar .icon,.pretty input:checked~.state.p-luar .svg,.pretty.p-toggle .state.p-luar .icon,.pretty.p-toggle .state.p-luar .svg {
+    color: #fff;
+    stroke: #fff
+}
+
+.pretty.p-switch input:checked~.state.p-luar:before {
+    border-color: rgb(25, 188, 157);
+}
+
+.pretty.p-switch.p-fill input:checked~.state.p-luar:before {
+    background-color: rgb(25, 188, 157)!important
+}
+
 /* ============================
                 Mobile Responsiveness
    ============================*/

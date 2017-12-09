@@ -14,6 +14,8 @@ class MY_Controller extends CI_Controller {
     const MEMBER_DEFAULT = "anggota/dashboard/show";
     const MEMBER_SIDEMENU = "anggota/sidemenu";
 
+    private $filterMenu = false;
+
     public function __construct()
     {
         parent::__construct();
@@ -78,6 +80,7 @@ class MY_Controller extends CI_Controller {
 
         $layout["login_profil"] = $this->profil_model->getProfil($this->appsess->getSessionData("username"));
         $layout["availPeranan"] = $this->availPeranan();
+        $layout["filterMenu"] = $this->filterMenu;
         $layout["sidemenu"] = $sidemenu;
         $layout["pageContent"] = $pageContent;
 
@@ -156,5 +159,10 @@ class MY_Controller extends CI_Controller {
     {
         $this->output->set_status_header(401);
         return $this->renderView("errors/html/error_401");
+    }
+
+    protected function set_filterMenu($cond)
+    {
+        $this->filterMenu = $cond;
     }
 }

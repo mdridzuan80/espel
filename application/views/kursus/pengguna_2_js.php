@@ -6,6 +6,8 @@ $(function(){
     var kursusId = 0;
     var tajuk = '';
     var events = [];
+    var openEdit = false;
+    var programId = 0;
     
     populateEvent();
 
@@ -19,7 +21,7 @@ $(function(){
             url: base_url + "api/get_event_pengguna_2/" + tahun + "/" + bulan,
             success: function(sen_kursus, textStatus, jqXHR ){
                 events = sen_kursus;
-                generateEvents(sen_kursus);
+                generateEvents(filterJenis());
             }
         });
     }
@@ -203,9 +205,12 @@ $(function(){
         var vData = $(this).find(".modal-body");
         vData.html(loader);
 
-        if(xhr)
-        {
+        if(xhr) {
             xhr.abort();
+        }
+
+        if(openEdit) {
+            $('#myModal').modal();
         }
     })
 
@@ -222,6 +227,18 @@ $(function(){
         var vData = $(this).find(".modal-body");
         vData.html(loader);
         load_content_modal(modalUrl,postData,vData);
+    })
+
+    $('#myModal').on('shown.bs.modal',function(e){
+        if(openEdit) {
+            initform(programId);
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurLatihan').combotree();
+            $('#comPenganjurPemb').combotree();
+            $('#comPenganjurPemb2').combotree();
+            $('#comPenganjurKend').combotree();
+        }
+        openEdit = false;
     })
 
     $('#myModal').on('hidden.bs.modal',function(e){
@@ -670,5 +687,37 @@ $(function(){
             }
         });
     });
+
+    $('#MyModalKursusInfo').on('click', '#btnEdit', function(e){
+        e.preventDefault();
+        var kursus_id = $(this).data('kursus_id');
+        programId = $(this).data('program_id');
+        openEdit = true;
+        modalHeader = 'Kemaskini Daftar Kursus Anjuran Luar';
+        modalUrl = base_url + 'kursus/edit_luar/' + kursus_id;
+        $('#myLargeModalLabel').html(modalHeader);
+        $('#MyModalKursusInfo').modal('hide');        
+    });
+
+    $('input.jenis').on('click', function(e) {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+
+        resetPopulateEvent();
+        generateEvents(filterEvents);
+    });
+
+    function filterJenis()
+    {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+        return filterEvents;
+    }
 });
 </script>

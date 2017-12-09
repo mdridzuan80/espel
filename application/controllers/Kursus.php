@@ -243,6 +243,7 @@ class Kursus extends MY_Controller
         $plugins["embedjs"][] = $this->load->view("kursus/pengguna_2_js",NULL,TRUE);
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses takwim kursus (Pengguna)']);
+        $this->set_filterMenu(TRUE);
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
     }
     
@@ -1320,6 +1321,7 @@ class Kursus extends MY_Controller
                 'stat_laksana' => "L",
                 'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                 'anjuran' => $this->input->post("comAnjuran"),
+                'jenis' => "L",
             ];
             if($this->input->post("comAnjuran")=="L")
             {
@@ -1348,6 +1350,7 @@ class Kursus extends MY_Controller
                 'stat_laksana' => "L",
                 'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
                 'anjuran' => $this->input->post("comAnjuran"),
+                'jenis' => "L",
             ];
             if($this->input->post("comAnjuran")=="L")
             {
@@ -1379,6 +1382,7 @@ class Kursus extends MY_Controller
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
                 'nokp'=>$this->appsess->getSessionData('username'),
+                'jenis' => "L",
             ];
             if($this->input->post("comAnjuran")=="L")
             {
