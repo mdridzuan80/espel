@@ -1,5 +1,192 @@
 <script>
 $(function(){
+    var tahun = <?=$this->uri->segment(3, date('Y'))?>;
+    var bulan = <?=$this->uri->segment(4, date('m'))?>;
+    var xhr = {};
+    var kursusId = 0;
+    var tajuk = '';
+    var events = [];
+    var openEdit = false;
+
+    populateEvent();
+
+    function populateEvent() {
+        xhr = $.ajax({
+            url: base_url + "api/get_sen_event_pengguna_2/" + tahun + "/" + bulan,
+            success: function(sen_kursus, textStatus, jqXHR ){
+                events = sen_kursus;
+                generateEvents(filterJenis());
+            }
+        });
+    }
+
+    function generateEvents(events) {
+        $('#senarai-event').dataTable({
+            destroy: true,
+            data: events,
+            "order": [[ 1, 'asc' ]],
+            columns: [
+                {  
+                    orderable: false,
+                    data: function(row, type, set, meta){
+                    var kodWarna = '';
+
+                    if(row.stat_jabatan == 'Y') {
+                        if(row.jenis && row.jenis == 'R') {
+                            kodWarna = row.jenis.toLowerCase();
+                        }
+                        else if(row.jenis && row.jenis == 'S') {
+                            kodWarna = row.jenis.toLowerCase();
+                        }
+                        else {
+                            kodWarna = 'n';
+                        }
+                    }
+                    else {
+                        kodWarna = row.stat_jabatan.toLowerCase();
+                    }
+
+                    return "<i class=\"fa fa-square " + kodWarna + "\"></i> <b>"+row.tajuk.toUpperCase() + "</b><br><small>"+row.program.toUpperCase()+"</small>";
+                }},
+                { data: function(row, type, set, meta){
+                    tkhMula = moment(row.tkh_mula, 'YYYY-MM-DD HH:mm:ss');
+                    return tkhMula.format('D MMM YYYY h:mm A');
+                }},
+                { data: function(row, type, set, meta){
+                    tkhTamat = moment(row.tkh_tamat, 'YYYY-MM-DD HH:mm:ss');
+                    return tkhTamat.format('D MMM YYYY h:mm A');
+                }},
+                { 
+                    orderable: false,
+                    data: function(row, type, set, meta){
+                    return "<button data-kursusid=\""+row.id+"\" data-tajuk=\""+row.tajuk+"\" class=\"btn btn-primary btn-xs cmdinfo\" role=\"button\"><i class=\"fa fa-info\"></i> Papar</button>";
+                }},
+            ]
+        });
+    }
+
+    function filterJenis()
+    {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+        return filterEvents;
+    }
+
+     $('#senarai-event').on('click','.cmdinfo', function(e){
+        e.preventDefault();
+        kursusId = $(this).data('kursusid');
+        tajuk = $(this).data('tajuk');
+        $('#MyModalKursusInfo').modal();
+    });
+
+    $('input.jenis').on('click', function(e) {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+
+        generateEvents(filterEvents);
+    });
+    
+    $('#MyModalKursusInfo').on('show.bs.modal',function(e){
+        var vHeader = $(this).find(".modal-header");
+        var vTajuk = $(this).find(".modal-title");
+        var vData = $(this).find(".modal-body");  
+        var event = _.find(events, ['id', parseInt(kursusId)]);
+        var modalUrl = base_url+"kursus/info_kursus_pengguna_2/"+kursusId;
+        
+        if(event.stat_jabatan == 'Y') {
+            if(event.jenis && event.jenis == 'R') {
+                vHeader.css( "background-color", "#c8b1f1" );
+            }
+            else if(event.jenis && event.jenis == 'S') {
+                vHeader.css( "background-color", "#dcb5b5" );
+            }
+            else {
+                vHeader.css( "background-color", "white" );
+            }
+        }
+
+        if(event.stat_jabatan=='T') {
+            vHeader.css( "background-color", "#19BC9D" );
+        }
+
+        vHeader.css( "color", "black" );
+        vTajuk.html(tajuk.toUpperCase());
+        vData.html(loader);
+        load_content_modal(modalUrl,postData,vData);
+    })
+
+    $('#MyModalKursusInfo').on('hidden.bs.modal',function(e){
+        var vData = $(this).find(".modal-body");
+        vData.html(loader);
+
+        if(xhr) {
+            xhr.abort();
+        }
+
+        if(openEdit) {
+            $('#myModal').modal();
+        }
+    })
+
+    $('#MyModalKursusInfo').on('click', '#btnHapus', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/delete_luar/' + kursus_id,
+                success: function() {
+                    swal('Berjaya!','','success');
+                    resetPopulateEvent();
+                    populateEvent();
+                    $('#MyModalKursusInfo').modal('hide');
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
+
+    $('#MyModalKursusInfo').on('click', '#btnEdit', function(e){
+        e.preventDefault();
+        var kursus_id = $(this).data('kursus_id');
+        programId = $(this).data('program_id');
+        openEdit = true;
+        modalHeader = 'Kemaskini Daftar Kursus Anjuran Luar';
+        modalUrl = base_url + 'kursus/edit_luar/' + kursus_id;
+        $('#myLargeModalLabel').html(modalHeader);
+        $('#MyModalKursusInfo').modal('hide');        
+    });
+
     // daftar kursus luar
     var loader = $('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     var url = '';
@@ -13,6 +200,18 @@ $(function(){
         var vData = $(this).find(".modal-body");
         vData.html(loader);
         load_content_modal(modalUrl,postData,vData);
+    })
+
+    $('#myModal').on('shown.bs.modal',function(e){
+        if(openEdit) {
+            initform(programId);
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurLatihan').combotree();
+            $('#comPenganjurPemb').combotree();
+            $('#comPenganjurPemb2').combotree();
+            $('#comPenganjurKend').combotree();
+        }
+        openEdit = false;
     })
 
     $('#myModal').on('hidden.bs.modal',function(e){
@@ -361,9 +560,10 @@ $(function(){
                             text: 'Proses mendaftar kursus selesai.',
                             type: 'success'
                         }).then(function(){
-                            location.reload();
+                            populateEvent();
+                            $('#myModal').modal('hide');
                         });
-                        $('#myModal').modal('hide');
+                        
                     },
                     error: function(jqXHR, textStatus,errorThrown)
                     {
@@ -401,9 +601,9 @@ $(function(){
                             text: 'Proses mendaftar kursus selesai.',
                             type: 'success'
                         }).then(function(){
-                            location.reload();
+                            populateEvent();
+                            $('#myModal').modal('hide');
                         });
-                        $('#myModal').modal('hide');
                     },
                     error: function(jqXHR, textStatus,errorThrown)
                     {

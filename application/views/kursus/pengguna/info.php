@@ -58,10 +58,18 @@
                           <?php if($kursus->stat_jabatan == 'Y') : ?>
                             <?php if(strtotime($kursus->tkh_mula) > time()) : ?>
                               <?php if($kursus->stat_laksana == 'R') : ?>
-                                <?php if($kursus->stat_mohon) : ?>
-                                  <span class="label label-warning">MOHON</span>
+                                <?php if($kursus->jenis == 'R') : ?>
+                                  <?php if($kursus->stat_mohon) : ?>
+                                    <span class="label label-warning">MOHON</span>
+                                  <?php else : ?>
+                                    <span class="label label-info">PERMOHONAN DIBUKA</span>
+                                  <?php endif ?>
                                 <?php else : ?>
-                                  <span class="label label-info">PERMOHONAN DIBUKA</span>
+                                  <?php if($kursus->stat_mohon) : ?>
+                                    <span class="label label-warning">DICALONKAN</span>
+                                  <?php else : ?>
+                                    <span class="label label-info">PERMOHONAN TUTUP</span>
+                                  <?php endif ?>
                                 <?php endif ?>
                               <?php elseif($kursus->stat_laksana == 'L') : ?>
                                 <?php if($kursus->stat_mohon) : ?>
@@ -90,13 +98,15 @@
                       </tr>
                   </table>
                   <?php if($kursus->stat_jabatan == 'Y') : ?>
-                  <?php if(strtotime($kursus->tkh_mula) > time() && $kursus->stat_laksana == 'R' && is_null($kursus->stat_mohon)) : ?>
-                  <div class="ln_solid"></div>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <button id="btnMohon" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">MOHON</button>
-                    </div>
-                  <?php endif ?>
+                    <?php if($kursus->jenis == 'R' ) : ?>
+                      <?php if(strtotime($kursus->tkh_mula) > time() && $kursus->stat_laksana == 'R' && is_null($kursus->stat_mohon)) : ?>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <button id="btnMohon" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">MOHON</button>
+                        </div>
+                      <?php endif ?>
+                    <?php endif ?>
                   </div>
                   <?php else : ?>
                     <?php if($kursus->stat_hadir != 'L') : ?>

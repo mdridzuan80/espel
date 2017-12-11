@@ -71,7 +71,7 @@ $(function(){
         if(!tkhMula.isBefore(now)) {
             //selepas hari ini
             if(element.stat_jabatan == 'Y') {
-                if(element.stat_laksana == 'L' || element.stat_mohon) {
+                if(element.stat_laksana == 'L' || element.stat_mohon || element.jenis == 'S') {
                     cssDisable = 'pass';
                 }
 

@@ -247,7 +247,7 @@ class Kursus extends MY_Controller
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
     }
     
-    function takwim_pengguna_senarai()
+    public function takwim_pengguna_senarai()
     {
         $prefs['show_next_prev'] = TRUE;
         $prefs['template'] = '
@@ -273,6 +273,7 @@ class Kursus extends MY_Controller
         $plugins["embedjs"][] = $this->load->view("kursus/takwim_pengguna_js",NULL,TRUE);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses senarai kursus  (Pengguna)']);
+        $this->set_filterMenu(TRUE);
         return $this->renderView("kursus/takwim_pengguna_senarai", $data, $plugins);
     }
 

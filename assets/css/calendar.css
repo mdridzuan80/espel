@@ -80,22 +80,22 @@ header {
   text-decoration: none;
 }
 
-#calendar .t {
+#calendar .t, .t {
   color: rgb(25, 188, 157);
 }
 
-#calendar .y {
+#calendar .y, .y {
   color: rgb(148, 199, 240);
 }
 
-#calendar .r {
+#calendar .r, .r {
   color: #c8b1f1;
 }
 
-#calendar .s {
+#calendar .s, .s {
   color: #dcb5b5;
 }
-#calendar .n {
+#calendar .n, .n {
   color: white;
 }
 

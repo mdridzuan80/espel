@@ -59,7 +59,8 @@ $route["reset/(:any)/(:any)"] = "auth/reset";
 
 $route["api/get_event/(:num)/(:num)/(:num)"] = "welcome/get_event/$1/$2/$3";
 $route["api/get_event_pengguna/(:num)/(:num)/(:num)"] = "welcome/get_event_pengguna/$1/$2/$3";
-$route["api/get_event_pengguna_2/(:num)/(:num)"] = "welcome/get_event_pengguna_2/$1/$2"; 
+$route["api/get_event_pengguna_2/(:num)/(:num)"] = "welcome/get_event_pengguna_2/$1/$2";
+$route["api/get_sen_event_pengguna_2/(:num)/(:num)"] = "welcome/get_sen_event_pengguna_2/$1/$2";
 $route["api/get_event_all/(:num)/(:num)"] = "welcome/get_event_all/$1/$2";
 $route["api/get_laporan_gred/(:any)/(:any)"] = "welcome/get_laporan_gred/$1/$2";
 $route["api/get_laporan_gred2"] = "welcome/get_laporan_gred2";
