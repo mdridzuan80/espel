@@ -7,13 +7,23 @@
     var tajuk = '';
     var loader = $('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span>Loading...</span>');
     var jenisDaftar = '';
+    var events = [];
 
-    $.ajax({
-        url: base_url + "api/get_event_all/" + tahun + "/" + bulan ,
-        success: function(sen_kursus, textStatus, jqXHR ){
-            generateEvents(sen_kursus);
-        }
-    });
+    populateEvent();
+
+    function resetPopulateEvent() {
+        $('.event').remove();
+    }
+
+    function populateEvent() {
+        xhr = $.ajax({
+            url: base_url + "api/get_event_all/" + tahun + "/" + bulan,
+            success: function(sen_kursus, textStatus, jqXHR ){
+                events = sen_kursus;
+                generateEvents(filterJenis());
+            }
+        });
+    }
 
     function generateEvents(sen_kursus)
     {
@@ -24,6 +34,8 @@
         if(sen_kursus.length != 0){
             for(i = 1; i<=31; i++){
                 var tkh_cal = moment(tahun + '-' + bulan + '-' + i.toString().padStart(2,'0'));
+                var concat_e = [];
+
                 events_s = sen_kursus.filter(function(kursus){
                     return tkh_cal.isSame(kursus.mula)
                 });
@@ -35,16 +47,10 @@
                     return tkh_cal.isSame(kursus.tamat)
                 });
                 
-                events_s.forEach(function(element){
+                concat_e = _.sortBy(_.union(events_s, events_r, events_e), ['masa_m', 'masa_t']);
+
+                concat_e.forEach(function(element){
                     $("#cell-"+i).parent().append(linkEvent(element));
-                });
-                events_r.forEach(function(element){
-                    $("#cell-"+i).parent().append(linkEvent(element));
-                });
-                events_e.forEach(function(element){
-                    if(element.mula != element.tamat) {
-                        $("#cell-"+i).parent().append(linkEvent(element));
-                    }
                 });
             }
         }
@@ -60,28 +66,49 @@
         tkhMula = moment(element.tkh_mula);
         tkhTamat = moment(element.tkh_tamat);             
     
-        if(element.stat_laksana == 'R')
-        {
+        if(element.stat_laksana == 'R') {
             text = text + "<div class=\"event\"> \
-                <div class=\"event-desc\" data-kursus_id=\"" + element.id + "\" data-tajuk=\"" + element.tajuk + "\"><a href=\"#\"> " + element.tajuk + "</a>\
+                <div class=\"event-desc\" data-kursus_id=\"" + element.id + "\" data-tajuk=\"" + element.tajuk + "\"> \
+                    <i class=\"fa fa-square "+element.jenis.toLowerCase()+"\"></i><a href=\"#\"> " + element.tajuk + "</a>\
                 </div> \
                 <div class=\"event-time\"> \
                     " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
                 </div> \
             </div>";
         }
-        else
-        {
+        else {
             text = text + "<div class=\"event pass\"> \
-            <div class=\"event-desc\" data-kursus_id=\"" + element.id + "\" data-tajuk=\"" + element.tajuk + "\"><a href=\"#\"> " + element.tajuk + "</a>\
-            </div> \
-            <div class=\"event-time\"> \
-                " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
-            </div> \
-        </div>";
-
+                <div class=\"event-desc\" data-kursus_id=\"" + element.id + "\" data-tajuk=\"" + element.tajuk + "\">\
+                    <i class=\"fa fa-square "+element.jenis.toLowerCase()+"\"></i><a href=\"#\"> " + element.tajuk + "</a>\
+                </div> \
+                <div class=\"event-time\"> \
+                    " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
+                </div> \
+            </div>";
         }
+
         return text;
+    }
+
+    $('input.jenis').on('click', function(e) {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+
+        resetPopulateEvent();
+        generateEvents(filterEvents);
+    });
+
+    function filterJenis()
+    {
+        var filterEvents = [];
+
+        $('input.jenis:checked').each(function () {
+            filterEvents = _.union(filterEvents, _.filter(events,[$(this).data('medan'),$(this).val().toUpperCase()]));
+        });
+        return filterEvents;
     }
 
     $('#btn-daftar-rancang').on('click', function(e){
@@ -100,7 +127,7 @@
 
     $('#calendar').on('click','.event-desc', function(e){
         e.preventDefault();
-        kursus_id = $(this).data('kursusId');
+        kursus_id = $(this).data('kursus_id');
         tajuk = $(this).data('tajuk');
         $('#MyModalKursusInfo').modal();
     });
@@ -112,7 +139,7 @@
             var vData = $(this).find(".modal-body");
             
             if(jenisDaftar=='R') {
-                vHeader.css( "background-color", "#e4f2f2" );
+                vHeader.css( "background-color", "#c7adf0" );
                 vTajuk.html('Daftar Kursus (Rancang)');
             }
 
@@ -137,12 +164,23 @@
         })
 
         $('#MyModalKursusInfo').on('show.bs.modal',function(e){
+            var vHeader = $(this).find(".modal-header");
             var vTajuk = $(this).find(".modal-title");
             var vData = $(this).find(".modal-body");
+            var event = _.find(events,['id',kursus_id]);
 
-            vTajuk.html(tajuk);
+            if(event.jenis == 'R') {
+                vHeader.css( "background-color", "#c7adf0" );
+            }
+
+            if(event.jenis == 'S') {
+                vHeader.css( "background-color", "#dcb5b5" );
+            }
+
+            vHeader.css( "color", "black" );
+            vTajuk.html(tajuk.toUpperCase());
             vData.html(loader);
-            //load_content_modal(modalUrl,postData,vData);
+            load_content_modal_info({},vData);
         })
 
         $('#MyModalKursusInfo').on('hidden.bs.modal',function(e){
@@ -169,21 +207,11 @@
             });
         }
 
-        function load_content_modal(url,data,placeholder){
+        function load_content_modal_info(data,placeholder){
             xhr = $.ajax({
-                url: url,
+                url: base_url+'kursus/info_kursus_jabatan/'+kursus_id,
                 success: function(data, textStatus, jqXHR){
                     placeholder.html(data);
-                    $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
-                    $('#comPenganjurLatihan').combotree();
-                    $('#comPenganjurPemb').combotree();
-                    $('#comPenganjurPemb2').combotree();
-                    $('#comPenganjurKend').combotree();
-
-                    if(operasi == 'edit') {
-                        $('.espel_program').val();
-                        initform($('.espel_program').val());
-                    }
                 }
             });
         }
@@ -457,7 +485,7 @@
                                 title: 'Berjaya!',
                                 text: 'Proses mendaftar kursus selesai.',
                                 type: 'success'
-                            }).then(function(){
+                            }).then(function() {
                                 window.location.href=base_url + 'kursus/info_jabatan/' + data.kursus_id;
                             });
                         },
@@ -485,6 +513,7 @@
                     formCsrf = data;
                     formData.append(data.csrfTokenName, data.csrfHash);
                     formData.append('jenis', jenisDaftar);
+                    
                     $.ajax({
                         method: 'post',
                         data: formData,

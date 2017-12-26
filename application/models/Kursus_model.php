@@ -640,32 +640,16 @@ class Kursus_model extends MY_Model
     {
         $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
 
-        $sql = "SELECT * FROM (SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, a.stat_laksana
+        $sql = "SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_laksana, a.jenis
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
             AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
-            UNION
-            SELECT a.id, a.tajuk, b.nama, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, a.tkh_mula, a.tkh_tamat, a.stat_laksana
-            FROM espel_kursus a, espel_dict_program b
-            WHERE 1=1
-            AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = ?
-            AND YEAR(a.tkh_tamat) = ?
-            AND MONTH(a.tkh_tamat) = ?
-            AND a.id NOT IN(SELECT id FROM espel_kursus
-                WHERE 1=1
-                AND ptj_jabatan_id_created = ?
-                AND YEAR(tkh_mula) = ?
-                AND MONTH(tkh_mula) = ?)) a
             ORDER BY a.tkh_mula, a.tkh_tamat";
 
-        $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
+        $rst = $this->db->query($sql,[$ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
         );
 
         if($rst->num_rows())
@@ -993,6 +977,22 @@ group by nokp
             and year(b.tkh_mula) = $tahun
             AND ptj_jabatan_id_created in($related_jabatan_id)";
         return $this->db->query($sql);
+    }
+
+    public function info_kursus_jabatan($id)
+    {
+        $username = $this->appsess->getSessionData('username');
+        $sql = "SELECT a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.jenis, a.stat_jabatan, a.stat_laksana
+            FROM espel_kursus a
+            INNER JOIN espel_dict_program c on a.program_id = c.id
+            INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+            LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+            LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+            LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+            WHERE 1=1
+            AND a.id = ?
+            ORDER BY a.tkh_mula, a.tkh_tamat";
+        return $this->db->query($sql,[$id])->row();    
     }
 
     public function info_kursus($id)

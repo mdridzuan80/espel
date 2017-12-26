@@ -11,8 +11,7 @@ $(function(){
     
     populateEvent();
 
-    function resetPopulateEvent()
-    {
+    function resetPopulateEvent() {
         $('.event').remove();
     }
 

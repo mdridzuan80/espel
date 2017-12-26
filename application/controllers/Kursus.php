@@ -79,7 +79,8 @@ class Kursus extends MY_Controller
         $data["bulan"] = $this->uri->segment(4, date('m'));
         $plugins = $this->plugins();
         $plugins["embedjs"][] = $this->load->view("kursus/js",NULL,TRUE);
-
+        $this->set_filterMenu(TRUE);
+        
         return $this->renderView("kursus/takwim", $data, $plugins);
     }
 
@@ -851,6 +852,16 @@ class Kursus extends MY_Controller
                 $this->appsess->setFlashSession("success", false);
             }
             redirect('');
+        }
+    }
+
+    public function info_kursus_jabatan($id)
+    {
+        if(!$this->exist("mohon"))
+        {
+            $this->load->model('kursus_model','kursus');
+            $data['kursus'] = $this->kursus->info_kursus_jabatan($id);
+            return $this->load->view("kursus/jabatan/info",$data);
         }
     }
 

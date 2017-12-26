@@ -50,5 +50,30 @@
       </li>
  -->    </ul>
   </div>
+
+    <?php if($filterMenu) : ?>
+  <div class="menu_section">
+    <h3>PAPAR JENIS TAKWIM</h3>
+    <ul class="nav side-menu">
+      <li>&nbsp;&nbsp;&nbsp;
+        <div class="pretty p-default p-curve p-fill">
+            <input class="jenis" type="checkbox" value="r" data-medan="jenis" checked/>
+            <div class="state p-rancang">
+                <label style="color:white;">Kursus Rancang</label>
+            </div>
+        </div>
+      </li>
+      <li>&nbsp;&nbsp;&nbsp;
+        <div class="pretty p-default p-curve p-fill">
+            <input class="jenis" type="checkbox" value="s" data-medan="jenis" checked/>
+            <div class="state p-siap">
+                <label style="color:white;">Kursus Siap</label>
+            </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <?php endif ?>
+
 </div>
 <!-- /sidebar menu -->

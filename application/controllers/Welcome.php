@@ -121,6 +121,8 @@ class Welcome extends MY_Controller {
 					)->jabatan_id,
 					$takwim
 				)
+				,
+				JSON_NUMERIC_CHECK
 			)
 		);
 	}
