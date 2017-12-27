@@ -449,6 +449,10 @@ $(function(){
             $("#input-txt-penganjur").hide();
             $("#txtPenganjurLatihan").prop('required',false);
             $("#input-com-penganjur").show();
+
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurLatihan').combotree();
+
             $("#comPenganjurLatihan").prop('required',true);
         }
     });
@@ -468,6 +472,10 @@ $(function(){
             $("#input-txt-penganjur-pemb").hide();
             $("#txtPenganjurPemb").prop('required',false);
             $("#input-com-penganjur-pemb").show();
+
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurPemb').combotree();
+
             $("#comPenganjurPemb").prop('required',true);
         }
     });
@@ -487,6 +495,10 @@ $(function(){
             $("#input-txt-penganjur-pemb2").hide();
             $("#txtPenganjurPemb2").prop('required',false);
             $("#input-com-penganjur-pemb2").show();
+
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurPemb2').combotree();
+
             $("#comPenganjurPemb2").prop('required',true);
         }
     });
@@ -506,6 +518,10 @@ $(function(){
             $("#input-txt-penganjur-kend").hide();
             $("#txtPenganjurKend").prop('required',false);
             $("#input-com-penganjur-kend").show();
+
+            $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+            $('#comPenganjurKend').combotree();
+            
             $("#comPenganjurKend").prop('required',true);
         }
     });
