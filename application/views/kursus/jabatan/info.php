@@ -54,10 +54,23 @@
                       <tr>
                         <th>Status</th>
                         <td>
-                          
+                          <?php if($kursus->stat_laksana = 'R'): ?>
+                            <span class="label label-warning">RANCANG</span>
+                          <?php else: ?>
+                            <span class="label label-success">SELESAI</span>
+                          <?php endif ?>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Bilangan Peserta</th>
+                        <td>
+                          <?= strtoupper($kursus->bil_peserta) ?>
                         </td>
                       </tr>
                   </table>
+                    <button id="btn-urus" data-kursusid="<?= $kursus->id ?>" type="button" class="btn btn-primary btn-sm">Pengurusan Kursus</button>
+                    <!-- <button id="btn-edit" data-kursusid="<?= $kursus->id ?>" data-programid="<?= $kursus->program_id ?>" type="button" class="btn btn-primary btn-sm">Edit</button> -->
+                    <button id="btn-hapus" data-kursusid="<?= $kursus->id ?>" type="button" class="btn btn-danger btn-sm">Hapus</button>
               </form>
           </div>
       </div>

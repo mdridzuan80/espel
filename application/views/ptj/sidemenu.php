@@ -7,7 +7,7 @@
       <li><a><i class="fa fa-laptop"></i>Modul Kursus <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url('kursus/takwim')?>">Pengurusan Kursus</a></li>
-          <li><a href="<?=base_url('kursus/separa_takwim')?>">Kursus Separa Siap</a></li>
+          <!-- <li><a href="<?=base_url('kursus/separa_takwim')?>">Kursus Separa Siap</a></li> -->
           <li><a href="<?=base_url('kursus/pengesahan_kehadiran')?>">Pengesahan Kehadiran</a></li>
         </ul>
       </li>

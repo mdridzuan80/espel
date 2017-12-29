@@ -200,19 +200,6 @@ $(function(){
         load_content_modal(modalUrl,postData,vData);
     })
 
-    $('#MyModalKursusInfo').on('hidden.bs.modal',function(e){
-        var vData = $(this).find(".modal-body");
-        vData.html(loader);
-
-        if(xhr) {
-            xhr.abort();
-        }
-
-        if(openEdit) {
-            $('#myModal').modal();
-        }
-    })
-
     // daftar kursus luar
     var loader = $('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     var url = '';
