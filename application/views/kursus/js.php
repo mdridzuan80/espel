@@ -624,6 +624,12 @@
         });
     });
 
+    $('#MyModalKursusInfo').on('click', '#btn-urus', function(e){
+        e.preventDefault();
+        var kursus_id = $(this).data('kursusid');
+        window.location.href=base_url + 'kursus/info_jabatan/' + kursus_id;
+    });
+
     $('#MyModalKursusInfo').on('click', '#btn-edit', function(e){
         e.preventDefault();
         var kursus_id = $(this).data('kursusid');

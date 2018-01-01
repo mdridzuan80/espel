@@ -80,7 +80,7 @@ class Kursus extends MY_Controller
         $plugins = $this->plugins();
         $plugins["embedjs"][] = $this->load->view("kursus/js",NULL,TRUE);
         $this->set_filterMenu(TRUE);
-        
+
         return $this->renderView("kursus/takwim", $data, $plugins);
     }
 
@@ -712,7 +712,19 @@ class Kursus extends MY_Controller
     public function info_jabatan($id)
     {
         if($this->appsess->getSessionData("kumpulan") == appauth::PENYELARAS)
-            redirect("kursus/edit_separa_jabatan/" . $id);
+        {
+            $this->load->model('kursus_model');
+
+            if($this->kursus_model->get($id)->jenis == 'R')
+            {
+                return redirect("kursus/edit_jabatan/" . $id);
+            }
+            else
+            {
+                return redirect("kursus/edit_separa_jabatan/" . $id);
+            }
+
+        }
 
         if(!$this->exist("mohon"))
         {
@@ -949,7 +961,7 @@ class Kursus extends MY_Controller
                 $this->load->model('kumpulan_profil_model','kumpulan_profil');
 
                 $data['kursus'] = $this->kursus->get($id);
-
+                $data['level'] = 1;
 
                 //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
 		        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
@@ -962,6 +974,7 @@ class Kursus extends MY_Controller
                     ["jabatan_id" => $jabatan_id]
                 )->dropdown('nokp','nama');
                 $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id,date('Y'));
+                $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level'], 'kursus_id'=>$id],TRUE);
 
                 return $this->renderView("kursus/jabatan/edit",$data,$this->plugins());
             }
@@ -2068,10 +2081,12 @@ class Kursus extends MY_Controller
         $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
         $plugins['embedjs'][] = $this->load->view('calon/calon_js',$js,TRUE);
 
+        $data['level'] = 2;
         $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
         $data['jabatan_id'] = $js['jabatan_id'];
         $data['objJabatan'] = $this->jabatan;
+        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level'], 'kursus_id'=>$kursus_id],TRUE);
 
         return $this->renderView('calon/show', $data, $plugins);
     }
@@ -2408,6 +2423,10 @@ class Kursus extends MY_Controller
             {
                 $data['belanja'] = $this->belanja->get_by('kursus_id',$kursus_id);
             }
+            
+            $data['level'] = 3;
+            $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level'], 'kursus_id'=>$kursus_id],TRUE);
+
             return $this->renderView('kursus/pelaksanaan/show', $data, $this->plugins());
         }
         else
@@ -2626,6 +2645,7 @@ class Kursus extends MY_Controller
                 }
             }
         }
+        
         return redirect('kursus/pelaksanaan/'. $kursus_id);
     }
 
@@ -2894,6 +2914,8 @@ class Kursus extends MY_Controller
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id,$filter);
+        $data['level'] = 4;
+        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level'], 'kursus_id'=>$kursus_id],TRUE);
 
         return $this->renderView('calon/show_sah', $data,['embedjs'=>[$this->load->view('calon/calon_sah_js','',TRUE)]]);
     }
