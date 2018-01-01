@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
-    <a href="<?= base_url() ?>">Home</a> > <a href="<?= base_url('kursus/separa_takwim') ?>">Modul Kursus :: Takwim Kursus Separa Siap</a> > Info Kursus
+    <a href="<?= base_url() ?>">Home</a> > <a href="<?= base_url('kursus/takwim') ?>">Modul Kursus :: Takwim Kursus Separa Siap</a> > Info Kursus
   </div>
 </div>
 <br/>

@@ -1,6 +1,11 @@
-<div>
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <a href="<?= base_url() ?>">Home</a> &gt; <a href="<?= base_url('kursus/takwim') ?>">Modul Kursus :: Takwim Kursus (Rancang)</a> &gt; Info Kursus
+  </div>
+</div>
+<br/>
 <?= $vlevel ?>
-
+<div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">

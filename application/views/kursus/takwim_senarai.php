@@ -1,13 +1,11 @@
-
-
-<?= $vlevel ?>
 <div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Takwim Kursus</h2>
-                    <a href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus</a>
+                    <a id="btn-daftar-siap" data-jenis="S" href="<?=base_url('kursus/separa_daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus (Siap)</a>
+                    <a id="btn-daftar-rancang" data-jenis="R" href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus (Rancang)</a>
                     <a href="<?=base_url("kursus/takwim_senarai/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar senarai">Senarai</a>
                     <a href="<?=base_url("kursus/takwim/$takwim->tahun/$takwim->bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Kalendar</a>
                     <div class="clearfix"></div>
@@ -30,44 +28,71 @@
                     <?php endif?>
 
                     <?=$objCal->generate($takwim->tahun,$takwim->bulan) ?>
-                    <?php if(count($sen_kursus)):?>
                     <div class="table-responsive">
-                        <table id="datatable" class="table table-striped table-bordered jambo_table">
+                        <table id="senarai-event" class="table table-striped table-bordered jambo_table dt-responsive responsive">
                             <thead>
-                              <tr class="headings">
+                            <tr class="headings">
                                 <th>Tajuk</th>
-                                <th>Program</th>
                                 <th>Mula</th>
                                 <th>Tamat</th>
                                 <th style="text-align:center">Operasi</th>
-                              </tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($sen_kursus as $kursus):?>
-                              <tr>
-                                <td><?=$kursus->tajuk?></td>
-                                <td><?=$kursus->nama?></td>
-                                <td><?=date('d M Y h:i A',strtotime($kursus->tkh_mula))?></td>
-                                <td><?=date('d M Y h:i A',strtotime($kursus->tkh_tamat))?></td>
-                                <td align="center">
-                                    <?php if($kursus->stat_laksana == 'R') : ?>
-                                    <a href="<?=base_url('kursus/edit_jabatan/' . $kursus->id)?>" class="btn btn-primary btn-sm" title="Kemaskini">Edit</a>
-                                    <a href="<?=base_url('kursus/delete_jabatan/' . $kursus->id)?>" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm('Anda pasti untuk menghapuskan maklumat ini?')">Delete</a>
-                                    <?php endif ?>
-                                </td>
-                              </tr>
-                              <?php endforeach?>
-                             </tbody>
-                         </table>
-                      </div>
+                            </tbody>
+                        </table>
                     </div>
-                    <?php else:?>
-                        <div class="alert alert-warning " role="warning">
-                            <strong>INFO!</strong> Tiada rekod
-                        </div>
-                    <?php endif?>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(25,188,157); color: white;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title" id="myLargeModalLabel">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="MyModalKursusInfo" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="MyModalKursusEdit" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
+      </div>
+    </div>
+  </div>
+</div>
+

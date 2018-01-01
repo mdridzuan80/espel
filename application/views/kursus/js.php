@@ -34,7 +34,7 @@
 
         if(sen_kursus.length != 0){
             for(i = 1; i<=31; i++){
-                var tkh_cal = moment(tahun + '-' + bulan + '-' + i.toString().padStart(2,'0'));
+                var tkh_cal = moment(tahun + '-' + bulan + '-' + i.toString().padStart(2,'0'), "YYYY-MM-DD");
                 var concat_e = [];
 
                 events_s = sen_kursus.filter(function(kursus){

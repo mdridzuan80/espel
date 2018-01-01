@@ -320,14 +320,16 @@ class Kursus extends MY_Controller
         $this->load->model("kursus_model","kursus");
 
         $data["objCal"] = $this->calendar;
-        $data['level'] = 1;
         $data["takwim"] = initObj([
             "tahun" => $this->uri->segment(3, date('Y')),
             "bulan" => $this->uri->segment(4, date('m'))
         ]);
-        $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level']],TRUE);
         $data["sen_kursus"]=$this->kursus->takwim($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, $data["takwim"]);
-        return $this->renderView("kursus/takwim_senarai", $data);
+        $plugins = $this->plugins();
+        $plugins["embedjs"][] = $this->load->view("kursus/takwim_senarai_js",NULL,TRUE);
+        $this->set_filterMenu(TRUE);
+
+        return $this->renderView("kursus/takwim_senarai", $data, $plugins);
     }
 
     public function separa_pengurusan($kursus_id)
