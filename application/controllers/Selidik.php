@@ -135,18 +135,23 @@ class Selidik extends MY_Controller {
 
 	public function analisa_boranga()
 	{
-		$plugins = ['embedjs'=>[
-			$this->load->view('analisa/boranga/js01','',TRUE)
-		]];
-		return $this->renderView('analisa/boranga/show','',$plugins);
+		$this->load->model('kursus_model');
+		$this->load->model("kumpulan_profil_model","kumpulan_profil");
+
+		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, date('Y'));
+		$plugins = ['embedjs'=>[$this->load->view('analisa/boranga/kursus_js','',TRUE)]];
+
+		return $this->renderView('analisa/boranga/kursus', $data);
 	}
 
 	public function analisa_borangb()
 	{
-		$plugins = ['embedjs'=>[
-			$this->load->view('analisa/borangb/js01','',TRUE)
-		]];
-		return $this->renderView('analisa/borangb/show','',$plugins);
-	}
+		$this->load->model('kursus_model');
+		$this->load->model("kumpulan_profil_model","kumpulan_profil");
 
+		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, date('Y'));
+		$plugins = ['embedjs'=>[$this->load->view('analisa/boranga/kursus_js','',TRUE)]];
+
+		return $this->renderView('analisa/borangb/kursus', $data);
+	}
 }

@@ -99,6 +99,7 @@ class Welcome extends MY_Controller {
 	{
 		$this->load->model("kursus_model","kursus");
 		$this->load->model("kumpulan_profil_model","kumpulan_profil");
+		
 		$takwim = initObj([
 			"tahun" => $tahun,
 			"bulan" => $bulan,

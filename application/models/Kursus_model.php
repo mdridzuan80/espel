@@ -1045,4 +1045,18 @@ group by nokp
             order by tahun desc';
         return $this->db->query($sql)->result();            
     }
+
+    public function sen_kursus_selesai($ptj_jabatan_id, $tahun)
+    {
+        $sql = "SELECT a.id, a.tajuk, b.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_laksana, a.jenis, a.stat_jabatan
+            FROM espel_kursus a, espel_dict_program b
+            WHERE 1=1
+            AND a.program_id = b.id
+            AND a.ptj_jabatan_id_created = ?
+            AND YEAR(a.tkh_mula) = ?
+            AND a.stat_laksana = 'L'
+            ORDER BY a.tkh_mula, a.tkh_tamat";
+
+        return $this->db->query($sql,[$ptj_jabatan_id, $tahun])->result();
+    }
 }
