@@ -59,8 +59,8 @@ class Peruntukan_model extends MY_Model
             espel_dict_jns_peruntukan.keterangan
             FROM espel_peruntukan
             INNER JOIN espel_dict_jns_peruntukan ON espel_peruntukan.jns_peruntukan_id = espel_dict_jns_peruntukan.id
-            WHERE 1=1
-            AND espel_peruntukan.id in ($sen_peruntukan)";
+            WHERE 1=1";
+            if($sen_peruntukan) $sql .= " AND espel_peruntukan.id in ($sen_peruntukan)";
 
         return $this->db->query($sql)->result();
     }

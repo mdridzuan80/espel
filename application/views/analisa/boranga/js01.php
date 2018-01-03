@@ -2,7 +2,7 @@
 $(function(){
     
     $.ajax({
-        url: base_url + 'api/analisa_reaksi',
+        url: base_url + 'api/analisa_reaksi/<?= $kursus_id ?>',
         beforeSend: function(jqXHR, settings){
             $("body").css("cursor", "progress");
         },
@@ -15,7 +15,7 @@ $(function(){
     });
 
     $.ajax({
-        url: base_url + 'api/analisa_pembelajaran',
+        url: base_url + 'api/analisa_pembelajaran/<?= $kursus_id ?>',
         beforeSend: function(jqXHR, settings){
             $("body").css("cursor", "progress");
         },

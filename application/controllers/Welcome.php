@@ -202,7 +202,7 @@ class Welcome extends MY_Controller {
 		->set_content_type('application/json')
 		->set_output(json_encode(buildTreeParentInc($this->jabatan->as_array()->get_all(),$id,$id)));
 	}
-	public function analisa_reaksi()
+	public function analisa_reaksi($kursus_id)
 	{
 		$this->load->model('boranga_model','boranga');
 		$this->load->model("hrmis_carta_model","jabatan");
@@ -216,10 +216,10 @@ class Welcome extends MY_Controller {
 
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode($this->boranga->analisa_reaksi($related,date('Y'))));
+		->set_output(json_encode($this->boranga->analisa_reaksi($kursus_id)));
 	}
 
-	public function analisa_pembelajaran()
+	public function analisa_pembelajaran($kursus_id)
 	{
 		$this->load->model('boranga_model','boranga');
 		$this->load->model("hrmis_carta_model","jabatan");
@@ -234,10 +234,10 @@ class Welcome extends MY_Controller {
 		
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode($this->boranga->analisa_pembelajaran($related,date('Y'))));
+		->set_output(json_encode($this->boranga->analisa_pembelajaran($kursus_id)));
 	}
 
-	public function analisab_reaksi()
+	public function analisab_reaksi($kursus_id)
 	{
 		$this->load->model('borangb_model','borangb');
 		$this->load->model("hrmis_carta_model","jabatan");
@@ -251,10 +251,10 @@ class Welcome extends MY_Controller {
 
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode($this->borangb->analisa_reaksi($related,date('Y'))));
+		->set_output(json_encode($this->borangb->analisa_reaksi($kursus_id)));
 	}
 
-	public function analisab_pembelajaran()
+	public function analisab_pembelajaran($kursus_id)
 	{
 		$this->load->model('borangb_model','borangb');
 		$this->load->model("hrmis_carta_model","jabatan");
@@ -268,7 +268,7 @@ class Welcome extends MY_Controller {
         
 		$this->output
 		->set_content_type('application/json')
-		->set_output(json_encode($this->borangb->analisa_pembelajaran($related,date('Y'))));
+		->set_output(json_encode($this->borangb->analisa_pembelajaran($kursus_id)));
 	}
 
 	public function ajaxmethod()

@@ -401,3 +401,9 @@ class Obj {
         $this->{$name} = $value;
     }
 }
+
+function config()
+{
+    $CI =& get_instance();
+    return $CI->config;
+}

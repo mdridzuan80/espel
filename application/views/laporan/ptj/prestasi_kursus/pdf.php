@@ -95,25 +95,71 @@ table.biasa td, table.listing td {
       </thead>
       <tbody>
         <?php $x = 1 ?>
+        <?php
+            $jbiltotal = 0;
+            $jbil0='';
+            $jbil1='';
+            $jbil2='';
+            $jbil3='';
+            $jbil4='';
+            $jbil5='';
+            $jbil6='';
+            $jbil7='';
+            $jbilover7='';
+            $jbil7addover7='';
+        ?>
         <?php foreach($sen_kelas as $kelas) : ?>
         <tr>
-            <td><?= $x++ ?></td>
-            <td><?= $kelas->keterangan ?></td>
-            <td><?= $kelas->bil ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 0, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 1, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 2, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 3, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 4, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 5, $kelas->id) ?></td>
-            <td><?= $objKursus->kursus->bil_prestasi_kelas($objFilter, 6, $kelas->id) ?></td>
-            <?php $tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 7, $kelas->id) ?>
-            <td><?= $tujuh ?></td>
-            <?php $over_tujuh =  $objKursus->kursus->bil_prestasi_kelas($objFilter, 8, $kelas->id) ?>
-            <td><?= $over_tujuh ?></td>
-            <td><?= $tujuh + $over_tujuh ?></td>
-        </tr>
+                <td><?= $x++ ?></td>
+                <td><?= $kelas->kumpulan ?></td>
+                <td><?= $kelas->pengisian ?></td>
+                <td><?= (in_array('1',$objFilter->hari)) ? $bil0 = $kelas->kosong : '' ?></td>
+                <td><?= (in_array('2',$objFilter->hari)) ? $bil1 = $kelas->satu : '' ?></td>
+                <td><?= (in_array('3',$objFilter->hari)) ? $bil2 = $kelas->dua : '' ?></td>
+                <td><?= (in_array('4',$objFilter->hari)) ? $bil3 = $kelas->tiga : '' ?></td>
+                <td><?= (in_array('5',$objFilter->hari)) ? $bil4 = $kelas->empat : '' ?></td>
+                <td><?= (in_array('6',$objFilter->hari)) ? $bil5 = $kelas->lima : '' ?></td>
+                <td><?= (in_array('7',$objFilter->hari)) ? $bil6 = $kelas->enam : '' ?></td>
+                <?php $tujuh =  (in_array('8',$objFilter->hari)) ? $bil7 = $kelas->tujuh : '' ?>
+                <td><?= $tujuh ?></td>
+                <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? $bilover7 = $kelas->over_7 : '' ?>
+                <td><?= $over_tujuh ?></td>
+                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? $kelas->over_77 : '' ?></td>
+                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round(($kelas->over_77/$kelas->pengisian),2)*100 : '' ?></td>
+                <?php
+                $jbiltotal += $kelas->pengisian;
+                //dd((int) $jbil0);
+                if(in_array('1',$objFilter->hari)) { $jbil0 = (int) $jbil0; (int) $jbil0 += (int) $bil0; };
+                if(in_array('2',$objFilter->hari)) { $jbil1 = (int) $jbil1; (int) $jbil1 += (int) $bil1; };
+                if(in_array('3',$objFilter->hari)) { $jbil2 = (int) $jbil2; (int) $jbil2 += (int) $bil2; };
+                if(in_array('4',$objFilter->hari)) { $jbil3 = (int) $jbil3; (int) $jbil3 += (int) $bil3; };
+                if(in_array('5',$objFilter->hari)) { $jbil4 = (int) $jbil4; (int) $jbil4 += (int) $bil4; };
+                if(in_array('6',$objFilter->hari)) { $jbil5 = (int) $jbil5; (int) $jbil5 += (int) $bil5; };
+                if(in_array('7',$objFilter->hari)) { $jbil6 = (int) $jbil6; (int) $jbil6 += (int) $bil6; };
+                if(in_array('8',$objFilter->hari)) { $jbil7 = (int) $jbil7; (int) $jbil7 += (int) $bil7; };
+                if(in_array('9',$objFilter->hari)) { $jbilover7 = (int) $jbilover7; (int) $jbilover7 += (int) $bilover7; };
+                if(in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) { $jbil7addover7 = (int) $jbil7addover7; (int)$jbil7addover7 += (int)$jbil7+(int)$jbilover7;};
+                ?>
+            </tr>
         <?php endforeach ?>
+            <tr>
+                <td><?= $x++ ?></td>
+                <td>Jumlah</td>
+                <td><?= $jbiltotal ?></td>
+                <td><?= (in_array('1',$objFilter->hari)) ? (int)$jbil0 : '' ?></td>
+                <td><?= (in_array('2',$objFilter->hari)) ? (int)$jbil1 : '' ?></td>
+                <td><?= (in_array('3',$objFilter->hari)) ? (int)$jbil2 : '' ?></td>
+                <td><?= (in_array('4',$objFilter->hari)) ? (int)$jbil3 : '' ?></td>
+                <td><?= (in_array('5',$objFilter->hari)) ? (int)$jbil4 : '' ?></td>
+                <td><?= (in_array('6',$objFilter->hari)) ? (int)$jbil5 : '' ?></td>
+                <td><?= (in_array('7',$objFilter->hari)) ? (int)$jbil6 : '' ?></td>
+                <?php $tujuh =  (in_array('8',$objFilter->hari)) ? (int)$jbil7 : '' ?>
+                <td><?= $tujuh ?></td>
+                <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? (int)$jbilover7 : '' ?>
+                <td><?= $over_tujuh ?></td>
+                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? ((int)$tujuh + (int)$over_tujuh) : '' ?></td>
+                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round((((int)$tujuh + (int)$over_tujuh)/(int)$jbiltotal),2)*100 : '' ?></td>
+            </tr>
        </tbody>
    </table>
 </page>

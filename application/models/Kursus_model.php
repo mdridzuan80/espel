@@ -1053,10 +1053,9 @@ group by nokp
             WHERE 1=1
             AND a.program_id = b.id
             AND a.ptj_jabatan_id_created = ?
-            AND YEAR(a.tkh_mula) = ?
             AND a.stat_laksana = 'L'
             ORDER BY a.tkh_mula, a.tkh_tamat";
 
-        return $this->db->query($sql,[$ptj_jabatan_id, $tahun])->result();
+        return $this->db->query($sql,[$ptj_jabatan_id])->result();
     }
 }

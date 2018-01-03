@@ -34,7 +34,7 @@ class Borangb_model extends MY_Model
         return $this->db->query($sql,[date('Y'),date('Y'),$nokp])->result();
     }
 
-    public function analisa_reaksi($sen_jabatan, $tahun)
+    public function analisa_reaksi($kursus_id)
     {
         $sql = "SELECT
             Sum(a.`b1-1`) AS `b1-1`,
@@ -64,13 +64,12 @@ class Borangb_model extends MY_Model
             FROM
             view_analisa_borangb_reaksi a
             WHERE 1=1
-            AND a.ptj_jabatan_id_created in ?
-            AND a.tahun = ?";
+            AND id = ?";
 
-        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
+        return $this->db->query($sql,[$kursus_id])->row_array();
     }
 
-    public function analisa_pembelajaran($sen_jabatan, $tahun)
+    public function analisa_pembelajaran($kursus_id)
     {
         $sql = "SELECT
             Sum(a.`c1-1`) AS `c1-1`,
@@ -104,9 +103,8 @@ class Borangb_model extends MY_Model
             FROM
             view_analisa_borangb_pembelajaran a
             WHERE 1=1
-            AND a.ptj_jabatan_id_created in ?
-            AND a.tahun = ?";
+            AND id = ?";
             
-        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
+        return $this->db->query($sql,[$kursus_id])->row_array();
     }
 }

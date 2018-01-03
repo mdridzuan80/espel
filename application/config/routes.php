@@ -66,10 +66,10 @@ $route["api/get_laporan_gred/(:any)/(:any)"] = "welcome/get_laporan_gred/$1/$2";
 $route["api/get_laporan_gred2"] = "welcome/get_laporan_gred2";
 $route["api/get_laporan_skim/(:any)"] = "welcome/get_laporan_skim/$1";
 $route["api/get_laporan_skim2"] = "welcome/get_laporan_skim2";
-$route["api/analisa_reaksi"] = "welcome/analisa_reaksi";
-$route["api/analisa_pembelajaran"] = "welcome/analisa_pembelajaran";
-$route["api/analisab_reaksi"] = "welcome/analisab_reaksi";
-$route["api/analisab_pembelajaran"] = "welcome/analisab_pembelajaran";
+$route["api/analisa_reaksi/(:num)"] = "welcome/analisa_reaksi/$1";
+$route["api/analisa_pembelajaran/(:num)"] = "welcome/analisa_pembelajaran/$1";
+$route["api/analisab_reaksi/(:num)"] = "welcome/analisab_reaksi/$1";
+$route["api/analisab_pembelajaran/(:num)"] = "welcome/analisab_pembelajaran/$1";
 $route["api/csrf"] = "welcome/ajaxmethod";
 
 $route['profil/papar/(:any)'] = "profil/index/$1";

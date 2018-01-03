@@ -89,6 +89,7 @@ table.biasa td, table.listing td {
       </thead>
       <tbody>
         <?php $x = 1 ?>
+        <?php $mycpdp = 0 ?>
         <?php $jumlah=0; foreach($sen_hadir as $hadir) : ?>
         <tr>
             <td><?= $x++ ?></td>
@@ -97,6 +98,9 @@ table.biasa td, table.listing td {
             <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
             <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
             <td><?=$hadir->hari?></td>
+            <?php
+                $jumlah += $hadir->hari;
+            ?>
         </tr>
         <?php endforeach ?>
         <tr>
@@ -105,7 +109,7 @@ table.biasa td, table.listing td {
                 <td>
                 <?php
                   if($mycpd->point != 0):
-                    echo $mycpd = round(($mycpd->point/40)*7);
+                    echo $mycpdp = round(($mycpd->point/40)*7);
                   else:
                     echo 0;
                   endif
@@ -114,7 +118,7 @@ table.biasa td, table.listing td {
               </tr>
               <tr>
                 <td colspan="5">JUMLAH HARI</td>
-                <td><?= round($jumlah + $mycpd) ?></td>
+                <td><?= round($jumlah + $mycpdp) ?></td>
               </tr>
        </tbody>
    </table>

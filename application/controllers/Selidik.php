@@ -144,6 +144,14 @@ class Selidik extends MY_Controller {
 		return $this->renderView('analisa/boranga/kursus', $data);
 	}
 
+	public function keputusan_analisa_boranga($kursus_id)
+	{
+		$plugins = ['embedjs'=>[
+			$this->load->view('analisa/boranga/js01', ['kursus_id' => $kursus_id], TRUE)
+		]];
+		return $this->renderView('analisa/boranga/show','',$plugins);
+	}
+
 	public function analisa_borangb()
 	{
 		$this->load->model('kursus_model');
@@ -154,4 +162,13 @@ class Selidik extends MY_Controller {
 
 		return $this->renderView('analisa/borangb/kursus', $data);
 	}
+
+	public function keputusan_analisa_borangb($kursus_id)
+	{
+		$plugins = ['embedjs'=>[
+			$this->load->view('analisa/borangb/js01', ['kursus_id' => $kursus_id], TRUE)
+		]];
+		return $this->renderView('analisa/borangb/show','',$plugins);
+	}
+
 }

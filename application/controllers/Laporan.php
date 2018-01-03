@@ -564,7 +564,7 @@ class Laporan extends MY_Controller
         $data['tahun'] = $tahun;
 
         $data['sen_kelas'] = $this->profil->statistik_kelas($filter);
-        
+
         $data['objKursus'] = $this->kursus;
         $data['objFilter'] = $filter;
         $jenis = $this->input->post('jenis');

@@ -393,7 +393,7 @@ class Kursus extends MY_Controller
                 )->dropdown('nokp','nama');
 
                 $elements = $this->peruntukan->get_peruntukan_related();
-                $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
+                $peruntukan = get_peruntukan_parent($elements, $this->config->item('espel_default_jabatan_id'), date('Y'));
 
                 $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',',$peruntukan));
                 $plugins = $this->plugins();
@@ -1837,9 +1837,7 @@ class Kursus extends MY_Controller
                 'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
-                'penyelia_nokp'=>$this->input->post("comPenyelia"),
-                'nokp'=>$this->appsess->getSessionData('username'),
-            ];
+                'penyelia_nokp'=>$this->input->post("comPenyelia")            ];
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur_id"] = 0;

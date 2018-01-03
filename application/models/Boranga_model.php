@@ -18,7 +18,7 @@ class Boranga_model extends MY_Model
             c.id IS NULL AND
             a.stat_hadir = 'L'
             UNION
-            SELECT espel_profil.nama, espel_permohonan_kursus.nokp, espel_kursus.tajuk, 'PENYELARAS' AS cipta, espel_kursus.stat_soal_selidik_a, year(espel_kursus.tkh_mula) as tahun, espel_kursus.ptj_jabatan_id_created as jabatan_id, espel_profil.gred_id, espel_profil.skim_id, espel_profil.kelas_id, hrmis_carta_organisasi.title, espel_profil.kelas_id, espel_profil.skim_id
+            SELECT espel_profil.nama, espel_permohonan_kursus.nokp, espel_kursus.tajuk, 'PENYELARAS' AS cipta, espel_kursus.stat_soal_selidik_a, year(espel_kursus.tkh_mula) as tahun, espel_kursus.ptj_jabatan_id_created as jabatan_id, espel_profil.gred_id, espel_profil.skim_id, espel_profil.kelas_id, hrmis_carta_organisasi.title, hrmis_kumpulan.keterangan, hrmis_skim.keterangan
             FROM espel_kursus
             INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
             INNER JOIN espel_profil ON espel_profil.nokp = espel_permohonan_kursus.nokp
@@ -32,6 +32,11 @@ class Boranga_model extends MY_Model
             espel_permohonan_kursus.stat_mohon = 'L' AND
             espel_permohonan_kursus.stat_hadir = 'Y') as a
             WHERE 1=1";
+
+            if(isset($filter->tahun) && $filter->tahun)
+            {
+                $sql .= ' and a.tahun = ' . $filter->tahun;
+            }
 
             if(isset($filter->jabatan_id) && $filter->jabatan_id)
             {
@@ -113,7 +118,7 @@ class Boranga_model extends MY_Model
         return $this->db->query($sql)->result();
     }
 
-    public function analisa_reaksi($sen_jabatan, $tahun)
+    public function analisa_reaksi($kursus_id)
     {
         $sql = "SELECT
             Sum(a.`b1-1`) AS `b1-1`,
@@ -151,13 +156,12 @@ class Boranga_model extends MY_Model
             FROM
             view_analisa_boranga_reaksi a
             WHERE 1=1
-            AND a.ptj_jabatan_id_created in ?
-            AND a.tahun = ?";
+            AND id = ?";
 
-        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
+        return $this->db->query($sql,[$kursus_id])->row_array();
     }
 
-    public function analisa_pembelajaran($sen_jabatan, $tahun)
+    public function analisa_pembelajaran($kursus_id)
     {
         $sql = "SELECT
             Sum(a.`c1-1`) AS `c1-1`,
@@ -211,9 +215,8 @@ class Boranga_model extends MY_Model
             FROM
             view_analisa_boranga_pembelajaran a
             WHERE 1=1
-            AND a.ptj_jabatan_id_created in ?
-            AND a.tahun = ?";
+            AND id = ?";
             
-        return $this->db->query($sql,[$sen_jabatan,$tahun])->row_array();
+        return $this->db->query($sql,[$kursus_id])->row_array();
     }
 }

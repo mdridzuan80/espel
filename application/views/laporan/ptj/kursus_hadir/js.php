@@ -8,6 +8,7 @@ $(function(){
     {
         e.preventDefault();
         var btnPapar = this;
+        tahun = $('#txtTahun').val();
         var nama = $('#txtNama').val();
         var nokp = $('#txtNoKP').val();
         var jabatan = $('#comJabatan').val();
