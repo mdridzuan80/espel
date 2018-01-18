@@ -20,6 +20,7 @@ class Pengguna extends MY_Controller
             $this->load->model('profil_model', 'profil');
 
             $data['sen_kumpulan'] = $this->profil->sen_kump();
+            
             if($this->appsess->getSessionData('kumpulan') == AppAuth::SUPER || $this->appsess->getSessionData('kumpulan') == AppAuth::ADMIN)
             {
                 $data['jab_ptj'] = initObj(['jabatan_id'=>$this->config->item('espel_default_jabatan_id')]);
@@ -28,6 +29,7 @@ class Pengguna extends MY_Controller
             {
                 $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
             }
+
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
             return $this->renderView("pengguna/show",$data,['embedjs'=>[$this->load->view('scripts/carian_js',$data,true)]]);
         }

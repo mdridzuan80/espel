@@ -202,6 +202,7 @@ class Welcome extends MY_Controller {
 		->set_content_type('application/json')
 		->set_output(json_encode(buildTreeParentInc($this->jabatan->as_array()->get_all(),$id,$id)));
 	}
+	
 	public function analisa_reaksi($kursus_id)
 	{
 		$this->load->model('boranga_model','boranga');
