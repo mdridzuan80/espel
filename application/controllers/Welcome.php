@@ -106,26 +106,11 @@ class Welcome extends MY_Controller {
 		]);
 
 		$this->output
-        ->set_content_type('application/json')
-        ->set_output
-		(
-			json_encode
-			(
-				$this->kursus->takwim_day_all
-				(
-					$this->kumpulan_profil->get_by
-					(
-						[
-							"profil_nokp"=>$this->appsess->getSessionData("username"),
-							"kumpulan_id"=>3
-						]
-					)->jabatan_id,
-					$takwim
-				)
-				,
-				JSON_NUMERIC_CHECK
-			)
-		);
+			->set_content_type('application/json')
+			->set_output(json_encode($this->kursus->takwim_day_all(
+				$this->appsess->getSessionData('ptj_jabatan_id'),
+				$takwim
+			), JSON_NUMERIC_CHECK));
 	}
 
 	public function get_tree_jabatan()
@@ -189,13 +174,13 @@ class Welcome extends MY_Controller {
 		$this->load->model("hrmis_carta_model","jabatan");
 		$this->load->model('kumpulan_profil_model','kumpulan_profil');
 
-		if( $this->appsess->getSessionData("kumpulan")== $this->appauth::SUPER || $this->appsess->getSessionData("kumpulan")== $this->appauth::ADMIN  )
+		if( $this->appsess->getSessionData("kumpulan")== Appauth::SUPER || $this->appsess->getSessionData("kumpulan")== Appauth::ADMIN  )
 		{
 			$id = $this->config->item('espel_default_jabatan_id');
 		}
 		else
 		{
-			$id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+			$id = $this->appsess->getSessionData('ptj_jabatan_id');;
 		}
 		
 		$this->output

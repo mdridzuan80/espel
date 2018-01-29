@@ -473,7 +473,7 @@ class Laporan extends MY_Controller
         $this->load->model('profil_model', 'profil');
 
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kumpulan'] = $this->profil->sen_kump();
 
         $plugins = ['embedjs'=>[
@@ -753,7 +753,7 @@ class Laporan extends MY_Controller
         $this->load->model('profil_model', 'profil');
 
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kumpulan'] = $this->profil->sen_kump();
 
         $plugins = ['embedjs'=>[
@@ -873,7 +873,7 @@ class Laporan extends MY_Controller
         $this->load->model('profil_model', 'profil');
 
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kumpulan'] = $this->profil->sen_kump();
 
         $plugins = ['embedjs'=>[
@@ -991,7 +991,7 @@ class Laporan extends MY_Controller
         $this->load->model('profil_model', 'profil');
 
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kumpulan'] = $this->profil->sen_kump();
 
         $plugins = ['embedjs'=>[

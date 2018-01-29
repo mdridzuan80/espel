@@ -138,7 +138,7 @@ class Selidik extends MY_Controller {
 		$this->load->model('kursus_model');
 		$this->load->model("kumpulan_profil_model","kumpulan_profil");
 
-		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, date('Y'));
+		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->appsess->getSessionData('ptj_jabatan_id'), date('Y'));
 		$plugins = ['embedjs'=>[$this->load->view('analisa/boranga/kursus_js','',TRUE)]];
 
 		return $this->renderView('analisa/boranga/kursus', $data);
@@ -157,7 +157,7 @@ class Selidik extends MY_Controller {
 		$this->load->model('kursus_model');
 		$this->load->model("kumpulan_profil_model","kumpulan_profil");
 
-		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id, date('Y'));
+		$data['sen_kursus'] = $this->kursus_model->sen_kursus_selesai($this->appsess->getSessionData('ptj_jabatan_id'), date('Y'));
 		$plugins = ['embedjs'=>[$this->load->view('analisa/boranga/kursus_js','',TRUE)]];
 
 		return $this->renderView('analisa/borangb/kursus', $data);

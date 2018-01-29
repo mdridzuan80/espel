@@ -133,14 +133,19 @@ class MY_Controller extends CI_Controller {
     protected function availPeranan()
     {
         $this->load->model("kumpulan_profil_model","kumpulan_profil");
-        $this->load->model("kumpulan_model","kumpulan");
-
+        $dd = $this->kumpulan_profil->with("kumpulan")
+            ->get_many_by(
+                [
+                    "profil_nokp"=>$this->appsess->getSessionData("username"),
+                ]
+            );
+        //var_dump($dd);
         return $this->kumpulan_profil->with("kumpulan")
-        ->get_many_by(
-            [
-                "profil_nokp"=>$this->appsess->getSessionData("username"),
-            ]
-        );
+            ->get_many_by(
+                [
+                    "profil_nokp"=>$this->appsess->getSessionData("username"),
+                ]
+            );
     }
 
     protected function currentPeranan()

@@ -60,7 +60,7 @@ class Kumpulan_profil_model extends MY_Model
     public function getJabatanPeranan($nokp, $role)
     {
         $sql = 'select * from espel_kumpulan_profil where profil_nokp = ? and kumpulan_id = ?';
-        return $this->db->query($sql,[$nokp,$role])->row();
+        return $this->db->query($sql,[$nokp,$role])->result();
     }
 
     public function get_jabatan_bawah($sen_jabatan)

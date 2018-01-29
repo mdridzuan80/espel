@@ -61,41 +61,9 @@
 
             <div class="clearfix"></div>
 
-            <!-- menu profile quick info -->
-            <!-- <div class="profile clearfix">
-              <div class="profile_pic">
-                <img src="<?=base_url("assets/images/img.jpg")?>" alt="..." class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>John Doe</h2>
-              </div>
-              <div class="clearfix"></div>
-          </div> -->
-            <!-- /menu profile quick info -->
-
             <br />
 
             <?php $this->load->view($sidemenu,['filterMenu'=>$filterMenu]);?>
-
-            <!-- /menu footer buttons -->
-            <!--
-            <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-              </a>
-            </div>
-        -->
-            <!-- /menu footer buttons -->
           </div>
         </div>
 
@@ -110,19 +78,11 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <!-- <img src="<?=base_url("assets/images/img.jpg")?>" alt=""> --><?=$login_profil->nama?> (<span style="color:blue;"><?=auth()->peranan_desc(appsess()->getSessionData("kumpulan"))?></span>)
+                    <?=$login_profil->nama?> (<span style="color:blue;"><?=auth()->peranan_desc(appsess()->getSessionData("kumpulan"))?></span>)
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a id="linkProfil" data-username="<?= $login_profil->nokp ?>"> Profil Pengguna</a></li>
-                    <!--
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                  </li> -->
-                    <!-- <li><a href="javascript:;">Help</a></li> -->
                     <?php if(count($availPeranan)):?>
                     <li class="divider"></li>
                     <?php endif ?>
@@ -134,8 +94,8 @@
                     <?php endif ?>
                     <?php if(count($availPeranan)):?>
                     <?php foreach($availPeranan as $peranan):?>
-                    <?php if($peranan->kumpulan->kod <> appsess()->getSessionData('kumpulan')) : ?>
-                    <li><a href="<?=base_url('profil/tukar_peranan/' . $peranan->kumpulan->kod)?>"><?=$peranan->kumpulan->nama?></a></li>
+                    <?php if($peranan->kumpulan->kod <> appsess()->getSessionData('kumpulan') || $peranan->jabatan_id != appsess()->getSessionData("ptj_jabatan_id")) : ?>
+                    <li><a href="<?=base_url('profil/tukar_peranan/'.$peranan->kumpulan->kod."/".$peranan->jabatan_id)?>" title="<?= get_jabatan($peranan->jabatan_id)->title ?>"><?= $peranan->kumpulan->nama ?></a></li>
                     <?php endif ?>
                     <?php endforeach?>
                     <li class="divider"></li>
@@ -144,71 +104,6 @@
                     <li><a href="<?=base_url('logout')?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
-
-                <!-- <li role="presentation" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
-                  </a>
-                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <li>
-                      <a>
-                        <span class="image"><img src="<?=base_url("assets/images/img.jpg")?>" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="<?=base_url("assets/images/img.jpg")?>" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="<?=base_url("assets/images/img.jpg")?>" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="<?=base_url("assets/images/img.jpg")?>" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="text-center">
-                        <a>
-                          <strong>See All Alerts</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-              </li> -->
               </ul>
             </nav>
           </div>

@@ -2100,9 +2100,9 @@ class Kursus extends MY_Controller
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
         
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'),3);
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+        $js['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $js['kursus_id'] = $kursus_id;
         $data['level'] = 2;
         $data['vlevel']=$this->load->view('kursus/pengurusan/separa',['level'=>$data['level'],'kursus_id'=>$kursus_id],TRUE);

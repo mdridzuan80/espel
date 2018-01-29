@@ -23,20 +23,18 @@ class Pengguna extends MY_Controller
             
             if($this->appsess->getSessionData('kumpulan') == AppAuth::SUPER || $this->appsess->getSessionData('kumpulan') == AppAuth::ADMIN)
             {
-                $data['jab_ptj'] = initObj(['jabatan_id'=>$this->config->item('espel_default_jabatan_id')]);
+                $data['jab_ptj'] = initObj(['jabatan_id'=>$this->config->item('espel_default_jabatan_id')])->jabatan_id;
             }
             else
             {
-                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
+                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
             }
 
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengguna']);
             return $this->renderView("pengguna/show",$data,['embedjs'=>[$this->load->view('scripts/carian_js',$data,true)]]);
         }
-        else
-        {
-            $this->renderPermissionDeny();
-        }
+        
+        $this->renderPermissionDeny();
     }
 
     public function data_grid()
@@ -190,7 +188,7 @@ class Pengguna extends MY_Controller
             }
             else
             {
-                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
+                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
             }
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai penyelaras']);
             return $this->renderView("penyelaras/show",$data,['embedjs'=>[$this->load->view('penyelaras/carian_js',$data,true)]]);
@@ -265,7 +263,7 @@ class Pengguna extends MY_Controller
             }
             else
             {
-                $data['jab_ptj'] = $this->kumpulan_profil->getJabatanPeranan($this->appsess->getSessionData('username'), $this->kumpulan->get_by('kod',$this->appsess->getSessionData('kumpulan'))->id);
+                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
             }
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses menu senarai pengecualian']);
             return $this->renderView("pengecualian/show",$data,['embedjs'=>[$this->load->view('pengecualian/carian_js',$data,true)]]);

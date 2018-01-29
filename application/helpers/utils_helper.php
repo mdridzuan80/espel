@@ -407,3 +407,12 @@ function config()
     $CI =& get_instance();
     return $CI->config;
 }
+
+function get_jabatan($jabatan_id)
+{
+    $CI =& get_instance();
+
+    $CI->load->model('Hrmis_carta_model');
+
+    return $CI->Hrmis_carta_model->get($jabatan_id);
+}

@@ -137,9 +137,10 @@ class Profil extends MY_Controller
 		return redirect('profil/' . $username . '/kump');
 	}
 
-	public function tukar_peranan($peranan)
+	public function tukar_peranan($peranan, $jabatan_id = 0)
 	{
-		$this->appsess->setSessionData('kumpulan',$peranan);
+		$this->appsess->setSessionData('ptj_jabatan_id', $jabatan_id);
+		$this->appsess->setSessionData('kumpulan', $peranan);
 		redirect('');
 	}
 

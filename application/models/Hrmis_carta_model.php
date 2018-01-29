@@ -33,4 +33,11 @@ class Hrmis_carta_model extends MY_Model
         
         return $this->db->query($sql)->result_array();
     }
+
+    public function get($primary_key)
+    {
+        $sql = "SELECT * FROM ".$this->_table." WHERE buid = ?";
+
+        return $this->db->query($sql, [$primary_key])->row();
+    }
 }
