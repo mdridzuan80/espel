@@ -86,6 +86,7 @@ class Profil extends MY_Controller
 				array_push($selected,$this->config->item('espel_default_jabatan_id'));
 				$data["inc_jab"] = serialize($selected);
 				$data['sub_tree'] = 'Y';
+				$data['jabatan_id'] = $this->config->item('espel_default_jabatan_id');
 			}
 
 			if($this->input->post('comPeranan')==3)
