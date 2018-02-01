@@ -104,6 +104,9 @@
                     <li><a href="<?=base_url('logout')?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
+                <li>
+                  <a title="Persekitaran"><?= ENVIRONMENT ?></a>
+                </li>
               </ul>
             </nav>
           </div>
