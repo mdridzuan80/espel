@@ -40,4 +40,11 @@ class Hrmis_carta_model extends MY_Model
 
         return $this->db->query($sql, [$primary_key])->row();
     }
+
+    public function hapus($buid)
+    {
+        $sql = "DELETE FROM hrmis_carta_organisasi WHERE buid = ?";
+
+        return $this->db->query($sql, [$buid]);
+    }
 }

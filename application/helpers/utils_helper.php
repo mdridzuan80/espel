@@ -353,7 +353,7 @@ function jabatan_not_in($nokp_penyelaras)
     }
     
     return $data;
-}
+} 
 /**
  * Remove an element from an array.
  * 
@@ -415,4 +415,42 @@ function get_jabatan($jabatan_id)
     $CI->load->model('Hrmis_carta_model');
 
     return $CI->Hrmis_carta_model->get($jabatan_id);
+}
+
+function buildTreeJab(array $elements, $parentId = 6792) {
+    $branch = [];
+
+    foreach ($elements as $element) {
+        if ($element['parent_buid'] == $parentId) {
+            $bilStaff = ($bil = checkStaff($element['buid'])->num_rows())?$bil:0; 
+            $children = buildTreeJab($elements, $element['buid']);
+
+            if ($children) {
+                $element['children'] = $children;
+            }
+            else {
+                if($bilStaff == 0) hapusJabatan($element['buid']);
+            }
+
+            $branch[] = $element;
+        }
+
+    }
+    return $branch;
+}
+
+function checkStaff($buid)
+{
+    $CI =& get_instance();
+    $CI->load->model('profil_model');
+
+    return $CI->profil_model->byBuID($buid);
+}
+
+function hapusJabatan($buid)
+{
+    $CI =& get_instance();
+    $CI->load->model('hrmis_carta_model');
+
+    return $CI->hrmis_carta_model->hapus($buid);
 }

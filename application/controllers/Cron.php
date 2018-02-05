@@ -158,4 +158,17 @@ class Cron extends CI_Controller
     {
         dd(jabatan_not_in('820921045240'));
     }
+
+    public function clear_jab()
+    {
+        $this->load->model('hrmis_carta_model','hrmis_carta');
+
+        for($i=0; $i<=20; $i++)
+        {
+            $all = $this->hrmis_carta->senarai_carta();
+            buildTreeJab($all);
+        }
+
+    }
+
 }
