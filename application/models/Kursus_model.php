@@ -643,14 +643,25 @@ class Kursus_model extends MY_Model
         $sql = "SELECT a.id, a.tajuk, b.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_laksana, a.jenis, a.stat_jabatan
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
-            AND a.program_id = b.id
-            AND a.ptj_jabatan_id_created = ?
-            AND YEAR(a.tkh_mula) = ?
+            AND a.program_id = b.id";
+        
+        if($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id'))
+        {
+            $sql .= " AND a.ptj_jabatan_id_created = ?";            
+        }
+        
+        $sql .= " AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             ORDER BY a.tkh_mula, a.tkh_tamat";
 
-        $rst = $this->db->query($sql,[$ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
-        );
+        if ($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id'))
+        {
+            $rst = $this->db->query($sql, [$ptj_jabatan_id, $takwim->tahun, $takwim->bulan]);
+        }
+        else
+        {
+            $rst = $this->db->query($sql, [$takwim->tahun, $takwim->bulan]);
+        }
 
         if($rst->num_rows())
         {
