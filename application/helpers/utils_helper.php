@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Carbon\Carbon;
+
 function appsess()
 {
     $CI =& get_instance();
@@ -453,4 +455,9 @@ function hapusJabatan($buid)
     $CI->load->model('hrmis_carta_model');
 
     return $CI->hrmis_carta_model->hapus($buid);
+}
+
+function constructDate($dateStr = null)
+{
+    return Carbon::parse($dateStr);
 }

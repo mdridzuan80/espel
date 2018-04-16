@@ -65,13 +65,14 @@ class Welcome extends MY_Controller {
 		]);
 
 		return $this->output->set_content_type('application/json')
-        ->set_output(
-			json_encode(
-				$this->kursus->takwim_day_pengguna_2(0,$takwim),
-				JSON_NUMERIC_CHECK
-			)
-		);
+			->set_output(
+				json_encode(
+					$this->kursus->takwim_day_pengguna_2(0,$takwim),
+					JSON_NUMERIC_CHECK
+				)
+			);
 	}
+
 	public function get_sen_event_pengguna_2($tahun,$bulan)
 	{
 		$events = [];

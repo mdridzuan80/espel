@@ -1,5 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+use Underscore\Types\Arrays;
+
 class Kursus extends MY_Controller
 {
     public function __construct()
@@ -510,7 +513,7 @@ class Kursus extends MY_Controller
                 }
 
                 $this->load->model("kursus_model","kursus");
-                if($this->kursus->insert($data))
+                if($this->exists($data) && $this->kursus->insert($data))
                 {
                     $this->appsess->setFlashSession("success", true);
                 }
@@ -690,7 +693,7 @@ class Kursus extends MY_Controller
 
             $this->load->model("kursus_model","kursus");
 
-            if($this->kursus->insert($data))
+            if(! $this->exists($data) && $this->kursus->insert($data))
             {
                 $kursus_id = $this->db->insert_id();
 
@@ -1444,17 +1447,40 @@ class Kursus extends MY_Controller
                 $data['dokumen_path'] = $dataUpload['upload_data']['file_name'];
             }
         }
-        
-        if($this->kursus->insert($data))
+
+        if((! $this->exists($data)) && $this->kursus->insert($data))
         {
             $sql = $this->db->last_query();
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Daftar kursus luar','sql'=>$sql]);
+
             return $this->output->set_status_header(200);
         }
         else
         {
-            return $this->output->set_status_header(400,'Pastikan semua medan diisi!');
+            return $this->output->set_status_header(400,'Pastikan semua medan diisi atau kursus ini tidak bertindih dengan kursus lain!');
         }
+    }
+
+    private function exists($data)
+    {
+        $this->load->model("kursus_model", "kursus");
+        $this->load->model("kumpulan_profil_model", "kumpulan_profil");
+
+        $takwim = initObj([
+            "tahun" => date('Y', strtotime($data['tkh_mula'])),
+            "bulan" => date('m', strtotime($data['tkh_tamat']))
+        ]);
+
+        $rst = $this->kursus->takwim_day_pengguna_2(0, $takwim);
+        
+        return Arrays::matchesAny($rst, function ($value) use ($data) {
+            $tkhMulaR = constructDate($value['tkh_mula']);
+            $tkhTamatR = constructDate($value['tkh_tamat']);
+            $tkhMula = constructDate($data['tkh_mula']);
+            $tkhTamat = constructDate($data['tkh_tamat']);
+
+            return $tkhMula->between($tkhMulaR, $tkhTamatR) || $tkhTamat->between($tkhMulaR, $tkhTamatR);
+        });
     }
 
     public function edit_luar($id)

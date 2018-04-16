@@ -1069,4 +1069,9 @@ group by nokp
 
         return $this->db->query($sql,[$ptj_jabatan_id])->result();
     }
+
+    public function conflic($data)
+    {
+        $sql = "";
+    }
 }
