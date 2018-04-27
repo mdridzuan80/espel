@@ -4,6 +4,15 @@ use PHPMailer\PHPMailer\Exception;
 
 class Cron extends CI_Controller
 {
+    public function synchrmis()
+    {
+        $this->load->library('apphrmis');
+
+        $mesej = $this->apphrmis->syncData();
+
+        $this->applog->write(['nokp' => 'hrmis', 'event' => $mesej, 'sql' => '']);
+    }
+
     public function createTree()
     {
         $this->load->model('hrmis_carta_model', 'jabatan');

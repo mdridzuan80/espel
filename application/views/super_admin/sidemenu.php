@@ -15,6 +15,7 @@
         <ul class="nav child_menu">
           <li><a href="<?=base_url('konfigurasi/email')?>">E-Mail</a></li>
           <li><a href="<?=base_url('backup')?>">Backup</a></li>
+          <li><a href="<?= base_url('integrasi') ?>">Integrasi</a></li>
         </ul>
       </li>
       <!-- <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>

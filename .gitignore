@@ -23,3 +23,4 @@ application/core/MYY_Exceptions.php
 assets/uploads
 *.zip
 .vscode/launch.json
+application/tmp/

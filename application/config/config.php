@@ -566,3 +566,9 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['espel_default_jabatan_id'] = '6792';
+
+### HRMIS variable ####
+$config['espel_hrmis_url'] = 'https://perkongsiandata.eghrmis.gov.my/wsintegrasi/dataservice.asmx';
+$config['espel_hrmis_username'] = '820921045240';
+$config['espel_hrmis_password'] = 'fazlina@123';
+$config['espel_hrmis_temp_folder'] = APPPATH . 'tmp' . DIRECTORY_SEPARATOR;
