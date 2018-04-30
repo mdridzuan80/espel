@@ -20,6 +20,11 @@
               </tr>
             </thead>
             <tbody>
+              <?php if (count($sen_hadir) == 0) : ?>
+                    <tr>
+                        <td colspan="5"><span style="color:red;">TIADA REKOD KURSUS</span></td>
+                    </tr>
+                <?php endif ?>
               <?php $jumlah=0; foreach($sen_hadir as $hadir): ?>
               <tr>
                 <td><?=$hadir->tajuk?></td>
