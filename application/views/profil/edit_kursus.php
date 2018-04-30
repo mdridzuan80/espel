@@ -27,7 +27,7 @@
 
                 foreach ($sen_hadir as $hadir) : ?>
               <tr>
-                <td><?= ($hadir->stat_jabatan == 'T')? "<a class=\"btnEdit\" href = \"#\" style = \"color:red;\" data-kursus_id=\"". $hadir->id . "\" data-program_id=\"". $hadir->program_id ."\" >" . $hadir->tajuk . "</a>" : $hadir->tajuk ?></td>
+                <td><?= ($hadir->stat_jabatan == 'T')? "<a class=\"btnEdit\" href = \"#\" style = \"color:blue;\" data-kursus_id=\"". $hadir->id . "\" data-program_id=\"". $hadir->program_id ."\" >" . $hadir->tajuk . "</a>" : $hadir->tajuk ?></td>
                 <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
                 <td><?= date("d M Y h:i A", strtotime($hadir->tkh_mula)) ?></td>
                 <td><?= date("d M Y h:i A", strtotime($hadir->tkh_tamat)) ?></td>
