@@ -25,7 +25,7 @@ class Kursus_model extends MY_Model
 
     public function get_all_kursus_hadir($nokp, $tahun)
     {
-        $sql = "select * from (SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
+        $sql = "select * from (SELECT espel_kursus.id, espel_kursus.program_id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
             espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.hari, espel_kursus.stat_jabatan
             FROM espel_kursus
             LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
@@ -34,7 +34,7 @@ class Kursus_model extends MY_Model
             AND espel_kursus.nokp = ?
             AND espel_kursus.stat_hadir = 'L'
             UNION
-            SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam, espel_kursus.penganjur as anjuran_luar,
+            SELECT espel_kursus.id, espel_kursus.program_id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam, espel_kursus.penganjur as anjuran_luar,
             espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.hari, espel_kursus.stat_jabatan
             FROM espel_kursus
             INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id

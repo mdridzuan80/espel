@@ -1516,7 +1516,7 @@ class Kursus extends MY_Controller
                 'tkh_mula' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),
                 'tkh_tamat' => date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))),
                 'tempat' => $this->input->post("txtTempat"),
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => datediff("y", date("Y-m-d", strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d", strtotime($this->input->inputToDate("txtTkhTamat")))) + 1,
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
             if($this->input->post("comAnjuran")=="L")

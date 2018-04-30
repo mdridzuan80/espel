@@ -30,7 +30,7 @@
                         <?php endif ?>
                         <th><a href="<?=base_url("profil/" . $profile->nokp . "/kecuali")?>" type="button" class="btn btn-round btn-default btn-xs" title="Cipta Pengecualian Pengguna"><i class="fa fa-code-fork"></i></a></th>
                         <th><a data-username="<?= $profile->nokp ?>" type="button" class="btn btn-round btn-default btn-xs btn-nyahaktif" title="Nyahaktif Pengguna"><i class="fa fa-star-o"></i></a></th>
-                        <th><a href="<?= base_url("pengguna/edit_kursus/" . $profile->nokp . "/" . date('Y')) ?>" data-username="<?= $profile->nokp ?>" type="button" class="btn btn-round btn-default btn-xs btn-papar-kursus" title="Kemaskini Kursus"><i class="fa fa-edit"></i></a></th>
+                        <th><a href="<?= base_url("profil/edit_kursus/" . $profile->nokp . "/" . date('Y')) ?>" data-username="<?= $profile->nokp ?>" type="button" class="btn btn-round btn-default btn-xs btn-papar-kursus" title="Kemaskini Kursus"><i class="fa fa-edit"></i></a></th>
                       </table>
                     </td>
                   </tr>

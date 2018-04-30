@@ -7,7 +7,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <table class="datatable table table-striped table-bordered jambo_table">
+                    <table class="table table-striped table-bordered jambo_table">
             <thead>
               <tr class="headings">
                 <th>Nama Kursus</th>
@@ -27,7 +27,7 @@
 
                 foreach ($sen_hadir as $hadir) : ?>
               <tr>
-                <td><?= ($hadir->stat_jabatan == 'T')? "<a href = \"#\" style = \"color:red;\" >" . $hadir->tajuk . "</a>" : $hadir->tajuk ?></td>
+                <td><?= ($hadir->stat_jabatan == 'T')? "<a class=\"btnEdit\" href = \"#\" style = \"color:red;\" data-kursus_id=\"". $hadir->id . "\" data-program_id=\"". $hadir->program_id ."\" >" . $hadir->tajuk . "</a>" : $hadir->tajuk ?></td>
                 <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
                 <td><?= date("d M Y h:i A", strtotime($hadir->tkh_mula)) ?></td>
                 <td><?= date("d M Y h:i A", strtotime($hadir->tkh_tamat)) ?></td>
@@ -60,4 +60,20 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(25,188,157); color: white;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title" id="myLargeModalLabel">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
+      </div>
+    </div>
+  </div>
 </div>

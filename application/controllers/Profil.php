@@ -314,4 +314,21 @@ class Profil extends MY_Controller
 		}
 		return redirect('profil/' . $username . '/kecuali');
 	}
+
+	public function edit_kursus($nokp, $tahun)
+	{
+		$this->load->model('profil_model', 'profil');
+		$this->load->model("kursus_model", "kursus");
+		$this->load->model("mycpd_model", "mycpd");
+
+		$data['tahun'] = $tahun;
+		$data['profil'] = $this->profil->get($nokp);
+		$data["sen_hadir"] = $this->kursus->get_all_kursus_hadir($nokp, $tahun);
+		$data["mycpd"] = $this->mycpd->get_point($nokp, $tahun);
+
+		$plugins = $this->plugins();
+		$plugins["embedjs"][] = $this->load->view("profil/edit_js", null, true);
+
+		return $this->renderView("profil/edit_kursus", $data, $plugins);
+	}
 }
