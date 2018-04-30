@@ -693,7 +693,7 @@ class Kursus extends MY_Controller
 
             $this->load->model("kursus_model","kursus");
 
-            if(! $this->exists($data) && $this->kursus->insert($data))
+            if($this->kursus->insert($data))
             {
                 $kursus_id = $this->db->insert_id();
 
@@ -705,7 +705,7 @@ class Kursus extends MY_Controller
             }
             else
             {
-                return $this->output->set_status_header(400,'Pastikan semua medan diisi!');
+                return $this->output->set_status_header(400,'Pastikan semua medan diisi');
             }
         }
         else
@@ -888,6 +888,7 @@ class Kursus extends MY_Controller
         {
             $this->load->model('kursus_model','kursus');
             $data['kursus'] = $this->kursus->info_kursus($id);
+            
             return $this->load->view("kursus/pengguna/info",$data);
         }
     }
@@ -1448,7 +1449,7 @@ class Kursus extends MY_Controller
             }
         }
 
-        if((! $this->exists($data)) && $this->kursus->insert($data))
+        if((! $this->pengguna_exists($data)) && $this->kursus->insert($data))
         {
             $sql = $this->db->last_query();
             $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Daftar kursus luar','sql'=>$sql]);
@@ -1461,7 +1462,7 @@ class Kursus extends MY_Controller
         }
     }
 
-    private function exists($data)
+    private function pengguna_exists($data)
     {
         $this->load->model("kursus_model", "kursus");
         $this->load->model("kumpulan_profil_model", "kumpulan_profil");
@@ -1473,14 +1474,17 @@ class Kursus extends MY_Controller
 
         $rst = $this->kursus->takwim_day_pengguna_2(0, $takwim);
         
-        return Arrays::matchesAny($rst, function ($value) use ($data) {
-            $tkhMulaR = constructDate($value['tkh_mula']);
-            $tkhTamatR = constructDate($value['tkh_tamat']);
-            $tkhMula = constructDate($data['tkh_mula']);
-            $tkhTamat = constructDate($data['tkh_tamat']);
+        if(count($rst) != 0)
+            return Arrays::matchesAny($rst, function ($value) use ($data) {
+                $tkhMulaR = constructDate($value['tkh_mula']);
+                $tkhTamatR = constructDate($value['tkh_tamat']);
+                $tkhMula = constructDate($data['tkh_mula']);
+                $tkhTamat = constructDate($data['tkh_tamat']);
 
-            return $tkhMula->between($tkhMulaR, $tkhTamatR) || $tkhTamat->between($tkhMulaR, $tkhTamatR);
-        });
+                return $tkhMula->between($tkhMulaR, $tkhTamatR) || $tkhTamat->between($tkhMulaR, $tkhTamatR);
+            });
+
+        return false;
     }
 
     public function edit_luar($id)
