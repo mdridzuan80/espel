@@ -4,6 +4,7 @@
         <div class="x_panel tile">
         <div class="x_title">
             <h2>Status Integrasi HRMIS</h2>
+            <button class="btn btn-info pull-right">Mula Migrasi Data</button>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">

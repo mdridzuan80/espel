@@ -526,4 +526,51 @@ group by nokp
         
         return $this->db->query($sql, [$buid]);
     }
+
+    public function hrmisMigrate($field)
+    {
+        echo "try update data " . $field["nokp"] . "\n";
+        $sql = "INSERT INTO espel_profil (" . implode(',', array_keys($field)) . ") VALUES('" . implode('\',\'', array_values($field)) . "') ON DUPLICATE KEY UPDATE " . $this->update_fields($field);
+        $this->db->query($sql);
+        $err = $this->db->error();
+        
+        if ($err["code"] != 0)
+        {
+            echo $err["message"] . "\n";
+            echo $this->db->last_query() . "\n";
+        }
+        else
+        {
+            switch($this->db->affected_rows())
+            {
+                case 0:
+                    echo "Unchange \n";
+                    break;
+                case 1:
+                    echo "successfully insert data " . $field["nokp"] . "\n";
+                    break;
+                case 2:
+                    echo "successfully update data " . $field["nokp"] . "\n";
+                    break;
+            }
+        }
+    }
+
+    private function update_fields($fields)
+    {
+        $str = [];
+        unset($fields['password']);
+        foreach($fields as $field => $value)
+        {
+            $str[] = $field . "='" . $value . "'"; 
+        }
+        return implode(',', $str);
+    }
+
+    public function hapusMigrate()
+    {
+        $sql = "delete from espel_profil where nokp not in(select nokp from hrmis_profil_import)";
+        return $this->db->query($sql);
+    }
+
 }

@@ -269,8 +269,8 @@ class MY_Model extends CI_Model
         if ($data !== FALSE)
         {
             $result = $this->_database->where($this->primary_key, $primary_value)
-                               ->set($data)
-                               ->update($this->_table);
+                ->set($data)
+                ->update($this->_table);
 
             $this->trigger('after_update', array($data, $result));
 
