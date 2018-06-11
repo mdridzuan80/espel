@@ -617,6 +617,7 @@ class Kursus_model extends MY_Model
                     and year(a.tkh_mula) = ?)
                 ) as a
                 where 1=1
+                and a.jenis <> 'L'
                 order by tkh_mula, tkh_tamat";
         
         $rst = $this->db->query($sql,[

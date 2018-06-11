@@ -1,8 +1,11 @@
 <div class="row espel_latihan">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
+      <div class="x_title">
+        <h2>Maklumat Kursus</h2>
+        <div class="clearfix"></div>
+      </div>
       <div class="x_content">
-          <div class="x_content">
               <form method="post" class="form-horizontal form-label-left">
                   <table class="table table-bordered">
                       <tr>
@@ -85,13 +88,21 @@
                             <?php endif ?>
                           <?php else : ?>
                             <?php if($kursus->stat_hadir == 'M') : ?>
-                              <span class="label label-warning">MOHON</span>
+                              <?php if($kursus->jenis == 'L') : ?>
+                                <span class="label label-warning">BELUM DISAHKAN</span>
+                              <?php else : ?>
+                                <span class="label label-warning">MOHON</span>
+                              <?php endif ?>
                             <?php endif ?>
                             <?php if($kursus->stat_hadir == 'T') : ?>
                               <span class="label label-danger">TOLAK</span>
                             <?php endif ?>
                             <?php if($kursus->stat_hadir == 'L') : ?>
-                              <span class="label label-success">HADIR</span>
+                              <?php if ($kursus->jenis == 'L') : ?>
+                                <span class="label label-success">DISAHKAN</span>
+                              <?php else : ?>
+                                <span class="label label-success">HADIR</span>
+                              <?php endif ?>
                             <?php endif ?>
                           <?php endif ?>
                         </td>
@@ -118,7 +129,6 @@
                     <?php endif ?>
                   <?php endif ?>
               </form>
-          </div>
       </div>
     </div>
   </div>

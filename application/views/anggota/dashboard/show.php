@@ -2,6 +2,47 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
+        <h2>Senarai Kursus Yang dihadiri <?= date('Y') ?></h2>
+        <ul class="nav navbar-right panel_toolbox" style="min-width: 0px">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+        </ul>
+
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+          <table class="datatable table table-striped table-bordered jambo_table">
+            <thead>
+              <tr class="headings">
+                <th>Nama Kursus</th>
+                <th>Anjuran</th>
+                <th>Tarikh Mula</th>
+                <th>Tarikh Tamat</th>
+                <th>Bil. Hari</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($sen_hadir as $hadir) : ?>
+              <tr>
+                <td><?= $hadir->tajuk ?></td>
+                <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
+                <td><?= date("d M Y h:i A", strtotime($hadir->tkh_mula)) ?></td>
+                <td><?= date("d M Y h:i A", strtotime($hadir->tkh_tamat)) ?></td>
+                <td><?= $hadir->hari ?></td>
+              </tr>
+          <?php endforeach ?>
+             </tbody>
+          </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
         <h2>Status / Senarai Kursus Yang Dicalonkan</h2>
         <div class="clearfix"></div>
       </div>
@@ -67,7 +108,6 @@
                 <th>Anjuran</th>
                 <th>Masa Mula</th>
                 <th>Masa Tamat</th>
-                <th>Tarikh Mohon</th>
                 <th style="text-align:center">Status</th>
                 <th>Info</th>
               </tr>
@@ -78,8 +118,7 @@
                 <td><?=$permohonan->tajuk?></td>
                 <td><?= ($permohonan->anjuran == 'D') ? $permohonan->anjuran_dalam : $permohonan->anjuran_luar ?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh))?></td>
+                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>xs
                 <td align="center">
                     <?php if($permohonan->stat_mohon == 'M'):?>
                     <span class="label label-warning">Baru</span>
@@ -100,46 +139,6 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Senarai Kursus Yang dihadiri <?=date('Y')?></h2>
-        <ul class="nav navbar-right panel_toolbox" style="min-width: 0px">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-        </ul>
-
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-          <table class="datatable table table-striped table-bordered jambo_table">
-            <thead>
-              <tr class="headings">
-                <th>Nama Kursus</th>
-                <th>Anjuran</th>
-                <th>Tarikh Mula</th>
-                <th>Tarikh Tamat</th>
-                <th>Bil. Hari</th>
-              </tr>
-            </thead>
-            <tbody>
-                <?php foreach($sen_hadir as $hadir): ?>
-              <tr>
-                <td><?=$hadir->tajuk?></td>
-                <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
-                <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
-                <td><?=$hadir->hari?></td>
-              </tr>
-          <?php endforeach?>
-             </tbody>
-          </table>
-
-      </div>
-    </div>
-  </div>
-</div>
 <br/>
 <br/>
 <br/>

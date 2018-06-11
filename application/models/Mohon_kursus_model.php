@@ -7,16 +7,24 @@ class Mohon_kursus_model extends MY_Model
 
     public function get_permohonan($nokp)
     {
-        $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
-            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon, espel_permohonan_kursus.nokp, espel_permohonan_kursus.tkh
+        $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
             FROM espel_permohonan_kursus
             INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
             LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
             WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
             AND espel_permohonan_kursus.nokp = ?
-            AND espel_permohonan_kursus.role = 'PENGGUNA'";
+            AND espel_permohonan_kursus.role = 'PENGGUNA'
+            UNION
+            SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
+            espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.stat_hadir
+            FROM espel_kursus
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
+            AND espel_kursus.nokp = ?";
 
-        return $this->db->query($sql,[$nokp])->result();
+        return $this->db->query($sql,[date('Y'), $nokp, date('Y'), $nokp])->result();
     }
 
     public function get_dicalonkan($nokp)
