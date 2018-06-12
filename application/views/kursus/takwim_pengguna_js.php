@@ -1,7 +1,7 @@
 <script>
 $(function(){
-    var tahun = <?=$this->uri->segment(3, date('Y'))?>;
-    var bulan = <?=$this->uri->segment(4, date('m'))?>;
+    var tahun = <?= date('Y') ?>;
+    var bulan = <?= date('m') ?>;
     var xhr = {};
     var kursusId = 0;
     var tajuk = '';
@@ -15,6 +15,7 @@ $(function(){
             url: base_url + "api/get_sen_event_pengguna_2/" + tahun + "/" + bulan,
             success: function(sen_kursus, textStatus, jqXHR ){
                 events = sen_kursus;
+                console.log(events);
                 generateEvents(filterJenis());
             }
         });

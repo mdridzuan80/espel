@@ -82,7 +82,7 @@
                   <?php if($dicalonkan->stat_laksana == 'L'):?>
                   <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs" target="_blank" >Papar surat</a>
                   <?php endif ?>
-                  <a href="<?= base_url('kursus/info_kursus_pengguna/' . $dicalonkan->id) ?>" class="btn btn-info btn-xs" >Info</a>
+                  <a class="btn btn-info btn-xs btnPapar" data-kursusid="<?= $dicalonkan->id ?>" data-tajuk="<?= $dicalonkan->tajuk ?>">Info</a>
                 </td>
               </tr>
           <?php endforeach?>
@@ -128,12 +128,44 @@
                     <?php endif?>
                 </td>
                 <td>
-                  <a href="<?= base_url('kursus/info_kursus_pengguna/' . $permohonan->id) ?>" class="btn btn-info btn-xs" >Info</a>
+                  <a class="btn btn-info btn-xs btnPapar" data-kursusid="<?= $permohonan->id ?>" data-tajuk="<?= $permohonan->tajuk ?>" >Info</a>
                 </td>
               </tr>
           <?php endforeach?>
              </tbody>
           </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="MyModalKursusInfo" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(25,188,157); color: white;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title" id="myLargeModalLabel">...</h4>
+      </div>
+      <div class="modal-body">
+        <p>...</p>
       </div>
     </div>
   </div>

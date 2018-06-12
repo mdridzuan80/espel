@@ -116,16 +116,18 @@ class MY_Controller extends CI_Controller {
         switch($this->appsess->getSessionData("kumpulan"))
         {
             case AppAuth::SUPER:
-                return $this->renderView(SELF::SUPER_DEFAULT, SELF::SUPER_SIDEMENU, $data, $plugin);
+                return $this->renderView(SELF::SUPER_DEFAULT, $data, $plugin);
             break;
             case AppAuth::ADMIN:
-                return $this->renderView(SELF::ADMIN_DEFAULT, SELF::ADMIN_SIDEMENU, $data, $plugin);
+                return $this->renderView(SELF::ADMIN_DEFAULT, $data, $plugin);
             break;
             case AppAuth::PENYELARAS:
-                return $this->renderView(SELF::PTJ_DEFAULT, SELF::PTJ_SIDEMENU, $data, $plugin);
+                return $this->renderView(SELF::PTJ_DEFAULT, $data, $plugin);
             break;
             case AppAuth::PENGGUNA:
-                return $this->renderView(SELF::MEMBER_DEFAULT, SELF::MEMBER_SIDEMENU, $data, $plugin);
+                $plugin = $this->calPlugins();
+                $plugin["embedjs"][] = $this->load->view("anggota/dashboard/dashboard_js", null, true);
+                return $this->renderView(SELF::MEMBER_DEFAULT, $data, $plugin);
             break;
         }
     }
@@ -169,5 +171,20 @@ class MY_Controller extends CI_Controller {
     protected function set_filterMenu($cond)
     {
         $this->filterMenu = $cond;
+    }
+
+    private function calPlugins()
+    {
+        return [
+            "css" => [
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css',
+                'assets/css/calendar.css',
+            ],
+            "js" => [
+                "assets/js/vendors/moment/moment.js",
+                'assets/js/vendors/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js',
+                'assets/js/kursus.js',
+            ],
+        ];
     }
 }

@@ -1585,7 +1585,7 @@ class Kursus extends MY_Controller
         {
             $config['upload_path'] = './assets/uploads/';
             $config['encrypt_name'] = TRUE;
-            $config['allowed_types'] = ['pdf'];
+            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'jpe'];
 
             $this->load->library('upload', $config);
 

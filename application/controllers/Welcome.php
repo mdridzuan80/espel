@@ -96,6 +96,28 @@ class Welcome extends MY_Controller {
 		);
 	}
 
+	public function get_sen_event_pengguna_3($tahun)
+	{
+		$events = [];
+
+		$this->load->model("kursus_model", "kursus");
+		$this->load->model("kumpulan_profil_model", "kumpulan_profil");
+
+		$takwim = initObj([
+			"tahun" => $tahun
+		]);
+
+		$genEvents = $this->kursus->takwim_day_pengguna_3(0, $takwim);
+
+		return $this->output->set_content_type('application/json')
+			->set_output(
+				json_encode(
+					$genEvents,
+					JSON_NUMERIC_CHECK
+				)
+			);
+	}
+
 	public function get_event_all($tahun,$bulan)
 	{
 		$this->load->model("kursus_model","kursus");

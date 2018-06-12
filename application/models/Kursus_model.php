@@ -637,6 +637,50 @@ class Kursus_model extends MY_Model
         }
     }
 
+    public function takwim_day_pengguna_3($ptj_jabatan_id, $takwim)
+    {
+        $username = $this->appsess->getSessionData('username');
+
+        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp, a.jenis from espel_kursus a
+                inner join (
+                    select kursus_id, nokp, stat_mohon, stat_hadir from espel_permohonan_kursus where nokp = ?
+                ) b ON a.id = b.kursus_id
+                inner join espel_dict_program c on a.program_id = c.id
+                where year(a.tkh_mula) = ?
+                UNION
+                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp, a.jenis from espel_kursus a
+                inner join espel_dict_program c on a.program_id = c.id
+                where nokp = ?
+                and year(a.tkh_mula) = ?
+                UNION
+                select a.id, a.tajuk, a.program_id, c.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp, a.jenis  from espel_kursus a
+                inner join espel_dict_program c on a.program_id = c.id
+                where a.stat_terbuka = 'Y'
+                and year(a.tkh_mula) = ?
+                and a.id not in (
+                    select a.id from espel_kursus a
+                    inner join (
+                        select kursus_id, nokp from espel_permohonan_kursus where nokp = ?
+                    ) b ON a.id = b.kursus_id
+                    where year(a.tkh_mula) = ?)
+                ) as a
+                where 1=1
+                order by tkh_mula, tkh_tamat";
+        
+        $rst = $this->db->query($sql, [
+            $username, $takwim->tahun,
+            $username, $takwim->tahun,
+            $takwim->tahun,
+            $username, $takwim->tahun
+        ]);
+
+        if ($rst->num_rows()) {
+            return $rst->result_array();
+        } else {
+            return [];
+        }
+    }
+
     public function takwim_day_all($ptj_jabatan_id, $takwim)
     {
         $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
