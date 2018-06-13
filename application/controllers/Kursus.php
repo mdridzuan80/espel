@@ -1925,6 +1925,10 @@ class Kursus extends MY_Controller
                 $data["sen_kursus"] = $this->kursus->get_all_kursus_luar_pengesahan(
                     get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
                 );
+
+                $data["sen_kursus_luar"] = $this->kursus->get_all_kursus_luar(
+                    get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
+                );
                 
                 $data['sen_anjuran'] = '';
                 return $this->renderView("kursus/pengesahan_kehadiran/show", $data, $this->plugins());
