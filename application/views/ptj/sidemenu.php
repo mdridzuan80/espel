@@ -22,6 +22,8 @@
         <ul class="nav child_menu">
           <li><a href="<?=base_url('selidik/analisa_boranga')?>">Analisa Borang A</a></li>
           <li><a href="<?=base_url('selidik/analisa_borangb')?>">Analisa Borang B</a></li>
+          <li><a href="<?= base_url('laporan/x_jawab_borang_a') ?>">Tidak Menjawab Borang A</a></li>
+          <li><a href="<?= base_url('laporan/x_jawab_borang_b') ?>">Tidak Menjawab Borang B</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart"></i> Laporan <span class="fa fa-chevron-down"></span></a>
@@ -32,8 +34,6 @@
           <?php if($has_peruntukan) : ?>
           <li><a href="<?=base_url('laporan/prestasi_kewangan')?>">Laporan Prestasi Kewangan</a></li>
           <?php endif ?>
-          <li><a href="<?=base_url('laporan/x_jawab_borang_a')?>">Tidak Menjawab Borang A</a></li>
-          <li><a href="<?=base_url('laporan/x_jawab_borang_b')?>">Tidak Menjawab Borang B</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-users"></i> Modul Pengguna <span class="fa fa-chevron-down"></span></a>
