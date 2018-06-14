@@ -957,7 +957,7 @@ class Kursus extends MY_Controller
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
         {
-            if(!$this->exist("submit"))
+            if(! $this->exist("submit"))
             {
                 $this->load->model('program_model','program');
                 $this->load->model('aktiviti_model','aktiviti');
@@ -2111,18 +2111,28 @@ class Kursus extends MY_Controller
         $this->load->model('kelas_model','kelas');
         $this->load->model('hrmis_carta_model','jabatan');
         $this->load->model('kumpulan_profil_model','kumpulan_profil');
-        
-        $js['jabatan_id'] = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
-        $plugins['embedjs'][] = $this->load->view('calon/calon_js',$js,TRUE);
 
+
+        $data['sen_kumpulan'] = $this->profil->sen_kump();
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['level'] = 2;
+        $data['vlevel'] = $this->load->view('kursus/pengurusan/separa', ['level' => $data['level'], 'kursus_id' => $kursus_id], true);
         $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
+        $data['sen_kelas'] = $this->kelas->dropdown('id', 'nama');
+        $data['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
-        $data['jabatan_id'] = $js['jabatan_id'];
         $data['objJabatan'] = $this->jabatan;
         $data['vlevel']=$this->load->view('kursus/pengurusan/show',['level'=>$data['level'], 'kursus_id'=>$kursus_id],TRUE);
+        $js['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
+        $js['kursus_id'] = $kursus_id;
 
-        return $this->renderView('calon/show', $data, $plugins);
+        $plugins = ['embedjs' => [
+            $this->load->view('scripts/carian_js', $data, true),
+            $this->load->view('kursus/separa/calon/calon_js', $js, true)
+        ]];
+
+        //return $this->renderView('calon/show', $data, $plugins);
+        return $this->renderView('kursus/separa/calon/show', $data, $plugins);
     }
 
     public function separa_pencalonan($kursus_id)
@@ -2135,15 +2145,14 @@ class Kursus extends MY_Controller
         
         $data['sen_kumpulan'] = $this->profil->sen_kump();
         $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
-        $data['sen_kumpulan'] = $this->profil->sen_kump();
-        $js['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
-        $js['kursus_id'] = $kursus_id;
         $data['level'] = 2;
         $data['vlevel']=$this->load->view('kursus/pengurusan/separa',['level'=>$data['level'],'kursus_id'=>$kursus_id],TRUE);
         $data['kursus'] = $this->kursus->with(['program'])->get($kursus_id);
         $data['sen_kelas'] = $this->kelas->dropdown('id','nama');
-        $data['jabatan_id'] = $js['jabatan_id'];
+        $data['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
         $data['objJabatan'] = $this->jabatan;
+        $js['jabatan_id'] = $this->appsess->getSessionData('ptj_jabatan_id');
+        $js['kursus_id'] = $kursus_id;
 
         $plugins = ['embedjs'=>[
             $this->load->view('scripts/carian_js',$data,true),
@@ -2446,7 +2455,7 @@ class Kursus extends MY_Controller
 
         $has_belanja = $this->belanja->count_by('kursus_id',$kursus_id);
 
-        if(!$this->exist("submit"))
+        if(! $this->exist("submit"))
         {
             $this->load->model('kursus_model','kursus');
 

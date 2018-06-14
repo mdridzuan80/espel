@@ -24,8 +24,8 @@
                 </div>
                 <div class="count">&nbsp;</div>
 
-                <h3><a href="<?=base_url('kursus/pencalonan/' . $kursus_id)?>">Permohonan</a></h3>
-                <p>Menguruskan permohonan kursus yang dianjurkan</p>
+                <h3><a href="<?=base_url('kursus/pencalonan/' . $kursus_id)?>">Pencalonan</a></h3>
+                <p>Menguruskan pencalonan peserta bagi kursus yang dianjurkan</p>
               </div>
             </div>
             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">

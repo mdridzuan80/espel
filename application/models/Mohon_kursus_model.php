@@ -221,7 +221,7 @@ group by nokp
         }
         //dd($sql);
         $rst = $this->db->query($sql);
-        //dd($this->db->last_query());
+        //var_dump($this->db->last_query());
         return $rst->result();
     }
 

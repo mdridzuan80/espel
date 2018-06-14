@@ -10,10 +10,10 @@ $(document).ready(function() {
         var filter = {
             nama: null,
             nokp: null,
-            jabatanID: <?= $jabatan_id ?>,
+            jabatan_id: <?= $jabatan_id ?>,
             kumpulan: null,
-            skim: null,
-            gred: null,
+            skim_id: null,
+            gred_id: null,
             hari: null,
             sub_jabatan: 1,
         };
@@ -36,8 +36,8 @@ $(document).ready(function() {
             filter.nokp = $('#txtNoKP').val();
             filter.jabatanID = $('#comJabatan').val();
             filter.kumpulan = $('#comKelas').val(),
-            filter.skim = $('#comSkim').val(),
-            filter.gred = $('#comGred').val(),
+            filter.skim_id = $('#comSkim').val(),
+            filter.gred_id = $('#comGred').val(),
             filter.hari = $('#comHari').val(),
             filter.sub_jabatan = ($('#chk_subjabatan').is(":checked") ? 1 : 0);
 
@@ -183,14 +183,52 @@ $(document).ready(function() {
         })
 
         function load_content_modal(url,data,placeholder){
-            $.ajax({
-                url: url,
-                success: function(data, textStatus, jqXHR){
-                    placeholder.html(data);
-                }
-            });
-        }
-        // tamat modal proses
+        xhr = $.ajax({
+            method: 'post',
+            url: url,
+            data: filter,
+            success: function(data, textStatus, jqXHR){
+                placeholder.html(data);
+                $('#pencalonan').dataTable({
+                    dom: "Bfrtip",
+                    buttons: [
+                        {
+                            text: 'Tambah Sebagai Peserta',
+                            action: function ( e, dt, node, config ) {
+                                e.preventDefault();
+                                var data = { 'chkKehadiran[]' : [], 'hadir': 'L', 'submit':'', 'kursus_id': kursus_id};
+                                $(".chkCalon:checked").each(function() {
+                                    data['chkKehadiran[]'].push($(this).val());
+                                });
+
+                                $.ajax({
+                                    data:data,
+                                    method:'post',
+                                    url: base_url + 'kursus/ajax_set_pencalonan/' + kursus_id,
+                                    success: function(){
+                                        swal('Berjaya!','','success').then(function(){
+                                            load_peserta();
+                                            $('#myModalPencalonan').modal('hide');
+                                        });
+                                        
+                                    },
+                                    error: function(jqXHR,textStatus,errorThrown){
+                                        swal('Ralat!',errorThrown,'error');
+                                    }
+                                });
+                            },
+                            className: "btn-sm btn-success"
+                        }
+                    ]
+                });
+
+                $('#chkAll').click(function () {
+                    $('input:checkbox').prop('checked', this.checked);
+                });
+            }
+        });
+    }
+    // tamat modal proses
     })();
 });
 </script>
