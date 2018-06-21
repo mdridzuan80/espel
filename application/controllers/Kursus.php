@@ -1693,8 +1693,11 @@ class Kursus extends MY_Controller
                     ]
                 )->dropdown('nokp','nama');
 
+                $plugins = $this->plugins();
+                $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', '', true);
+                
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses kursus luar']);
-                return $this->renderView("kursus/pengesahan_kehadiran/view",$data,$this->plugins());
+                return $this->renderView("kursus/pengesahan_kehadiran/view", $data, $plugins);
             }
         }
 		else
@@ -1785,12 +1788,12 @@ class Kursus extends MY_Controller
 
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengesahkan kursus luar','sql'=>$sql]);
                 $this->appsess->setFlashSession("success", true);
-                return redirect('kursus/pengesahan_kehadiran');
+                return false;
             }
             else
             {
                 $this->appsess->setFlashSession("success", false);
-                return redirect('kursus/pengesahan_kehadiran');
+                return false;
             }
         }
 		else
@@ -1811,10 +1814,17 @@ class Kursus extends MY_Controller
                 'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'stat_hadir' => "M",
                 'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                 'anjuran' => $this->input->post("comAnjuran"),
+                "stat_soal_selidik_a" => "T",
+                "stat_soal_selidik_b" => "T",
             ];
+
+            if ($this->input->post("chkBorangA"))
+                $data["stat_soal_selidik_a"] = $this->input->post("chkBorangA");
+            if ($this->input->post("chkBorangB"))
+                $data["stat_soal_selidik_b"] = $this->input->post("chkBorangB");
+
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur_id"] = 0;
@@ -1837,10 +1847,17 @@ class Kursus extends MY_Controller
                 'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'stat_hadir' => "M",
                 'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                 'anjuran' => $this->input->post("comAnjuran"),
+                "stat_soal_selidik_a" => "T",
+                "stat_soal_selidik_b" => "T",
             ];
+
+            if ($this->input->post("chkBorangA"))
+                $data["stat_soal_selidik_a"] = $this->input->post("chkBorangA");
+            if ($this->input->post("chkBorangB"))
+                $data["stat_soal_selidik_b"] = $this->input->post("chkBorangB");
+
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur_id"] = 0;
@@ -1863,11 +1880,19 @@ class Kursus extends MY_Controller
                 'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'stat_hadir' => "M",
                 'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
-                'penyelia_nokp'=>$this->input->post("comPenyelia")            ];
+                'penyelia_nokp'=>$this->input->post("comPenyelia"),
+                "stat_soal_selidik_a" => "T",
+                "stat_soal_selidik_b" => "T",
+            ];
+
+            if ($this->input->post("chkBorangA"))
+                $data["stat_soal_selidik_a"] = $this->input->post("chkBorangA");
+            if ($this->input->post("chkBorangB"))
+                $data["stat_soal_selidik_b"] = $this->input->post("chkBorangB");
+
             if($this->input->post("comAnjuran")=="L")
             {
                 $data["penganjur_id"] = 0;
@@ -1911,7 +1936,7 @@ class Kursus extends MY_Controller
         {
             $this->appsess->setFlashSession("success", false);
         }
-        return redirect('kursus/view_luar/' . $id);
+        return false;
     }
 
     public function pengesahan_kehadiran()

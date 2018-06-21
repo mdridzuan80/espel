@@ -1,6 +1,6 @@
 <?php if($kursus->program_id == 1 || $kursus->program_id == 2):?>
 <div class="row espel_latihan">
-  <div class="col-md-3 col-sm-2 col-xs-3">
+  <!-- <div class="col-md-3 col-sm-2 col-xs-3">
       <div class="x_panel">
         <div class="x_title">
           <h2><?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'Status' : 'Operasi' ?></h2>
@@ -69,8 +69,8 @@
         </form>
         </div>
     </div>
-  </div>
-  <div class="col-md-9 col-sm-9 col-xs-9">
+  </div> -->
+  <div class="col-md-12 col-sm-9 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
         <h2>Maklumat Kursus Program Latihan</h2>
@@ -78,7 +78,22 @@
       </div>
       <div class="x_content">
           <div class="x_content">
-              <form method="post" class="form-horizontal form-label-left" action="<?= base_url('kursus/do_sah_kemaskini/' . $kursus->id) ?>" >
+                <?php if (appsess()->getFlashSession()) : ?>
+            <?php if (appsess()->getFlashSession('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+              </button>
+              <strong>INFO!</strong> Proses telah berjaya dilaksanakan.
+            </div>
+            <?php else : ?>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+              </button>
+              <strong>RALAT!</strong> Proses tidak berjaya. Sila pastikan pegawai ini mempunyai elamat email Pegawai Penilai Pertama
+            </div>
+            <?php endif ?>
+            <?php endif ?>
+              <form id="frmKursus" method="post" class="form-horizontal form-label-left" >
                     <?php $csrf = [
                     'name' => $this->security->get_csrf_token_name(),
                     'hash' => $this->security->get_csrf_hash()
@@ -119,14 +134,14 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Mula
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y H:i A',strtotime($kursus->tkh_mula)))?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhMula" name="txtTkhMula" value="<?=set_value('txtTkhMula',date('d-m-Y g:i A',strtotime($kursus->tkh_mula)))?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tarikh Akhir
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y H:i A',strtotime($kursus->tkh_tamat)))?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
+                        <input type="text" class="form-control espel-cal-input" id="txtTkhTamat" name="txtTkhTamat" value="<?=set_value('txtTkhTamat',date('d-m-Y g:i A',strtotime($kursus->tkh_tamat)))?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
                     </div>
                   </div>
                   <div class="form-group">
@@ -157,14 +172,38 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
                     </div>
                   </div>
-                  <?php if($kursus->stat_hadir == 'M') :?>
+                  <div>&nbsp;</div>
+                   <label>Keperluan Borang Soal Selidik :</label>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input name="chkBorangA" type="checkbox" value="Y" <?php echo set_checkbox('chkBorangA', "Y", $kursus->stat_soal_selidik_a == "Y"); ?> <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> > Soal Selidik KKM/P&amp;P/2013(A)
+                    </label>
+                  </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input name="chkBorangB" type="checkbox" value="Y" <?php echo set_checkbox('chkBorangB', "Y", $kursus->stat_soal_selidik_b == "Y"); ?> <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> > Soal Selidik KKM/P&amp;P/2013(B)
+                    </label>
+                  </div>
+              </div>
+            </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                          <button type="submit" class="btn btn-success" name="submit">Kemaskini</button>
+                        <?php if($kursus->stat_hadir == 'M' && auth()->hasPeranan(appsess()->getSessionData("username"),['PTJ']) && appsess()->getSessionData('kumpulan')=='PTJ') :?>
+                        <button type="button" class="btn btn-success btnPengesahan" data-kursusid="<?= $kursus->id ?>" data-hadir="L" >LULUS</button>
+                        <button type="button" class="btn btn-danger btnPengesahan" data-kursusid="<?= $kursus->id ?>" data-hadir="T" >TOLAK</button>
+                        <?php endif ?>
+                        <button type="button" class="btn btn-primary btnKemaskini" data-kursusid="<?= $kursus->id ?>" >KEMASKINI</button>
+                        <button type="button" class="btn btn-warning btnHapus" name="btnHapus" data-kursusid="<?= $kursus->id ?>">HAPUS</button>
                       </div>
                   </div>
-                  <?php endif ?>
               </form>
           </div>
       </div>
