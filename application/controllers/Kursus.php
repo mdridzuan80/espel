@@ -1732,7 +1732,7 @@ class Kursus extends MY_Controller
 
             if($this->kursus->update($id, $data))
             {
-                if($data['stat_hadir'] == 'L')
+                /* if($data['stat_hadir'] == 'L')
                 {
                     $pemohon = $this->profil->get_by("nokp",$this->kursus->get($id)->nokp);
                     $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
@@ -1784,7 +1784,7 @@ class Kursus extends MY_Controller
                         $this->appsess->setFlashSession("success", false);
                         return redirect('kursus/pengesahan_kehadiran');
                     }
-                }
+                } */
 
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengesahkan kursus luar','sql'=>$sql]);
                 $this->appsess->setFlashSession("success", true);
