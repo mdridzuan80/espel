@@ -50,7 +50,7 @@
                 <?php
                 $str = $profil->gred_id;
                 preg_match_all('!\d+!', $str, $matches);
-                print_r($matches);
+                //print_r($matches);
                 ?>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" value="<?= $profil->gred_id ?>" disabled>
@@ -550,7 +550,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ulasan/cadangan jika ada
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea name="txtCadangan" required="required" class="form-control col-md-7 col-xs-12"></textarea>
+                  <textarea name="txtCadangan" class="form-control col-md-7 col-xs-12"></textarea>
                 </div>
               </div>
               <div class="ln_solid"></div>
