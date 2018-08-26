@@ -161,7 +161,7 @@ $(function() {
             data: filter,
             success: function (data, textStatus, jqXHR) {
                 $('#sen_calon').html(data);
-                $('#peserta').dataTable();
+                $('#peserta').dataTable({searching: false});
             }
         });
     }
