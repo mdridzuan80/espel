@@ -118,7 +118,7 @@
                 <td><?=$permohonan->tajuk?></td>
                 <td><?= ($permohonan->anjuran == 'D') ? $permohonan->anjuran_dalam : $permohonan->anjuran_luar ?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>xs
+                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
                 <td align="center">
                     <?php if($permohonan->stat_mohon == 'M'):?>
                     <span class="label label-warning">Baru</span>
