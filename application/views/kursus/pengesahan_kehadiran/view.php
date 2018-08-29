@@ -70,7 +70,7 @@
         </div>
     </div>
   </div> -->
-  <div class="col-md-12 col-sm-9 col-xs-12">
+  <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
         <h2>Maklumat Kursus Program Latihan</h2>
@@ -216,86 +216,22 @@
 <!-- pembelajaran -->
 <?php if($kursus->program_id == 3 || $kursus->program_id == 4):?>
 <div class="row espel_pembelajaran1">
-<div class="col-md-3 col-sm-2 col-xs-3">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2><?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'Status' : 'Operasi' ?></h2>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            <?php if(appsess()->getFlashSession()):?>
-            <?php if(appsess()->getFlashSession('success')):?>
-            <div class="alert alert-success alert-dismissible fade in" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-              </button>
-              <strong>INFO!</strong> Proses telah berjaya dilaksanakan.
-            </div>
-            <?php else:?>
-            <div class="alert alert-danger alert-dismissible fade in" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-              </button>
-              <strong>RALAT!</strong> Proses tidak berjaya. Sila pastikan pegawai ini mempunyai elamat email Pegawai Penilai Pertama
-            </div>
-            <?php endif?>
-            <?php endif?>
-            <form method="post" class="form-horizontal form-label-left" action="<?= base_url('kursus/do_sah/' . $kursus->id) ?>">
-            <?php $csrf = [
-                    'name' => $this->security->get_csrf_token_name(),
-                    'hash' => $this->security->get_csrf_hash()
-                    ];
-                ?>
-                <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
-            <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
-            <label>Keperluan Borang Soal Selidik :</label>
-            <div class="form-group">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div class="checkbox">
-                    <label>
-                      <input name="chkBorangA" type="checkbox" value="Y" <?php echo set_checkbox('chkBorangA', "Y", $kursus->stat_soal_selidik_a=="Y"); ?> <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> > Soal Selidik KKM/P&amp;P/2013(A)
-                    </label>
-                  </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div class="checkbox">
-                    <label>
-                      <input name="chkBorangB" type="checkbox" value="Y" <?php echo set_checkbox('chkBorangB', "Y", $kursus->stat_soal_selidik_b=="Y"); ?> <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> > Soal Selidik KKM/P&amp;P/2013(B)
-                    </label>
-                  </div>
-              </div>
-            </div>
-            <label>Pengesahan Kehadiran :</label>
-            <div class="form-group">
-                <select class="form-control espel_program" name="comKehadiran" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?>>
-                    <option value="M" <?=set_select('comProgram', "M", "M"==$kursus->stat_hadir)?>>PERMOHONAN</option>
-                    <option value="L" <?=set_select('comProgram', "L", "L"==$kursus->stat_hadir)?>>LULUS</option>
-                    <option value="T" <?=set_select('comProgram', "T", "T"==$kursus->stat_hadir)?>>TOLAK</option>
-                </select>
-            </div>
-            <?php if(auth()->hasPeranan(appsess()->getSessionData("username"),['PTJ']) && appsess()->getSessionData('kumpulan')=='PTJ') :?>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <button type="submit" class="btn btn-success" name="submit">Pengesahan</button>
-                </div>
-            </div>
-            <?php endif ?>
-        </form>
-        </div>
-    </div>
-  </div>
-  <div class="col-md-9 col-sm-10 col-xs-9">
+  <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Daftar Kursus Untuk Program Sesi Pembelajaran</h2>
+        <h2>Maklumat Kursus Untuk Program Sesi Pembelajaran</h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
           <div class="x_content">
-              <form method="post" class="form-horizontal form-label-left" action="<?= base_url('kursus/do_sah_kemaskini/' . $kursus->id) ?>">
-                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?=set_value('hddProgram', $kursus->program_id)?>" />
+             <form id="frmKursus" method="post" class="form-horizontal form-label-left" >
+                    <?php $csrf = [
+                      'name' => $this->security->get_csrf_token_name(),
+                      'hash' => $this->security->get_csrf_hash()
+                    ];
+                    ?>
+                <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
+                  <input type="hidden" class="hddProgram" name="hddProgram" value="<?= set_value('hddProgram', $kursus->program_id) ?>" />
                   <div class="form-group">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Program Latihan</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -382,11 +318,24 @@
                         <input id="comPenganjur" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>" <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> >
                     </div>
                   </div>
+                  <div class="form-group">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input name="chkBorangB" type="checkbox" value="Y" <?php echo set_checkbox('chkBorangB', "Y", $kursus->stat_soal_selidik_b == "Y"); ?> <?= ($this->appsess->getSessionData("kumpulan") == AppAuth::PENGGUNA) ? 'disabled' : '' ?> > Soal Selidik KKM/P&amp;P/2013(B)
+                    </label>
+                  </div>
+              </div>
+            </div>
                   <div class="ln_solid"></div>
                   <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                          <button type="submit" class="btn btn-success" name="submit">Submit</button>
-                          <a href="<?=base_url("kursus/pengesahan_kehadiran")?>" class="btn btn-primary" type="reset">Batal</a>
+                        <?php if ($kursus->stat_hadir == 'M' && auth()->hasPeranan(appsess()->getSessionData("username"), ['PTJ']) && appsess()->getSessionData('kumpulan') == 'PTJ') : ?>
+                        <button type="button" class="btn btn-success btnPengesahan" data-kursusid="<?= $kursus->id ?>" data-hadir="L" >LULUS</button>
+                        <button type="button" class="btn btn-danger btnPengesahan" data-kursusid="<?= $kursus->id ?>" data-hadir="T" >TOLAK</button>
+                        <?php endif ?>
+                        <button type="button" class="btn btn-primary btnKemaskini" data-kursusid="<?= $kursus->id ?>" >KEMASKINI</button>
+                        <button type="button" class="btn btn-warning btnHapus" name="btnHapus" data-kursusid="<?= $kursus->id ?>">HAPUS</button>
                       </div>
                   </div>
               </form>
