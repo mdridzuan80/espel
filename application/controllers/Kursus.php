@@ -422,7 +422,6 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        //'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
                         'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
@@ -448,8 +447,8 @@ class Kursus extends MY_Controller
                         'tajuk' => $this->input->post("txtTajuk"),
                         'program_id' => $this->input->post("hddProgram"),
                         'aktiviti_id' => $this->input->post("comAktiviti"),
-                        'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                        'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                        'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                        'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                         'tempat' => $this->input->post("txtTempat"),
                         'anjuran' => $this->input->post('comAnjuran'),
                         'stat_jabatan' => "Y",
@@ -457,10 +456,11 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
                     ];
+                    
                     if($this->input->post("comAnjuran")=="L")
                     {
                         $data["penganjur"] = $this->input->post("txtPenganjur");
@@ -482,8 +482,8 @@ class Kursus extends MY_Controller
                         'tajuk' => $this->input->post("txtTajuk"),
                         'program_id' => $this->input->post("hddProgram"),
                         'aktiviti_id' => $this->input->post("comAktiviti"),
-                        'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                        'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                        'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                        'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                         'tempat' => $this->input->post("txtTempat"),
                         'sumber'=>$this->input->post("txtSumber"),
                         'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -493,7 +493,7 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                        'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
                     ];
@@ -575,8 +575,8 @@ class Kursus extends MY_Controller
                     'tajuk'=>$this->input->post("txtTajuk"),
                     'program_id'=>$this->input->post("hddProgram"),
                     'aktiviti_id'=>$this->input->post("comAktiviti"),
-                    'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                    'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
+                    'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                    'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                     'tempat' => $this->input->post("txtTempat"),
                     'anjuran' => $this->input->post('comAnjuran'),
                     'stat_jabatan' => 'Y',
@@ -624,7 +624,7 @@ class Kursus extends MY_Controller
                     'stat_terbuka'=>$this->input->post("comTerbuka"),
                     'peruntukan_id'=>$this->input->post("comPeruntukan"),
                     'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                    'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                    'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
                     'jenis' => $this->input->post("jenis")
@@ -666,7 +666,7 @@ class Kursus extends MY_Controller
                     'stat_terbuka'=>$this->input->post("comTerbuka"),
                     'peruntukan_id'=>$this->input->post("comPeruntukan"),
                     'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                    'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                    'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
                     'jenis' => $this->input->post("jenis")
@@ -1004,7 +1004,7 @@ class Kursus extends MY_Controller
                             'stat_terbuka'=>$this->input->post("comTerbuka"),
                             'peruntukan_id'=>$this->input->post("comPeruntukan"),
                             'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'hari' => datediff("y", date("Y-m-d", strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d", strtotime($this->input->inputToDate("txtTkhTamat")))) + 1,
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
                         ];
@@ -1029,8 +1029,8 @@ class Kursus extends MY_Controller
                             'tajuk' => $this->input->post("txtTajuk"),
                             'program_id' => $this->input->post("hddProgram"),
                             'aktiviti_id' => $this->input->post("comAktiviti"),
-                            'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                            'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                            'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                            'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                             'tempat' => $this->input->post("txtTempat"),
                             'anjuran' => $this->input->post('comAnjuran'),
                             'stat_jabatan' => "Y",
@@ -1038,7 +1038,7 @@ class Kursus extends MY_Controller
                             'stat_terbuka'=>$this->input->post("comTerbuka"),
                             'peruntukan_id'=>$this->input->post("comPeruntukan"),
                             'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
                         ];
@@ -1063,8 +1063,8 @@ class Kursus extends MY_Controller
                             'tajuk' => $this->input->post("txtTajuk"),
                             'program_id' => $this->input->post("hddProgram"),
                             'aktiviti_id' => $this->input->post("comAktiviti"),
-                            'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                            'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                            'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                            'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                             'tempat' => $this->input->post("txtTempat"),
                             'sumber'=>$this->input->post("txtSumber"),
                             'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -1074,7 +1074,7 @@ class Kursus extends MY_Controller
                             'stat_terbuka'=>$this->input->post("comTerbuka"),
                             'peruntukan_id'=>$this->input->post("comPeruntukan"),
                             'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                            'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                            'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                             'telefon' => $this->input->post("txtTelefon"),
                             'email' => $this->input->post("txtEmail"),
                         ];
@@ -1155,8 +1155,8 @@ class Kursus extends MY_Controller
                         'tajuk'=>$this->input->post("txtTajuk"),
                         'program_id'=>$this->input->post("hddProgram"),
                         'aktiviti_id'=>$this->input->post("comAktiviti"),
-                        'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                        'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
+                        'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                        'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                         'tempat' => $this->input->post("txtTempat"),
                         'anjuran' => $this->input->post('comAnjuran'),
                         'stat_jabatan' => 'Y',
@@ -1203,7 +1203,7 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                        'hari' => kiraanHari(date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))),date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
                     ];
@@ -1244,7 +1244,7 @@ class Kursus extends MY_Controller
                         'stat_terbuka'=>$this->input->post("comTerbuka"),
                         'peruntukan_id'=>$this->input->post("comPeruntukan"),
                         'ptj_jabatan_id_created'=>$this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id,
-                        'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                        'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                         'telefon' => $this->input->post("txtTelefon"),
                         'email' => $this->input->post("txtEmail"),
                     ];
@@ -1343,8 +1343,8 @@ class Kursus extends MY_Controller
                 'tajuk' => strtoupper($this->input->post("txtTajuk")),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
+                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'nokp' => $this->appsess->getSessionData('username'),
                 'stat_jabatan' => "T",
@@ -1379,7 +1379,7 @@ class Kursus extends MY_Controller
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
                 'stat_laksana' => "L",
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => kiraanHari(date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))),date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'jenis' => "L",
             ];
@@ -1408,7 +1408,7 @@ class Kursus extends MY_Controller
                 'stat_jabatan' => "T",
                 'stat_hadir' => "M",
                 'stat_laksana' => "L",
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -1513,8 +1513,8 @@ class Kursus extends MY_Controller
                 'tajuk' => $this->input->post("txtTajuk"),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
+                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
+                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'hari' => datediff("y", date("Y-m-d", strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d", strtotime($this->input->inputToDate("txtTkhTamat")))) + 1,
                 'anjuran' => $this->input->post("comAnjuran"),
@@ -1540,7 +1540,7 @@ class Kursus extends MY_Controller
                 'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
                 'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                 'tempat' => $this->input->post("txtTempat"),
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
             ];
             if($this->input->post("comAnjuran")=="L")
@@ -1564,7 +1564,7 @@ class Kursus extends MY_Controller
                 'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
                 'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                 'tempat' => $this->input->post("txtTempat"),
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhMula") . " " . $this->input->post("txtMasaMula"))),date('Y-m-d H:i',strtotime($this->input->inputToDate("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")))),
+                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -1814,7 +1814,7 @@ class Kursus extends MY_Controller
                 'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => datediff("y", date("Y-m-d", strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d", strtotime($this->input->inputToDate("txtTkhTamat")))) + 1,
                 'anjuran' => $this->input->post("comAnjuran"),
                 "stat_soal_selidik_a" => "T",
                 "stat_soal_selidik_b" => "T",
@@ -1843,11 +1843,11 @@ class Kursus extends MY_Controller
                 'tajuk' => $this->input->post("txtTajuk"),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 "stat_soal_selidik_a" => "T",
                 "stat_soal_selidik_b" => "T",
@@ -1876,11 +1876,11 @@ class Kursus extends MY_Controller
                 'tajuk' => $this->input->post("txtTajuk"),
                 'program_id' => $this->input->post("hddProgram"),
                 'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => $this->input->inputToDate("txtTkhMula"),
-                'tkh_tamat' => $this->input->inputToDate("txtTkhTamat"),
+                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
+                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
                 'tempat' => $this->input->post("txtTempat"),
                 'stat_jabatan' => "T",
-                'hari' => kiraanHari($this->input->inputToDate("txtTkhMula"),$this->input->inputToDate("txtTkhTamat")),
+                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
@@ -1945,81 +1945,18 @@ class Kursus extends MY_Controller
         {
             $this->load->model("kursus_model","kursus");
 
-            if( ! $this->exist("submit") )
-            {
-                $data["sen_kursus"] = $this->kursus->get_all_kursus_luar_pengesahan(
-                    get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
-                );
+            $data["sen_kursus"] = $this->kursus->get_all_kursus_luar_pengesahan(
+                get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
+            );
 
-                $data["sen_kursus_luar"] = $this->kursus->get_all_kursus_luar(
-                    get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
-                );
-                
-                $data['sen_anjuran'] = '';
-                return $this->renderView("kursus/pengesahan_kehadiran/show", $data, $this->plugins());
-            }
-            else
-            {
-                foreach($this->input->post('chkKehadiran') as $kehadiran)
-                {
-                    $data[] = $kehadiran;
-                }
-                
-                foreach($data as $row)
-                {
-                    if($this->kursus->update($row,['stat_hadir'=>$this->input->post('hadir')]))
-                    {
-                        //$this->output->set_status_header(401);
-                        //jabatan profil
-                        $this->load->model('profil_model','profil');
-                        $this->load->model('hrmis_carta_model','jabatan');
-                        $this->load->model('kumpulan_profil_model','kumpulan_profil');
-                        $this->load->model('hrmis_skim_model', 'mjawatan');
-                        $this->load->model('hrmis_carta_model', 'mjabatan');
-                        $this->load->model('program_model', 'mprogram');
-                        
-                        $elements = $this->jabatan->senarai_penyelaras();
-                        $jabatan = $this->profil->get($this->kursus->get($row)->nokp)->jabatan_id;
-                        $jabatan_penyelaras = get_parent_penyelaras($elements, $jabatan);
+            $data["sen_kursus_luar"] = $this->kursus->get_all_kursus_luar(
+                get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
+            );
+            
+            $plugins = $this->plugins();
+            $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', '', true);
 
-                        $sen_penyelaras = $this->kumpulan_profil->get_many_by('jabatan_id', $jabatan_penyelaras);
-
-                        $mJawatan = $this->mjawatan;
-                        $mJabatan = $this->mjabatan;
-                        $mProgram = $this->mjabatan;
-
-                        $kursus = $this->kursus->get($row);
-                        $pemohon = $this->profil->get_by('nokp',$kursus->nokp);
-                        $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
-                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=>$mProgram],TRUE);
-
-                        foreach($sen_penyelaras as $penyelaras)
-                        {
-                            $profil_penyelaras = $this->profil->get($penyelaras->profil_nokp) ;
-                            if($profil_penyelaras->email)
-                            {
-                                if (filter_var($profil_penyelaras->email, FILTER_VALIDATE_EMAIL)) {
-                                    $this->load->library('appnotify');
-
-                                    $mail = [
-                                        "to" => $profil_penyelaras->email ,
-                                        "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
-                                        "body" => $mesej,
-                                    ];
-                                    $this->appnotify->send($mail);
-                                }
-                            }
-
-                        }
-
-                        $this->appsess->setFlashSession("success", true);
-                    }
-                    else
-                    {
-                        $this->appsess->setFlashSession("success", false);
-                    }
-                }
-            }
+            return $this->renderView("kursus/pengesahan_kehadiran/show", $data, $plugins);
         }
 		else
 		{
