@@ -180,4 +180,25 @@ class Cron extends CI_Controller
 
     }
 
+    public function recalculateDay()
+    {
+        $program = [3,4,5];
+
+        $this->load->model('kursus_model', 'kursus');
+
+        foreach($program as $programId)
+        {
+            $kursus = $this->kursus->kursuByProgram($programId, 2018);
+
+            foreach($kursus as $rekod)
+            {
+                $data = [
+                    'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($rekod->tkh_mula))), date('Y-m-d H:i', strtotime(constructDate($rekod->tkh_tamat))))
+                ];
+
+                $this->kursus->kemaskini($rekod->id, $data);
+                echo "Update " . $rekod->id . "\n";
+            }
+        }
+    }
 }
