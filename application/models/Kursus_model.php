@@ -1137,4 +1137,31 @@ group by nokp
     {
         $sql = "";
     }
+
+    public function kursuByProgram($programID, $tahun)
+    {
+        $sql = "select * from (SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
+            espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.hari, espel_kursus.tempat
+            FROM espel_kursus
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
+            AND espel_kursus.program_id = ?
+            UNION
+            SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam, espel_kursus.penganjur as anjuran_luar,
+            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.hari, espel_kursus.tempat
+            FROM espel_kursus
+            INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
+            AND espel_kursus.program_id = ?) a where 1=1 order by tkh_mula";
+        return $this->db->query($sql, [$tahun, $programID, $tahun, $programID])->result();
+    }
+
+    public function kemaskini($id, $data)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('espel_kursus', $data);
+    }
 }

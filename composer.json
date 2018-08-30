@@ -20,7 +20,8 @@
 		"phpmailer/phpmailer": "^6.0",
 		"nesbot/carbon": "^1.22",
 		"anahkiasen/underscore-php": "dev-master",
-		"mdridzuan80/hrmisapi": "^1.0"
+		"mdridzuan80/hrmisapi": "^1.0",
+		"paquettg/php-html-parser": "^1.7"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

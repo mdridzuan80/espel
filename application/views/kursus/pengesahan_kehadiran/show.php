@@ -31,10 +31,9 @@
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="table-responsive">
-                  <table class="table table-striped table-bordered jambo_table datatable">
+                  <table class="table table-striped table-bordered jambo_table dtPengesahan">
                     <thead>
                       <tr class="headings">
-                        <!-- <th><input id="chkAll" type="checkbox" value="0"></th> -->
                         <th>Nama</th>
                         <th>Jabatan</th>
                         <th>Tajuk</th>
@@ -42,15 +41,12 @@
                         <th>Mula</th>
                         <th>Tamat</th>
                         <th>Dokumen Sokongan</th>
-                        <!-- <th>Soal selidik Borang A</th>
-                        <th>Soal selidik Borang B</th> -->
                         <th style="text-align:center">Operasi</th>
                       </tr>
                     </thead>
                     <tbody>
                         <?php foreach($sen_kursus as $kursus):?>
                       <tr>
-                        <!-- <td><input class="chkKursusLuar" type="checkbox" value="<?=$kursus->id?>"></td> -->
                         <td><?=$kursus->nama?></td>
                         <td><?=$kursus->jabatan?></td>
                         <td><?=$kursus->tajuk?></td>

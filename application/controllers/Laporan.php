@@ -909,6 +909,7 @@ class Laporan extends MY_Controller
 
         $data['tahun'] = $tahun;
         $data['sen_anggota'] = $this->boranga->sen_x_jawab_b($filter);
+        echo $this->db->last_query();
 
         return $this->load->view('laporan/ptj/x_jawab_borangb/result',$data);
     }

@@ -64,7 +64,8 @@ class Boranga_model extends MY_Model
 
     public function sen_x_jawab_b($filter)
     {
-        $sql = "SELECT c.*, d.title as jabatan_ppp, e.nama as kumpulan_ppp, f.keterangan as skim_ppp, a.nama as peserta, a.id as kursus_id, a.tajuk   FROM (SELECT a.nokp_ppp, b.nokp, b.nama, b.id, b.tajuk, b.tahun
+        $sql = "SELECT c.*, d.title as jabatan_ppp, e.nama as kumpulan_ppp, f.keterangan as skim_ppp, a.nama as peserta, a.id as kursus_id, a.tajuk
+            FROM (SELECT a.nokp_ppp, b.nokp, b.nama, b.id, b.tajuk, b.tahun
             FROM view_laporan_statistik_prestasi a
             INNER JOIN (SELECT a.nokp, b.nama, a.id, a.tajuk, year(a.tkh_mula) as tahun
             FROM espel_kursus a

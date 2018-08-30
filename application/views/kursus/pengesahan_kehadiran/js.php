@@ -1,5 +1,7 @@
 <script>
 (function() {
+    $('.datatable').dataTable();
+
     $('.btnHapus').on('click', function(e){
         e.preventDefault();
         var kursus_id = $(this).attr('data-kursusid');

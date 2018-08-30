@@ -1,4 +1,6 @@
 <?php
+use Espel\AppMycurl;
+use Espel\Tmycpd\Tmycpd;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -200,5 +202,16 @@ class Cron extends CI_Controller
                 echo "Update " . $rekod->id . "\n";
             }
         }
+    }
+
+    public function update_mycpd()
+    {
+        $curl = new AppMycurl;
+        $curl->setUrl($this->config->item('espel_mycpd_url'));
+
+        $myCpd = new Tmycpd;
+        $myCpd->login($curl);
+
+        $curl->close_session();
     }
 }

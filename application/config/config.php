@@ -572,3 +572,9 @@ $config['espel_hrmis_url'] = 'https://perkongsiandata.eghrmis.gov.my/wsintegrasi
 $config['espel_hrmis_username'] = '820921045240';
 $config['espel_hrmis_password'] = 'fazlina@123';
 $config['espel_hrmis_temp_folder'] = APPPATH . 'tmp' . DIRECTORY_SEPARATOR;
+
+### MYCPD Variable ###
+$config['espel_mycpd_url'] = 'https://www.mycpd2.moh.gov.my/';
+$config['espel_mycpd_username'] = '820921045240';
+$config['espel_mycpd_password'] = 'Burn!na_3456';
+$config['espel_mycpd_temp_folder'] = APPPATH . 'tmp' . DIRECTORY_SEPARATOR;
