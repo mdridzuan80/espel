@@ -472,6 +472,7 @@ $config['csrf_exclude_uris'] = [
 	'kursus/ajax_senarai_pengesahan',
 	'kursus/ajax_senarai_separa_permohonan',
 	'kursus/ajax_set_separa_pencalonan/[0-9]+',
+	'kursus/data_grid_pengesahan',
 	'laporan/prestasi_kursus_keseluruhan',
 	'laporan/prestasi_kursus_individu',
 	'laporan/prestasi_kewangan',

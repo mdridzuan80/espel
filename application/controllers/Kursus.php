@@ -1941,12 +1941,25 @@ class Kursus extends MY_Controller
 
     public function pengesahan_kehadiran()
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
+        if ($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
         {
             $this->load->model("kursus_model","kursus");
+            $this->load->model('profil_model', 'profil');
+
+            $data['sen_kumpulan'] = $this->profil->sen_kump();
+
+            if ($this->appsess->getSessionData('kumpulan') == AppAuth::SUPER || $this->appsess->getSessionData('kumpulan') == AppAuth::ADMIN)
+            {
+                $data['jab_ptj'] = initObj(['jabatan_id' => $this->config->item('espel_default_jabatan_id')])->jabatan_id;
+            }
+            else
+            {
+                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
+            }
 
             $data["sen_kursus"] = $this->kursus->get_all_kursus_luar_pengesahan(
-                get_penyelaras_related_jabatan($this->appsess->getSessionData("username"))
+                get_penyelaras_related_jabatan($this->appsess->getSessionData("username")),
+                []
             );
 
             $data["sen_kursus_luar"] = $this->kursus->get_all_kursus_luar(
@@ -1954,7 +1967,7 @@ class Kursus extends MY_Controller
             );
             
             $plugins = $this->plugins();
-            $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', '', true);
+            $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', $data, true);
 
             return $this->renderView("kursus/pengesahan_kehadiran/show", $data, $plugins);
         }
@@ -1962,6 +1975,22 @@ class Kursus extends MY_Controller
 		{
 			return $this->renderPermissionDeny();
 		}
+    }
+
+    public function data_grid_pengesahan()
+    {
+        if ($this->appauth->hasPeranan($this->appsess->getSessionData("username"), ['PTJ']))
+        {
+            $this->load->model("kursus_model", "kursus");
+            
+            $data["sen_kursus"] = $this->kursus->get_all_kursus_luar_pengesahan(
+                get_penyelaras_related_jabatan($this->appsess->getSessionData("username")),
+                $this->input->post()
+            );
+
+            return $this->load->view('kursus/pengesahan_kehadiran/grid', $data);
+        }
+        else return $this->renderPermissionDeny();    
     }
 
     public function kedudukan_pelaksanaan()

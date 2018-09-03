@@ -77,16 +77,55 @@ class Kursus_model extends MY_Model
         return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
     }
 
-    public function get_all_kursus_luar_pengesahan(array $jabatanID)
+    public function get_all_kursus_luar_pengesahan(array $jabatanID, $filter)
     {
-        $this->db->select("a.id, b.nama,d.title jabatan, a.tajuk, c.nama as program, a.stat_hadir, a.tkh_mula, a.tkh_tamat, a.stat_soal_selidik_a, a.stat_soal_selidik_b, a.dokumen_path");
-        $this->db->from("espel_kursus a");
-        $this->db->join("espel_profil b","a.nokp = b.nokp");
-        $this->db->join("espel_dict_program c","a.program_id = c.id");
-        $this->db->join("hrmis_carta_organisasi d","b.jabatan_id = d.buid");
-        $this->db->where("a.stat_hadir", "M");
-        $this->db->where_in("b.jabatan_id", $jabatanID);
-        $rst = $this->db->get();
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
+
+        $info = [];
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
+
+        $sql = "SELECT `a`.`id`, `b`.`nama`, `d`.`title` `jabatan`, `a`.`tajuk`, `c`.`nama` as `program`, `a`.`stat_hadir`, `a`.`tkh_mula`, `a`.`tkh_tamat`, `a`.`stat_soal_selidik_a`, `a`.`stat_soal_selidik_b`, `a`.`dokumen_path`
+        FROM `espel_kursus` `a`
+        JOIN `espel_profil` `b` ON `a`.`nokp` = `b`.`nokp`
+        JOIN `espel_dict_program` `c` ON `a`.`program_id` = `c`.`id`
+        JOIN `hrmis_carta_organisasi` `d` ON `b`.`jabatan_id` = `d`.`buid`
+        WHERE `a`.`stat_hadir` = 'M' AND `b`.`jabatan_id` IN(" . implode(',', $jabatanID) . ")";
+
+        if (isset($filter['nama']))
+        {
+            if (isset($filter['nama']) && $filter['nama'])
+                $sql .= ' AND b.nama like \'%' . trim($filter['nama']) . '%\'';
+
+            if (isset($filter['nokp']) && $filter['nokp'])
+                $sql .= ' AND b.nokp like \'%' . trim($filter['nokp']) . '%\'';
+
+            if ($filter['jabatan_id'] && $filter['sub_jabatan']) {
+                $all_jabatan = flattenArray(relatedJabatan($all_jabatan, $filter['jabatan_id']));
+                array_push($all_jabatan, $filter['jabatan_id']);
+                $sql .= ' AND b.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+            }
+
+            if ($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != '1' && $this->appsess->getSessionData("kumpulan") != '2') {
+                $status_tree = jabatan_not_in($this->appsess->getSessionData('username'));
+                if ($status_tree['status_subtree'] == 'F') {
+                    $sql .= ' AND b.jabatan_id not in (' . implode(",", $status_tree['not_in']) . ')';
+                }
+            }
+
+            if ($filter['kump_id'])
+                $sql .= ' AND b.kelas = \'' . trim($filter['kump_id']) . '\'';
+
+            if ($filter['skim_id'])
+                $sql .= ' AND b.skim_id = \'' . trim($filter['skim_id']) . '\'';
+
+            if ($filter['gred_id'])
+                $sql .= ' AND b.gred_id = \'' . trim($filter['gred_id']) . '\'';
+
+            $sql .= ' AND b.status = \'' . trim($filter['status']) . '\'';
+        }
+        $sql .= ' ORDER BY b.nama';
+
+        $rst = $this->db->query($sql);
 
         return $rst->result();
     }
