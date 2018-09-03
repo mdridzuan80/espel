@@ -1433,7 +1433,7 @@ class Kursus extends MY_Controller
         {
             $config['upload_path'] = './assets/uploads/';
             $config['encrypt_name'] = TRUE;
-            $config['allowed_types'] = ['pdf'];
+            $config['allowed_types'] = ['pdf','jpeg','jpg','png'];
 
             $this->load->library('upload', $config);
 
@@ -1909,8 +1909,8 @@ class Kursus extends MY_Controller
         {
             $config['upload_path'] = './assets/uploads/';
             $config['encrypt_name'] = TRUE;
-            $config['allowed_types'] = ['pdf'];
-
+            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
+            
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))
@@ -2469,7 +2469,7 @@ class Kursus extends MY_Controller
             {
                 $config['upload_path'] = './assets/uploads/';
                 $config['encrypt_name'] = TRUE;
-                $config['allowed_types'] = ['pdf'];
+                $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                 $this->load->library('upload', $config);
 
@@ -2556,7 +2556,7 @@ class Kursus extends MY_Controller
                         {
                             $config['upload_path'] = './assets/uploads/';
                             $config['encrypt_name'] = TRUE;
-                            $config['allowed_types'] = ['pdf'];
+                            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                             $this->load->library('upload', $config);
 
@@ -2646,7 +2646,7 @@ class Kursus extends MY_Controller
                         {
                             $config['upload_path'] = './assets/uploads/';
                             $config['encrypt_name'] = TRUE;
-                            $config['allowed_types'] = ['pdf'];
+                            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                             $this->load->library('upload', $config);
 
@@ -2719,7 +2719,7 @@ class Kursus extends MY_Controller
             {
                 $config['upload_path'] = './assets/uploads/';
                 $config['encrypt_name'] = TRUE;
-                $config['allowed_types'] = ['pdf'];
+                $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                 $this->load->library('upload', $config);
 
@@ -2805,7 +2805,7 @@ class Kursus extends MY_Controller
                         {
                             $config['upload_path'] = './assets/uploads/';
                             $config['encrypt_name'] = TRUE;
-                            $config['allowed_types'] = ['pdf'];
+                            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                             $this->load->library('upload', $config);
 
@@ -2895,7 +2895,7 @@ class Kursus extends MY_Controller
                         {
                             $config['upload_path'] = './assets/uploads/';
                             $config['encrypt_name'] = TRUE;
-                            $config['allowed_types'] = ['pdf'];
+                            $config['allowed_types'] = ['pdf', 'jpeg', 'jpg', 'png'];
 
                             $this->load->library('upload', $config);
 
