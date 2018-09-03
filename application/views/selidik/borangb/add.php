@@ -547,10 +547,10 @@
         <p>
             </p>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ulasan/cadangan jika ada
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ulasan/cadangan
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea name="txtCadangan" class="form-control col-md-7 col-xs-12"></textarea>
+                  <textarea name="txtCadangan" class="form-control col-md-7 col-xs-12" required></textarea>
                 </div>
               </div>
               <div class="ln_solid"></div>
