@@ -75,8 +75,10 @@
                                   <?php endif ?>
                                 <?php endif ?>
                               <?php elseif($kursus->stat_laksana == 'L') : ?>
-                                <?php if($kursus->stat_mohon) : ?>
-                                  <span class="label label-warning">MOHON</span>
+                                <?php if ($kursus->stat_mohon == 'M') : ?>
+                                  <span class="label label-warning">PERMOHONAN TOLAK</span>
+                                <?php elseif ($kursus->stat_mohon == 'L') : ?>
+                                  <span class="label label-info">PERMOHONAN LULUS</span>
                                 <?php else : ?>
                                   <span class="label label-info">PERMOHONAN TUTUP</span>
                                 <?php endif ?>
@@ -84,7 +86,7 @@
                                 <span class="label label-info">PERMOHONAN DIBUKA</span>
                               <?php endif ?>
                             <?php else : ?>
-                              <span class="label label-info">PERMOHONAN TUTUP</span>
+                              <span class="label label-info">TEMPOH PERMOHONAN TUTUP</span>
                             <?php endif ?>
                           <?php else : ?>
                             <?php if($kursus->stat_hadir == 'M') : ?>
