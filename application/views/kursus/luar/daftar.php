@@ -109,7 +109,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        *Hanya PDF sahaja dibenarkan
+                        *Hanya PDF/imej berformat jpeg/jpg/gif/png sahaja dibenarkan
                     </div>
                   </div>
                   <div class="ln_solid"></div>
