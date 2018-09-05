@@ -46,6 +46,17 @@ class AppExcel extends BaseLibrary
         $activeSheet->getCell('M7')->setValue('JUMLAH (7 DAN LEBIH 7 HARI)');
 
         $x = 1;
+        $jbiltotal = 0;
+        $jbil0 = '';
+        $jbil1 = '';
+        $jbil2 = '';
+        $jbil3 = '';
+        $jbil4 = '';
+        $jbil5 = '';
+        $jbil6 = '';
+        $jbil7 = '';
+        $jbilover7 = '';
+        $jbil7addover7 = '';
         $startRow = 8;
         foreach ($data['sen_kelas'] as $kelas)
         {
@@ -65,8 +76,64 @@ class AppExcel extends BaseLibrary
             $over_tujuh = (in_array('9', $data['objFilter']->hari)) ? $bilover7 = $kelas->over_7 : '';
             $activeSheet->getCell('L' . $r)->setValue($over_tujuh);
             $activeSheet->getCell('M' . $r)->setValue((in_array('8', $data['objFilter']->hari) && in_array('9', $data['objFilter']->hari)) ? $kelas->over_77 : '');
+            $jbiltotal += $kelas->pengisian;
+                //dd((int) $jbil0);
+            if (in_array('1', $data['objFilter']->hari)) {
+                $jbil0 = (int)$jbil0;
+                (int)$jbil0 += (int)$bil0;
+            };
+            if (in_array('2', $data['objFilter']->hari)) {
+                $jbil1 = (int)$jbil1;
+                (int)$jbil1 += (int)$bil1;
+            };
+            if (in_array('3', $data['objFilter']->hari)) {
+                $jbil2 = (int)$jbil2;
+                (int)$jbil2 += (int)$bil2;
+            };
+            if (in_array('4', $data['objFilter']->hari)) {
+                $jbil3 = (int)$jbil3;
+                (int)$jbil3 += (int)$bil3;
+            };
+            if (in_array('5', $data['objFilter']->hari)) {
+                $jbil4 = (int)$jbil4;
+                (int)$jbil4 += (int)$bil4;
+            };
+            if (in_array('6', $data['objFilter']->hari)) {
+                $jbil5 = (int)$jbil5;
+                (int)$jbil5 += (int)$bil5;
+            };
+            if (in_array('7', $data['objFilter']->hari)) {
+                $jbil6 = (int)$jbil6;
+                (int)$jbil6 += (int)$bil6;
+            };
+            if (in_array('8', $data['objFilter']->hari)) {
+                $jbil7 = (int)$jbil7;
+                (int)$jbil7 += (int)$bil7;
+            };
+            if (in_array('9', $data['objFilter']->hari)) {
+                $jbilover7 = (int)$jbilover7;
+                (int)$jbilover7 += (int)$bilover7;
+            };
             $x++;
         }
+
+        $r = ($startRow + $x);
+        $activeSheet->getCell('A' . $r)->setValue($x);
+        $activeSheet->getCell('B' . $r)->setValue('Jumlah');
+        $activeSheet->getCell('C' . $r)->setValue($jbiltotal);
+        $activeSheet->getCell('D' . $r)->setValue((in_array('1', $data['objFilter']->hari)) ? (int)$jbil0 : '');
+        $activeSheet->getCell('E' . $r)->setValue((in_array('2', $data['objFilter']->hari)) ? (int)$jbil1 : '');
+        $activeSheet->getCell('F' . $r)->setValue((in_array('3', $data['objFilter']->hari)) ? (int)$jbil2 : '');
+        $activeSheet->getCell('G' . $r)->setValue((in_array('4', $data['objFilter']->hari)) ? (int)$jbil3 : '');
+        $activeSheet->getCell('H' . $r)->setValue((in_array('5', $data['objFilter']->hari)) ? (int)$jbil4 : '');
+        $activeSheet->getCell('I' . $r)->setValue((in_array('6', $data['objFilter']->hari)) ? (int)$jbil5 : '');
+        $activeSheet->getCell('J' . $r)->setValue((in_array('7', $data['objFilter']->hari)) ? (int)$jbil6 : '');
+        $tujuh = (in_array('8', $data['objFilter']->hari)) ? (int)$jbil7 : '';
+        $activeSheet->getCell('K' . $r)->setValue($tujuh);
+        $over_tujuh = (in_array('9', $data['objFilter']->hari)) ? (int)$jbilover7 : '';
+        $activeSheet->getCell('L' . $r)->setValue($over_tujuh);
+        $activeSheet->getCell('M' . $r)->setValue((in_array('8', $data['objFilter']->hari) && in_array('9', $data['objFilter']->hari)) ? ((int)$tujuh + (int)$over_tujuh) : '');
+
 
         $this->Excel_writer->save('php://output', 'xls');
     }
