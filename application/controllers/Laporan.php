@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Espel\AppExcel;
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -591,11 +592,14 @@ class Laporan extends MY_Controller
             break;
 
             case 2 :
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan prestasi kursus']);
+                /* $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Export Excel laporan prestasi kursus']);
                 $this->output->set_header('Content-type: application/vnd.ms-excel');
                 $this->output->set_header('Content-Disposition: attachment; filename=prestasi_kursus.xls');
                 $content = $this->load->view("laporan/ptj/prestasi_kursus/pdf",$data,TRUE);
-                echo $content;
+                echo $content; */
+
+                $excel = new AppExcel;
+                $excel->laporan_prestasi_penuh($data);
             break;
 
             case 3 :
