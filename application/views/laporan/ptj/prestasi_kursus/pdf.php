@@ -138,7 +138,6 @@ table.biasa td, table.listing td {
                 if(in_array('7',$objFilter->hari)) { $jbil6 = (int) $jbil6; (int) $jbil6 += (int) $bil6; };
                 if(in_array('8',$objFilter->hari)) { $jbil7 = (int) $jbil7; (int) $jbil7 += (int) $bil7; };
                 if(in_array('9',$objFilter->hari)) { $jbilover7 = (int) $jbilover7; (int) $jbilover7 += (int) $bilover7; };
-                if(in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) { $jbil7addover7 = (int) $jbil7addover7; (int)$jbil7addover7 += (int)$jbil7+(int)$jbilover7;};
                 ?>
             </tr>
         <?php endforeach ?>
@@ -158,7 +157,6 @@ table.biasa td, table.listing td {
                 <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? (int)$jbilover7 : '' ?>
                 <td><?= $over_tujuh ?></td>
                 <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? ((int)$tujuh + (int)$over_tujuh) : '' ?></td>
-                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round((((int)$tujuh + (int)$over_tujuh)/(int)$jbiltotal),2)*100 : '' ?></td>
             </tr>
        </tbody>
    </table>
