@@ -1692,9 +1692,10 @@ class Kursus extends MY_Controller
                         "nokp<>" => $this->appsess->getSessionData("username"),
                     ]
                 )->dropdown('nokp','nama');
+                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
 
                 $plugins = $this->plugins();
-                $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', '', true);
+                $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', $data, true);
                 
                 $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses kursus luar']);
                 return $this->renderView("kursus/pengesahan_kehadiran/view", $data, $plugins);
