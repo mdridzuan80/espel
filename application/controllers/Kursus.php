@@ -587,7 +587,8 @@ class Kursus extends MY_Controller
                     'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("jenis")
+                    'jenis' => $this->input->post("jenis"),
+                    'stat_laksana' => 'L',
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -627,7 +628,8 @@ class Kursus extends MY_Controller
                     'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("jenis")
+                    'jenis' => $this->input->post("jenis"),
+                    'stat_laksana' => 'L',
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -669,7 +671,8 @@ class Kursus extends MY_Controller
                     'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
-                    'jenis' => $this->input->post("jenis")
+                    'jenis' => $this->input->post("jenis"),
+                    'stat_laksana' => 'L',
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
