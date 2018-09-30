@@ -54,7 +54,7 @@
                       <tr>
                         <th>Status</th>
                         <td>
-                          <?php if($kursus->stat_laksana = 'R'): ?>
+                          <?php if($kursus->stat_laksana == 'R'): ?>
                             <span class="label label-warning">RANCANG</span>
                           <?php else: ?>
                             <span class="label label-success">SELESAI</span>
