@@ -2486,8 +2486,9 @@ class Kursus extends MY_Controller
                     $dataUpload = array('upload_data' => $this->upload->data());
 
                     $dokumen_path = $dataUpload['upload_data']['file_name'];
+                    $dokumen_name = $_FILES['userfile']['name'];
 
-                    if( $this->kursus->update($kursus_id,['stat_laksana'=>'L', 'surat'=>$dokumen_path]))
+                    if( $this->kursus->update($kursus_id,['stat_laksana'=>'L', 'surat'=> $dokumen_path, 'dokumen_path' => $dokumen_name]))
                     {
                         // hantar email
                         $sen_peserta = $this->mohon_kursus->get_many_by(['kursus_id'=>$kursus_id]);

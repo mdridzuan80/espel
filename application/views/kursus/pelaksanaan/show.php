@@ -92,7 +92,7 @@
                     <?php if($kursus->stat_laksana == 'L'): ?>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <a class="btn btn-info btn-sm" target="_blank" href="<?= base_url('assets/uploads/' . $kursus->surat )?>">Papar Surat</a>
+                                <a class="btn btn-info btn-sm" target="_blank" href="<?= base_url('assets/uploads/' . $kursus->surat )?>"><?= $kursus->dokumen_path ?></a>
                             </div>
                         </div>
                     <?php endif ?>
