@@ -1203,4 +1203,11 @@ group by nokp
         $this->db->where('id', $id);
         $this->db->update('espel_kursus', $data);
     }
+
+    public function selectKursus($programId)
+    {
+        $sql = "select * from espel_kursus where program_id = ?";
+
+        return $this->db->query($sql, [$program_id])->result();
+    }
 }

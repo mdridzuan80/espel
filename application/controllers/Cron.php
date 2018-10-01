@@ -190,7 +190,9 @@ class Cron extends CI_Controller
 
         foreach($program as $programId)
         {
-            $kursus = $this->kursus->kursuByProgram($programId, 2018);
+            //$kursus = $this->kursus->kursuByProgram($programId, date('Y'));
+
+            $kursus = $this->kursus->selectKursus($programId);
 
             foreach($kursus as $rekod)
             {
