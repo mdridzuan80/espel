@@ -89,7 +89,7 @@
                            <input type="file" name="userfile" <?= ($kursus->stat_laksana == 'R') ? 'required' : '' ?> >
                         </div>
                     </div>
-                    <?php if($kursus->stat_laksana == 'L'): ?>
+                    <?php if($kursus->stat_laksana == 'L' && $kursus->surat): ?>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <a class="btn btn-info btn-sm" target="_blank" href="<?= base_url('assets/uploads/' . $kursus->surat )?>"><?= $kursus->dokumen_path ?></a>
@@ -157,7 +157,7 @@
                             <?php if($kursus->stat_laksana == 'R') : ?>
                             <button type="submit" class="btn btn-primary" name="submit">Laksana</button>
                             <?php else : ?>
-                            <button type="submit" class="btn btn-primary" name="submit">Kemaskini</button>
+                            <button type="submit" class="btn btn-primary" name="submit">Muat turun</button>
                             <?php endif ?>
                         </div>
                     </div>

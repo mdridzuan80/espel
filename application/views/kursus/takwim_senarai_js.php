@@ -41,12 +41,17 @@ $(function(){
                         else {
                             kodWarna = 'n';
                         }
+
+                        return "<i class=\"fa fa-square " + kodWarna + "\"></i> <b>"+row.tajuk.toUpperCase() + "</b><br><small>"+row.program.toUpperCase()+"</small>";
                     }
                     else {
-                        kodWarna = row.stat_jabatan.toLowerCase();
+                        if(row.stat_jabatan) {
+                            kodWarna = row.stat_jabatan.toLowerCase();
+                            return "<i class=\"fa fa-square " + kodWarna + "\"></i> <b>"+row.tajuk.toUpperCase() + "</b><br><small>"+row.program.toUpperCase()+"</small>";
+                        }
+                        
+                        return;
                     }
-
-                    return "<i class=\"fa fa-square " + kodWarna + "\"></i> <b>"+row.tajuk.toUpperCase() + "</b><br><small>"+row.program.toUpperCase()+"</small>";
                 }},
                 { data: function(row, type, set, meta){
                     tkhMula = moment(row.tkh_mula, 'YYYY-MM-DD HH:mm:ss');
@@ -60,7 +65,7 @@ $(function(){
                     orderable: false,
                     data: function(row, type, set, meta){
                     return "<button data-kursusid=\""+row.id+"\" class=\"btn btn-primary btn-xs btn-urus\" role=\"button\">Pengurusan</button>\
-                        <button data-kursusid=\""+row.id+"\" class=\"btn btn-danger btn-xs btn-hapus\" role=\"button\"><i class=\"fa fa-trash\"></i> Hapus</button>";
+                        <button data-kursus_id=\""+row.id+"\" class=\"btn btn-danger btn-xs btn-hapus\" role=\"button\"><i class=\"fa fa-trash\"></i> Hapus</button>";
                 }},
             ]
         });
@@ -161,9 +166,7 @@ $(function(){
                 url: base_url + 'kursus/delete_luar/' + kursus_id,
                 success: function() {
                     swal('Berjaya!','','success');
-                    resetPopulateEvent();
                     populateEvent();
-                    $('#MyModalKursusInfo').modal('hide');
                 } ,
                 error: function(jqXHR, textStatus,errorThrown) {
                     swal(textStatus,errorThrown,'error');
