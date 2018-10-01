@@ -1208,6 +1208,6 @@ group by nokp
     {
         $sql = "select * from espel_kursus where program_id = ?";
 
-        return $this->db->query($sql, [$program_id])->result();
+        return $this->db->query($sql, [$programId])->result();
     }
 }
