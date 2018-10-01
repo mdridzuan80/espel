@@ -125,8 +125,8 @@
                     <?php if($kursus->stat_hadir != 'L') : ?>
                     <div class="ln_solid"></div>
                     <div class="pull-right">
-                      <button id="btnEdit" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>" data-program_id="<?= $kursus->program_id ?>">EDIT</button>
-                      <button id="btnHapus" type="submit" class="btn btn-danger btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">HAPUS</button>
+                      <button id="btnEdit" type="button" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>" data-program_id="<?= $kursus->program_id ?>">EDIT</button>
+                      <button id="btnHapus" type="button" class="btn btn-danger btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">HAPUS</button>
                     </div
                     <?php endif ?>
                   <?php endif ?>

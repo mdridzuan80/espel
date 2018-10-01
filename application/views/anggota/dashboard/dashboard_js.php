@@ -69,6 +69,47 @@ $(function() {
         $('#MyModalKursusInfo').modal('hide');        
     });
 
+    $('#MyModalKursusInfo').on('click', '#btnHapus', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/delete_luar/' + kursus_id,
+                success: function() {
+                    swal('Berjaya!','','success');
+                    $('#MyModalKursusInfo').modal('hide');
+                    location.reload();
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
+
     $('#MyModalKursusInfo').on('hidden.bs.modal',function(e){
         var vData = $(this).find(".modal-body");
         vData.html(loader);
