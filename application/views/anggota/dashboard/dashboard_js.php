@@ -344,6 +344,7 @@ $(function() {
                         }).then(function(){
                             populateEvent();
                             $('#myModal').modal('hide');
+                            location.reload();
                         });
                     },
                     error: function(jqXHR, textStatus,errorThrown)

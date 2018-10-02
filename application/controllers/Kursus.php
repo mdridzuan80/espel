@@ -1521,6 +1521,7 @@ class Kursus extends MY_Controller
                 'tempat' => $this->input->post("txtTempat"),
                 'hari' => datediff("y", date("Y-m-d", strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d", strtotime($this->input->inputToDate("txtTkhTamat")))) + 1,
                 'anjuran' => $this->input->post("comAnjuran"),
+                'stat_hadir' => 'M',
             ];
             if($this->input->post("comAnjuran")=="L")
             {
@@ -1545,6 +1546,7 @@ class Kursus extends MY_Controller
                 'tempat' => $this->input->post("txtTempat"),
                 'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
                 'anjuran' => $this->input->post("comAnjuran"),
+                'stat_hadir' => 'M',
             ];
             if($this->input->post("comAnjuran")=="L")
             {
@@ -1571,6 +1573,7 @@ class Kursus extends MY_Controller
                 'anjuran' => $this->input->post("comAnjuran"),
                 'sumber'=>$this->input->post("txtSumber"),
                 'penyelia_nokp'=>$this->input->post("comPenyelia"),
+                'stat_hadir' => 'M',
             ];
             if($this->input->post("comAnjuran")=="L")
             {
