@@ -139,19 +139,20 @@
         var vTajuk = $(this).find(".modal-title");
         var vData = $(this).find(".modal-body");
         
+        vHeader.css( "color", "black" );
+        vData.html(loader);
+
         if(jenisDaftar=='R') {
             vHeader.css( "background-color", "#c7adf0" );
             vTajuk.html('Daftar Kursus (Rancang)');
+            load_content_modal_daftar(base_url + 'kursus/rancang_daftar_jabatan',vData);
         }
 
         if(jenisDaftar=='S') {
             vHeader.css( "background-color", "#dcb5b5" );
             vTajuk.html('Daftar Kursus (Siap)');
+            load_content_modal_daftar(base_url + 'kursus/separa_daftar_jabatan',vData);
         }
-
-        vHeader.css( "color", "black" );
-        vData.html(loader);
-        load_content_modal_daftar(base_url + 'kursus/separa_daftar_jabatan',vData);
     })
 
     $('#MyModalDaftarKursus').on('hidden.bs.modal',function(e){

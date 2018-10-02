@@ -3,7 +3,7 @@
         <div class="x_panel">
             <div class="x_title">
                 <h2>Takwim Kursus</h2>
-                <a id="btn-daftar-siap" data-jenis="S" href="<?=base_url('kursus/separa_daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus (Siap)</a>
+                <a id="btn-daftar-siap" data-jenis="S" href="<?=base_url('kursus/rancang_daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus (Siap)</a>
                 <a id="btn-daftar-rancang" data-jenis="R" href="<?=base_url('kursus/daftar_jabatan')?>" class="btn btn-primary pull-right btn-sm" role="button" title="Daftar kursus yang dianjurkan">Daftar Kursus (Rancang)</a>
                 <a href="<?=base_url("kursus/takwim_senarai/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar senarai">Senarai</a>
                 <a href="<?=base_url("kursus/takwim/$tahun/$bulan")?>" class="btn btn-primary pull-right btn-sm" role="button" title="Papar kalendar">Kalendar</a>

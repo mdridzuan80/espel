@@ -33,7 +33,7 @@
       <div class="x_content">
               <form id="frm-program-latihan" method="post" class="form-horizontal form-label-left">
                   <input type="hidden" class="hddProgram" name="hddProgram" />
-                  <input type="hidden" name="laksana" value="L" />
+                  <input type="hidden" name="laksana" value="R" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk *
                     </label>
@@ -177,7 +177,7 @@
           <div class="x_content">
               <form id="frm-pembelajaran-bersemuka" method="post" class="form-horizontal form-label-left">
                   <input type="hidden" class="hddProgram" name="hddProgram" />
-                  <input type="hidden" name="laksana" value="L" />
+                  <input type="hidden" name="laksana" value="R" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk *
                     </label>
@@ -322,7 +322,7 @@
           <div class="x_content">
               <form id="frm-pembelajaran-tidak-bersemuka" method="post" class="form-horizontal form-label-left">
                   <input type="hidden" class="hddProgram" name="hddProgram" />
-                  <input type="hidden" name="laksana" value="L" />
+                  <input type="hidden" name="laksana" value="R" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk *
                     </label>
@@ -467,7 +467,7 @@
           <div class="x_content">
               <form id="frm-kendiri" method="post" class="form-horizontal form-label-left">
                   <input type="hidden" class="hddProgram" name="hddProgram" />
-                  <input type="hidden" name="laksana" value="L" />
+                  <input type="hidden" name="laksana" value="R" />
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tajuk
                     </label>

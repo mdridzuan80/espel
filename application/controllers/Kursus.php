@@ -530,6 +530,36 @@ class Kursus extends MY_Controller
         }
     }
 
+    public function rancang_daftar_jabatan()
+    {
+        if ($this->appauth->hasPeranan($this->appsess->getSessionData("username"), ['PTJ'])) {
+            $this->load->model('program_model', 'program');
+            $this->load->model('aktiviti_model', 'aktiviti');
+            $this->load->model('profil_model', 'profil');
+            $this->load->model("peruntukan_model", "peruntukan");
+            $this->load->model('kumpulan_profil_model', 'kumpulan_profil');
+
+            //$jabatan_id = $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id;
+            $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp" => $this->appsess->getSessionData("username"), "kumpulan_id" => 3])->jabatan_id;
+            $data['sen_program'] = $this->program->get_all();
+            $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id", 1)->dropdown("id", "nama");
+            $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id", 3)->dropdown("id", "nama");
+            $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id", 4)->dropdown("id", "nama");
+            $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id", 5)->dropdown("id", "nama");
+            $data['sen_penyelia'] = $this->profil->where(["jabatan_id" => $jabatan_id])->dropdown('nokp', 'nama');
+
+            $elements = $this->peruntukan->get_peruntukan_related();
+            $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
+            $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan2(implode(',', $peruntukan));
+            $plugins['embedjs'][] = $this->load->view('kursus/rancang/jabatan/js', '', true);
+
+            //dd($data['sen_program']);
+            return $this->load->view("kursus/rancang/jabatan/daftar", $data);
+        } else {
+            return $this->renderPermissionDeny();
+        }
+    }
+
     public function separa_daftar_jabatan()
     {
         if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
@@ -588,7 +618,7 @@ class Kursus extends MY_Controller
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
                     'jenis' => $this->input->post("jenis"),
-                    'stat_laksana' => 'L',
+                    'stat_laksana' => $this->input->post("laksana"),
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -629,7 +659,7 @@ class Kursus extends MY_Controller
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
                     'jenis' => $this->input->post("jenis"),
-                    'stat_laksana' => 'L',
+                    'stat_laksana' => $this->input->post("laksana"),
                 ];
 
                 if($this->input->post("comAnjuran")=="L")
@@ -672,10 +702,10 @@ class Kursus extends MY_Controller
                     'telefon' => $this->input->post("txtTelefon"),
                     'email' => $this->input->post("txtEmail"),
                     'jenis' => $this->input->post("jenis"),
-                    'stat_laksana' => 'L',
+                    'stat_laksana' => $this->input->post("laksana"),
                 ];
 
-                if($this->input->post("comAnjuran")=="L")
+                if($this->input->post("comAnjuran")=="R")
                 {
                     $data["penganjur"] = $this->input->post("txtPenganjur");
                     $data["penganjur_id"] = NULL;
