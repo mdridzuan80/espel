@@ -1,14 +1,7 @@
 <style type="text/css">
-table
-{
-    width:  100%;
-}
-td
-{
-    /*text-align: center;*/
-}
 
 table.biasa, table.listing {
+    width: 100%;
     border-collapse: collapse;
     border-color: #000;
     border-width: 1px;
@@ -52,10 +45,10 @@ table.biasa td, table.listing td {
        </table>
     </page_footer>
 
-    <table>
+    <table style="width: 100%;">
         <tr>
-            <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
-            <td style="width: 75%;">
+            <td style="width:15%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width:70%;">
                 <table>
                     <tr>
                         <td><b>LAPORAN SENARAI KURSUS YANG DIHADIRI PADA <?= $tahun ?></b></td>
@@ -72,16 +65,17 @@ table.biasa td, table.listing td {
                     </tr>
                 </table>
             </td>
-            <td style="width:1%;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
+            <td style="width:15%; text-align: right;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
         </tr>
     </table>
     <br/>
-    <table class="biasa">
+
+    <table class="biasa" style="width: 100%;">
       <thead>
         <tr>
           <th style="width:5%;">BIL</th>
-          <th style="width:35%;">TAJUK KURSUS</th>
-          <th style="width:25%;">ANJURAN</th>
+          <th style="width:40%;">TAJUK KURSUS</th>
+          <th style="width:30%;">ANJURAN</th>
           <th style="width:10%;">MULA</th>
           <th style="width:10%;">TAMAT</th>
           <th style="width:5%;">BIL. HARI</th>
@@ -92,12 +86,12 @@ table.biasa td, table.listing td {
         <?php $mycpdp = 0 ?>
         <?php $jumlah=0; foreach($sen_hadir as $hadir) : ?>
         <tr>
-            <td><?= $x++ ?></td>
-            <td><?=$hadir->tajuk?></td>
-            <td><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
-            <td><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
-            <td><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
-            <td><?=$hadir->hari?></td>
+            <td style="width:5%;"><?= $x++ ?></td>
+            <td style="width:40%;"> <?=$hadir->tajuk?></td>
+            <td style="width:30%;"><?= ($hadir->anjuran == 'D') ? $hadir->anjuran_dalam : $hadir->anjuran_luar ?></td>
+            <td style="width:10%;"><?=date("d M Y h:i A",strtotime($hadir->tkh_mula))?></td>
+            <td style="width:10%;"><?=date("d M Y h:i A",strtotime($hadir->tkh_tamat))?></td>
+            <td style="width:5%;"><?=$hadir->hari?></td>
             <?php
                 $jumlah += $hadir->hari;
             ?>
