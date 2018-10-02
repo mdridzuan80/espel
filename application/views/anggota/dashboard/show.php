@@ -120,6 +120,9 @@
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
                 <td align="center">
+                    <?php if ($permohonan->stat_mohon == 'T') : ?>
+                    <span class="label label-danger">Tolak</span>
+                    <?php endif ?>
                     <?php if($permohonan->stat_mohon == 'M'):?>
                     <span class="label label-warning">Baru</span>
                     <?php endif?>
