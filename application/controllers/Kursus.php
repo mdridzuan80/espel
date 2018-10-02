@@ -1660,18 +1660,15 @@ class Kursus extends MY_Controller
 
         $kursus = $this->kursus->get($id);
 
-        if($kursus->stat_hadir=='M')
+        if($this->kursus->delete($id))
         {
-            if($this->kursus->delete($id))
-            {
-                $sql = $this->db->last_query();
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
-                return $this->output->set_status_header(200);
-            }
-            else
-            {
-                return $this->output->set_status_header(400,'Operasi hapus tidak berjaya!');
-            }
+            $sql = $this->db->last_query();
+            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Hapus kursus luar','sql'=>$sql]);
+            return $this->output->set_status_header(200);
+        }
+        else
+        {
+            return $this->output->set_status_header(400,'Operasi hapus tidak berjaya!');
         }
     }
 

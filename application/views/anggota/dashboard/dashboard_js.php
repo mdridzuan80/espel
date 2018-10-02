@@ -88,9 +88,10 @@ $(function() {
             $.ajax({
                 url: base_url + 'kursus/delete_luar/' + kursus_id,
                 success: function() {
-                    swal('Berjaya!','','success');
-                    $('#MyModalKursusInfo').modal('hide');
-                    location.reload();
+                    swal('Berjaya!','','success').then(function(){
+                        $('#MyModalKursusInfo').modal('hide');
+                        location.reload();
+                    });
                 } ,
                 error: function(jqXHR, textStatus,errorThrown) {
                     swal(textStatus,errorThrown,'error');
