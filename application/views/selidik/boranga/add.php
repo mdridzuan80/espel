@@ -167,26 +167,34 @@
 
                 <table>
                     <tr>
+                        <td width="1%"></td>
+                        <td width="90%"></td>
+                        <td width="2%">1</td>
+                        <td width="2%">2</td>
+                        <td width="2%">3</td>
+                        <td width="2%">4</td>
+                    </tr>
+                    <tr>
                         <td width="1%">1.</td>
                         <td width="90%">Pencapaian Objectif Kursus</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b1" required> 1
+                              <input type="radio" value="1" name="b1" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b1"> 2
+                              <input type="radio" value="2" name="b1">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b1"> 3
+                              <input type="radio" value="3" name="b1">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b1"> 4
+                              <input type="radio" value="4" name="b1">
                             </label>
                           </div> </td>
                     </tr>
@@ -195,22 +203,22 @@
                         <td width="90%">Kesesuaian tempoh masa</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b2" required> 1
+                              <input type="radio" value="1" name="b2" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b2"> 2
+                              <input type="radio" value="2" name="b2">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b2"> 3
+                              <input type="radio" value="3" name="b2">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b2"> 4
+                              <input type="radio" value="4" name="b2">
                             </label>
                           </div> </td>
                     </tr>
@@ -219,22 +227,22 @@
                         <td width="90%">Bilik kuliah / Dewan</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b3" required> 1
+                              <input type="radio" value="1" name="b3" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b3"> 2
+                              <input type="radio" value="2" name="b3">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b3"> 3
+                              <input type="radio" value="3" name="b3">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b3"> 4
+                              <input type="radio" value="4" name="b3">
                             </label>
                           </div> </td>
                     </tr>
@@ -243,22 +251,22 @@
                         <td width="90%">Nota/Handout</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b4" required> 1
+                              <input type="radio" value="1" name="b4" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b4"> 2
+                              <input type="radio" value="2" name="b4">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b4"> 3
+                              <input type="radio" value="3" name="b4">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b4"> 4
+                              <input type="radio" value="4" name="b4">
                             </label>
                           </div> </td>
                     </tr>
@@ -267,22 +275,22 @@
                         <td width="90%">Teknik penyampaian penceramah</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b5" required> 1
+                              <input type="radio" value="1" name="b5" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b5"> 2
+                              <input type="radio" value="2" name="b5">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b5"> 3
+                              <input type="radio" value="3" name="b5">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b5"> 4
+                              <input type="radio" value="4" name="b5">
                             </label>
                           </div> </td>
                     </tr>
@@ -291,22 +299,22 @@
                         <td width="90%">Kaedah kursus</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b6" required> 1
+                              <input type="radio" value="1" name="b6" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b6"> 2
+                              <input type="radio" value="2" name="b6">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b6"> 3
+                              <input type="radio" value="3" name="b6">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b6"> 4
+                              <input type="radio" value="4" name="b6">
                             </label>
                           </div> </td>
                     </tr>
@@ -315,22 +323,22 @@
                         <td width="90%">Pencapaian Objectif Kursus</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="b7" required> 1
+                              <input type="radio" value="1" name="b7" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b7"> 2
+                              <input type="radio" value="2" name="b7">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b7"> 3
+                              <input type="radio" value="3" name="b7">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b7"> 4
+                              <input type="radio" value="4" name="b7">
                             </label>
                           </div> </td>
                     </tr>
@@ -344,17 +352,17 @@
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="b8"> 2
+                              <input type="radio" value="2" name="b8">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="b8"> 3
+                              <input type="radio" value="3" name="b8">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="b8"> 4
+                              <input type="radio" value="4" name="b8">
                             </label>
                           </div> </td>
                     </tr>
@@ -392,26 +400,34 @@
                 <h2>Pengetahuan</h2>
                 <table>
                     <tr>
+                        <td width="1%"></td>
+                        <td width="90%"></td>
+                        <td width="2%">1</td>
+                        <td width="2%">2</td>
+                        <td width="2%">3</td>
+                        <td width="2%">4</td>
+                    </tr>
+                    <tr>
                         <td width="1%">9.</td>
                         <td width="90%">Kursus ini memberi pengetahuan baru</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c1" required> 1
+                              <input type="radio" value="1" name="c1" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c1"> 2
+                              <input type="radio" value="2" name="c1">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c1"> 3
+                              <input type="radio" value="3" name="c1">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c1"> 4
+                              <input type="radio" value="4" name="c1">
                             </label>
                           </div> </td>
                     </tr>
@@ -420,22 +436,22 @@
                         <td width="90%">Kursus ini meningkatkan pengetahuan berkaitan dengan tugas</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c2" required> 1
+                              <input type="radio" value="1" name="c2" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c2"> 2
+                              <input type="radio" value="2" name="c2">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c2"> 3
+                              <input type="radio" value="3" name="c2">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c2"> 4
+                              <input type="radio" value="4" name="c2">
                             </label>
                           </div> </td>
                     </tr>
@@ -445,22 +461,22 @@
                         Kursus ini memberi faedah dan membantu dalam melaksanakan tugas</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c3" required> 1
+                              <input type="radio" value="1" name="c3" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c3"> 2
+                              <input type="radio" value="2" name="c3">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c3"> 3
+                              <input type="radio" value="3" name="c3">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c3"> 4
+                              <input type="radio" value="4" name="c3">
                             </label>
                           </div> </td>
                     </tr>
@@ -469,22 +485,22 @@
                         <td width="90%">Pengetahuan di dalam kursus ini meningkatkan kualiti kerja</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c4" required> 1
+                              <input type="radio" value="1" name="c4" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c4"> 2
+                              <input type="radio" value="2" name="c4">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c4"> 3
+                              <input type="radio" value="3" name="c4">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c4"> 4
+                              <input type="radio" value="4" name="c4">
                             </label>
                           </div> </td>
                     </tr>
@@ -492,26 +508,34 @@
                 <h2>Kemahiran</h2>
                 <table>
                     <tr>
+                        <td width="1%"></td>
+                        <td width="90%"></td>
+                        <td width="2%">1</td>
+                        <td width="2%">2</td>
+                        <td width="2%">3</td>
+                        <td width="2%">4</td>
+                    </tr>
+                    <tr>
                         <td width="1%">13.</td>
                         <td width="90%">Kursus ini memberi kemahiran yang relevan dengan tugas</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c5" required> 1
+                              <input type="radio" value="1" name="c5" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c5"> 2
+                              <input type="radio" value="2" name="c5">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c5"> 3
+                              <input type="radio" value="3" name="c5">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c5"> 4
+                              <input type="radio" value="4" name="c5">
                             </label>
                           </div> </td>
                     </tr>
@@ -520,22 +544,22 @@
                         <td width="90%">Kemahiran yang diperolehi dapat meningkatkan keupayaan diri dalam melaksanakan tugas</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c6"required> 1
+                              <input type="radio" value="1" name="c6"required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c6"> 2
+                              <input type="radio" value="2" name="c6">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c6"> 3
+                              <input type="radio" value="3" name="c6">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c6"> 4
+                              <input type="radio" value="4" name="c6">
                             </label>
                           </div> </td>
                     </tr>
@@ -545,22 +569,22 @@
                         Kemahiran yang diperolehi di dalam kursus ini boleh meningkatkan kualiti tugas</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c7" required> 1
+                              <input type="radio" value="1" name="c7" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c7"> 2
+                              <input type="radio" value="2" name="c7">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c7"> 3
+                              <input type="radio" value="3" name="c7">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c7"> 4
+                              <input type="radio" value="4" name="c7">
                             </label>
                           </div> </td>
                     </tr>
@@ -569,22 +593,22 @@
                         <td width="90%">Kemahiran yang diperolehi di dalam kursus ini boleh menyumbangkan kepada pencapaian organisasi</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c8" required> 1
+                              <input type="radio" value="1" name="c8" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c8"> 2
+                              <input type="radio" value="2" name="c8">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c8"> 3
+                              <input type="radio" value="3" name="c8">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c8"> 4
+                              <input type="radio" value="4" name="c8">
                             </label>
                           </div> </td>
                     </tr>
@@ -592,26 +616,34 @@
                 <h2>Sikap</h2>
                 <table>
                     <tr>
+                        <td width="1%"></td>
+                        <td width="90%"></td>
+                        <td width="2%">1</td>
+                        <td width="2%">2</td>
+                        <td width="2%">3</td>
+                        <td width="2%">4</td>
+                    </tr>
+                    <tr>
                         <td width="1%">17.</td>
                         <td width="90%">Pembelajaran di dalam kursus membuka minda positif</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c9" required> 1
+                              <input type="radio" value="1" name="c9" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c9"> 2
+                              <input type="radio" value="2" name="c9">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c9"> 3
+                              <input type="radio" value="3" name="c9">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c9"> 4
+                              <input type="radio" value="4" name="c9">
                             </label>
                           </div> </td>
                     </tr>
@@ -620,22 +652,22 @@
                         <td width="90%">Kursus ini membantu diri menjadi lebih peka dan produktif</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c10" required> 1
+                              <input type="radio" value="1" name="c10" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c10"> 2
+                              <input type="radio" value="2" name="c10">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c10"> 3
+                              <input type="radio" value="3" name="c10">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c10"> 4
+                              <input type="radio" value="4" name="c10">
                             </label>
                           </div> </td>
                     </tr>
@@ -645,22 +677,22 @@
                         Kursus ini mendorong untuk bekerja dengan lebih cekap</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c11" required> 1
+                              <input type="radio" value="1" name="c11" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c11"> 2
+                              <input type="radio" value="2" name="c11">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c11"> 3
+                              <input type="radio" value="3" name="c11">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c11"> 4
+                              <input type="radio" value="4" name="c11">
                             </label>
                           </div> </td>
                     </tr>
@@ -669,22 +701,22 @@
                         <td width="90%">Kursus ini meningkatkan komitmen kepada organisasi</td>
                         <td><div class="radio">
                             <label>
-                              <input type="radio" value="1" name="c12" required> 1
+                              <input type="radio" value="1" name="c12" required>
                             </label>
                           </div></td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="2" name="c12"> 2
+                              <input type="radio" value="2" name="c12">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="3" name="c12"> 3
+                              <input type="radio" value="3" name="c12">
                             </label>
                           </div> </td>
                         <td width="2%"><div class="radio">
                             <label>
-                              <input type="radio" value="4" name="c12"> 4
+                              <input type="radio" value="4" name="c12">
                             </label>
                           </div> </td>
                     </tr>
