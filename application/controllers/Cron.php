@@ -216,4 +216,9 @@ class Cron extends CI_Controller
 
         $curl->close_session();
     }
+
+    public function clear_cache()
+    {
+        $this->db->cache_delete_all();
+    }
 }

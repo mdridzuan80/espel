@@ -220,9 +220,11 @@ group by nokp
             }
 
         }
-        //dd($sql);
+        
+        $this->db->cache_on();
         $rst = $this->db->query($sql);
-        //var_dump($this->db->last_query());
+        $this->db->cache_off();
+
         return $rst->result();
     }
 
