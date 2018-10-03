@@ -390,4 +390,13 @@ group by nokp
         
         return $rst->result();
     }
+
+    public function jawapanByPengguna($kursus_id, $jawapan, $nokp)
+    {
+        $this->db->set('stat_mohon', $jawapan);
+        $this->where('kursus_id', $kursus_id);
+        $this->where('nokp', $nokp);
+
+        return $this->db->update('espel_permohonan_kursus');
+    }
 }

@@ -62,10 +62,14 @@
                             <?php if(strtotime($kursus->tkh_mula) > time()) : ?>
                               <?php if($kursus->stat_laksana == 'R') : ?>
                                 <?php if($kursus->jenis == 'R') : ?>
-                                  <?php if($kursus->stat_mohon) : ?>
-                                    <span class="label label-warning">MOHON</span>
-                                  <?php else : ?>
-                                    <span class="label label-info">PERMOHONAN DIBUKA</span>
+                                  <?php if($kursus->stat_mohon == 'M' && $kursus->role == 'PTJ') : ?>
+                                    <span class="label label-warning">DICALONKAN</span>
+                                  <?php endif ?>
+                                  <?php if ($kursus->stat_mohon == 'L' && $kursus->role == 'PTJ') : ?>
+                                    <span class="label label-success">Terima Pencalonan</span>
+                                  <?php endif ?>
+                                  <?php if ($kursus->stat_mohon == 'T' && $kursus->role == 'PTJ') : ?>
+                                    <span class="label label-success">Tolak Pencalonan</span>
                                   <?php endif ?>
                                 <?php else : ?>
                                   <?php if($kursus->stat_mohon) : ?>
@@ -117,6 +121,13 @@
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <button id="btnMohon" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">MOHON</button>
+                        </div>
+                      <?php elseif($kursus->stat_laksana == 'R' && $kursus->stat_mohon == 'M') : ?>
+                        <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <button id="btnTerima" type="button" class="btn btn-success btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">TERIMA</button>
+                          <button id="btnTolak" type="button" class="btn btn-danger btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">TOLAK</button>
                         </div>
                       <?php endif ?>
                     <?php endif ?>

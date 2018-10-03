@@ -1109,10 +1109,10 @@ group by nokp
     public function info_kursus($id)
     {
         $username = $this->appsess->getSessionData('username');
-        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp, a.jenis
+        $sql = "select * from (select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, b.stat_mohon, b.stat_hadir, b.nokp, a.jenis, b.role
                 from espel_kursus a
                 INNER JOIN (
-                    select kursus_id, nokp, stat_mohon, stat_hadir from espel_permohonan_kursus where nokp = ?
+                    select kursus_id, nokp, stat_mohon, stat_hadir, role from espel_permohonan_kursus where nokp = ?
                 ) b ON a.id = b.kursus_id
                 LEFT JOIN espel_dict_program c on a.program_id = c.id
                 INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
@@ -1120,7 +1120,7 @@ group by nokp
                 LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
                 LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
                 UNION
-                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp, a.jenis
+                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, 'L' as stat_mohon, a.stat_hadir, a.nokp, a.jenis, 'null' as role
                 from espel_kursus a
                 LEFT JOIN espel_dict_program c on a.program_id = c.id
                 LEFT JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
@@ -1129,7 +1129,7 @@ group by nokp
                 LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
                 where nokp = ?
                 UNION
-                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp, a.jenis 
+                select a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.stat_jabatan, a.stat_laksana, NULL as stat_mohon, NULL as stat_hadir, NULL as nokp, a.jenis, 'null' as role
                 from espel_kursus a
                 LEFT JOIN espel_dict_program c on a.program_id = c.id
                 INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
@@ -1140,7 +1140,7 @@ group by nokp
                 and a.id not in (
                     select a.id from espel_kursus a
                     inner join (
-                        select kursus_id, nokp   from espel_permohonan_kursus where nokp = ?
+                        select kursus_id from espel_permohonan_kursus where nokp = ?
                     ) b ON a.id = b.kursus_id)
                 ) as a
                 where 1=1

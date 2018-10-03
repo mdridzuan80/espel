@@ -2305,7 +2305,7 @@ class Kursus extends MY_Controller
             'skim' => $this->input->post('skim'),
             'gred' => $this->input->post('gred'),
             'hari' => $this->input->post('hari'),
-            'sub_jabatan' => $this->input->post('sub_jabatan'),
+            'sub_jabatan' => $this->input->post('sub_jabatan'),        
         ]);
 
         $data['sen_calon'] = $this->mohon_kursus->get_calon($kursus_id, $filter);
@@ -2357,6 +2357,10 @@ class Kursus extends MY_Controller
     public function ajax_set_pencalonan($kursus_id)
     {
         $this->load->model('mohon_kursus_model','mohon_kursus');
+        $this->load->model('kursus_model', 'kursus');
+
+        $kursus = $this->kursus->get($kursus_id);
+
         foreach($this->input->post('chkKehadiran') as $kehadiran)
         {
             if($kehadiran)
@@ -2364,8 +2368,13 @@ class Kursus extends MY_Controller
                 $data['nokp'] = $kehadiran;
                 $data['kursus_id'] = $kursus_id;
                 $data['tkh'] = date('Y-m-d h:i');
-                $data['stat_mohon'] = 'L';
-                $data['stat_hadir'] = 'Y';
+                
+                if($kursus->jenis == 'S')
+                {
+                    $data['stat_mohon'] = 'L';
+                    $data['stat_hadir'] = 'Y';
+                }
+
                 $data['role'] = $this->appsess->getSessionData('kumpulan');
 
                 if(!$this->mohon_kursus->insert($data))
@@ -3078,5 +3087,15 @@ class Kursus extends MY_Controller
         {
             $this->appsess->setFlashSession("success", false);
         }
+    }
+
+    public function ajax_jawab_pencalonan($kursus_id, $jawapan)
+    {
+        $this->load->model('mohon_kursus_model', 'mohon_kursus');
+
+        if(! $this->mohon_kursus->jawapanByPengguna($kursus_id, $jawapan, $this->appsess->getSessionData('username')))
+            return $this->output->set_status_header(400);
+
+        return $this->output->set_status_header(200, 'Proses selesai');
     }
 }
