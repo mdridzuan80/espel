@@ -2544,26 +2544,28 @@ class Kursus extends MY_Controller
                                 $mprogram = $this->mprogram;
                                 $mjabatan = $this->mjabatan;
 
-                                if($penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
+                                if($penyelia && $penyelia->email && filter_var($penyelia->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $penyelia->email,
                                         "subject" => "[espel][Makluman] Anggota di bawah seliaan anda terpilih untuk mengikuti kursus",
                                         "body" => $this->load->view("layout/email/permohonan_kursus_berjaya",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram, 'mjabatan'=>$mjabatan],TRUE),
                                     ];
+
+                                    $this->appnotify->send($mail);
                                 }
-                                $this->appnotify->send($mail);
 
                                 if($pemohon->email && filter_var($pemohon->email, FILTER_VALIDATE_EMAIL))
                                 {
                                     $mail = [
                                         "to" => $pemohon->email,
                                         "subject" => "[espel][Makluman] Anda Terpilih untuk mengikuti kursus",
-                                        "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya",["pemohon"=>$pemohon,"kursus"=>$kursus,'mjawatan'=>$mjawatan,'mprogram'=>$mprogram],TRUE),
+                                        "body" => $this->load->view("layout/email/permohonan_pemohon_kursus_berjaya", ["pemohon"=>$pemohon, "kursus"=>$kursus, 'mjawatan'=>$mjawatan, 'mprogram'=>$mprogram, 'mjabatan' => $mjabatan],TRUE),
                                     ];
+
+                                    $this->appnotify->send($mail);
                                 }
 
-                                $this->appnotify->send($mail);
                             }
                         }
                         $this->appsess->setFlashSession("success", true);
