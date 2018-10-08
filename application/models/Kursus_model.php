@@ -915,7 +915,7 @@ AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
 and espel_permohonan_kursus.stat_hadir = 'Y' 
 and espel_permohonan_kursus.stat_mohon ='L'
 UNION
-SELECT mycpd.nokp, 'cpd' as id, round((mycpd.point/40)*7) as hari
+SELECT mycpd.nokp, 'cpd' as id, round((sum(mycpd.point)/40)*7) as hari
 FROM mycpd
 WHERE mycpd.tahun = " . $filter->tahun . "
 						) as xx
