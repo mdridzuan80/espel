@@ -158,7 +158,7 @@ and espel_permohonan_kursus.stat_mohon ='L'
 UNION
 SELECT mycpd.nokp, 'cpd' as id, round((sum(mycpd.point)/40)*7) as hari
 FROM mycpd
-WHERE mycpd.tahun = " . date('Y') . "
+WHERE mycpd.tahun = " . date('Y') . " group by mycpd.nokp, id
 						) as xx
 group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 			LEFT JOIN (
@@ -325,7 +325,7 @@ and espel_permohonan_kursus.stat_mohon ='L'
 UNION
 SELECT mycpd.nokp, 'cpd' as id, round((sum(mycpd.point)/40)*7) as hari
 FROM mycpd
-WHERE mycpd.tahun = " . $filter->tahun . "
+WHERE mycpd.tahun = " . $filter->tahun . " group by mycpd.nokp, id
 						) as xx
 group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 			LEFT JOIN (
