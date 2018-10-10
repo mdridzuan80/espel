@@ -503,7 +503,7 @@ group by nokp
         }
 
             $sql .= " group by a.kelas, a.kumpulan";
-        //dd($sql);
+        
         return $this->db->query($sql)->result();
     }
 
