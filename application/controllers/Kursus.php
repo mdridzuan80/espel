@@ -1385,7 +1385,7 @@ class Kursus extends MY_Controller
         $kursus->tempat = $this->input->post("txtTempat");
         $kursus->stat_jabatan = KursusModul::STATUS_KURSUS_DALAM_TIDAK;
         $kursus->stat_hadir = KursusModul::STATUS_HADIR_MOHON;
-        $kursus->stat_laksana = KursusModul::STATUS_KURSUS_LAKSANA_YA;
+        $kursus->stat_laksana = KursusModul::STATUS_KURSUS_LAKSANA_LULUS;
         $kursus->anjuran = $this->input->post("comAnjuran");
         $kursus->jenis = KursusModul::JENIS_KURSUS_LUAR;
 
@@ -1490,7 +1490,7 @@ class Kursus extends MY_Controller
         $kursus->tempat = $this->input->post("txtTempat");
         $kursus->stat_jabatan = KursusModul::STATUS_KURSUS_DALAM_TIDAK;
         $kursus->stat_hadir = KursusModul::STATUS_HADIR_MOHON;
-        $kursus->stat_laksana = KursusModul::STATUS_KURSUS_LAKSANA_YA;
+        $kursus->stat_laksana = KursusModul::STATUS_KURSUS_LAKSANA_LULUS;
         $kursus->anjuran = $this->input->post("comAnjuran");
         $kursus->dokumen_path = $kursus_asal->dokumen_path;
         $kursus->surat = $kursus_asal->surat;
@@ -1582,136 +1582,55 @@ class Kursus extends MY_Controller
 
     public function view_luar($id)
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
-        {
-            if(!$this->exist("submit"))
-            {
-                $this->load->model('kursus_model','kursus');
-                $this->load->model('program_model','program');
-                $this->load->model('aktiviti_model','aktiviti');
-                $this->load->model('profil_model','profil');
-
-                $data['kursus'] = $this->kursus->get($id);
-                $data['sen_program'] = $this->program->dropdown("id","nama");
-                $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
-                $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
-                $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
-                $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
-                $data['sen_penyelia'] = $this->profil->where(
-                    [
-                        "jabatan_id" => $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id,
-                        "nokp<>" => $this->appsess->getSessionData("username"),
-                    ]
-                )->dropdown('nokp','nama');
-                $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
-
-                $plugins = $this->plugins();
-                $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', $data, true);
-                
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses kursus luar']);
-                return $this->renderView("kursus/pengesahan_kehadiran/view", $data, $plugins);
-            }
-        }
-		else
-		{
+        if(! $this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
             return $this->renderPermissionDeny();
-		}
+
+        $this->load->model('kursus_model','kursus');
+        $this->load->model('program_model','program');
+        $this->load->model('aktiviti_model','aktiviti');
+        $this->load->model('profil_model','profil');
+
+        $data['kursus'] = $this->kursus->get($id);
+        $data['sen_program'] = $this->program->dropdown("id","nama");
+        $data['sen_xtvt_lat'] = $this->aktiviti->where("program_id",1)->dropdown("id","nama");
+        $data['sen_xtvt_pemb1'] = $this->aktiviti->where("program_id",3)->dropdown("id","nama");
+        $data['sen_xtvt_pemb2'] = $this->aktiviti->where("program_id",4)->dropdown("id","nama");
+        $data['sen_xtvt_kendiri'] = $this->aktiviti->where("program_id",5)->dropdown("id","nama");
+        $data['sen_penyelia'] = $this->profil->where(
+            [
+                "jabatan_id" => $this->profil->get($this->appsess->getSessionData("username"))->jabatan_id,
+                "nokp<>" => $this->appsess->getSessionData("username"),
+            ]
+        )->dropdown('nokp','nama');
+        $data['jab_ptj'] = $this->appsess->getSessionData('ptj_jabatan_id');
+
+        $plugins = $this->plugins();
+        $plugins['embedjs'][] = $this->load->view('kursus/pengesahan_kehadiran/js', $data, true);
+        
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses kursus luar']);
+        return $this->renderView("kursus/pengesahan_kehadiran/view", $data, $plugins);
     }
 
     public function do_sah($id)
     {
-        if($this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
-        {
-            $this->load->model('kursus_model','kursus');
-            $this->load->model('profil_model','profil');
-            $this->load->library('appnotify');
-            
-            $data = [
-                "stat_soal_selidik_a" => "T",
-                "stat_soal_selidik_b" => "T",
-                "stat_hadir" => $this->input->post("comKehadiran")
-            ];
+        if(! $this->appauth->hasPeranan($this->appsess->getSessionData("username"),['PTJ']))
+            return $this->renderPermissionDeny();
 
-            if($this->input->post("chkBorangA"))
-                $data["stat_soal_selidik_a"] = $this->input->post("chkBorangA");
-            if($this->input->post("chkBorangB"))
-                $data["stat_soal_selidik_b"] = $this->input->post("chkBorangB");
+        $this->load->model('kursus_model', 'kursus');
 
-            $this->load->model("kursus_model","kursus");
-            $this->load->model('hrmis_skim_model', 'mjawatan');
-            $this->load->model('hrmis_carta_model', 'mjabatan');
-            $this->load->model('program_model', 'mprogram');
+        $kursus = (new KursusModul)->get($id);
+        $kursus->stat_hadir = $this->input->post("comKehadiran");
 
-            if($this->kursus->update($id, $data))
-            {
-                /* if($data['stat_hadir'] == 'L')
-                {
-                    $pemohon = $this->profil->get_by("nokp",$this->kursus->get($id)->nokp);
-                    $penyelia = $this->profil->get_by("nokp",$pemohon->nokp_ppp);
-                    $kursus = $this->kursus->with(["program","aktiviti","penganjur"])->get($id);
-                    $mJawatan = $this->mjawatan;
-                    $mJabatan = $this->mjabatan;
-                    $mProgram = $this->mprogram;
+        if($this->input->post("chkBorangA"))
+            $kursus->stat_soal_selidik_a = $this->input->post("chkBorangA");
 
-                    if($pemohon->email_ppp)
-                    {
-                        $mail = [
-                            "to" => $pemohon->email_ppp,
-                            "subject" => "[espel][Makluman] Pengesahan Kehadiran Kursus",
-                            "body" => $this->load->view("layout/email/sah_hadir_kursus",["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=> $mProgram],TRUE),
-                        ];
-                        
-                        //jabatan profil
-                        $this->load->model('hrmis_carta_model','jabatan');
-                        $this->load->model('kumpulan_profil_model','kumpulan_profil');
-        
-                        $elements = $this->jabatan->senarai_penyelaras();
-                        $jabatan_penyelaras = get_parent_penyelaras($elements, $pemohon->jabatan_id);
+        if($this->input->post("chkBorangB"))
+            $kursus->stat_soal_selidik_b = $this->input->post("chkBorangB");
 
-                        $sen_penyelaras = $this->kumpulan_profil->get_many_by('jabatan_id', $jabatan_penyelaras);
-                        
-                        $kursus = $this->kursus->get($id);
-                        $mesej = $this->load->view('layout/email/makluman_penyelaras_sah_hadir_kursus',["pemohon"=>$pemohon,"penyelia"=>$penyelia, "kursus"=>$kursus, 'mjawatan'=>$mJawatan, 'mjabatan'=>$mJabatan, 'mprogram'=> $mProgram],TRUE);
+        $this->kursus->pengesahanKursusLuar($kursus);
 
-                        foreach($sen_penyelaras as $penyelaras)
-                        {
-                            $profil_penyelaras = $this->profil->get($penyelaras->profil_nokp);
-                            if($profil_penyelaras->email)
-                            {
-                                if (filter_var($profil_penyelaras->email, FILTER_VALIDATE_EMAIL)) {
-                                    $this->load->library('appnotify');
-
-                                    $mail = [
-                                        "to" => $profil_penyelaras->email,
-                                        "subject" => "[eSPeL][Makluman] Pengesahan hadir berkursus",
-                                        "body" => $mesej,
-                                    ];
-                                    $this->appnotify->send($mail);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        $this->appsess->setFlashSession("success", false);
-                        return redirect('kursus/pengesahan_kehadiran');
-                    }
-                } */
-
-                $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengesahkan kursus luar','sql'=>$sql]);
-                $this->appsess->setFlashSession("success", true);
-                return false;
-            }
-            else
-            {
-                $this->appsess->setFlashSession("success", false);
-                return false;
-            }
-        }
-		else
-		{
-			return $this->renderPermissionDeny();
-		}
+        $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Mengesahkan kursus luar','sql'=>$sql]);
+        $this->appsess->setFlashSession("success", true);
     }
 
     public function do_sah_kemaskini($id)

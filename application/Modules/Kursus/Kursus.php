@@ -18,7 +18,7 @@ class Kursus extends Module
     const STATUS_HADIR_YA = 'Y';
     const STATUS_HADIR_TIDAK = 'T';
 
-    const STATUS_KURSUS_LAKSANA_YA = 'Y';
+    const STATUS_KURSUS_LAKSANA_LULUS = 'L';
 
     const ANJURAN_LUAR = 'L';
     const ANJURAN_DALAM = 'D';
@@ -51,6 +51,9 @@ class Kursus extends Module
     protected $telefon = null;
     protected $email = null;
     protected $jenis = null; // L => Luar, S => Siap, R => Rancang
+    protected $stat_soal_selidik_a = 'T';
+    protected $stat_soal_selidik_b = 'T';
+
 
     public function __contruct()
     {
@@ -71,10 +74,10 @@ class Kursus extends Module
 
     public function calcHari()
     {
-        if ($this->program_id === SELF::LATIHAN_DALAM_NEGARA || $this->program_id === SELF::LATIHAN_LUAR_NEGARA)
-            return $this->hari = kiraanHari(date('Y-m-d H:i', strtotime($this->tkh_mula)), date('Y-m-d H:i', strtotime($this->tkh_tamat)));
+        if ($this->program_id == SELF::LATIHAN_DALAM_NEGARA || $this->program_id == SELF::LATIHAN_LUAR_NEGARA)
+            return $this->hari = datediff("y", date("Y-m-d", strtotime($this->tkh_mula)), date("Y-m-d", strtotime($this->tkh_tamat))) + 1;
 
-        return $this->hari = datediff("y", date("Y-m-d", strtotime($this->tkh_mula)), date("Y-m-d", strtotime($this->tkh_tamat))) + 1;
+        return $this->hari = kiraanHari(date('Y-m-d H:i', strtotime($this->tkh_mula)), date('Y-m-d H:i', strtotime($this->tkh_tamat)));
     }
 
     public function bertindih()
@@ -113,7 +116,7 @@ class Kursus extends Module
         $this->tkh_tamat = constructDate($kursus->tkh_tamat);
         $this->tempat = $kursus->tempat;
         $this->stat_jabatan = $kursus->stat_jabatan;
-        $this->stat_hadir = SELF::STATUS_HADIR_MOHON;
+        $this->stat_hadir = $kursus->stat_hadir;
         $this->stat_laksana = $kursus->stat_laksana;
         $this->anjuran = $kursus->anjuran;
         $this->penganjur = $kursus->penganjur;
@@ -124,7 +127,9 @@ class Kursus extends Module
         $this->surat = $kursus->surat;
         $this->hari = $kursus->hari;
         $this->jenis = $kursus->jenis;
-
+        $this->stat_soal_selidik_a = $kursus->stat_soal_selidik_a;
+        $this->stat_soal_selidik_b = $kursus->stat_soal_selidik_b;
+        
         return $this;
     }
 }

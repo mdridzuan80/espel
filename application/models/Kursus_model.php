@@ -54,6 +54,17 @@ class Kursus_model extends MY_Model
         return $this->insert($data);
     }
 
+    public function pengesahanKursusLuar($kursus)
+    {
+        $data = [
+            'stat_hadir' => $kursus->stat_hadir,
+            'stat_soal_selidik_a' => $kursus->stat_soal_selidik_a,
+            'stat_soal_selidik_b' => $kursus->stat_soal_selidik_b,
+        ];
+
+        return $this->update($kursus->kursus_id, $data);
+    }
+
     public function get_all_kursus_hadir($nokp, $tahun)
     {
         $sql = "select * from (SELECT espel_kursus.id, espel_kursus.program_id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
