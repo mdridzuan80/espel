@@ -34,7 +34,7 @@
 	"autoload": {
 		"psr-4": {
 			"Espel\\": "application/libraries",
-			"Module\\": "application/Modules",
+			"Module\\": "application/Modules"
 		}
 	}
 }

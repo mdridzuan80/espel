@@ -23,7 +23,7 @@ class Kursus_model extends MY_Model
         parent::__construct();
     }
 
-    public function daftar($kursus)
+    public function daftarKursusLuar($kursus)
     {
         $kursus->calcHari();
         $data = [
@@ -47,7 +47,11 @@ class Kursus_model extends MY_Model
             'dokumen_path' => $kursus->dokumen_path,
             'surat' => $kursus->surat,
         ];
-        $this->insert($data);
+
+        if($kursus->kursus_id)
+            return $this->update($kursus->kursus_id, $data);
+         
+        return $this->insert($data);
     }
 
     public function get_all_kursus_hadir($nokp, $tahun)

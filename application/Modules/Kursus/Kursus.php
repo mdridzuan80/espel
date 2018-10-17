@@ -29,6 +29,7 @@ class Kursus extends Module
     const PEMBELAJARAN_SESI_TIDAK_BERSEMUKA = 4;
     const KENDIRI = 5;
 
+    protected $kursus_id = null;
     protected $tajuk = null;
     protected $program_id = null;
     protected $aktiviti_id = null;
@@ -96,5 +97,34 @@ class Kursus extends Module
             });
 
         return false;
+    }
+
+    public function get($kursus_id)
+    {
+        $this->CI->load->model('kursus_model', 'kursus');
+        $kursus = $this->CI->kursus->get($kursus_id);
+
+        $this->kursus_id = $kursus_id;
+        $this->tajuk = strtoupper($kursus->tajuk);
+        $this->nokp = $kursus->nokp;
+        $this->program_id = $kursus->program_id;
+        $this->aktiviti_id = $kursus->aktiviti_id;
+        $this->tkh_mula = constructDate($kursus->tkh_mula);
+        $this->tkh_tamat = constructDate($kursus->tkh_tamat);
+        $this->tempat = $kursus->tempat;
+        $this->stat_jabatan = $kursus->stat_jabatan;
+        $this->stat_hadir = SELF::STATUS_HADIR_MOHON;
+        $this->stat_laksana = $kursus->stat_laksana;
+        $this->anjuran = $kursus->anjuran;
+        $this->penganjur = $kursus->penganjur;
+        $this->penganjur_id = $kursus->penganjur_id;
+        $this->sumber = $kursus->sumber;
+        $this->penyelia_nokp = $kursus->penyelia_nokp;
+        $this->dokumen_path = $kursus->dokumen_path;
+        $this->surat = $kursus->surat;
+        $this->hari = $kursus->hari;
+        $this->jenis = $kursus->jenis;
+
+        return $this;
     }
 }
