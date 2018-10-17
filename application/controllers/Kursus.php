@@ -2,7 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 use Underscore\Types\Arrays;
-
+use Module\Kursus\Kursus as KursusModul;
+use Module\Uploader\Uploader;
+     
 class Kursus extends MY_Controller
 {
     public function __construct()
@@ -1370,129 +1372,61 @@ class Kursus extends MY_Controller
 
     public function ajax_do_daftar_luar()
     {
-        if($this->input->post("hddProgram")==1 || $this->input->post("hddProgram")==2)
-        {
-            $data = [
-                'tajuk' => strtoupper($this->input->post("txtTajuk")),
-                'program_id' => $this->input->post("hddProgram"),
-                'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
-                'tempat' => $this->input->post("txtTempat"),
-                'nokp' => $this->appsess->getSessionData('username'),
-                'stat_jabatan' => "T",
-                'stat_hadir' => "M",
-                'stat_laksana' => "L",
-                'hari' => datediff("y", date("Y-m-d",strtotime($this->input->inputToDate("txtTkhMula"))), date("Y-m-d",strtotime($this->input->inputToDate("txtTkhTamat"))))+1,
-                'anjuran' => $this->input->post("comAnjuran"),
-                'jenis' => "L",
-            ];
-            if($this->input->post("comAnjuran")=="L")
-            {
-                $data["penganjur"] = $this->input->post("txtPenganjur");
-                $data["penganjur_id"] = NULL;
-            }
-            if($this->input->post("comAnjuran")=="D")
-            {
-                $data["penganjur"] = NULL;
-                $data["penganjur_id"] = $this->input->post("comPenganjur");
-            }
-        }
+        $this->load->model("kursus_model", "kursus");
 
-        if($this->input->post("hddProgram")==3 || $this->input->post("hddProgram")==4)
-        {
-            $data = [
-                'tajuk' => $this->input->post("txtTajuk"),
-                'program_id' => $this->input->post("hddProgram"),
-                'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
-                'tempat' => $this->input->post("txtTempat"),
-                'nokp' => $this->appsess->getSessionData('username'),
-                'stat_jabatan' => "T",
-                'stat_hadir' => "M",
-                'stat_laksana' => "L",
-                'hari' => kiraanHari(date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))),date('Y-m-d H:i',strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
-                'anjuran' => $this->input->post("comAnjuran"),
-                'jenis' => "L",
-            ];
-            if($this->input->post("comAnjuran")=="L")
-            {
-                $data["penganjur"] = $this->input->post("txtPenganjur");
-                $data["penganjur_id"] = NULL;
-            }
-            if($this->input->post("comAnjuran")=="D")
-            {
-                $data["penganjur"] = NULL;
-                $data["penganjur_id"] = $this->input->post("comPenganjur");
-            }
-        }
+        $kursus = new KursusModul;
 
-        if($this->input->post("hddProgram")==5)
-        {
-            $data = [
-                'tajuk' => $this->input->post("txtTajuk"),
-                'program_id' => $this->input->post("hddProgram"),
-                'aktiviti_id' => $this->input->post("comAktiviti"),
-                'tkh_mula' => constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")),
-                'tkh_tamat' => constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat")),
-                'tempat' => $this->input->post("txtTempat"),
-                'nokp' => $this->appsess->getSessionData('username'),
-                'stat_jabatan' => "T",
-                'stat_hadir' => "M",
-                'stat_laksana' => "L",
-                'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula")))), date('Y-m-d H:i', strtotime(constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"))))),
-                'anjuran' => $this->input->post("comAnjuran"),
-                'sumber'=>$this->input->post("txtSumber"),
-                'penyelia_nokp'=>$this->input->post("comPenyelia"),
-                'nokp'=>$this->appsess->getSessionData('username'),
-                'jenis' => "L",
-            ];
-            if($this->input->post("comAnjuran")=="L")
-            {
-                $data["penganjur_id"] = NULL;
-                $data["penganjur"] = $this->input->post("txtPenganjur");
-            }
-            if($this->input->post("comAnjuran")=="D")
-            {
-                $data["penganjur"] = NULL;
-                $data["penganjur_id"] = $this->input->post("comPenganjur");
-            }
-        }
+        $kursus->tajuk = strtoupper($this->input->post("txtTajuk"));
+        $kursus->nokp = $this->appsess->getSessionData('username');
+        $kursus->program_id = $this->input->post("hddProgram");
+        $kursus->aktiviti_id = $this->input->post("comAktiviti");
+        $kursus->tkh_mula = constructDate($this->input->post("txtTkhMula") . " " . $this->input->post("txtMasaMula"));
+        $kursus->tkh_tamat = constructDate($this->input->post("txtTkhTamat") . " " . $this->input->post("txtMasaTamat"));
+        $kursus->tempat = $this->input->post("txtTempat");
+        $kursus->stat_jabatan = KursusModul::STATUS_KURSUS_DALAM_TIDAK;
+        $kursus->stat_hadir = KursusModul::STATUS_HADIR_MOHON;
+        $kursus->stat_laksana = KursusModul::STATUS_KURSUS_LAKSANA_YA;
+        $kursus->anjuran = $this->input->post("comAnjuran");
+        $kursus->jenis = KursusModul::JENIS_KURSUS_LUAR;
 
-        $this->load->model("kursus_model","kursus");
+        if($this->input->post("comAnjuran")== KursusModul::JENIS_KURSUS_LUAR)
+            $kursus->penganjur = $this->input->post("txtPenganjur");
+
+        if($this->input->post("comAnjuran")=="D")
+            $kursus->penganjur_id = $this->input->post("comPenganjur");
+
+        if($this->input->post("hddProgram")==KursusModul::KENDIRI)
+        {
+            $kursus->sumber = $this->input->post("txtSumber");
+            $kursus->penyelia_nokp = $this->input->post("comPenyelia");
+        }
 
         if (!empty($_FILES['userfile']['name']))
         {
-            $config['upload_path'] = './assets/uploads/';
-            $config['encrypt_name'] = TRUE;
-            $config['allowed_types'] = ['pdf','jpeg','jpg','png'];
+            $uploader = new Uploader;
 
-            $this->load->library('upload', $config);
+            if(! $docName = $uploader->upload())
+            {
+                $error = array('error' => $this->upload->display_errors());
+                return $this->output->set_status_header(400, 'Dokumen yang dilampirkan bermasalah');
+            }
 
-            if ( ! $this->upload->do_upload('userfile'))
-            {
-                    $error = array('error' => $this->upload->display_errors());
-                    return $this->output->set_status_header(400,'Dokumen yang dilampirkan bermasalah');
-            }
-            else
-            {
-                $dataUpload = array('upload_data' => $this->upload->data());
-                $data['dokumen_path'] = $dataUpload['upload_data']['file_name'];
-            }
+            $kursus->dokumen_path = $docName['file_name'];
+            $kursus->surat = $docName['orig_name'] ;
         }
 
-        if((! $this->pengguna_exists($data)) && $this->kursus->insert($data))
-        {
-            $sql = $this->db->last_query();
-            $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Daftar kursus luar','sql'=>$sql]);
-
-            return $this->output->set_status_header(200);
-        }
-        else
+        if($kursus->bertindih())
         {
             return $this->output->set_status_header(400,'Pastikan semua medan diisi atau kursus ini tidak bertindih dengan kursus lain!');
         }
+
+        $this->kursus->daftar($kursus);
+
+        $sql = $this->db->last_query();
+        $this->applog->write(['nokp' => $this->appsess->getSessionData('username'), 'event' => 'Daftar kursus luar', 'sql' => $sql]);
+
+        return $this->output->set_status_header(200);
+
     }
 
     private function pengguna_exists($data)

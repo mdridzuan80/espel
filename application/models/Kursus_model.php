@@ -23,6 +23,33 @@ class Kursus_model extends MY_Model
         parent::__construct();
     }
 
+    public function daftar($kursus)
+    {
+        $kursus->calcHari();
+        $data = [
+            'tajuk' => $kursus->tajuk,
+            'program_id' => $kursus->program_id,
+            'aktiviti_id' => $kursus->aktiviti_id,
+            'tkh_mula' => $kursus->tkh_mula,
+            'tkh_tamat' => $kursus->tkh_tamat,
+            'tempat' => $kursus->tempat,
+            'nokp' => $kursus->nokp,
+            'stat_jabatan' => $kursus->stat_jabatan,
+            'stat_hadir' => $kursus->stat_hadir,
+            'stat_laksana' => $kursus->stat_laksana,
+            'hari' => $kursus->hari,
+            'anjuran' => $kursus->anjuran,
+            'jenis' => $kursus->jenis,
+            'penganjur' => $kursus->penganjur,
+            'penganjur_id' => $kursus->penganjur_id,
+            'sumber' => $kursus->sumber,
+            'penyelia_nokp' => $kursus->penyelia_nokp,
+            'dokumen_path' => $kursus->dokumen_path,
+            'surat' => $kursus->surat,
+        ];
+        $this->insert($data);
+    }
+
     public function get_all_kursus_hadir($nokp, $tahun)
     {
         $sql = "select * from (SELECT espel_kursus.id, espel_kursus.program_id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,

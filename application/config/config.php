@@ -567,6 +567,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['espel_default_jabatan_id'] = '6792';
+$config['espel_upload_folder'] = './assets/uploads';
 
 ### HRMIS variable ####
 $config['espel_hrmis_url'] = 'https://perkongsiandata.eghrmis.gov.my/wsintegrasi/dataservice.asmx';
