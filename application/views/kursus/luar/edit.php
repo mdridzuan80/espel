@@ -1,4 +1,4 @@
-<div>
+ <div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -117,7 +117,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        <span>*Hanya Fail PDF Sahaja</span>
+                        <span>*Hanya PDF/imej berformat jpeg/jpg/gif/png sahaja dibenarkan</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -228,7 +228,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        <span>*Hanya Fail PDF Sahaja</span>
+                        <span>*Hanya PDF/imej berformat jpeg/jpg/gif/png sahaja dibenarkan</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -339,7 +339,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        <span>*Hanya Fail PDF Sahaja</span>
+                        <span>*Hanya PDF/imej berformat jpeg/jpg/gif/png sahaja dibenarkan</span>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -468,7 +468,7 @@
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Dokumen Sokongan</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
                         <input type="file" name="userfile">
-                        <span>*Hanya Fail PDF Sahaja</span>
+                        <span>*Hanya PDF/imej berformat jpeg/jpg/gif/png sahaja dibenarkan</span>
                     </div>
                   </div>                  <div class="ln_solid"></div>
                   <div class="form-group">

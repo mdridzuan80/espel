@@ -2,8 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 use Underscore\Types\Arrays;
-use Module\Kursus\Kursus as KursusModul;
 use Module\Uploader\Uploader;
+use Module\Kursus\Kursus as KursusModul;
      
 class Kursus extends MY_Controller
 {
