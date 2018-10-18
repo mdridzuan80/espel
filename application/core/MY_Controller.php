@@ -63,11 +63,13 @@ class MY_Controller extends CI_Controller {
                 $sidemenu = SELF::PTJ_SIDEMENU;
             break;
             case AppAuth::PENGGUNA:
+                $this->load->model('program_model', 'program');
                 $this->load->model("kursus_model", "kursus");
                 $this->load->model("mohon_kursus_model", "mohon_kursus");
                 $this->load->model('profil_model','profil');
                 $this->load->model('borangb_model','borangb');
 
+                $layout['sen_program'] = $this->program->get_all();
                 $layout["sen_permohonan"] = $this->mohon_kursus->get_permohonan($this->appsess->getSessionData('username'));
                 $layout["sen_hadir"] = $this->kursus->get_all_kursus_hadir($this->appsess->getSessionData('username'),date('Y'));
                 $layout['sen_dicalonkan'] = $this->mohon_kursus->get_dicalonkan($this->appsess->getSessionData('username'));
