@@ -28,11 +28,12 @@
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
 
-
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-              <img src="<?=base_url("assets/images/jknmelaka-logo-x.png")?>"/>
+            <div style="position:relative;">
+              <a href="<?= base_url() ?>"><img src="<?= base_url("assets/img/logo.png") ?>" style="position:relative;display:block; left: -50px"/></a>
+            </div>
             <form method="POST">
                 <?php $csrf = [
                     'name' => $this->security->get_csrf_token_name(),
@@ -40,12 +41,11 @@
                     ];
                 ?>
                 <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
-              <h1>E-SPeL JKNM</h1>
               <div>
-                <input type="text" class="form-control input-sm" name="username" placeholder="Username" required />
+                <input type="text" class="form-control input-md" name="username" placeholder="Username" required />
               </div>
               <div>
-                <input type="password" class="form-control input-sm" name="password" placeholder="Password" required />
+                <input type="password" class="form-control input-md" name="password" placeholder="Password" required />
               </div>
 
               <div>

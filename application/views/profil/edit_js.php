@@ -90,6 +90,48 @@ $(function(){
         });
     });
 
+    $('#myModal').on('click','.btn-hapus-penyelaras',function(e) { 
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/delete_luar/' + kursus_id,
+                success: function() {
+                    swal('Berjaya!','','success').then(function(){
+                        $('#MyModalKursusInfo').modal('hide');
+                        location.reload();
+                    });
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
+
     function initform(program_id) {
         if(program_id == 1 || program_id == 2){
             viewPanelKursus(true,false,false,false);

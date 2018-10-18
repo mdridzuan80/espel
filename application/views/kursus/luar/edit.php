@@ -102,7 +102,7 @@
                   <div id="input-com-penganjur" class="form-group" <?=($kursus->anjuran=='D'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurLatihan" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                        <input id="comPenganjurLatihan" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
                   <?php if($kursus->dokumen_path) : ?>
@@ -124,6 +124,9 @@
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success" name="submit">Simpan</button>
+                        <?php if(appsess()->getSessionData("kumpulan") == AppAuth::PENYELARAS) : ?>
+                        <button type="button" class="btn btn-danger btn-hapus-penyelaras" data-kursus_id="<?= $kursus->id ?>" name="submit">Hapus</button>
+                        <?php endif ?>
                     </div>
                   </div>
               </form>
@@ -213,7 +216,7 @@
                   <div id="input-com-penganjur-pemb" class="form-group" <?=($kursus->anjuran=='D'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurPemb" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                        <input id="comPenganjurPemb" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
                   <?php if($kursus->dokumen_path) : ?>
@@ -235,6 +238,9 @@
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success" name="submit">Simpan</button>
+                        <?php if (appsess()->getSessionData("kumpulan") == AppAuth::PENYELARAS) : ?>
+                        <button type="button" class="btn btn-danger btn-hapus-penyelaras" data-kursus_id="<?= $kursus->id ?>" name="submit">Hapus</button>
+                        <?php endif ?>
                     </div>
                   </div>
               </form>
@@ -324,7 +330,7 @@
                   <div id="input-com-penganjur-pemb2" class="form-group" <?=($kursus->anjuran=='D'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurPemb2" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                        <input id="comPenganjurPemb2" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
                   <?php if($kursus->dokumen_path) : ?>
@@ -346,6 +352,9 @@
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success" name="submit">Simpan</button>
+                        <?php if (appsess()->getSessionData("kumpulan") == AppAuth::PENYELARAS) : ?>
+                        <button type="button" class="btn btn-danger btn-hapus-penyelaras" data-kursus_id="<?= $kursus->id ?>" name="submit">Hapus</button>
+                        <?php endif ?>
                     </div>
                   </div>
               </form>
@@ -453,7 +462,7 @@
                   <div id="input-com-penganjur-kend" class="form-group" <?=($kursus->anjuran=='D'?"":"style=\"display:none;\"")?> >
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurKend" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
+                        <input id="comPenganjurKend" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'" value="<?=$kursus->penganjur_id?>">
                     </div>
                   </div>
                   <?php if($kursus->dokumen_path) : ?>
@@ -474,6 +483,9 @@
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success" name="submit">Simpan</button>
+                        <?php if (appsess()->getSessionData("kumpulan") == AppAuth::PENYELARAS) : ?>
+                        <button type="button" class="btn btn-danger btn-hapus-penyelaras" data-kursus_id="<?= $kursus->id ?>" name="submit">Hapus</button>
+                        <?php endif ?>
                     </div>
                   </div>
               </form>
