@@ -3,7 +3,7 @@
   <div class="menu_section">
     <h3>Menu Utama</h3>
     <ul class="nav side-menu">
-      <li><a href="<?=base_url()?>"><i class="fa fa-home"></i> Dashboard</a></li>
+      <li><a href="<?=base_url('dashboard')?>"><i class="fa fa-home"></i> Dashboard</a></li>
       <li><a><i class="fa fa-users"></i> Modul Pengguna <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?=base_url("pengguna")?>">Senarai Pengguna</a></li>

@@ -142,7 +142,7 @@ class Profil extends MY_Controller
 	{
 		$this->appsess->setSessionData('ptj_jabatan_id', $jabatan_id);
 		$this->appsess->setSessionData('kumpulan', $peranan);
-		redirect('');
+		redirect('dashboard');
 	}
 
 	public function reset_katalaluan($username)

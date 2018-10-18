@@ -26,7 +26,7 @@ class Auth extends MY_Controller
                         return $this->renderLoginView('reset',['username' => $username]);
                     }
                     $this->appsess->setFlashSession("success", false);
-                    return redirect('');
+                    return redirect('dashboard');
                 }
                 $this->appsess->setFlashSession("success", false);
             }
