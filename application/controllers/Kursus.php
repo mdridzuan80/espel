@@ -274,12 +274,13 @@ class Kursus extends MY_Controller
             "tahun" => $this->uri->segment(3, date('Y')),
             "bulan" => $this->uri->segment(4, date('m'))
         ]);
-        $data["sen_kursus"]=$this->kursus->takwim_day_pengguna_2(0,$data["takwim"]);
+        $data["sen_kursus"] = $this->kursus->takwim_day_pengguna_2(0,$data["takwim"]);
         $plugins = $this->plugins();
         $plugins["embedjs"][] = $this->load->view("kursus/takwim_pengguna_js",NULL,TRUE);
         
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses senarai kursus  (Pengguna)']);
         $this->set_filterMenu(TRUE);
+        
         return $this->renderView("kursus/takwim_pengguna_senarai", $data, $plugins);
     }
 

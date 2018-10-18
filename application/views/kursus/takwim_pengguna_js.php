@@ -1,7 +1,7 @@
 <script>
 $(function(){
-    var tahun = <?= date('Y') ?>;
-    var bulan = <?= date('m') ?>;
+    var tahun = <?= $this->uri->segment(3, date('Y')) ?>;
+    var bulan = <?= $this->uri->segment(4, date('m')) ?>;
     var xhr = {};
     var kursusId = 0;
     var tajuk = '';

@@ -721,15 +721,11 @@ class Kursus_model extends MY_Model
             $takwim->bulan, $takwim->tahun,
             $username, $takwim->bulan, $takwim->tahun
         ]);
-
-        if($rst->num_rows())
-        {
-            return $rst->result_array();
-        }
-        else
-        {
+        
+        if(! $rst->num_rows())
             return [];
-        }
+        
+        return $rst->result_array();
     }
 
     public function takwim_day_pengguna_3($ptj_jabatan_id, $takwim)
