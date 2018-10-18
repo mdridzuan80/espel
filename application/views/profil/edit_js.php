@@ -27,15 +27,6 @@ $(function(){
         load_content_modal(modalUrl,postData,vData);
     })
 
-    $('#myModal').on('shown.bs.modal',function(e){
-        initform(programId);
-        $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
-        $('#comPenganjurLatihan').combotree();
-        $('#comPenganjurPemb').combotree();
-        $('#comPenganjurPemb2').combotree();
-        $('#comPenganjurKend').combotree();
-    })
-
     $('#myModal').on('hidden.bs.modal',function(e){
         var vData = $(this).find(".modal-body");
         vData.html(loader);
@@ -46,6 +37,12 @@ $(function(){
             url: url,
             success: function(data, textStatus, jqXHR){
                 placeholder.html(data);
+                initform(programId);
+                $(".easyui-combotree").css("width", $( '.col-md-6' ).actual( 'width' )-5);
+                $('#comPenganjurLatihan').combotree();
+                $('#comPenganjurPemb').combotree();
+                $('#comPenganjurPemb2').combotree();
+                $('#comPenganjurKend').combotree();
             }
         });
     }
@@ -133,7 +130,8 @@ $(function(){
     });
 
     function initform(program_id) {
-        if(program_id == 1 || program_id == 2){
+
+        if(program_id == 1 || program_id == 2) {
             viewPanelKursus(true,false,false,false);
             $("#txtTkhMula").datetimepicker({
                 format: "DD-MM-YYYY"

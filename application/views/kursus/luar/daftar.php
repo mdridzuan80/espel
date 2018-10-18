@@ -102,7 +102,7 @@
                   <div id="input-com-penganjur" class="form-group" style="display:none;">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur *</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurLatihan" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
+                        <input id="comPenganjurLatihan" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'">
                     </div>
                   </div>
                   <div class="form-group">
@@ -207,7 +207,7 @@
                   <div id="input-com-penganjur-pemb" class="form-group" style="display:none;">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur *</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurPemb" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
+                        <input id="comPenganjurPemb" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'">
                     </div>
                   </div>
                   <div class="form-group">
@@ -312,7 +312,7 @@
                   <div id="input-com-penganjur-pemb2" class="form-group" style="display:none;">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur *</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurPemb2" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
+                        <input id="comPenganjurPemb2" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'">
                     </div>
                   </div>
                   <div class="form-group">
@@ -430,7 +430,7 @@
                   <div id="input-com-penganjur-kend" class="form-group" style="display:none;">
                     <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Penganjur *</label>
                     <div id="anjuran-area" class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="comPenganjurKend" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("welcome/get_tree_jabatan")?>',method:'get'">
+                        <input id="comPenganjurKend" name="comPenganjur" class="easyui-combotree form-control col-md-7 col-xs-12" data-options="url:'<?=base_url("dashboard/get_tree_jabatan")?>',method:'get'">
                     </div>
                   </div>
                   <div class="form-group">

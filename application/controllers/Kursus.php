@@ -250,6 +250,7 @@ class Kursus extends MY_Controller
 
         $this->applog->write(['nokp'=>$this->appsess->getSessionData('username'),'event'=>'Akses takwim kursus (Pengguna)']);
         $this->set_filterMenu(TRUE);
+        
         return $this->renderView("kursus/takwim_pengguna", $data, $plugins);
     }
     

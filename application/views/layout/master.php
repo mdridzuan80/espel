@@ -184,11 +184,9 @@
     <script src="<?=base_url("assets/js/jquery.easyui.min.js")?>"></script>
     <script src="<?=base_url("assets/js/jquery.actual.min.js")?>"></script>
     <script src="<?=base_url("assets/js/bootstrap-timepicker.min.js")?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.all.min.js" integrity="sha256-hhRjXZ7KoeIPcBloYVc0fvx6RQVcSEKsNJcGEu1nn78=" crossorigin="anonymous"></script>
-    
-
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js" integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
     <?php
     if(isset($plugins) && count($plugins))
     {
