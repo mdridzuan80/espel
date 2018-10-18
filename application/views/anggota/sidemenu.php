@@ -91,14 +91,6 @@
             </div>
         </div>
       </li>
-      <li>&nbsp;&nbsp;&nbsp;
-        <div class="pretty p-default p-curve p-fill">
-            <input class="jenis" type="checkbox" value="t" data-medan="stat_jabatan" checked/>
-            <div class="state p-luar">
-                <label style="color:white;">Kursus Luar</label>
-            </div>
-        </div>
-      </li>
     </ul>
   </div>
   <?php endif ?>
