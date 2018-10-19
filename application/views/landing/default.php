@@ -89,7 +89,7 @@
 							<h1 class="white-text">Sistem Pengurusan Latihan eSPeL v2.0</h1>
 							<p class="white-text" style="text-transform: uppercase;">Jabatan Kesihatan Negeri Melaka
 							</p>
-							<button class="main-btn">Masuk!</button>
+							<button class="main-btn">Masuk</button>
 						</div>
 					</div>
 					<!-- /home content -->
