@@ -399,4 +399,89 @@ group by nokp
 
         return $this->db->update('espel_permohonan_kursus');
     }
+
+    public function SenaraiKursusBerdaftar($nokp, $takwim, $kursus_id)
+    {
+        if($kursus_id)
+        {
+            $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+						espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
+            FROM espel_permohonan_kursus
+            INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
+            AND espel_permohonan_kursus.nokp = ?
+            AND espel_kursus.id <> ?
+            AND espel_permohonan_kursus.role = 'PENGGUNA'
+            UNION
+            SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
+            espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.stat_hadir
+            FROM espel_kursus
+            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+            WHERE 1=1
+            AND YEAR(espel_kursus.tkh_mula) = ?
+            AND espel_kursus.nokp = ?
+            AND espel_kursus.id <> ?
+            UNION
+            SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+                        espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
+                        FROM espel_permohonan_kursus
+                        INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+                        LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+                        WHERE 1=1
+                        AND YEAR(espel_kursus.tkh_mula) =?
+                        AND espel_permohonan_kursus.nokp = ?
+                        AND espel_kursus.id <> ?
+                        AND espel_permohonan_kursus.role = 'PTJ'";
+
+            $rst = $this->db->query($sql, [
+                $takwim->tahun, $nokp, $kursus_id,
+                $takwim->tahun, $nokp, $kursus_id,
+                $takwim->tahun, $nokp, $kursus_id,
+            ]);
+        }
+        else
+        {
+            $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+                            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
+                FROM espel_permohonan_kursus
+                INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+                LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+                WHERE 1=1
+                AND YEAR(espel_kursus.tkh_mula) = ?
+                AND espel_permohonan_kursus.nokp = ?
+                AND espel_permohonan_kursus.role = 'PENGGUNA'
+                UNION
+                SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title as anjuran_dalam,
+                espel_kursus.penganjur as anjuran_luar, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_kursus.stat_hadir
+                FROM espel_kursus
+                LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+                WHERE 1=1
+                AND YEAR(espel_kursus.tkh_mula) = ?
+                AND espel_kursus.nokp = ?
+                UNION
+                SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
+                            espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
+                            FROM espel_permohonan_kursus
+                            INNER JOIN espel_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
+                            LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+                            WHERE 1=1
+                            AND YEAR(espel_kursus.tkh_mula) =?
+                            AND espel_permohonan_kursus.nokp = ?
+                            AND espel_permohonan_kursus.role = 'PTJ'";
+
+            $rst = $this->db->query($sql, [
+                $takwim->tahun, $nokp,
+                $takwim->tahun, $nokp,
+                $takwim->tahun, $nokp,
+            ]);
+        }
+
+        if (!$rst->num_rows())
+            return [];
+
+        return $rst->result_array();
+
+    }
 }

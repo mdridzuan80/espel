@@ -58,8 +58,6 @@ class Kursus extends Module
     public function __contruct()
     {
         parent::__construct();
-        $this->CI->load->model("kursus_model", "kursus");
-        $this->CI->load->model("kumpulan_profil_model", "kumpulan_profil");
     }
 
     public function __set($name, $value)
@@ -82,21 +80,23 @@ class Kursus extends Module
 
     public function bertindih()
     {
+        $this->CI->load->model("mohon_kursus_model", "mohon_kursus");
+
         $takwim = initObj([
             "tahun" => $this->tkh_mula->year,
             "bulan" => $this->tkh_tamat->month
         ]);
 
-        $rst = $this->CI->kursus->takwim_day_pengguna_2(0, $takwim);
+        $rst = $this->CI->mohon_kursus->SenaraiKursusBerdaftar($this->nokp, $takwim, $this->kursus_id);
 
         if (count($rst) != 0)
-            return Arrays::matchesAny($rst, function ($value) use ($data) {
+            return Arrays::matchesAny($rst, function ($value) {
                 $tkhMulaR = constructDate($value['tkh_mula']);
                 $tkhTamatR = constructDate($value['tkh_tamat']);
-                $tkhMula = constructDate($data['tkh_mula']);
-                $tkhTamat = constructDate($data['tkh_tamat']);
+                $tkhMula = constructDate($this->tkh_mula);
+                $tkhTamat = constructDate($this->tkh_tamat);
 
-                return $tkhMula->between($tkhMulaR, $tkhTamatR) || $tkhTamat->between($tkhMulaR, $tkhTamatR);
+                return $tkhMula->between($tkhMulaR, $tkhTamatR) || $tkhTamat->between($tkhMulaR, $tkhTamatR) || $tkhMulaR->between($tkhMula, $tkhTamat) || $tkhTamatR->between($tkhMula, $tkhTamat);
             });
 
         return false;
