@@ -31,7 +31,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                     <table>
                         <tr>
-                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("welcome/get_tree_jabatan_related")?>',method:'get'" value="<?= $jab_ptj ?>" ></td>
+                          <td><input id="comJabatan" name="comJabatan" class="easyui-combotree form-control col-md-7 col-xs-12 input-sm" data-options="url:'<?=base_url("dashboard/get_tree_jabatan_related")?>',method:'get'" value="<?= $jab_ptj ?>" ></td>
                           <td>&nbsp;Sub&nbsp;Jabatan&nbsp;</td>
                           <td><input id="chk_subjabatan" type="checkbox" checked></td>
                         <tr>
