@@ -108,10 +108,18 @@
                         <span class="label label-success">HADIR</span>
                       <?php endif?>
                       <?php if($dicalonkan->stat_hadir == 'T'):?>
-                        <span class="label label-alert">TIDAK HADIR</span>
+                        <span class="label label-danger">TIDAK HADIR</span>
                       <?php endif?>
                     <?php else : ?>
-                      <span class="label label-warning">RANCANG</span>
+                      <?php if ($dicalonkan->stat_mohon == 'M'): ?>
+                        <span class="label label-warning">BELUM DIJAWAB</span>
+                      <?php endif ?>
+                      <?php if ($dicalonkan->stat_mohon == 'L') : ?>
+                        <span class="label label-success">TERIMA</span>
+                      <?php endif ?>
+                      <?php if ($dicalonkan->stat_mohon == 'T') : ?>
+                        <span class="label label-danger">TOLAK</span>
+                      <?php endif ?>
                     <?php endif?>
                 </td>
                 <td align="center">
