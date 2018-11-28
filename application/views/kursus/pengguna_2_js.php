@@ -734,5 +734,89 @@ $(function(){
         });
         return filterEvents;
     }
+
+        $('#MyModalKursusInfo').on('click', '#btnTerima', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti untuk menerima pencalonan ini?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/ajax_jawab_pencalonan/' + kursus_id + '/L',
+                success: function() {
+                    swal('Berjaya!','','success').then(function(){
+                        $('#MyModalKursusInfo').modal('hide');
+                        location.reload();
+                    });
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
+
+    $('#MyModalKursusInfo').on('click', '#btnTolak', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var kursus_id = el.data('kursus_id');
+        swal({
+            title: 'Anda Pasti untuk menolak pencalonan ini?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: base_url + 'kursus/ajax_jawab_pencalonan/' + kursus_id + '/T',
+                success: function() {
+                    swal('Berjaya!','','success').then(function(){
+                        $('#MyModalKursusInfo').modal('hide');
+                        location.reload();
+                    });
+                } ,
+                error: function(jqXHR, textStatus,errorThrown) {
+                    swal(textStatus,errorThrown,'error');
+                }
+            });
+        },
+        function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                'Batal!',
+                '',
+                'error'
+                )
+            }
+        });
+    });
 });
 </script>
