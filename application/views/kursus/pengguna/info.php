@@ -60,37 +60,34 @@
                         <td>
                           <?php if($kursus->stat_jabatan == 'Y') : ?>
                             <?php if(strtotime($kursus->tkh_mula) > time()) : ?>
-                              <?php if($kursus->stat_laksana == 'R') : ?>
-                                <?php if($kursus->jenis == 'R') : ?>
-                                  <?php if($kursus->stat_mohon == 'M' && $kursus->role == 'PTJ') : ?>
+                              <?php if($kursus->role == 'PTJ') : ?>
+                                  <?php if($kursus->stat_mohon == 'M') : ?>
                                     <span class="label label-warning">DICALONKAN</span>
                                   <?php endif ?>
-                                  <?php if ($kursus->stat_mohon == 'L' && $kursus->role == 'PTJ') : ?>
-                                    <span class="label label-success">Terima Pencalonan</span>
+                                  <?php if ($kursus->stat_mohon == 'L') : ?>
+                                    <span class="label label-success">TERIMA</span>
                                   <?php endif ?>
-                                  <?php if ($kursus->stat_mohon == 'T' && $kursus->role == 'PTJ') : ?>
-                                    <span class="label label-success">Tolak Pencalonan</span>
+                                  <?php if ($kursus->stat_mohon == 'T') : ?>
+                                    <span class="label label-success">TOLAK</span>
                                   <?php endif ?>
-                                <?php else : ?>
-                                  <?php if($kursus->stat_mohon) : ?>
-                                    <span class="label label-warning">DICALONKAN</span>
-                                  <?php else : ?>
-                                    <span class="label label-info">PERMOHONAN TUTUP</span>
-                                  <?php endif ?>
-                                <?php endif ?>
-                              <?php elseif($kursus->stat_laksana == 'L') : ?>
-                                <?php if ($kursus->stat_mohon == 'M') : ?>
+                                
+                              <?php elseif ($kursus->role == 'PENGGUNA') : ?>
+                                <?php if ($kursus->stat_mohon == 'T') : ?>
                                   <span class="label label-warning">PERMOHONAN TOLAK</span>
                                 <?php elseif ($kursus->stat_mohon == 'L') : ?>
                                   <span class="label label-info">PERMOHONAN LULUS</span>
                                 <?php else : ?>
-                                  <span class="label label-info">PERMOHONAN TUTUP</span>
+                                  <span class="label label-info">PERMOHONAN DITUTUP</span>
                                 <?php endif ?>
                               <?php else : ?>
                                 <span class="label label-info">PERMOHONAN DIBUKA</span>
                               <?php endif ?>
                             <?php else : ?>
-                              <span class="label label-info">TEMPOH PERMOHONAN TUTUP</span>
+                              <?php if ($kursus->stat_laksana !== 'L'): ?>
+                                <span class="label label-info">TEMPOH PERMOHONAN TUTUP</span>
+                              <?php else : ?>
+                                <span class="label label-info">KURSUS TELAH DILAKSANAKAN</span>
+                              <?php endif ?>
                             <?php endif ?>
                           <?php else : ?>
                             <?php if($kursus->stat_hadir == 'M') : ?>
@@ -122,7 +119,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <button id="btnMohon" type="submit" class="btn btn-primary btn-sm" name="mohon" data-kursus_id="<?= $kursus->id ?>">MOHON</button>
                         </div>
-                      <?php elseif($kursus->stat_laksana == 'R' && $kursus->stat_mohon == 'M') : ?>
+                      <?php elseif($kursus->stat_mohon == 'M') : ?>
                         <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12">

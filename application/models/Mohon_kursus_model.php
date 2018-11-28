@@ -37,8 +37,7 @@ class Mohon_kursus_model extends MY_Model
             LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
             WHERE 1=1
             AND espel_permohonan_kursus.nokp = ?
-            AND espel_permohonan_kursus.role = 'PTJ'
-            AND espel_kursus.stat_laksana <> 'L'";
+            AND espel_permohonan_kursus.role = 'PTJ'";
 
         return $this->db->query($sql,[$nokp])->result();
     }

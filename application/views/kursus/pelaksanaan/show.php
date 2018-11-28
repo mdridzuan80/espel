@@ -157,7 +157,7 @@
                             <?php if($kursus->stat_laksana == 'R') : ?>
                             <button type="submit" class="btn btn-primary" name="submit">Laksana</button>
                             <?php else : ?>
-                            <button type="submit" class="btn btn-primary" name="submit">Muat turun</button>
+                            <button type="submit" class="btn btn-primary" name="submit">Kemaskini dokumen</button>
                             <?php endif ?>
                         </div>
                     </div>

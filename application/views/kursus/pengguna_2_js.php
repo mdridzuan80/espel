@@ -89,7 +89,7 @@ $(function(){
             }
 
             text = text + "<div class=\"event " + cssDisable + "\"> \
-            <div class=\"event-desc\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + kodWarna + "\"></i> <a href=\"#\">" + element.tajuk + "</a>\
+            <div class=\"event-desc" + (element.stat_jabatan == 'Y' && element.stat_mohon =='M' ? ' blink' : '') + "\" data-kursusid=\"" + element.id + " \" data-tajuk=\"" + element.tajuk + "\"><i class=\"fa fa-square " + kodWarna + "\" ></i> <a href=\"#\">" + element.tajuk + "</a>\
             </div> \
             <div class=\"event-time\"> \
                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
@@ -140,7 +140,7 @@ $(function(){
                 " + tkhMula.format("h:mm a") + " to " + tkhTamat.format("h:mm a") + " \
             </div>";
 
-            if(element.stat_hadir == 'M') {
+            if(element.stat_mohon == 'M') {
                 text = text + "<div> \
                     <span class=\"label label-warning\">MOHON</span> \
                 </div>";

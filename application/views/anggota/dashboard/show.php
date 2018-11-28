@@ -102,14 +102,22 @@
                 <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_mula))?></td>
                 <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_tamat))?></td>
                 <td align="center">
-                    <?php if($dicalonkan->stat_laksana == 'L'):?>
-                      <span class="label label-success">SELESAI</span>
-                      <?php if($dicalonkan->stat_hadir == 'Y'):?>
+                    <?php if($dicalonkan->stat_laksana == 'L'):?>                      
+                      <?php if ($dicalonkan->stat_mohon == 'M') : ?>
+                        <span class="label label-warning">BELUM DIJAWAB</span>
+                      <?php endif ?>
+                      <?php if ($dicalonkan->stat_mohon == 'L') : ?>
+                        <span class="label label-success">TERIMA</span>
+                        <?php if ($dicalonkan->stat_hadir == 'Y') : ?>
                         <span class="label label-success">HADIR</span>
-                      <?php endif?>
-                      <?php if($dicalonkan->stat_hadir == 'T'):?>
+                      <?php endif ?>
+                      <?php if ($dicalonkan->stat_hadir == 'T') : ?>
                         <span class="label label-danger">TIDAK HADIR</span>
-                      <?php endif?>
+                      <?php endif ?>
+                      <?php endif ?>
+                      <?php if ($dicalonkan->stat_mohon == 'T') : ?>
+                        <span class="label label-danger">TOLAK</span>
+                      <?php endif ?>
                     <?php else : ?>
                       <?php if ($dicalonkan->stat_mohon == 'M'): ?>
                         <span class="label label-warning">BELUM DIJAWAB</span>
