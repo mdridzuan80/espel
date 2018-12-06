@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Mohon_kursus_model extends MY_Model
 {
@@ -24,7 +24,7 @@ class Mohon_kursus_model extends MY_Model
             AND YEAR(espel_kursus.tkh_mula) = ?
             AND espel_kursus.nokp = ?";
 
-        return $this->db->query($sql,[date('Y'), $nokp, date('Y'), $nokp])->result();
+        return $this->db->query($sql, [date('Y'), $nokp, date('Y'), $nokp])->result();
     }
 
     public function get_dicalonkan($nokp)
@@ -39,7 +39,7 @@ class Mohon_kursus_model extends MY_Model
             AND espel_permohonan_kursus.nokp = ?
             AND espel_permohonan_kursus.role = 'PTJ'";
 
-        return $this->db->query($sql,[$nokp])->result();
+        return $this->db->query($sql, [$nokp])->result();
     }
 
     public function get_permohonan_jabatan($jabatan_id)
@@ -47,7 +47,7 @@ class Mohon_kursus_model extends MY_Model
         $this->db->select("b.id, b.tajuk, c.nama, b.tkh_mula, b.tkh_tamat, a.tkh, c.nama jabatan, count(a.id) total");
         $this->db->from($this->_table . " a");
         $this->db->join("espel_kursus b", "a.kursus_id = b.id");
-        $this->db->join("espel_dict_jabatan c","b.penganjur_id = c.id" );
+        $this->db->join("espel_dict_jabatan c", "b.penganjur_id = c.id");
         $this->db->where("b.ptj_jabatan_id_created", $jabatan_id);
         $this->db->where("b.stat_laksana", 'R');
         return $this->db->get()->result();
@@ -56,24 +56,25 @@ class Mohon_kursus_model extends MY_Model
     public function get_count_sah($kursus_id)
     {
         $sql = "select * from espel_permohonan_kursus where 1=1 and kursus_id = ? and stat_hadir is null ";
-        return $this->db->query($sql,[$kursus_id])->num_rows();
+        return $this->db->query($sql, [$kursus_id])->num_rows();
     }
 
     public function get_calon($Kursus_id, $filter)
     {
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
-        $this->load->model('kumpulan_profil_model','kumpulan_profil');
+        $this->load->model('kumpulan_profil_model', 'kumpulan_profil');
 
         $all_jabatan = $this->hrmis_carta->as_array()->get_all();
-        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp"=>$this->appsess->getSessionData("username"),"kumpulan_id"=>3])->jabatan_id;
+        $jabatan_id = $this->kumpulan_profil->get_by(["profil_nokp" => $this->appsess->getSessionData("username"), "kumpulan_id" => 3])->jabatan_id;
 
-        $this->db->select('a.id, b.nama, b.gred_id as gred, e.nama as kumpulan, c.title as jabatan, a.stat_mohon, a.role, a.stat_hadir');
+        $this->db->select('a.id, b.nama, b.gred_id as gred, e.nama as kumpulan, c.title as jabatan, d.tkh_mula, d.stat_jabatan, d.stat_laksana, a.stat_mohon, a.role, a.stat_hadir');
         $this->db->from($this->_table . ' a');
+        $this->db->join('espel_kursus d', 'a.kursus_id = d.id');
         $this->db->join('view_laporan_statistik_prestasi b', 'a.nokp = b.nokp', 'left');
         $this->db->join('hrmis_carta_organisasi c', 'b.jabatan_id = c.buid');
         $this->db->join('espel_dict_kelas e', 'b.kelas = e.id');
         $this->db->join('hrmis_skim f', 'b.skim_id = f.kod', 'left');
-        $this->db->where('a.kursus_id',$Kursus_id);
+        $this->db->where('a.kursus_id', $Kursus_id);
         
         /* if($filter->nama)
         {
@@ -170,56 +171,43 @@ group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
             espel_profil.nokp <> 'admin') as a WHERE 1=1
-                AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = " . $kursus_id .")";
+                AND nokp NOT IN(select nokp from espel_permohonan_kursus where kursus_id = " . $kursus_id . ")";
 
-        if($filter->nama)
-        {
+        if ($filter->nama) {
             $sql .= ' and a.nama like \'%' . $filter->nama . '%\'';
         }
 
-        if($filter->nokp)
-        {
+        if ($filter->nokp) {
             $sql .= ' and a.nokp like \'%' . $filter->nokp . '%\'';
         }
 
-        if($filter->jabatan_id && $filter->sub_jabatan)
-        {
-            $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter->jabatan_id));
-            array_push($all_jabatan,$filter->jabatan_id);
-            $sql .= ' and a.jabatan_id in(' . implode(',',$all_jabatan) . ')';
-        }
-        else
-        {
+        if ($filter->jabatan_id && $filter->sub_jabatan) {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan, $filter->jabatan_id));
+            array_push($all_jabatan, $filter->jabatan_id);
+            $sql .= ' and a.jabatan_id in(' . implode(',', $all_jabatan) . ')';
+        } else {
             $sql .= ' and a.jabatan_id in(' . $filter->jabatan_id . ')';
         }
 
-        if(isset($filter->kumpulan) && $filter->kumpulan)
-        {
+        if (isset($filter->kumpulan) && $filter->kumpulan) {
             $sql .= ' and a.kelas = ' . $filter->kumpulan;
         }
 
-        if(isset($filter->gred) && $filter->gred)
-        {
+        if (isset($filter->gred) && $filter->gred) {
             $sql .= ' and a.gred_id = ' . $filter->gred;
         }
 
-        if(isset($filter->hari) && $filter->hari)
-        {
-            if($filter->hari == 1)
-            {
+        if (isset($filter->hari) && $filter->hari) {
+            if ($filter->hari == 1) {
                 $sql .= ' and a.jum_hari = 0 ';
-            }
-            else if($filter->hari > 1 && $filter->hari < 9)
-            {
-                $sql .= ' and a.jum_hari = ' . ($filter->hari-1);
-            }
-            else
-            {
-                $sql .= ' and a.jum_hari > ' . ($filter->hari-2);
+            } else if ($filter->hari > 1 && $filter->hari < 9) {
+                $sql .= ' and a.jum_hari = ' . ($filter->hari - 1);
+            } else {
+                $sql .= ' and a.jum_hari > ' . ($filter->hari - 2);
             }
 
         }
-        
+
         $this->db->cache_on();
         $rst = $this->db->query($sql);
         $this->db->cache_off();
@@ -247,34 +235,26 @@ group by nokp
                 AND YEAR(b.tkh_mula) = ' . $filter->tahun . ' AND b.stat_hadir = \'L\'
                 GROUP BY a.nokp, a.nama, c.title, hk.keterangan, hs.keterangan, a.jabatan_id, a.kelas_id, a.skim_id, a.gred_id) as a WHERE 1=1';
 
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
-        {
-            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        if (isset($filter->jabatan_id) && $filter->jabatan_id) {
+            $sql .= ' and a.jabatan_id IN (' . implode(',', $filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && $filter->kelas_id)
-        {
+        if (isset($filter->kelas_id) && $filter->kelas_id) {
             $sql .= ' and a.kelas_id = \'' . $filter->kelas_id . '\'';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id)
-        {
+        if (isset($filter->skim_id) && $filter->skim_id) {
             $sql .= ' and a.skim_id = \'' . $filter->skim_id . '\'';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id)
-        {
+        if (isset($filter->gred_id) && $filter->gred_id) {
             $sql .= ' and a.gred_id = \'' . $filter->gred_id . '\'';
         }
 
-        if(isset($filter->hari) && $filter->hari)
-        {
-            if($filter->hari == 1)
-            {
+        if (isset($filter->hari) && $filter->hari) {
+            if ($filter->hari == 1) {
                 $sql .= ' and a.hari < ' . $filter->hari;
-            }
-            else
-            {
+            } else {
                 $sql .= ' and a.hari >= ' . $filter->hari;
             }
         }
@@ -337,56 +317,44 @@ group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
             espel_profil.nokp <> 'admin'";
-        if(isset($filter->nama) && $filter->nama)
-        {
+        if (isset($filter->nama) && $filter->nama) {
             $sql .= ' and espel_profil.nama like \'%' . trim($filter->nama) . '%\'';
         }
 
-        if(isset($filter->nokp) && $filter->nokp)
-        {
+        if (isset($filter->nokp) && $filter->nokp) {
             $sql .= ' and espel_profil.nokp like \'%' . trim($filter->nokp) . '%\'';
         }
 
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
-        {
-            $sql .= ' and espel_profil.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        if (isset($filter->jabatan_id) && $filter->jabatan_id) {
+            $sql .= ' and espel_profil.jabatan_id IN (' . implode(',', $filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && $filter->kelas_id)
-        {
+        if (isset($filter->kelas_id) && $filter->kelas_id) {
             $sql .= ' and espel_profil.kelas = \'' . $filter->kelas_id . '\'';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id)
-        {
+        if (isset($filter->skim_id) && $filter->skim_id) {
             $sql .= ' and espel_profil.skim_id = \'' . $filter->skim_id . '\'';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id)
-        {
+        if (isset($filter->gred_id) && $filter->gred_id) {
             $sql .= ' and espel_profil.gred_id = \'' . $filter->gred_id . '\'';
         }
 
-        if(isset($filter->hari) && $filter->hari)
-        {
-            if($filter->hari == 1)
-            {
+        if (isset($filter->hari) && $filter->hari) {
+            if ($filter->hari == 1) {
                 $sql .= ' and hadir.jum_hari is null';
-            }
-            else if($filter->hari > 1 && $filter->hari < 9)
-            {
-                $sql .= ' and hadir.jum_hari = ' . ($filter->hari-1);
-            }
-            else
-            {
-                $sql .= ' and hadir.jum_hari > ' . ($filter->hari-2);
+            } else if ($filter->hari > 1 && $filter->hari < 9) {
+                $sql .= ' and hadir.jum_hari = ' . ($filter->hari - 1);
+            } else {
+                $sql .= ' and hadir.jum_hari > ' . ($filter->hari - 2);
             }
         }
 
         $sql .= " ORDER BY espel_profil.nama";
 
         $rst = $this->db->query($sql);
-        
+
         return $rst->result();
     }
 
@@ -401,8 +369,7 @@ group by nokp
 
     public function SenaraiKursusBerdaftar($nokp, $takwim, $kursus_id)
     {
-        if($kursus_id)
-        {
+        if ($kursus_id) {
             $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
 						espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
             FROM espel_permohonan_kursus
@@ -439,9 +406,7 @@ group by nokp
                 $takwim->tahun, $nokp, $kursus_id,
                 $takwim->tahun, $nokp, $kursus_id,
             ]);
-        }
-        else
-        {
+        } else {
             $sql = "SELECT espel_kursus.id, espel_kursus.tajuk, espel_kursus.anjuran, hrmis_carta_organisasi.title AS anjuran_dalam, espel_kursus.penganjur AS anjuran_luar,
                             espel_kursus.tkh_mula, espel_kursus.tkh_tamat, espel_permohonan_kursus.stat_mohon
                 FROM espel_permohonan_kursus
