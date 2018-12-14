@@ -316,7 +316,7 @@ group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
-            espel_profil.nokp <> 'admin'";
+            espel_profil.nokp <> 'admin' and espel_profil.status = 'Y'";
         if (isset($filter->nama) && $filter->nama) {
             $sql .= ' and espel_profil.nama like \'%' . trim($filter->nama) . '%\'';
         }
@@ -343,7 +343,7 @@ group by nokp
 
         if (isset($filter->hari) && $filter->hari) {
             if ($filter->hari == 1) {
-                $sql .= ' and hadir.jum_hari is null';
+                $sql .= ' and (hadir.jum_hari is null or hadir.jum_hari = \'\')';
             } else if ($filter->hari > 1 && $filter->hari < 9) {
                 $sql .= ' and hadir.jum_hari = ' . ($filter->hari - 1);
             } else {

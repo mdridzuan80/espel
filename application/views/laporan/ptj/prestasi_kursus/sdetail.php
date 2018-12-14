@@ -20,15 +20,15 @@
               </tr>
             </thead>
             <tbody>
-                <?php foreach($sen_detail as $detail): ?>
+                <?php foreach ($sen_detail as $detail) : ?>
               <tr>
-                <td><?=$detail->nama?></td>
-                <td><?=$detail->nokp?></td>
-                <td><?=$detail->jabatan_id?></td>
-                <td><?=$detail->kelas?></td>
-                <td><?=$detail->jum_hari?></td>
+                <td><?= $detail->nama ?></td>
+                <td><?= $detail->nokp ?></td>
+                <td><?= $detail->jabatan ?></td>
+                <td><?= $detail->kumpulan ?></td>
+                <td><?= $detail->jum_hari ?></td>
               </tr>
-          <?php endforeach?>
+          <?php endforeach ?>
              </tbody>
           </table>
         </div>

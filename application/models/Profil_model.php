@@ -403,7 +403,7 @@ group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
-            espel_profil.nokp <> 'admin') as a WHERE 1=1";
+            espel_profil.nokp <> 'admin') as a WHERE 1=1 and a.status = 'Y'";
 
         if (isset($filter->nama) && $filter->nama) {
             $sql .= ' and a.nama like \'%' . trim($filter->nama) . '%\'';

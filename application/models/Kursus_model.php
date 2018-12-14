@@ -1,20 +1,20 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 class Kursus_model extends MY_Model
 {
     protected $_table = "espel_kursus";
     protected $belongs_to = [
         'program' => [
             'model' => 'program_model',
-            'primary_key'=>'program_id',
+            'primary_key' => 'program_id',
         ],
         'aktiviti' => [
             'model' => 'aktiviti_model',
-            'primary_key'=>'aktiviti_id',
+            'primary_key' => 'aktiviti_id',
         ],
         'penganjur' => [
             'model' => 'jabatan_model',
-            'primary_key'=>'penganjur_id',
+            'primary_key' => 'penganjur_id',
         ],
     ];
 
@@ -48,9 +48,9 @@ class Kursus_model extends MY_Model
             'surat' => $kursus->surat,
         ];
 
-        if($kursus->kursus_id)
+        if ($kursus->kursus_id)
             return $this->update($kursus->kursus_id, $data);
-         
+
         return $this->insert($data);
     }
 
@@ -86,7 +86,7 @@ class Kursus_model extends MY_Model
             AND espel_permohonan_kursus.nokp = ?
             AND espel_kursus.stat_laksana = 'L'
             and espel_permohonan_kursus.stat_hadir = 'Y' and espel_permohonan_kursus.stat_mohon ='L') a where 1=1 order by tkh_mula";
-        return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp])->result();
+        return $this->db->query($sql, [$tahun, $nokp, $tahun, $nokp])->result();
     }
 
     public function get_all_kursus_patut_hadir($nokp, $tahun)
@@ -116,7 +116,7 @@ class Kursus_model extends MY_Model
         AND a.nokp = ?
         and c.stat_hadir = 'L') a where 1=1 order by tkh_mula
         ";
-        return $this->db->query($sql,[$tahun,$nokp,$tahun,$nokp,$tahun,$nokp])->result();
+        return $this->db->query($sql, [$tahun, $nokp, $tahun, $nokp, $tahun, $nokp])->result();
     }
 
     public function get_all_kursus_luar_pengesahan(array $jabatanID, $filter)
@@ -133,8 +133,7 @@ class Kursus_model extends MY_Model
         JOIN `hrmis_carta_organisasi` `d` ON `b`.`jabatan_id` = `d`.`buid`
         WHERE `a`.`stat_hadir` = 'M' AND `b`.`jabatan_id` IN(" . implode(',', $jabatanID) . ")";
 
-        if (isset($filter['nama']))
-        {
+        if (isset($filter['nama'])) {
             if (isset($filter['nama']) && $filter['nama'])
                 $sql .= ' AND b.nama like \'%' . trim($filter['nama']) . '%\'';
 
@@ -212,7 +211,7 @@ class Kursus_model extends MY_Model
             AND espel_kursus.stat_soal_selidik_a = 'Y'
             AND espel_permohonan_kursus.stat_hadir = 'Y'
             AND espel_boranga.id IS NULL) a where 1=1 order by tkh_mula";
-        $rst = $this->db->query($sql,[$nokp,$nokp]);
+        $rst = $this->db->query($sql, [$nokp, $nokp]);
         return $rst->result();
     }
 
@@ -239,7 +238,7 @@ class Kursus_model extends MY_Model
             AND espel_kursus.program_id = ?
             and espel_permohonan_kursus.stat_hadir = 'Y'
             and espel_permohonan_kursus.stat_mohon = 'L' ) a where 1=1 order by tkh_mula";
-        return $this->db->query($sql,[$tahun,$nokp,$programID,$tahun,$nokp,$programID])->result();
+        return $this->db->query($sql, [$tahun, $nokp, $programID, $tahun, $nokp, $programID])->result();
     }
 
     public function getBilhari($nokp, $programID, $tahun)
@@ -265,9 +264,9 @@ class Kursus_model extends MY_Model
             AND espel_kursus.program_id = ?
             and espel_permohonan_kursus.stat_hadir = 'Y'
             and espel_permohonan_kursus.stat_mohon = 'L') a";
-        $rst = $this->db->query($sql,[$tahun,$nokp,$programID,$tahun,$nokp,$programID]);
+        $rst = $this->db->query($sql, [$tahun, $nokp, $programID, $tahun, $nokp, $programID]);
 
-        if($rst->num_rows())
+        if ($rst->num_rows())
             return $rst->row()->jumlah;
         return 0;
     }
@@ -283,9 +282,9 @@ class Kursus_model extends MY_Model
             AND kursus_luar.program_id = ?
             AND kursus_luar.nokp = ?) a
             group by a.program_id, a.nokp";
-        $rst = $this->db->query($sql, [$tahun,$programID,$nokp]);
+        $rst = $this->db->query($sql, [$tahun, $programID, $nokp]);
 
-        if($rst->num_rows())
+        if ($rst->num_rows())
             return $rst->row()->jumlah;
         return 0;
     }
@@ -300,9 +299,9 @@ class Kursus_model extends MY_Model
             AND kursus_luar.program_id = ?
             AND kursus_luar.nokp = ?) a
             group by a.program_id, a.nokp";
-        $rst = $this->db->query($sql, [$tahun,$programID,$nokp]);
+        $rst = $this->db->query($sql, [$tahun, $programID, $nokp]);
 
-        if($rst->num_rows())
+        if ($rst->num_rows())
             return $rst->row()->jumlah;
         return 0;
     }
@@ -328,19 +327,16 @@ class Kursus_model extends MY_Model
                 AND YEAR(tkh_mula) = ?
                 AND MONTH(tkh_mula) = ?)";
 
-        $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan,
-            $ptj_jabatan_id,$takwim->tahun,$takwim->bulan]
-        );
+        $rst = $this->db->query($sql, [
+            $ptj_jabatan_id, $takwim->tahun, $takwim->bulan,
+            $ptj_jabatan_id, $takwim->tahun, $takwim->bulan,
+            $ptj_jabatan_id, $takwim->tahun, $takwim->bulan
+        ]);
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
@@ -357,7 +353,7 @@ class Kursus_model extends MY_Model
             AND a.ptj_jabatan_id_created in (?)
             ORDER BY
             a.tkh_mula ASC";
-        return $this->db->query($sql,[$ptj_jabatan_id]);
+        return $this->db->query($sql, [$ptj_jabatan_id]);
     }
 
     public function takwim_senarai_pengguna($takwim)
@@ -461,28 +457,25 @@ class Kursus_model extends MY_Model
                 AND MONTH(a.tkh_mula) = ?)
             ) a ORDER BY a.tkh_mula";
 
-        $rst = $this->db->query($sql,[
-            $takwim->tahun,$takwim->bulan,
-            $takwim->tahun,$takwim->bulan,
-            $takwim->tahun,$takwim->bulan,
-            $takwim->tahun,$takwim->bulan,
-            $takwim->tahun,$takwim->bulan,
-            $takwim->tahun,$takwim->bulan,
+        $rst = $this->db->query($sql, [
+            $takwim->tahun, $takwim->bulan,
+            $takwim->tahun, $takwim->bulan,
+            $takwim->tahun, $takwim->bulan,
+            $takwim->tahun, $takwim->bulan,
+            $takwim->tahun, $takwim->bulan,
+            $takwim->tahun, $takwim->bulan,
         ]);
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
     public function takwim_day($ptj_jabatan_id, $takwim)
     {
-        $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
+        $tkh = date("Y-m-d", strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
         $sql = "SELECT * FROM (
             SELECT a.id, a.tajuk, b.nama, a.tkh_mula, a.tkh_tamat
             FROM espel_kursus a, espel_dict_program b
@@ -558,29 +551,25 @@ class Kursus_model extends MY_Model
             ) a
             ORDER BY a.tkh_mula";
 
-        $rst = $this->db->query($sql,[
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari
-        ]
-        );
+        $rst = $this->db->query($sql, [
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari
+        ]);
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result_array();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
     public function takwim_day_pengguna($ptj_jabatan_id, $takwim)
     {
-        $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
+        $tkh = date("Y-m-d", strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
         $sql = "SELECT * FROM (
                 SELECT espel_kursus.id, espel_kursus.tajuk, espel_dict_program.nama, espel_kursus.tkh_mula, espel_kursus.tkh_tamat, a.nokp, a.stat_mohon, espel_kursus.stat_laksana
                 FROM espel_kursus
@@ -661,22 +650,19 @@ class Kursus_model extends MY_Model
             ) a
             ORDER BY a.tkh_mula";
 
-        $rst = $this->db->query($sql,[
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari,
-            $takwim->tahun,$takwim->bulan,$takwim->hari
+        $rst = $this->db->query($sql, [
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari,
+            $takwim->tahun, $takwim->bulan, $takwim->hari
         ]);
-        
-        if($rst->num_rows())
-        {
+
+        if ($rst->num_rows()) {
             return $rst->result_array();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
@@ -717,17 +703,17 @@ class Kursus_model extends MY_Model
                 where 1=1
                 and a.jenis <> 'L'
                 order by tkh_mula, tkh_tamat";
-        
-        $rst = $this->db->query($sql,[
+
+        $rst = $this->db->query($sql, [
             $username, $takwim->bulan, $takwim->tahun,
             $username, $takwim->bulan, $takwim->tahun,
             $takwim->bulan, $takwim->tahun,
             $username, $takwim->bulan, $takwim->tahun
         ]);
-        
-        if(! $rst->num_rows())
+
+        if (!$rst->num_rows())
             return [];
-        
+
         return $rst->result_array();
     }
 
@@ -760,7 +746,7 @@ class Kursus_model extends MY_Model
                 ) as a
                 where 1=1
                 order by tkh_mula, tkh_tamat";
-        
+
         $rst = $this->db->query($sql, [
             $username, $takwim->tahun,
             $username, $takwim->tahun,
@@ -777,37 +763,30 @@ class Kursus_model extends MY_Model
 
     public function takwim_day_all($ptj_jabatan_id, $takwim)
     {
-        $tkh = date("Y-m-d",strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
+        $tkh = date("Y-m-d", strtotime($takwim->tahun . "-" . $takwim->bulan . "-" . $takwim->hari));
 
         $sql = "SELECT a.id, a.tajuk, b.nama as program, date_format(a.tkh_mula,'%Y-%m-%d') as mula, date_format(a.tkh_tamat,'%Y-%m-%d') as tamat, date_format(a.tkh_mula,'%H:%i') as masa_m, date_format(a.tkh_tamat,'%H:%i') as masa_t, a.tkh_mula, a.tkh_tamat, a.stat_laksana, a.jenis, a.stat_jabatan
             FROM espel_kursus a, espel_dict_program b
             WHERE 1=1
             AND a.program_id = b.id";
-        
-        if($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id'))
-        {
-            $sql .= " AND a.ptj_jabatan_id_created = ?";            
+
+        if ($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id')) {
+            $sql .= " AND a.ptj_jabatan_id_created = ?";
         }
-        
+
         $sql .= " AND YEAR(a.tkh_mula) = ?
             AND MONTH(a.tkh_mula) = ?
             ORDER BY a.tkh_mula, a.tkh_tamat";
 
-        if ($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id'))
-        {
+        if ($ptj_jabatan_id != $this->config->item('espel_default_jabatan_id')) {
             $rst = $this->db->query($sql, [$ptj_jabatan_id, $takwim->tahun, $takwim->bulan]);
-        }
-        else
-        {
+        } else {
             $rst = $this->db->query($sql, [$takwim->tahun, $takwim->bulan]);
         }
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result_array();
-        }
-        else
-        {
+        } else {
             return [];
         }
     }
@@ -837,36 +816,30 @@ class Kursus_model extends MY_Model
             WHERE 1=1
             ";
 
-        if($takwim->tajuk)
-        {
+        if ($takwim->tajuk) {
             $sql .= " AND a.tajuk like '%" . $takwim->tajuk . "%'";
         }
 
-        if($takwim->bulan)
-        {
+        if ($takwim->bulan) {
             $sql .= "  AND month(a.tkh_mula) = " . $takwim->bulan;
         }
 
-        if($takwim->status)
-        {
+        if ($takwim->status) {
             $sql .= "  AND a.stat_laksana = '" . $takwim->status . "'";
         }
 
         $sql .= " ORDER BY a.tkh_mula";
 
-        $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,
-            $ptj_jabatan_id,$takwim->tahun,
-            $ptj_jabatan_id,$takwim->tahun]
-        );
+        $rst = $this->db->query($sql, [
+            $ptj_jabatan_id, $takwim->tahun,
+            $ptj_jabatan_id, $takwim->tahun,
+            $ptj_jabatan_id, $takwim->tahun
+        ]);
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
@@ -894,36 +867,31 @@ class Kursus_model extends MY_Model
                 AND a.stat_laksana = 'L'
                 AND a.ptj_jabatan_id_created = ?
                 AND YEAR(a.tkh_mula) = ?)) as a WHERE 1=1";
-        
-        if($takwim->tajuk)
-        {
+
+        if ($takwim->tajuk) {
             $sql .= " AND a.tajuk like '%" . $takwim->tajuk . "%'";
         }
 
-        if($takwim->bulan)
-        {
+        if ($takwim->bulan) {
             $sql .= "  AND month(a.tkh_mula) = " . $takwim->bulan;
         }
 
         $sql .= " ORDER BY a.tkh_mula";
 
-        $rst = $this->db->query($sql,[
-            $ptj_jabatan_id,$takwim->tahun,
-            $ptj_jabatan_id,$takwim->tahun,
-            $ptj_jabatan_id,$takwim->tahun]
-        );
+        $rst = $this->db->query($sql, [
+            $ptj_jabatan_id, $takwim->tahun,
+            $ptj_jabatan_id, $takwim->tahun,
+            $ptj_jabatan_id, $takwim->tahun
+        ]);
 
-        if($rst->num_rows())
-        {
+        if ($rst->num_rows()) {
             return $rst->result();
-        }
-        else
-        {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
-    public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id, $r = FALSE)
+    public function bil_prestasi_kelas($filter, $bil_hari, $kelas_id, $r = false)
     {
         $sql = "SELECT * FROM (SELECT
             espel_profil.*,
@@ -949,7 +917,7 @@ UNION
 SELECT espel_permohonan_kursus.nokp, espel_kursus.id, espel_kursus.hari
 FROM espel_kursus
 INNER JOIN espel_permohonan_kursus ON espel_kursus.id = espel_permohonan_kursus.kursus_id
-INNER JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
+LEFT JOIN hrmis_carta_organisasi ON espel_kursus.penganjur_id = hrmis_carta_organisasi.buid
 WHERE 1=1
 AND espel_kursus.stat_laksana = 'L'
 AND YEAR(espel_kursus.tkh_mula) = " . $filter->tahun . "
@@ -958,7 +926,7 @@ and espel_permohonan_kursus.stat_mohon ='L'
 UNION
 SELECT mycpd.nokp, 'cpd' as id, round((sum(mycpd.point)/40)*7) as hari
 FROM mycpd
-WHERE mycpd.tahun = " . $filter->tahun . "
+WHERE mycpd.tahun = " . $filter->tahun . " group by mycpd.nokp, id
 						) as xx
 group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 			LEFT JOIN (
@@ -970,106 +938,81 @@ group by nokp) as hadir ON espel_profil.nokp = hadir.nokp
 group by nokp
 			) as pengecualian ON espel_profil.nokp = pengecualian.nokp
             WHERE
-            espel_profil.nokp <> 'admin') as a WHERE 1=1";
+            espel_profil.nokp <> 'admin' and espel_profil.status = 'Y') as a WHERE 1=1 and a.status = 'Y'";
 
-        if(isset($filter->nama) && $filter->nama)
-        {
+        if (isset($filter->nama) && $filter->nama) {
             $sql .= ' and a.nama like \'%' . trim($filter->nama) . '%\'';
         }
 
-        if(isset($filter->nokp) && $filter->nokp)
-        {
+        if (isset($filter->nokp) && $filter->nokp) {
             $sql .= ' and a.nokp like \'%' . trim($filter->nokp) . '%\'';
         }
 
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
-        {
-            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        if (isset($filter->jabatan_id) && $filter->jabatan_id) {
+            $sql .= ' and a.jabatan_id IN (' . implode(',', $filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
-        {
-            $sql .= ' and a.kelas in (' . implode(',',$filter->kelas_id) . ')';
+        if (isset($filter->kelas_id) && sizeof($filter->kelas_id)) {
+            $sql .= ' and a.kelas in (' . implode(',', $filter->kelas_id) . ')';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id[0])
-        {
+        if (isset($filter->skim_id) && $filter->skim_id[0]) {
             $trimm = [];
-            foreach($filter->skim_id as $x)
-            {
-                $trimm[]=trim($x);
+            foreach ($filter->skim_id as $x) {
+                $trimm[] = trim($x);
             }
-            $sql .= ' and a.skim_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
+            $sql .= ' and a.skim_id in (' . "'" . trim(implode("', '", $trimm)) . "'" . ')';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id[0])
-        {
+        if (isset($filter->gred_id) && $filter->gred_id[0]) {
             $trimm = [];
-            foreach($filter->gred_id as $x)
-            {
-                $trimm[]=trim($x);
+            foreach ($filter->gred_id as $x) {
+                $trimm[] = trim($x);
             }
-            $sql .= ' and a.gred_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
+            $sql .= ' and a.gred_id in (' . "'" . trim(implode("', '", $trimm)) . "'" . ')';
         }
 
-        if(isset($filter->hari) && $filter->hari)
-        {
+        if (isset($filter->hari) && $filter->hari) {
             $i = 0;
             $bil = sizeof($filter->hari);
             $sql .= " AND (";
-            foreach($filter->hari as $h)
-            {
+            foreach ($filter->hari as $h) {
                 $i++;
-                if($h == 1)
-                {
+                if ($h == 1) {
                     $sql .= ' a.jum_hari = 0';
+                } else if ($h > 1 && $h < 9) {
+                    $sql .= ' a.jum_hari = ' . ($h - 1);
+                } else {
+                    $sql .= ' a.jum_hari > ' . ($h - 2);
                 }
-                else if($h > 1 && $h < 9)
-                {
-                    $sql .= ' a.jum_hari = ' . ($h-1);
-                }
-                else
-                {
-                    $sql .= ' a.jum_hari > ' . ($h-2);
-                }
-                
-                if($i == $bil)
-                {
+
+                if ($i == $bil) {
                     $sql .= " AND ";
-                }
-                else
-                {
+                } else {
                     $sql .= " OR ";
                 }
             }
-            $sql .="1=1)";
+            $sql .= "1=1)";
         }
 
-        if(!$bil_hari)
-        {
+        if (!$bil_hari) {
             $sql .= ' and a.jum_hari = 0';
-        }
-        else if($bil_hari == 8)
-        {
+        } else if ($bil_hari == 8) {
             $sql .= ' and a.jum_hari > 7';
-        }
-        else
-        {
-            $sql .= ' and a.jum_hari >= ' . $bil_hari . " and a.jum_hari <" . ($bil_hari+1);
+        } else {
+            $sql .= ' and a.jum_hari >= ' . $bil_hari . " and a.jum_hari <" . ($bil_hari + 1);
         }
 
         $sql .= " AND a.kelas = $kelas_id";
 
-        //dd($sql);
+        //print_r($sql);
+        //die();
 
         $rst = $this->db->query($sql);
 
-        if($r)
-        {
+        if ($r) {
             return $rst->result();
-        }
-        else
-        {
+        } else {
             return $rst->num_rows();
         }
     }
@@ -1086,13 +1029,13 @@ group by nokp
             AND c.stat_mohon = \'L\'
             AND a.stat_laksana = \'L\'
             AND c.stat_hadir is null';
-        
-        return $this->db->query($sql,[$nokp])->result();
+
+        return $this->db->query($sql, [$nokp])->result();
     }
 
     public function rancang($related_jabatan_id, $tahun, $peruntukan_id)
     {
-        $sql= "SELECT
+        $sql = "SELECT
                 *
                 FROM
                 espel_kursus
@@ -1104,7 +1047,7 @@ group by nokp
 
     public function laksana($related_jabatan_id, $tahun, $peruntukan_id)
     {
-        $sql= "SELECT
+        $sql = "SELECT
                 *
                 FROM
                 espel_kursus
@@ -1144,7 +1087,7 @@ group by nokp
             AND a.id = ?
             group by a.id, a.tajuk, a.program_id, c.nama, b.nama, a.tempat, a.anjuran, a.penganjur, d.title, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.jenis, a.stat_jabatan, a.stat_laksana
             ORDER BY a.tkh_mula, a.tkh_tamat";
-        return $this->db->query($sql,[$id])->row();    
+        return $this->db->query($sql, [$id])->row();
     }
 
     public function info_kursus($id)
@@ -1188,7 +1131,7 @@ group by nokp
                 and id = ?
                 order by tkh_mula, tkh_tamat";
 
-        return $this->db->query($sql,[$username, $username, $username, $id])->row();    
+        return $this->db->query($sql, [$username, $username, $username, $id])->row();
     }
 
     public function sen_tahun()
@@ -1197,7 +1140,7 @@ group by nokp
             year(espel_kursus.tkh_mula) as tahun
             FROM espel_kursus
             order by tahun desc';
-        return $this->db->query($sql)->result();            
+        return $this->db->query($sql)->result();
     }
 
     public function sen_kursus_selesai($ptj_jabatan_id, $tahun)
@@ -1210,7 +1153,7 @@ group by nokp
             AND a.stat_laksana = 'L'
             ORDER BY a.tkh_mula, a.tkh_tamat";
 
-        return $this->db->query($sql,[$ptj_jabatan_id])->result();
+        return $this->db->query($sql, [$ptj_jabatan_id])->result();
     }
 
     public function conflic($data)
