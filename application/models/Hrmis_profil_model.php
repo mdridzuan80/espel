@@ -6,9 +6,9 @@ class Hrmis_profil_model extends MY_Model
     public function get_data()
     {
         $sql = "select *
-            from hrmis_data_peribadi
+            from hrmis_profil
             WHERE
-            hrmis_data_peribadi.nokp NOT IN (select nokp from espel_profil
+            hrmis_profil.nokp NOT IN (select nokp from espel_profil
             where nokp is not NULL)
             and nokp is not NULL
             ";

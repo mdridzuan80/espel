@@ -13,6 +13,8 @@ class Cron extends CI_Controller
         $mesej = $this->apphrmis->syncData();
 
         $this->applog->write(['nokp' => 'hrmis', 'event' => $mesej, 'sql' => '']);
+
+        $this->update_kelas();
     }
 
     public function createTree()
@@ -20,34 +22,31 @@ class Cron extends CI_Controller
         $this->load->model('hrmis_carta_model', 'jabatan');
 
         $data = $this->jabatan->get_all();
-        
+
         $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($this->build_tree($data,6650,0,2)));
+        $this->output->set_output(json_encode($this->build_tree($data, 6650, 0, 2)));
     }
 
-    function build_tree($arrs, $parent_id=0, $level=0, $until=FALSE) {
+    function build_tree($arrs, $parent_id = 0, $level = 0, $until = false)
+    {
         $a = [];
         foreach ($arrs as $arr) {
             if ($arr->parent_buid == $parent_id) {
                 $b['text'] = $arr->title;
-                
-                if($until !== FALSE)
-                {
-                    if($level < $until)
-                    {
-                        $c = $this->build_tree($arrs, $arr->buid, $level+1,$until);
-                        if($c)
+
+                if ($until !== false) {
+                    if ($level < $until) {
+                        $c = $this->build_tree($arrs, $arr->buid, $level + 1, $until);
+                        if ($c)
                             $b['children'] = $c;
                     }
-                }
-                else
-                {
-                    $c = $this->build_tree($arrs, $arr->buid, $level+1,$until);
-                    if($c)
+                } else {
+                    $c = $this->build_tree($arrs, $arr->buid, $level + 1, $until);
+                    if ($c)
                         $b['children'] = $c;
                 }
 
-                $a[]=$b;
+                $a[] = $b;
             }
         }
         return $a;
@@ -55,21 +54,21 @@ class Cron extends CI_Controller
 
     public function parent_jabatan()
     {
-        $this->load->model('hrmis_carta_model','jabatan');
-        
+        $this->load->model('hrmis_carta_model', 'jabatan');
+
         $elements = $this->jabatan->senarai_penyelaras();
-        
+
         return get_parent_penyelaras($elements, 10531);
     }
 
     public function parent_jabatan_peruntukan()
     {
-        $this->load->model('peruntukan_model','peruntukan');
+        $this->load->model('peruntukan_model', 'peruntukan');
 
         $elements = $this->peruntukan->get_peruntukan_related();
 
         $peruntukan = get_peruntukan_parent($elements, 10531, date('Y'));
-        
+
         print_r($peruntukan);
     }
 
@@ -77,25 +76,24 @@ class Cron extends CI_Controller
     {
         $this->load->model('kumpulan_profil_model', 'kumpulan_profil');
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
-        
-        $all_jabatan = $this->hrmis_carta->as_array()->get_all();   
-        $sen_penyelaras = $this->kumpulan_profil->get_many_by(['kumpulan_id'=>3]);
 
-        foreach($sen_penyelaras as $penyelaras)
-        {
-            $selected = flattenArray(relatedJabatan($all_jabatan,$penyelaras->jabatan_id));
-            
-            array_push($selected,$penyelaras->jabatan_id);
-            $this->kumpulan_profil->update($penyelaras->id,['inc_jab'=>serialize($selected)]);
+        $all_jabatan = $this->hrmis_carta->as_array()->get_all();
+        $sen_penyelaras = $this->kumpulan_profil->get_many_by(['kumpulan_id' => 3]);
+
+        foreach ($sen_penyelaras as $penyelaras) {
+            $selected = flattenArray(relatedJabatan($all_jabatan, $penyelaras->jabatan_id));
+
+            array_push($selected, $penyelaras->jabatan_id);
+            $this->kumpulan_profil->update($penyelaras->id, ['inc_jab' => serialize($selected)]);
         }
     }
 
     public function huhu()
     {
-        $this->load->model('hrmis_carta_model','hrmis_carta');
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
         $all = $this->hrmis_carta->as_array()->get_all();
 
-        print_r(flattenarray(relatedJabatan($all,6792)));
+        print_r(flattenarray(relatedJabatan($all, 6792)));
     }
 
     public function import_hrmis()
@@ -105,9 +103,8 @@ class Cron extends CI_Controller
 
         $sen_hrmis = $this->hrmis_profil->get_all();
 
-        $x=0;
-        foreach($sen_hrmis as $hrmis)
-        {
+        $x = 0;
+        foreach ($sen_hrmis as $hrmis) {
             $x++;
 
             $data['nama'] = trim($hrmis->nama);
@@ -126,11 +123,10 @@ class Cron extends CI_Controller
             $data['nokp_ppk'] = trim($hrmis->nokp_ppk);
             $data['email_ppk'] = trim($hrmis->email_ppk);
 
-            try{
+            try {
                 $this->profil->insert($data);
                 echo $data['nokp'] . " done " . $x . "\n";
-            }
-            catch(CiError $e) {
+            } catch (CiError $e) {
                 $myfile = fopen("log.txt", "a");
                 $msg = 'Message: ' . $e->getMessage() . "\n";
                 fwrite($myfile, $msg);
@@ -145,7 +141,7 @@ class Cron extends CI_Controller
         $mail = [
             "to" => 'md.ridzuan80@gmail.com',
             "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
-            "body" => $this->load->view("layout/email/pengujian",'',TRUE),
+            "body" => $this->load->view("layout/email/pengujian", '', true),
         ];
 
         $this->appnotify->send($mail);
@@ -153,13 +149,13 @@ class Cron extends CI_Controller
 
     public function test_send_2($id)
     {
-        $this->load->model("mailconf_model","mail_conf");
+        $this->load->model("mailconf_model", "mail_conf");
         $this->load->library('appnotify');
 
         $mail = [
             "to" => 'md.ridzuan80@gmail.com',
             "subject" => "[eSPeL][Ujian] Ujian Penghantaran",
-            "body" => $this->load->view("layout/email/pengujian",'',TRUE),
+            "body" => $this->load->view("layout/email/pengujian", '', true),
         ];
         //$mail_conf = $this->mail_conf->get($id);
         $this->appnotify->send($mail);
@@ -172,10 +168,9 @@ class Cron extends CI_Controller
 
     public function clear_jab()
     {
-        $this->load->model('hrmis_carta_model','hrmis_carta');
+        $this->load->model('hrmis_carta_model', 'hrmis_carta');
 
-        for($i=0; $i<=20; $i++)
-        {
+        for ($i = 0; $i <= 20; $i++) {
             $all = $this->hrmis_carta->senarai_carta();
             buildTreeJab($all);
         }
@@ -184,18 +179,16 @@ class Cron extends CI_Controller
 
     public function recalculateDay()
     {
-        $program = [3,4,5];
+        $program = [3, 4, 5];
 
         $this->load->model('kursus_model', 'kursus');
 
-        foreach($program as $programId)
-        {
+        foreach ($program as $programId) {
             //$kursus = $this->kursus->kursuByProgram($programId, date('Y'));
 
             $kursus = $this->kursus->selectKursus($programId);
 
-            foreach($kursus as $rekod)
-            {
+            foreach ($kursus as $rekod) {
                 $data = [
                     'hari' => kiraanHari(date('Y-m-d H:i', strtotime(constructDate($rekod->tkh_mula))), date('Y-m-d H:i', strtotime(constructDate($rekod->tkh_tamat))))
                 ];
@@ -220,5 +213,17 @@ class Cron extends CI_Controller
     public function clear_cache()
     {
         $this->db->cache_delete_all();
+    }
+
+    public function update_kelas()
+    {
+        $this->load->library('apphrmis');
+        $this->load->model('Profil_model', 'profile');
+
+        $profiles = $this->profile->get_all();
+
+        foreach ($profiles as $profile) {
+            print_r($this->profile->update($profile->nokp, ['kelas' => Apphrmis::generateKelas($profile->gred_id, $profile->kelas_id)]));
+        }
     }
 }

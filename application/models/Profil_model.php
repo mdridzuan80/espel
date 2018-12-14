@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 class Profil_model extends MY_Model
 {
     protected $_table = "espel_profil";
@@ -8,14 +8,14 @@ class Profil_model extends MY_Model
     protected $belongs_to = [
         'carta_l' => [
             'model' => 'hrmis_carta_model',
-            'primary_key'=>'buid',
+            'primary_key' => 'buid',
         ],
     ];
 
     protected $has_many = [
         'peranan_l' => [
             'model' => 'kumpulan_profil_model',
-            'primary_key'=>'profil_nokp',
+            'primary_key' => 'profil_nokp',
         ],
     ];
 
@@ -28,7 +28,7 @@ class Profil_model extends MY_Model
     {
         $this->load->model("kumpulan_model", "kumpulan");
 
-        $profil = $this->get_by(["nokp"=>$username,"status"=>'Y']);
+        $profil = $this->get_by(["nokp" => $username, "status" => 'Y']);
 
         return $profil;
     }
@@ -36,7 +36,7 @@ class Profil_model extends MY_Model
     public function all_profil($limit, $start, $filter)
     {
         $this->load->model('hrmis_carta_model', 'hrmis_carta');
-        
+
         $info = [];
         $all_jabatan = $this->hrmis_carta->as_array()->get_all();
 
@@ -56,50 +56,45 @@ class Profil_model extends MY_Model
             WHERE
             espel_profil.nokp <> \'admin\'';
 
-            if($filter['nama'])
-                $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
-            
-            if($filter['nokp'])
-                $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
+        if ($filter['nama'])
+            $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
 
-            if($filter['jabatan_id'] && $filter['sub_jabatan'])
-            {
-                $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter['jabatan_id']));
-                array_push($all_jabatan,$filter['jabatan_id']);
-                $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+        if ($filter['nokp'])
+            $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
+
+        if ($filter['jabatan_id'] && $filter['sub_jabatan']) {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan, $filter['jabatan_id']));
+            array_push($all_jabatan, $filter['jabatan_id']);
+            $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+        } else {
+            $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
+        }
+
+        if ($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != '1' && $this->appsess->getSessionData("kumpulan") != '2') {
+            $status_tree = jabatan_not_in($this->appsess->getSessionData('username'));
+            if ($status_tree['status_subtree'] == 'F') {
+                $sql .= ' AND espel_profil.jabatan_id not in (' . implode(",", $status_tree['not_in']) . ')';
             }
-            else
-            {
-                $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
-            }
+        }
 
-            if($this->appsess->getSessionData("username") != 'admin' && $this->appsess->getSessionData("kumpulan") != '1' && $this->appsess->getSessionData("kumpulan") != '2')
-            {
-                $status_tree = jabatan_not_in($this->appsess->getSessionData('username'));
-                if($status_tree['status_subtree'] == 'F')
-                {
-                    $sql .= ' AND espel_profil.jabatan_id not in (' . implode(",", $status_tree['not_in']) . ')';
-                }
-            }
+        if ($filter['kump_id'])
+            $sql .= ' AND espel_profil.kelas = \'' . trim($filter['kump_id']) . '\'';
 
-            if($filter['kump_id'])
-                $sql .= ' AND espel_profil.kelas = \'' . trim($filter['kump_id']) . '\''  ;
+        if ($filter['skim_id'])
+            $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'';
 
-            if($filter['skim_id'])
-                $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'' ;
+        if ($filter['gred_id'])
+            $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
 
-            if($filter['gred_id'])
-                $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
-            
-            $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+        $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
 
-            $sql .= ' ORDER BY espel_profil.nama';
+        $sql .= ' ORDER BY espel_profil.nama';
 
-            $info['count'] = $this->db->query($sql)->num_rows();
-            
-            $sql .= ' LIMIT ' . $start . ', ' . $limit;
-        
-            $info['data'] = $this->db->query($sql)->result();
+        $info['count'] = $this->db->query($sql)->num_rows();
+
+        $sql .= ' LIMIT ' . $start . ', ' . $limit;
+
+        $info['data'] = $this->db->query($sql)->result();
 
         return $info;
     }
@@ -129,41 +124,38 @@ class Profil_model extends MY_Model
             WHERE espel_profil.nokp <> \'admin\'
             AND espel_kumpulan_profil.kumpulan_id = 3';
 
-            if($filter['nama'])
-                $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
-            
-            if($filter['nokp'])
-                $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
+        if ($filter['nama'])
+            $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
 
-            if($filter['jabatan_id'] and $filter['sub_jabatan'])
-            {
-                $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter['jabatan_id']));
-                array_push($all_jabatan,$filter['jabatan_id']);
-                $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
-            }
-            else
-            {
-                $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
-            }
+        if ($filter['nokp'])
+            $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
 
-            if($filter['kump_id'])
-                $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\''  ;
+        if ($filter['jabatan_id'] and $filter['sub_jabatan']) {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan, $filter['jabatan_id']));
+            array_push($all_jabatan, $filter['jabatan_id']);
+            $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+        } else {
+            $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
+        }
 
-            if($filter['skim_id'])
-                $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'' ;
+        if ($filter['kump_id'])
+            $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\'';
 
-            if($filter['gred_id'])
-                $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
-            
-            $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+        if ($filter['skim_id'])
+            $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'';
 
-            $sql .= ' ORDER BY espel_profil.nama';
+        if ($filter['gred_id'])
+            $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
 
-            $info['count'] = $this->db->query($sql)->num_rows();
-            
-            $sql .= ' LIMIT ' . $start . ', ' . $limit;
-        
-            $info['data'] = $this->db->query($sql)->result();
+        $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+
+        $sql .= ' ORDER BY espel_profil.nama';
+
+        $info['count'] = $this->db->query($sql)->num_rows();
+
+        $sql .= ' LIMIT ' . $start . ', ' . $limit;
+
+        $info['data'] = $this->db->query($sql)->result();
 
         return $info;
     }
@@ -189,49 +181,46 @@ class Profil_model extends MY_Model
             INNER JOIN hrmis_kumpulan ON espel_profil.kelas_id = hrmis_kumpulan.kod
             INNER JOIN hrmis_skim ON hrmis_skim.kod = espel_profil.skim_id
             INNER JOIN (select nokp, sum(hari) as hari from (select id, nokp, hari1 as hari from espel_sejarah_cuti
-                where tahun1 = '. date('Y') .'
+                where tahun1 = ' . date('Y') . '
                 union
                 select id, nokp, hari2 as hari from espel_sejarah_cuti
-                where tahun2 = '. date('Y') .') as kelayakan
+                where tahun2 = ' . date('Y') . ') as kelayakan
                 group by nokp
                 ) as a ON a.nokp = espel_profil.nokp
             WHERE espel_profil.nokp <> \'admin\'';
 
-            if($filter['nama'])
-                $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
-            
-            if($filter['nokp'])
-                $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
+        if ($filter['nama'])
+            $sql .= ' AND espel_profil.nama like \'%' . trim($filter['nama']) . '%\'';
 
-            if($filter['jabatan_id'] and $filter['sub_jabatan'])
-            {
-                $all_jabatan = flattenArray(relatedJabatan($all_jabatan,$filter['jabatan_id']));
-                array_push($all_jabatan,$filter['jabatan_id']);
-                $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
-            }
-            else
-            {
-                $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
-            }
+        if ($filter['nokp'])
+            $sql .= ' AND espel_profil.nokp like \'%' . trim($filter['nokp']) . '%\'';
 
-            if($filter['kump_id'])
-                $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\''  ;
+        if ($filter['jabatan_id'] and $filter['sub_jabatan']) {
+            $all_jabatan = flattenArray(relatedJabatan($all_jabatan, $filter['jabatan_id']));
+            array_push($all_jabatan, $filter['jabatan_id']);
+            $sql .= ' AND espel_profil.jabatan_id in (' . implode(",", $all_jabatan) . ')';
+        } else {
+            $sql .= ' AND espel_profil.jabatan_id in (' . trim($filter['jabatan_id']) . ')';
+        }
 
-            if($filter['skim_id'])
-                $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'' ;
+        if ($filter['kump_id'])
+            $sql .= ' AND espel_profil.kelas_id = \'' . trim($filter['kump_id']) . '\'';
 
-            if($filter['gred_id'])
-                $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
-            
-            $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+        if ($filter['skim_id'])
+            $sql .= ' AND espel_profil.skim_id = \'' . trim($filter['skim_id']) . '\'';
 
-            $sql .= ' ORDER BY espel_profil.nama';
+        if ($filter['gred_id'])
+            $sql .= ' AND espel_profil.gred_id = \'' . trim($filter['gred_id']) . '\'';
 
-            $info['count'] = $this->db->query($sql)->num_rows();
-            
-            $sql .= ' LIMIT ' . $start . ', ' . $limit;
-        
-            $info['data'] = $this->db->query($sql)->result();
+        $sql .= ' AND espel_profil.status = \'' . trim($filter['status']) . '\'';
+
+        $sql .= ' ORDER BY espel_profil.nama';
+
+        $info['count'] = $this->db->query($sql)->num_rows();
+
+        $sql .= ' LIMIT ' . $start . ', ' . $limit;
+
+        $info['data'] = $this->db->query($sql)->result();
 
         return $info;
     }
@@ -243,11 +232,10 @@ class Profil_model extends MY_Model
             from view_laporan_statistik_prestasi a, espel_dict_kelas b
             where 1=1
             and a.kelas = b.id";
-        $sen_kump= $this->db->query($sql)->result();
+        $sen_kump = $this->db->query($sql)->result();
 
-        foreach($sen_kump as $kump)
-        {
-            $data[]=['id' => $kump->id,'kod' => $kump->nama];
+        foreach ($sen_kump as $kump) {
+            $data[] = ['id' => $kump->id, 'kod' => $kump->nama];
         }
 
         return $data;
@@ -259,30 +247,26 @@ class Profil_model extends MY_Model
         $param = [];
         $sql = "select distinct gred_id from espel_profil where 1=1";
 
-        if($kelas)
-        {
+        if ($kelas) {
             $sql .= " AND kelas = ?";
-            $param[] = $kelas;           
+            $param[] = $kelas;
         }
 
-        if($skim)
-        {
+        if ($skim) {
             $sql .= " AND skim_id = ?";
             $param[] = $skim;
         }
 
-        if(!$kelas && !$skim)
-        {
+        if (!$kelas && !$skim) {
             $sql .= ' AND id = 0';
         }
 
         $sql .= " order by 1";
 
-        $sen_gred = $this->db->query($sql,$param)->result();
+        $sen_gred = $this->db->query($sql, $param)->result();
 
-        foreach($sen_gred as $gred)
-        {
-            $data[]=['id' => $gred->gred_id,'kod' => $gred->gred_id];
+        foreach ($sen_gred as $gred) {
+            $data[] = ['id' => $gred->gred_id, 'kod' => $gred->gred_id];
         }
 
         return $data;
@@ -294,35 +278,30 @@ class Profil_model extends MY_Model
         $param = [];
         $sql = "select distinct gred_id from espel_profil where 1=1";
 
-        if($kelas)
-        {
-            $sql .= " AND kelas IN (" . implode(',',$kelas) . ")";
-            $param[] = $kelas;           
+        if ($kelas) {
+            $sql .= " AND kelas IN (" . implode(',', $kelas) . ")";
+            $param[] = $kelas;
         }
 
-        if($skim)
-        {
+        if ($skim) {
             $trimm = [];
-            foreach($skim as $x)
-            {
-                $trimm[]=trim($x);
+            foreach ($skim as $x) {
+                $trimm[] = trim($x);
             }
-            $sql .= " AND skim_id IN (" . "'" . trim(implode("', '",$trimm)) . "'" . ")";
+            $sql .= " AND skim_id IN (" . "'" . trim(implode("', '", $trimm)) . "'" . ")";
             $param[] = $skim;
         }
 
-        if(!$kelas && !$skim)
-        {
+        if (!$kelas && !$skim) {
             $sql .= ' AND id = 0';
         }
 
         $sql .= " order by 1";
 
-        $sen_gred = $this->db->query($sql,$param)->result();
+        $sen_gred = $this->db->query($sql, $param)->result();
 
-        foreach($sen_gred as $gred)
-        {
-            $data[]=['id' => $gred->gred_id,'kod' => $gred->gred_id];
+        foreach ($sen_gred as $gred) {
+            $data[] = ['id' => $gred->gred_id, 'kod' => $gred->gred_id];
         }
 
         return $data;
@@ -337,11 +316,10 @@ class Profil_model extends MY_Model
             and a.skim_id = b.kod
             and a.kelas = ?
             order by b.keterangan";
-        $sen_skim = $this->db->query($sql,[$kump])->result();
+        $sen_skim = $this->db->query($sql, [$kump])->result();
 
-        foreach($sen_skim as $skim)
-        {
-            $data[]=['id' => $skim->kod,'kod' => $skim->keterangan];
+        foreach ($sen_skim as $skim) {
+            $data[] = ['id' => $skim->kod, 'kod' => $skim->keterangan];
         }
 
         return $data;
@@ -354,14 +332,13 @@ class Profil_model extends MY_Model
             from espel_profil a, hrmis_skim b
             where 1=1
             and a.skim_id = b.kod
-            and a.kelas in(" . implode(',',$kump) . ")
+            and a.kelas in(" . implode(',', $kump) . ")
             order by b.keterangan";
-        
+
         $sen_skim = $this->db->query($sql)->result();
-        
-        foreach($sen_skim as $skim)
-        {
-            $data[]=['id' => $skim->kod,'kod' => $skim->keterangan];
+
+        foreach ($sen_skim as $skim) {
+            $data[] = ['id' => $skim->kod, 'kod' => $skim->keterangan];
         }
 
         return $data;
@@ -428,93 +405,74 @@ group by nokp
             WHERE
             espel_profil.nokp <> 'admin') as a WHERE 1=1";
 
-        if(isset($filter->nama) && $filter->nama)
-        {
+        if (isset($filter->nama) && $filter->nama) {
             $sql .= ' and a.nama like \'%' . trim($filter->nama) . '%\'';
         }
 
-        if(isset($filter->nokp) && $filter->nokp)
-        {
+        if (isset($filter->nokp) && $filter->nokp) {
             $sql .= ' and a.nokp like \'%' . trim($filter->nokp) . '%\'';
         }
 
-        if(isset($filter->jabatan_id) && $filter->jabatan_id)
-        {
-            $sql .= ' and a.jabatan_id IN (' . implode(',',$filter->jabatan_id) . ')';
+        if (isset($filter->jabatan_id) && $filter->jabatan_id) {
+            $sql .= ' and a.jabatan_id IN (' . implode(',', $filter->jabatan_id) . ')';
         }
 
-        if(isset($filter->kelas_id) && sizeof($filter->kelas_id))
-        {
+        if (isset($filter->kelas_id) && sizeof($filter->kelas_id)) {
             $sql .= ' and a.kelas in(' . implode(',', $filter->kelas_id) . ')';
         }
 
-        if(isset($filter->skim_id) && $filter->skim_id[0])
-        {
+        if (isset($filter->skim_id) && $filter->skim_id[0]) {
             $trimm = [];
-            foreach($filter->skim_id as $x)
-            {
-                $trimm[]=trim($x);
+            foreach ($filter->skim_id as $x) {
+                $trimm[] = trim($x);
             }
-            $sql .= ' and a.skim_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
+            $sql .= ' and a.skim_id in (' . "'" . trim(implode("', '", $trimm)) . "'" . ')';
         }
 
-        if(isset($filter->gred_id) && $filter->gred_id[0])
-        {
+        if (isset($filter->gred_id) && $filter->gred_id[0]) {
             $trimm = [];
-            foreach($filter->gred_id as $x)
-            {
-                $trimm[]=trim($x);
+            foreach ($filter->gred_id as $x) {
+                $trimm[] = trim($x);
             }
-            $sql .= ' and a.gred_id in (' . "'" . trim(implode("', '",$trimm)) . "'" . ')';
+            $sql .= ' and a.gred_id in (' . "'" . trim(implode("', '", $trimm)) . "'" . ')';
         }
 
-        if(isset($filter->hari) && $filter->hari)
-        {
+        if (isset($filter->hari) && $filter->hari) {
             $i = 0;
             $bil = sizeof($filter->hari);
             $sql .= " and (";
-            foreach($filter->hari as $h)
-            {
+            foreach ($filter->hari as $h) {
                 $i++;
-                if($h == 1)
-                {
+                if ($h == 1) {
                     $sql .= ' a.jum_hari = 0';
+                } else if ($h > 1 && $h < 9) {
+                    $sql .= ' a.jum_hari = ' . ($h - 1);
+                } else {
+                    $sql .= ' a.jum_hari > ' . ($h - 2);
                 }
-                else if($h > 1 && $h < 9)
-                {
-                    $sql .= ' a.jum_hari = ' . ($h-1);
-                }
-                else
-                {
-                    $sql .= ' a.jum_hari > ' . ($h-2);
-                }
-                
-                if($i == $bil)
-                {
+
+                if ($i == $bil) {
                     $sql .= " AND ";
-                }
-                else
-                {
+                } else {
                     $sql .= " OR ";
                 }
-                    
+
             }
-            $sql .="1=1)";
+            $sql .= "1=1)";
         }
 
-            $sql .= " group by a.kelas, a.kumpulan";
-        
+        $sql .= " group by a.kelas, a.kumpulan";
+
         return $this->db->query($sql)->result();
     }
 
     public function sen_pyd($username)
     {
-        $data=[];
+        $data = [];
         $sql = "select nokp from espel_profil where 1=1 and nokp_ppp = ?";
-        $rst = $this->db->query($sql,[$username])->result();
+        $rst = $this->db->query($sql, [$username])->result();
 
-        foreach($rst as $row)
-        {
+        foreach ($rst as $row) {
             $data[] = $row->nokp;
         }
         return $data;
@@ -523,7 +481,7 @@ group by nokp
     public function byBuID($buid)
     {
         $sql = "SELECT * FROM espel_profil where jabatan_id = ?";
-        
+
         return $this->db->query($sql, [$buid]);
     }
 
@@ -533,16 +491,12 @@ group by nokp
         $sql = "INSERT INTO espel_profil (" . implode(',', array_keys($field)) . ") VALUES('" . implode('\',\'', array_values($field)) . "') ON DUPLICATE KEY UPDATE " . $this->update_fields($field);
         $this->db->query($sql);
         $err = $this->db->error();
-        
-        if ($err["code"] != 0)
-        {
+
+        if ($err["code"] != 0) {
             echo $err["message"] . "\n";
             echo $this->db->last_query() . "\n";
-        }
-        else
-        {
-            switch($this->db->affected_rows())
-            {
+        } else {
+            switch ($this->db->affected_rows()) {
                 case 0:
                     echo "Unchange \n";
                     break;
@@ -560,16 +514,17 @@ group by nokp
     {
         $str = [];
         unset($fields['password']);
-        foreach($fields as $field => $value)
-        {
-            $str[] = $field . "='" . $value . "'"; 
+        foreach ($fields as $field => $value) {
+            $str[] = $field . "='" . $value . "'";
         }
         return implode(',', $str);
     }
 
     public function hapusMigrate()
     {
-        $sql = "delete from espel_profil where nokp not in(select nokp from hrmis_profil_import)";
+        $sql = "update espel_profil set status = 'T'
+                where nokp in(select nokp from espel_profil where nokp not in(select nokp from hrmis_profil_import))";
+
         return $this->db->query($sql);
     }
 

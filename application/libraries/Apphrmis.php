@@ -9,13 +9,12 @@ class Apphrmis
 
     public function __construct()
     {
-        $this->CI =& get_instance();
+        $this->CI = &get_instance();
     }
 
     public function syncData()
     {
-        try
-        {
+        try {
             $raw = $this->getDataFileByBU();
             $raw = $raw['soap:Envelope']['soap:Body']['GetDataFileByBUResponse']['getFileResponseStreaming'];
 
@@ -23,9 +22,7 @@ class Apphrmis
             $this->prosesMigration($hrmis);
 
             return 'Integrasi berjaya';
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return $e;
         }
     }
@@ -37,8 +34,7 @@ class Apphrmis
 
         $this->CI->hrmis_profil_import_model->kosongkan();
 
-        foreach ($hrmis as $hrmisRow)
-        {
+        foreach ($hrmis as $hrmisRow) {
             $fields = [
                 "nama" => addslashes(trim($hrmisRow[0])),
                 "nokp" => trim($hrmisRow[1]),
@@ -55,12 +51,12 @@ class Apphrmis
                 "nokp_ppk" => trim($hrmisRow[13]),
                 "email_ppk" => trim($hrmisRow[14]),
             ];
-            
+
             $fields2 = [
                 "nama" => addslashes(trim($hrmisRow[0])),
                 "nokp" => trim($hrmisRow[1]),
                 "email" => trim($hrmisRow[2]),
-                "jabatan_id" => (int) trim($hrmisRow[3]),
+                "jabatan_id" => (int)trim($hrmisRow[3]),
                 "jabatan_desc" => trim($hrmisRow[5]),
                 "skim_id" => trim($hrmisRow[6]),
                 "gred_id" => trim($hrmisRow[7]),
@@ -71,9 +67,10 @@ class Apphrmis
                 "email_ppk" => trim($hrmisRow[14]),
                 "status" => "Y",
                 "password" => pass_encode(trim($hrmisRow[1])),
+                "kelas" => SELF::generateKelas($hrmisRow[7], $hrmisRow[8]),
             ];
 
-            preg_match_all('!\d+!', $fields2['gred_id'] , $matches);
+            preg_match_all('!\d+!', $fields2['gred_id'], $matches);
             $fields2['gred'] = $matches[0][0];
 
             $db_debug = $this->CI->db->db_debug; //save setting
@@ -84,12 +81,9 @@ class Apphrmis
 
             $err = $this->CI->db->error();
 
-            if ($err["code"] != 0)
-            {
-                log_message('info', $err["message"]);                
-            }
-            else
-            {
+            if ($err["code"] != 0) {
+                log_message('info', $err["message"]);
+            } else {
                 $this->CI->profil_model->hrmisMigrate($fields2);
             }
 
@@ -108,9 +102,9 @@ class Apphrmis
         $param['bulevel'] = 2;
         $param['datatype'] = 'jknm';
 
-        echo "geting data from hrmis...\n";
+        echo "getting data from hrmis...\n";
         $data = $hrmis->GetDataFileByBU($param)->arr();
-        echo "done geting data from hrmis\n";
+        echo "done getting data from hrmis\n";
 
         return $data;
     }
@@ -130,8 +124,7 @@ class Apphrmis
     {
         $zip = new ZipArchive;
 
-        if($zip->open($this->CI->config->item('espel_hrmis_temp_folder') . $output))
-        {
+        if ($zip->open($this->CI->config->item('espel_hrmis_temp_folder') . $output)) {
             //extract contents to /data/ folder
             echo "extract data...\n";
             $zip->extractTo($this->CI->config->item('espel_hrmis_temp_folder'));
@@ -165,12 +158,26 @@ class Apphrmis
                 return $content_array;
             }
         } else {
-           return [];
+            return [];
         }
     }
 
-    public function prosesData($data)
+    static function generateKelas($gred_id, $kumpulan)
     {
-        
+        preg_match_all('!\d+!', $gred_id, $matches);
+
+        if ($kumpulan == 'PP') {
+            if ($matches[0][0] == 6 || $matches[0][0] == 7)
+                return 1;
+            else
+                return 2;
+        } else {
+            if ($matches[0][0] >= 41)
+                return 2;
+            if ($matches[0][0] >= 17 && $matches[0][0] <= 40)
+                return 3;
+            else
+                return 4;
+        }
     }
 }
