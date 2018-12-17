@@ -95,14 +95,14 @@
               </tr>
             </thead>
             <tbody>
-                <?php foreach($sen_dicalonkan as $dicalonkan): ?>
+                <?php foreach ($sen_dicalonkan as $dicalonkan) : ?>
               <tr>
-                <td><?=$dicalonkan->tajuk?></td>
+                <td><?= $dicalonkan->tajuk ?></td>
                 <td><?= ($dicalonkan->anjuran == 'D') ? $dicalonkan->anjuran_dalam : $dicalonkan->anjuran_luar ?></td>
-                <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($dicalonkan->tkh_tamat))?></td>
+                <td><?= date("d M Y h:i A", strtotime($dicalonkan->tkh_mula)) ?></td>
+                <td><?= date("d M Y h:i A", strtotime($dicalonkan->tkh_tamat)) ?></td>
                 <td align="center">
-                    <?php if($dicalonkan->stat_laksana == 'L'):?>                      
+                    <?php if ($dicalonkan->stat_laksana == 'L') : ?>                      
                       <?php if ($dicalonkan->stat_mohon == 'M') : ?>
                         <span class="label label-warning">BELUM DIJAWAB</span>
                       <?php endif ?>
@@ -119,7 +119,7 @@
                         <span class="label label-danger">TOLAK</span>
                       <?php endif ?>
                     <?php else : ?>
-                      <?php if ($dicalonkan->stat_mohon == 'M'): ?>
+                      <?php if ($dicalonkan->stat_mohon == 'M') : ?>
                         <span class="label label-warning">BELUM DIJAWAB</span>
                       <?php endif ?>
                       <?php if ($dicalonkan->stat_mohon == 'L') : ?>
@@ -128,16 +128,16 @@
                       <?php if ($dicalonkan->stat_mohon == 'T') : ?>
                         <span class="label label-danger">TOLAK</span>
                       <?php endif ?>
-                    <?php endif?>
+                    <?php endif ?>
                 </td>
                 <td align="center">
-                  <?php if($dicalonkan->stat_laksana == 'L'):?>
+                  <?php if ($dicalonkan->stat_laksana == 'L' && $dicalonkan->surat) : ?>
                   <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs" target="_blank" >Papar surat</a>
                   <?php endif ?>
                   <a class="btn btn-info btn-xs btnPapar" data-kursusid="<?= $dicalonkan->id ?>" data-tajuk="<?= $dicalonkan->tajuk ?>">Info</a>
                 </td>
               </tr>
-          <?php endforeach?>
+          <?php endforeach ?>
              </tbody>
           </table>
       </div>
@@ -165,28 +165,28 @@
               </tr>
             </thead>
             <tbody>
-                <?php foreach($sen_permohonan as $permohonan): ?>
+                <?php foreach ($sen_permohonan as $permohonan) : ?>
               <tr>
-                <td><?=$permohonan->tajuk?></td>
+                <td><?= $permohonan->tajuk ?></td>
                 <td><?= ($permohonan->anjuran == 'D') ? $permohonan->anjuran_dalam : $permohonan->anjuran_luar ?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_mula))?></td>
-                <td><?=date("d M Y h:i A",strtotime($permohonan->tkh_tamat))?></td>
+                <td><?= date("d M Y h:i A", strtotime($permohonan->tkh_mula)) ?></td>
+                <td><?= date("d M Y h:i A", strtotime($permohonan->tkh_tamat)) ?></td>
                 <td align="center">
                     <?php if ($permohonan->stat_mohon == 'T') : ?>
                     <span class="label label-danger">Tolak</span>
                     <?php endif ?>
-                    <?php if($permohonan->stat_mohon == 'M'):?>
+                    <?php if ($permohonan->stat_mohon == 'M') : ?>
                     <span class="label label-warning">Baru</span>
-                    <?php endif?>
-                    <?php if($permohonan->stat_mohon == 'L'):?>
+                    <?php endif ?>
+                    <?php if ($permohonan->stat_mohon == 'L') : ?>
                     <span class="label label-success">Lulus</span>
-                    <?php endif?>
+                    <?php endif ?>
                 </td>
                 <td>
                   <a class="btn btn-info btn-xs btnPapar" data-kursusid="<?= $permohonan->id ?>" data-tajuk="<?= $permohonan->tajuk ?>" >Info</a>
                 </td>
               </tr>
-          <?php endforeach?>
+          <?php endforeach ?>
              </tbody>
           </table>
       </div>
