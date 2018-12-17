@@ -166,7 +166,7 @@ class Apphrmis
     {
         preg_match_all('!\d+!', $gred_id, $matches);
 
-        if ($kumpulan == 'PP') {
+        if ($kumpulan == 'PP' || $kumpulan == 'PGT') {
             if ($matches[0][0] == 6 || $matches[0][0] == 7)
                 return 1;
             else
