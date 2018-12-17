@@ -131,8 +131,8 @@
                     <?php endif ?>
                 </td>
                 <td align="center">
-                  <?php if ($dicalonkan->stat_laksana == 'L' && $dicalonkan->surat) : ?>
-                  <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs" target="_blank" >Papar surat</a>
+                  <?php if ($dicalonkan->stat_laksana == 'L') : ?>
+                  <a href="<?= base_url('assets/uploads/' . $dicalonkan->surat) ?>" class="btn btn-info btn-xs btn-show-lampiran" target="_blank" data-islampirantttached="<?= ($dicalonkan->surat) ? 1 : 0 ?>" >Papar surat</a>
                   <?php endif ?>
                   <a class="btn btn-info btn-xs btnPapar" data-kursusid="<?= $dicalonkan->id ?>" data-tajuk="<?= $dicalonkan->tajuk ?>">Info</a>
                 </td>

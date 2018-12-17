@@ -441,5 +441,14 @@ $(function() {
             }
         });
     });
+
+    $('.btn-show-lampiran').on('click', function(e){
+        if($(this).data('islampirantttached') == 0)
+        {
+            alert('Tiada sebarang dokument dilampirkan');
+            e.preventDefault();
+            return false;
+        }
+    });
 });
 </script>
