@@ -522,10 +522,10 @@ group by nokp
 
     public function hapusMigrate()
     {
-        $sql = "update espel_profil set status = 'T'
-            where nokp in (select espel_profil.nokp from espel_profil
-            left join hrmis_profil_import on espel_profil.nokp = hrmis_profil_import.nokp
-            where hrmis_profil_import.nokp is null)";
+        $sql = "update espel_profil as a 
+            left join hrmis_profil_import as b on a.nokp = b.nokp
+            set a.status = 'T'
+            where b.nokp is null";
 
         return $this->db->query($sql);
     }
