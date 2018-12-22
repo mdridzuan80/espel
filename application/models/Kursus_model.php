@@ -1090,6 +1090,26 @@ group by nokp
         return $this->db->query($sql, [$id])->row();
     }
 
+    public function bil_peserta_dicalonkan_tiada_keputusan($id)
+    {
+        $username = $this->appsess->getSessionData('username');
+        $sql = "SELECT a.id, a.tajuk, a.program_id, c.nama as program, b.nama as aktiviti, a.tempat, a.anjuran, a.penganjur as penganjur_luar, d.title as penganjur_dalam, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.jenis, a.stat_jabatan, a.stat_laksana, Count(g.nokp) as bil_peserta
+            FROM espel_kursus a
+            INNER JOIN espel_dict_program c on a.program_id = c.id
+            INNER JOIN espel_dict_aktiviti b ON a.aktiviti_id = b.id
+            LEFT JOIN hrmis_carta_organisasi d ON a.penganjur_id = d.buid
+            LEFT JOIN espel_peruntukan e ON a.peruntukan_id = e.id
+            LEFT JOIN espel_dict_jns_peruntukan f ON e.jns_peruntukan_id = f.id
+            LEFT JOIN espel_permohonan_kursus g ON a.id = g.kursus_id
+            WHERE 1=1
+            AND a.id = ?
+            AND g.stat_mohon = 'M'
+            AND g.role = 'PTJ'
+            group by a.id, a.tajuk, a.program_id, c.nama, b.nama, a.tempat, a.anjuran, a.penganjur, d.title, a.telefon, a.email, a.tkh_mula, a.tkh_tamat, a.jenis, a.stat_jabatan, a.stat_laksana
+            ORDER BY a.tkh_mula, a.tkh_tamat";
+        return $this->db->query($sql, [$id])->row();
+    }
+
     public function info_kursus($id)
     {
         $username = $this->appsess->getSessionData('username');

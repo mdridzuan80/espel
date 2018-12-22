@@ -953,7 +953,7 @@ class Kursus extends MY_Controller
                 )->dropdown('nokp', 'nama');
                 $data['sen_peruntukan'] = $this->peruntukan->dropdown_peruntukan($jabatan_id, date('Y'));
                 $data['vlevel'] = $this->load->view('kursus/pengurusan/show', ['level' => $data['level'], 'kursus_id' => $id], true);
-
+                $data['kursus'] = $this->kursus->bil_peserta_dicalonkan_tiada_keputusan($id);
                 return $this->renderView("kursus/jabatan/edit", $data, $this->plugins());
             } else {
 
