@@ -36,6 +36,19 @@ class Auth extends MY_Controller
         return $this->renderLoginView('login');
     }
 
+    public function login_sso($username, $pengguna_type, $pengguna_system)
+    {            
+        if($this->appauth->login_sso($username))
+        {
+            $this->applog->write(['nokp'=>$username,'event'=>'Berjaya log-in']);
+            $this->appsess->setFlashSession("success", false);
+            return redirect('dashboard');
+        }
+        $this->appsess->setFlashSession("success", false);
+    
+        return redirect('login');
+    }
+
     public function logout()
     {
         if($this->appsess->getSessionData('username'))

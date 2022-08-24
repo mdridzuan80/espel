@@ -68,6 +68,7 @@ class Laporan extends MY_Controller
                 try {
                     $html2pdf = new Html2Pdf('L', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
                     $html2pdf->pdf->SetDisplayMode('fullpage');
+		            $html2pdf->setTestTdInOnePage(false);
 
                     ob_start();
                     $content = ob_get_clean();
@@ -561,7 +562,7 @@ class Laporan extends MY_Controller
                     ob_start();
                     $content = ob_get_clean();
 
-                    $html2pdf->writeHTML($this->load->view("laporan/ptj/prestasi_kursus/pdf", $data, true));
+		    $html2pdf->writeHTML($this->load->view("laporan/ptj/prestasi_kursus/pdf", $data, true));
 
                     $this->applog->write(['nokp' => $this->appsess->getSessionData('username'), 'event' => 'Export PDF laporan prestasi kursus']);
                     $html2pdf->output('ringkasan.pdf');

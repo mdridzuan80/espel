@@ -53,7 +53,7 @@ table.biasa td, table.listing td {
     </page_footer>
     <table>
         <tr>
-            <td style="width:1%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width:1%;"><img src="./assets/images/coa-malaysia-govt.png" ></td>
             <td style="width: 75%;">
                 <table>
                     <tr>
@@ -67,7 +67,7 @@ table.biasa td, table.listing td {
                     </tr>
                 </table>
             </td>
-            <td style="width:1%;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
+            <td style="width:1%;"><img src="./assets/images/kkm_logo_110h.png" ></td>
         </tr>
     </table>    
 
@@ -109,7 +109,7 @@ table.biasa td, table.listing td {
             $jbil7addover7='';
         ?>
         <?php foreach($sen_kelas as $kelas) : ?>
-        <tr>
+            <tr>
                 <td><?= $x++ ?></td>
                 <td><?= $kelas->kumpulan ?></td>
                 <td><?= $kelas->pengisian ?></td>
@@ -125,7 +125,7 @@ table.biasa td, table.listing td {
                 <?php $over_tujuh =  (in_array('9',$objFilter->hari)) ? $bilover7 = $kelas->over_7 : '' ?>
                 <td><?= $over_tujuh ?></td>
                 <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? $kelas->over_77 : '' ?></td>
-                <td><?= (in_array('8',$objFilter->hari)&&in_array('9',$objFilter->hari)) ? round(($kelas->over_77/$kelas->pengisian),2)*100 : '' ?></td>
+                
                 <?php
                 $jbiltotal += $kelas->pengisian;
                 //dd((int) $jbil0);

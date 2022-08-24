@@ -47,7 +47,7 @@ table.biasa td, table.listing td {
 
     <table style="width: 100%;">
         <tr>
-            <td style="width:15%;"><img src="<?= base_url('assets/images/coa-malaysia-govt.png') ?>" ></td>
+            <td style="width:15%;"><img src="./assets/images/coa-malaysia-govt.png" ></td>
             <td style="width:70%;">
                 <table>
                     <tr>
@@ -58,7 +58,7 @@ table.biasa td, table.listing td {
                     </tr>
                 </table>
             </td>
-            <td style="width:15%; text-align: right;"><img src="<?= base_url('assets/images/kkm_logo_110h.png') ?>" ></td>
+            <td style="width:15%; text-align: right;"><img src="./assets/images/kkm_logo_110h.png" ></td>
         </tr>
     </table>
     <br/>
