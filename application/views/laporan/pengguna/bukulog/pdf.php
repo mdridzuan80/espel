@@ -54,7 +54,7 @@ table.biasa td, table.listing td {
 
     <table>
         <tr>
-            <td style="width: 100%; text-align:center;"><img src="<?=base_url("assets/images/malaysia-crest.png")?>" ></td>
+            <td style="width: 100%; text-align:center;"><img src="./assets/images/malaysia-crest.png" ></td>
         </tr>
         <tr>
             <td style="width: 100%; text-align:center;"><br></td>
